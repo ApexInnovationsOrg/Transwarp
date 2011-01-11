@@ -143,7 +143,7 @@ package ui.tooltip
 				case TooltipAttachPoint.TOP:
 				case TooltipAttachPoint.TOPLEFT:
 				case TooltipAttachPoint.TOPRIGHT:
-					y = anchor.y - height - _paddingY;
+					y = anchor.y - height + _paddingY;
 					break;
 
 				case TooltipAttachPoint.BOTTOM:
