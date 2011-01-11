@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties mainApplicationPath="main/TranswarpPrototypeTwo.as" projectUUID="a1d25685-c2f3-4e8b-9d84-631567f654d5" version="6">
+<actionScriptProperties mainApplicationPath="main/TranswarpPrototype.as" projectUUID="a1d25685-c2f3-4e8b-9d84-631567f654d5" version="6">
   <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
@@ -30,9 +30,9 @@
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_agent.swc" useDefaultLinkType="false"/>
         </excludedEntries>
       </libraryPathEntry>
-      <libraryPathEntry kind="3" linkType="1" path="${DOCUMENTS}/textLayout 2.0/libs/textLayout.swc" sourcepath="${DOCUMENTS}/textLayout 2.0/src" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="1" path="${DOCUMENTS}/greensock.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="1" path="${DOCUMENTS}/BulkLoader/bin/BulkLoader.swc" sourcepath="${DOCUMENTS}/BulkLoader/src" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="libs/textLayout.swc" sourcepath="${DOCUMENTS}/textLayout 2.0/src" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="libs/greensock.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="libs/BulkLoader.swc" sourcepath="${DOCUMENTS}/BulkLoader/src" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath>
       <sourceAttachmentPathEntry kind="3" linkType="1" path="${DOCUMENTS}/textLayout 2.0/libs/textLayout.swc" sourcepath="${DOCUMENTS}/textLayout 2.0/src" useDefaultLinkType="false"/>
@@ -40,7 +40,7 @@
     </sourceAttachmentPath>
   </compiler>
   <applications>
-    <application path="main/TranswarpPrototypeTwo.as"/>
+    <application path="main/TranswarpPrototype.as"/>
   </applications>
   <modules/>
   <buildCSSFiles/>
