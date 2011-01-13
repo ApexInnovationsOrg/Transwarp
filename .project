@@ -3,6 +3,7 @@
 	<name>TranswarpPrototype</name>
 	<comment></comment>
 	<projects>
+		<project>textLayout</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

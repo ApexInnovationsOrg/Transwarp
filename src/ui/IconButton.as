@@ -12,7 +12,6 @@ package ui
 	import flash.filters.DisplacementMapFilter;
 	
 	import flash.display.Shape;
-	import ui.tooltip.SimpleTooltip;
 	import ui.tooltip.TooltipAttachPoint;
 	
 	public class IconButton extends Sprite

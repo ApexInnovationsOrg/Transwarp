@@ -21,21 +21,21 @@
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/spark.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/sparkskins.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/rpc.swc" useDefaultLinkType="false"/>
-          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/qtp_air.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/datavisualization.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/videoPlayer.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/qtp_air.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_dmv.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_flashflexkit.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_agent.swc" useDefaultLinkType="false"/>
         </excludedEntries>
       </libraryPathEntry>
-      <libraryPathEntry kind="3" linkType="1" path="libs/textLayout.swc" sourcepath="${DOCUMENTS}/textLayout 2.0/src" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="libs/textLayout.swc" sourcepath="${DOCUMENTS}/tlf/textLayout/src" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="libs/greensock.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="libs/bulkLoader.swc" sourcepath="${DOCUMENTS}/BulkLoader/src" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath>
-      <sourceAttachmentPathEntry kind="3" linkType="1" path="libs/textLayout.swc" sourcepath="${DOCUMENTS}/textLayout 2.0/src" useDefaultLinkType="false"/>
+      <sourceAttachmentPathEntry kind="3" linkType="1" path="libs/textLayout.swc" sourcepath="${DOCUMENTS}/tlf/textLayout/src" useDefaultLinkType="false"/>
       <sourceAttachmentPathEntry kind="3" linkType="1" path="libs/bulkLoader.swc" sourcepath="${DOCUMENTS}/BulkLoader/src" useDefaultLinkType="false"/>
     </sourceAttachmentPath>
   </compiler>
