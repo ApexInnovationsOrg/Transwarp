@@ -65,7 +65,8 @@ package ui
 		private function loadingComplete(e:Event):void {
 			for each (var info:Object in buttonInfo) {
 				var bmp:Bitmap = loader.getBitmap(info.art);
-				var b:IconButton = new IconButton(this, bmp);
+				var b:IconButton = new IconButton(bmp);
+				addChild(b);
 				
 				if (info.highlightAlpha) {
 					b.highlightAlpha = info.highlightAlpha;

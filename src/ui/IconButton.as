@@ -5,18 +5,19 @@ package ui
 	import flash.display.BlendMode;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.display.Shape;
 	import flash.display.SimpleButton;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.filters.DisplacementMapFilter;
 	
-	import flash.display.Shape;
 	import ui.tooltip.TooltipAttachPoint;
 	
 	public class IconButton extends Sprite
 	{
 		private var highlight:Bitmap;
+		private var bmp:BitmapData;
 		private var _art:DisplayObject;
 		private var down:Boolean;
 		
@@ -29,14 +30,13 @@ package ui
 		public function get highlightAlpha():Number { return highlight.alpha;}
 		public function set highlightAlpha(value:Number):void { highlight.alpha = value; }
 		
-		public function IconButton(container:DisplayObjectContainer, art:DisplayObject) {
-			container.addChild(this);
-			
+		public function IconButton(art:DisplayObject) {
 			_art = art;
 					
 			highlight = new Bitmap();
 			highlight.visible = false;
-			updateHighlight();
+			bmp = new BitmapData(_art.width, _art.height, true, 0x00ffffff);
+			highlight.bitmapData = bmp;
 			
 			addChild(_art);
 			addChild(highlight);
@@ -45,12 +45,19 @@ package ui
 			addEventListener(MouseEvent.ROLL_OVER, roll);
 			addEventListener(MouseEvent.ROLL_OUT, roll);
 			addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);		
-			stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
+			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 				
+		protected function onAdded(e:Event):void {
+			stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
+		}		
 		
 		private function updateHighlight():void {
-			var bmp:BitmapData = new BitmapData(_art.width, _art.height, true, 0x00ffffff);
+			if(_art.width != bmp.width || _art.height != bmp.height) {
+				bmp = new BitmapData(_art.width, _art.height, true, 0x00ffffff);
+				highlight.bitmapData = bmp;
+			}
+			
 			bmp.draw(_art);
 			highlight.bitmapData = bmp; 
 						
@@ -59,6 +66,7 @@ package ui
 		}
 		
 		private function roll(e:Event):void {
+			updateHighlight();
 			highlight.visible = e.type == MouseEvent.ROLL_OVER;				
 		}
 		
