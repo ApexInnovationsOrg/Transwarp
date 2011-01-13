@@ -8,6 +8,8 @@ package ui.tooltip
 	import flashx.textLayout.conversion.ConversionType;
 	import flashx.textLayout.conversion.TextConverter;
 	import flashx.textLayout.elements.TextFlow;
+	import flashx.textLayout.events.StatusChangeEvent;
+	import flashx.textLayout.events.UpdateCompleteEvent;
 	
 	public class TextFlowTooltip extends TooltipBase
 	{
@@ -28,7 +30,7 @@ package ui.tooltip
 			updateTextFlow();
 		}
 		
-		public function get textFlowXML():XML { return XML(TextConverter.export(_textFlow, TextConverter.TEXT_FIELD_HTML_FORMAT, ConversionType.XML_TYPE));}
+		public function get textFlowXML():XML { return XML(TextConverter.export(_textFlow, TextConverter.TEXT_LAYOUT_FORMAT, ConversionType.XML_TYPE));}
 		public function set textFlowXML(value:XML):void {
 			removeOldFlow();
 			importMarkup(value, TextConverter.TEXT_LAYOUT_FORMAT);
@@ -45,6 +47,17 @@ package ui.tooltip
 			}
 		}
 
+		public function setCompositionSize(w:Number, h:Number):Boolean {
+			if(controller) {
+				controller.setCompositionSize(w, h);
+				return true;
+			} else
+				return false;			
+		}
+		
+		public function get compositionWidth():Number { return controller ? controller.compositionWidth : 0; }
+		public function get compositionHeight():Number { return controller ? controller.compositionHeight : 0; }
+		
 		protected function inferMarkupType(xml:XML):String {
 			if (xml.localName() == "TextFlow")
 				return TextConverter.TEXT_LAYOUT_FORMAT;
@@ -54,6 +67,8 @@ package ui.tooltip
 
 		protected function importMarkup(text:XML, format:String):void {
 			_textFlow = TextConverter.importToFlow(text, format);
+			_textFlow.addEventListener(StatusChangeEvent.INLINE_GRAPHIC_STATUS_CHANGE, needsRedraw);
+			_textFlow.addEventListener(UpdateCompleteEvent.UPDATE_COMPLETE, needsRedraw);
 		}
 
 		protected function removeOldFlow():void {
@@ -62,14 +77,20 @@ package ui.tooltip
 			_textFlow.flowComposer.removeAllControllers();
 		}
 
+		public override function update(forceRedraw:Boolean = false):void {
+			if(_textFlow)
+				_textFlow.flowComposer.updateAllControllers();
+			super.update(forceRedraw);
+		}
+		
 		protected function updateTextFlow():void {
 			if (!_textFlow)
 				return;
-
-			controller = new ContainerController(this, 200, 200);
+			
+			controller = new ContainerController(this, 200, NaN);
 			_textFlow.flowComposer.addController(controller);
 			_textFlow.flowComposer.updateAllControllers();
-			needsRedraw();
+			
 		}
 	}
 }

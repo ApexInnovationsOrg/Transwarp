@@ -60,15 +60,14 @@ package ui.tooltip
 			dirty = true;
 		}
 		
-	
-		public function needsRedraw():void {
+		public function needsRedraw(e:Event = null):void {
 			dirty = true;
 			if(stage)
 				update();
 		}
 		
-		public function update(redraw:Boolean = false):void {
-			if (redraw || dirty)
+		public function update(forceRedraw:Boolean = false):void {
+			if (forceRedraw || dirty)
 				draw();
 			handleAttachPoint();
 			checkBounds();
