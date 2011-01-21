@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="46">
+
+	<s:Rect width="100%" height="100%">
+		<s:stroke>
+			<s:SolidColorStroke color="0x333333" />
+		</s:stroke>
+		<s:fill>
+			<s:LinearGradient >
+				<s:GradientEntry color="0x0000aa" ratio="0.7" />
+				<s:GradientEntry color="0x000066" />	
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+</s:Group>
