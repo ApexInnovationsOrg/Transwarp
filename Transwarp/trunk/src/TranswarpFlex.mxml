@@ -25,7 +25,7 @@
 					tip = new TextFlowTooltip(this);
 				//tip.anchorObject = DisplayObject(e.target);
 				
-				tip.setText(<div><img src="globe.png"/> woah embedded image<ol><li>hi</li></ol><p>oh hi there</p></div>);
+				tip.setText(<div><img src="../artwork/globe.png"/> woah embedded image<ol><li>hi</li></ol><p>oh hi there</p></div>);
 				tip.show();
 			}
 			
