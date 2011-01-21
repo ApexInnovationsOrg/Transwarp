@@ -3,16 +3,27 @@ package ui {
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.filters.DropShadowFilter;
 
-	public class DialogBase extends Sprite{
+	public class DialogBase extends Component{
 		protected var tween:TweenLite;
-
-		public var animationDuration:Number = 0.20;
-		//public var draggable:Boolean = false;
 		
+		protected var _maxWidth:Number;
+		protected var _maxHeight:Number;
+		
+		protected var _minWidth:Number;
+		protected var _minHeight:Number;
+		
+		protected var _draggable:Boolean = false;
+		
+		protected var _shadow:Boolean;
+		
+		public var animationDuration:Number = 0.20;
+	
 		public function DialogBase() {
 			super();
 			visible = false;
+			shadow = true;
 		}
 
 		public function open(e:Event = null):void {
@@ -50,6 +61,14 @@ package ui {
 			x -= width * 0.15;
 			y -= height * 0.15;
 			visible = false;
+		}
+		
+		public function get shadow():Boolean { return _shadow; }
+		public function set shadow(value:Boolean):void {
+			if(_shadow = value)
+				filters = [new DropShadowFilter(4, 45, 0, 1, 4, 4, 0.3)];
+			else
+				filters = [];		
 		}
 	}
 }
