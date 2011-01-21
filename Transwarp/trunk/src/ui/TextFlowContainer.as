@@ -12,9 +12,13 @@ package ui {
 	import flashx.textLayout.events.StatusChangeEvent;
 	import flashx.textLayout.events.UpdateCompleteEvent;
 	
-	public class TextFlowContainer extends Sprite{
+	import util.HtmlPreprocessor;
+	
+	public class TextFlowContainer extends Component{
 
 		public static const TEXT_FLOW_CONTAINER_UPDATE:String = "textflowcontainerupdate";
+		
+		protected var oldmarkup:XML;
 		
 		protected var _textFlow:TextFlow;
 		protected var controller:ContainerController;
@@ -39,13 +43,7 @@ package ui {
 		public function TextFlowContainer(text:Object = null) {
 			super();
 
-			if (text is String)
-				importMarkup(new XML(text));
-			else if (text is XML)
-				importMarkup(XML(text));
-			else if (text is TextFlow)
-				_textFlow = TextFlow(text);
-
+			setText(text);
 			updateController();
 		}
 
@@ -53,9 +51,9 @@ package ui {
 			removeOldFlow();
 
 			if (markup is String)
-				importMarkup(new XML(markup));
+				importXML(new XML(markup));
 			else if (markup is XML)
-				importMarkup(XML(markup));
+				importXML(XML(markup));
 			else if (markup is TextFlow)
 				_textFlow = TextFlow(markup);
 			
@@ -66,9 +64,22 @@ package ui {
 			} else
 				return false;
 		}
-
-		protected function importMarkup(markup:XML):void {
+		
+		protected function importXML(markup:XML):void {
+			if(markup.localName() == null)
+				markup = (<div />).appendChild(markup);
+			
+			if(markup == oldmarkup)
+				return;
+			
+			oldmarkup = markup;
+			
 			_textFlow = TextConverter.importToFlow(markup, inferMarkupType(markup));
+			setupListeners();
+		}
+		
+		protected function setupListeners():void {
+			if(!_textFlow) return;
 			_textFlow.addEventListener(StatusChangeEvent.INLINE_GRAPHIC_STATUS_CHANGE, inlineGraphicsUpdate);
 			_textFlow.addEventListener(UpdateCompleteEvent.UPDATE_COMPLETE, broadcastUpdate);
 			_textFlow.addEventListener(CompositionCompleteEvent.COMPOSITION_COMPLETE, broadcastUpdate);
@@ -104,6 +115,7 @@ package ui {
 			controller = new ContainerController(this, _maxWidth, _maxHeight)
 			_textFlow.flowComposer.addController(controller);
 			_textFlow.flowComposer.updateAllControllers();
+			invalidate();
 		}
 
 		protected function removeOldFlow():void {

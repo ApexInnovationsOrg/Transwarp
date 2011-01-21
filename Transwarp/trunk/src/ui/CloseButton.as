@@ -11,6 +11,7 @@ package ui
 		public function CloseButton(parent:DialogBase) {
 			super(new CloseIcon());
 			addEventListener(MouseEvent.CLICK, parent.close);
+			
 		}
 	}
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<actionScriptProperties analytics="false" mainApplicationPath="TranswarpFlex.mxml" projectUUID="86297762-5833-40f0-90a3-f73895f3e5b0" version="7">
+  <compiler additionalCompilerArguments="-locale en_US -keep-generated-actionscript" autoRSLOrdering="true" copyDependentFiles="true" flexSDK="Flex Hero" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="false" verifyDigests="true" warn="true">
+    <compilerSourcePath/>
+    <libraryPath defaultLinkType="3">
+      <libraryPathEntry kind="4" path="">
+        <excludedEntries>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/flex.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry index="2" kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/textLayout.swc" useDefaultLinkType="true">
+            <crossDomainRsls>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="http://fpdownload.adobe.com/pub/swz/crossdomain.xml" rslUrl="http://fpdownload.adobe.com/pub/swz/tlf/2.0.0.139/textLayout_2.0.0.139.swz"/>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="textLayout_2.0.0.139.swz"/>
+            </crossDomainRsls>
+          </libraryPathEntry>
+        </excludedEntries>
+      </libraryPathEntry>
+      <libraryPathEntry kind="3" linkType="1" path="libs/greensock.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="libs/textLayout.swc" useDefaultLinkType="false"/>
+    </libraryPath>
+    <sourceAttachmentPath/>
+  </compiler>
+  <applications>
+    <application path="TranswarpFlex.mxml"/>
+  </applications>
+  <modules/>
+  <buildCSSFiles/>
+  <flashCatalyst validateFlashCatalystCompatibility="false"/>
+</actionScriptProperties>

@@ -13,8 +13,8 @@ package ui {
 		protected var body:TextFlowContainer;
 		protected var dirty:Boolean = false;
 		
-		protected var _maxWidth:Number = 400;
-		protected var _maxHeight:Number = NaN;
+		//protected var _maxWidth:Number = 400;
+		//protected var _maxHeight:Number = NaN;
 		
 		public function get maxWidth():Number { return _maxWidth; }
 		public function get maxHeight():Number { return _maxHeight; }
@@ -27,6 +27,7 @@ package ui {
 		public var closeButton:CloseButton;
 		
 		public function TextFlowDialog(titleMarkup:XML, bodyMarkup:XML) {
+			super();
 			closeButton = new CloseButton(this);
 			addChild(closeButton);
 			
@@ -36,35 +37,27 @@ package ui {
 			addChild(title);
 			addChild(body);
 			
-			draw();
+			title.addEventListener(TextFlowContainer.TEXT_FLOW_CONTAINER_UPDATE, invalidate);
+			body.addEventListener(TextFlowContainer.TEXT_FLOW_CONTAINER_UPDATE, invalidate);
+		}
+		
 			
-			addEventListener(Event.ENTER_FRAME, enterFrame);
-		}
-		
-		public function needsRedraw(e:Event):void {
-			dirty = true;
-		}
-		
-		public function enterFrame(e:Event):void {
-			if(dirty)
-				draw();
-		}
-		
-		public function draw(e:Event = null):void {
-			dirty = false;
-
+		public function positionPieces():void {  //NEEDS RENAME
 			body.y = Math.max(title.height, closeButton.height) + 2;
 			title.x = Math.max(0, (body.width - title.width)/2);
 			title.y = Math.max(0, (closeButton.height - title.height)/2);
 			closeButton.x = Math.max(title.width, body.width) - closeButton.width - 2;
-			
-			var bounds:Rectangle = getBounds(this);
-									
+		}
+		
+		public override function draw():void {
+			positionPieces();			
+			var bounds:Rectangle = getBounds(this);							
 			graphics.clear();
 			graphics.lineStyle(1,0,1,true);
 			graphics.beginFill(0xffffff, .9);
 			graphics.drawRoundRect(bounds.x - 5, bounds.y - 5, bounds.width + 10, bounds.height + 10, 20);
 			graphics.endFill();
+			super.draw();
 		}
 	
 	}

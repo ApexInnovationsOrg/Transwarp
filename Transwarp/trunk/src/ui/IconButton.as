@@ -1,36 +1,42 @@
 package ui {
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.BlendMode;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	import flash.display.Shape;
-	import flash.display.SimpleButton;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.filters.BitmapFilter;
 	import flash.filters.ColorMatrixFilter;
-	import flash.filters.DisplacementMapFilter;
-
+	import flash.geom.Rectangle;
+	
+	import spark.core.SpriteVisualElement;
+	import spark.primitives.Rect;
+	
 	import ui.tooltip.TooltipAttachPoint;
 
-	public class IconButton extends Sprite {
+	public class IconButton extends SpriteVisualElement {
 		private var _art:DisplayObject;
 		private var down:Boolean;
-		private var _highlightAlpha:Number = 0.3
+		private var _highlightIntensity:Number = 0.3
 
 		private var filterList:Array;
 
+		public function set artClass(value:Class):void { art = new value(); }
+		
 		public function get art():DisplayObject { return _art; }
-		public function set art(value:DisplayObject):void {	removeChild(_art); addChild(_art=value); }
+		public function set art(value:DisplayObject):void {
+			if(_art)
+				removeChild(_art);
+			addChild(_art=value); 
+			var bounds:Rectangle = getBounds(this);
+			width = bounds.width;
+			height = bounds.height
+		}
 
-		public function get highlightAlpha():Number { return _highlightAlpha; }
-		public function set highlightAlpha(value:Number):void {	_highlightAlpha = value; initFilter(); }
+		public function get highlightIntensity():Number { return _highlightIntensity; }
+		public function set highlightIntensity(value:Number):void {	_highlightIntensity = value; initFilter(); }
 
-		public function IconButton(art:DisplayObject) {
-			_art = art;
-			addChild(_art);
+		public function IconButton(art:DisplayObject = null) {
+			if(art) 
+				this.art = art;			
 			
 			buttonMode = true;
 
@@ -48,7 +54,7 @@ package ui {
 		}
 
 		private function initFilter():void {
-			var a:Number = _highlightAlpha + 1;
+			var a:Number = _highlightIntensity + 1;
 			var matrix:Array = [
 				a, 0, 0, 0, 0,
 				0, a, 0, 0, 0,
@@ -66,14 +72,15 @@ package ui {
 		}
 
 		private function mouseUp(e:Event):void {
-			if (down)
-				x -= 2, y -= 2;
+			if (down && _art)
+				_art.x -= 2, _art.y -= 2;
 			down = false;
 		}
 
 		private function mouseDown(e:Event):void {
 			down = true;
-			x += 2, y += 2;
+			if(_art)
+				_art.x += 2, _art.y += 2;
 		}
 
 	}
