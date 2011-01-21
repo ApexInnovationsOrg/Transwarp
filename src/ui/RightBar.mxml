@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="40" height="100%">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+
+	<s:Rect width="100%" height="100%">
+		<s:fill>
+			<s:LinearGradient>
+				<s:GradientEntry color="0xd9d9d9" ratio=".4"/>
+				<s:GradientEntry color="0xbfbfbf" />
+			</s:LinearGradient>
+		</s:fill>
+		<s:stroke>
+			<s:SolidColorStroke color="0x333333"/>
+		</s:stroke>
+	</s:Rect>
+	
+</s:Group>
