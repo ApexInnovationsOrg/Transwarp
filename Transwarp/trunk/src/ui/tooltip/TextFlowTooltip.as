@@ -7,7 +7,7 @@ package ui.tooltip
 	{
 		protected var textFlow:TextFlowContainer;		
 		
-		public function TextFlowTooltip(container:DisplayObjectContainer, text:XML = null, attachPoint:String = "topright", offsetX:Number = 0, offsetY:Number = 0) {
+		public function TextFlowTooltip(container:DisplayObjectContainer=null, text:XML = null, attachPoint:String = "topright", offsetX:Number = 0, offsetY:Number = 0) {
 			super(container, attachPoint, offsetX, offsetY);
 			textFlow = new TextFlowContainer(text);
 			addChild(textFlow);

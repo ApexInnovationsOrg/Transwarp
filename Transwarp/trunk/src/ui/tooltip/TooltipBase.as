@@ -28,6 +28,8 @@ package ui.tooltip
 	
 	public class TooltipBase extends Component
 	{
+		public static var defaultContainer:DisplayObjectContainer;
+		
 		protected var container:DisplayObjectContainer
 		protected var tween:TweenLite;
 		protected var lastShow:Number = -1;
@@ -56,10 +58,14 @@ package ui.tooltip
 
 		public function setOffset(x:Number, y:Number):void {ox=x, oy=y; update(); }
 		
-		public function TooltipBase(container:DisplayObjectContainer, attachPoint:String = "topright", offsetX:Number = 0, offsetY:Number = 0) {
+		public function TooltipBase(container:DisplayObjectContainer=null, attachPoint:String="topright", offsetX:Number=0, offsetY:Number=0) {
 			super();
-
-			this.container = container;
+			
+			this.container = container != null ? container : defaultContainer;
+			
+			if(this.container == null)
+				throw new ArgumentError("A default container (TooltipBase.defaultContainer) must be specified if one is not provided to the constructor");
+			
 			mouseEnabled = false;
 			ox = offsetX, oy = offsetY;
 			_attachPoint = attachPoint;

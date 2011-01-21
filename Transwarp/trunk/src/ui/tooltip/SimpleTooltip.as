@@ -15,7 +15,7 @@ package ui.tooltip {
 		public function get textFormat():TextFormat { return tf.defaultTextFormat; }
 		public function set textFormat(value:TextFormat):void { tf.defaultTextFormat = value; invalidate();}
 		
-		public function SimpleTooltip(container:DisplayObjectContainer, text:String = "", attachPoint:String = "topright", offsetX:Number = 0, offsetY:Number = 0) {
+		public function SimpleTooltip(container:DisplayObjectContainer=null, text:String = "", attachPoint:String = "topright", offsetX:Number = 0, offsetY:Number = 0) {
 			super(container, attachPoint, offsetX, offsetY);
 			
 			tf = new TextField();

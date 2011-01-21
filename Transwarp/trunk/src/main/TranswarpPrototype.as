@@ -6,15 +6,24 @@ package main
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	
+	import mx.events.FlexEvent;
+	import mx.managers.SystemManager;
+	
 	import spark.components.Application;
 	
+	import ui.tooltip.TooltipBase;
+	
 	[Frame(factoryClass="main.CustomManager")]
-	public class TranswarpPrototype extends Application
-	{
+	public class TranswarpPrototype extends Application {
 		
 		public function TranswarpPrototype() {
-			super();			
+			super();
+
+			addEventListener(FlexEvent.CREATION_COMPLETE, creationComplete);
 		}
-	}
-	
+		
+		protected function creationComplete(e:Event):void {
+			TooltipBase.defaultContainer = SystemManager(this.systemManager);
+		}
+	}	
 }
