@@ -3,8 +3,8 @@
 						 xmlns:s="library://ns.adobe.com/flex/spark"
 						 xmlns:mx="library://ns.adobe.com/flex/mx"
 						 xmlns:main="main.*"
-						 xmlns:ui="com.apexinnovations.ui.*"
-						 width="1020" height="715" frameRate="30" xmlns:application="com.apexinnovations.application.*">
+						 xmlns:ui="com.apexinnovations.transwarp.ui.*"
+						 width="1020" height="715" frameRate="30" xmlns:application="com.apexinnovations.transwarp.application.*">
 
 	<!--<main:layout>
 		<s:BasicLayout />
@@ -12,8 +12,8 @@
 	!-->
 	<fx:Script>
 		<![CDATA[
-			import com.apexinnovations.ui.tooltip.SimpleTooltip;
-			import com.apexinnovations.ui.tooltip.TextFlowTooltip;
+			import com.apexinnovations.transwarp.ui.tooltip.SimpleTooltip;
+			import com.apexinnovations.transwarp.ui.tooltip.TextFlowTooltip;
 			import mx.managers.SystemManager;
 			
 			private var tip:TextFlowTooltip;

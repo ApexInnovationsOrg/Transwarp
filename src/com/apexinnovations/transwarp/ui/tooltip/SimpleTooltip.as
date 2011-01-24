@@ -1,4 +1,4 @@
-package com.apexinnovations.ui.tooltip {
+package com.apexinnovations.transwarp.ui.tooltip {
 	import flash.display.DisplayObjectContainer;
 	import flash.filters.DropShadowFilter;
 	import flash.text.TextField;
