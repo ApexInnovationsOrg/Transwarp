@@ -1,4 +1,4 @@
-package ui.tooltip
+package com.apexinnovations.ui.tooltip
 {
 	public class TooltipAttachPoint
 	{

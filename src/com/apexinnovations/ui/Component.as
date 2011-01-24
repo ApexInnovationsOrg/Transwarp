@@ -1,4 +1,4 @@
-package ui {
+package com.apexinnovations.ui {
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;

@@ -1,4 +1,4 @@
-package ui.tooltip
+package com.apexinnovations.ui.tooltip
 {
 	import com.greensock.TweenLite;
 	
@@ -24,7 +24,7 @@ package ui.tooltip
 	
 	import spark.core.SpriteVisualElement;
 	
-	import ui.Component;
+	import com.apexinnovations.ui.Component;
 	
 	public class TooltipBase extends Component
 	{

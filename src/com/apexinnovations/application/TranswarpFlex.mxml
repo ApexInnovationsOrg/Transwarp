@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<main:TranswarpPrototype xmlns:fx="http://ns.adobe.com/mxml/2009"
+<application:TranswarpPrototype xmlns:fx="http://ns.adobe.com/mxml/2009"
 						 xmlns:s="library://ns.adobe.com/flex/spark"
 						 xmlns:mx="library://ns.adobe.com/flex/mx"
 						 xmlns:main="main.*"
-						 xmlns:ui="ui.*"
-						 width="1020" height="715" frameRate="30">
+						 xmlns:ui="com.apexinnovations.ui.*"
+						 width="1020" height="715" frameRate="30" xmlns:application="com.apexinnovations.application.*">
 
-	<main:layout>
+	<!--<main:layout>
 		<s:BasicLayout />
 	</main:layout>
-	
+	!-->
 	<fx:Script>
 		<![CDATA[
-			import ui.tooltip.SimpleTooltip;
-			import ui.tooltip.TextFlowTooltip;
+			import com.apexinnovations.ui.tooltip.SimpleTooltip;
+			import com.apexinnovations.ui.tooltip.TextFlowTooltip;
+			import mx.managers.SystemManager;
 			
 			private var tip:TextFlowTooltip;
 			
@@ -21,10 +22,11 @@
 			private var p:int = 0;
 			
 			public function showTip(e:Event):void {
-				if(!tip)
-					tip = new TextFlowTooltip(this);
+				if(!tip) {
+					tip = new TextFlowTooltip();
+					tip.paddingX = tip.paddingY = 5;
+				}
 				//tip.anchorObject = DisplayObject(e.target);
-				
 				tip.setText(<div><img src="../artwork/globe.png"/> woah embedded image<ol><li>hi</li></ol><p>oh hi there</p></div>);
 				tip.show();
 			}
@@ -41,4 +43,4 @@
 	
 	<s:Button name="Test Button" top="350" right="500" label="test" rollOver="showTip(event)" rollOut="hideTip()" click="tip.attachPoint = points[++p % points.length]; tip.update();"/>
 	
-</main:TranswarpPrototype>
+</application:TranswarpPrototype>

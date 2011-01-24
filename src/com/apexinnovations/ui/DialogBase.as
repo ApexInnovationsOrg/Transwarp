@@ -1,4 +1,4 @@
-package ui {
+package com.apexinnovations.ui {
 	import com.greensock.TweenLite;
 	
 	import flash.display.Sprite;
