@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="com/apexinnovations/transwarp/TranswarpFlex.mxml" projectUUID="86297762-5833-40f0-90a3-f73895f3e5b0" version="7">
+<actionScriptProperties analytics="false" mainApplicationPath="com/apexinnovations/transwarp/application/TranswarpFlex.mxml" projectUUID="86297762-5833-40f0-90a3-f73895f3e5b0" version="7">
   <compiler additionalCompilerArguments="-locale en_US -keep-generated-actionscript" autoRSLOrdering="true" copyDependentFiles="true" flexSDK="Flex Hero" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="false" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="3">
@@ -20,7 +20,6 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="com/apexinnovations/transwarp/application/TranswarpPrototype.as"/>
     <application path="com/apexinnovations/transwarp/application/TranswarpFlex.mxml"/>
   </applications>
   <modules/>

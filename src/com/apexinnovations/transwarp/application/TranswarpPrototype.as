@@ -13,7 +13,7 @@ package com.apexinnovations.transwarp.application
 	
 	import com.apexinnovations.transwarp.ui.tooltip.TooltipBase;
 	
-	[Frame(factoryClass="com.apexinnovations.transwarp.application.CustomManager")]
+	[Frame(factoryClass="com.apexinnovations.transwarp.application.CustomSystemManager")]
 	public class TranswarpPrototype extends Application {
 		
 		public function TranswarpPrototype() {
