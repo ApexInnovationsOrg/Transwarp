@@ -1,4 +1,6 @@
 package com.apexinnovations.transwarp.application {
+	import com.apexinnovations.transwarp.application.events.CustomSystemManagerEvent;
+	
 	import flash.events.Event;
 	
 	import flashx.textLayout.container.TextContainerManager;
@@ -8,10 +10,11 @@ package com.apexinnovations.transwarp.application {
 	
 	use namespace mx_internal;
 	
-	public class CustomManager extends SystemManager {
+	[Event(name="frameSuspended", type="com.apexinnovations.transwarp.application.events.CustomSystemManagerEvent")]
+	public class CustomSystemManager extends SystemManager {
 		protected var _resumable:Boolean = false;
 		
-		public function CustomManager()	{
+		public function CustomSystemManager()	{
 			var c:Class = TextContainerManager;
 			super();
 		}
@@ -23,7 +26,7 @@ package com.apexinnovations.transwarp.application {
 		
 		override mx_internal function preloader_completeHandler(event:Event):void {
 			preloader.removeEventListener(Event.COMPLETE, preloader_completeHandler);
-			//preloader.dispatchEvent(new CustomSystemManagerEvent(this))
+			preloader.dispatchEvent(new CustomSystemManagerEvent(this))
 		}
 		
 		
