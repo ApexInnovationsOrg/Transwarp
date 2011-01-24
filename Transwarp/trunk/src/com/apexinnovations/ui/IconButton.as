@@ -1,4 +1,4 @@
-package ui {
+package com.apexinnovations.ui {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
@@ -10,7 +10,7 @@ package ui {
 	import spark.core.SpriteVisualElement;
 	import spark.primitives.Rect;
 	
-	import ui.tooltip.TooltipAttachPoint;
+	import com.apexinnovations.ui.tooltip.TooltipAttachPoint;
 
 	public class IconButton extends SpriteVisualElement {
 		private var _art:DisplayObject;

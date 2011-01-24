@@ -1,7 +1,7 @@
-package ui.tooltip
+package com.apexinnovations.ui.tooltip
 {
 	import flash.display.DisplayObjectContainer;	
-	import ui.TextFlowContainer;
+	import com.apexinnovations.ui.TextFlowContainer;
 	
 	public class TextFlowTooltip extends TooltipBase
 	{

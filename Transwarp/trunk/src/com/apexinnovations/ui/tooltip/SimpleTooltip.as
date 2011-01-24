@@ -1,4 +1,4 @@
-package ui.tooltip {
+package com.apexinnovations.ui.tooltip {
 	import flash.display.DisplayObjectContainer;
 	import flash.filters.DropShadowFilter;
 	import flash.text.TextField;

@@ -1,4 +1,4 @@
-package ui {
+package com.apexinnovations.ui {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
@@ -12,7 +12,6 @@ package ui {
 	import flashx.textLayout.events.StatusChangeEvent;
 	import flashx.textLayout.events.UpdateCompleteEvent;
 	
-	import util.HtmlPreprocessor;
 	
 	public class TextFlowContainer extends Component{
 

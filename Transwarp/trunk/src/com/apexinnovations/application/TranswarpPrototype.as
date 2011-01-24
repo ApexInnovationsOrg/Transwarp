@@ -1,4 +1,4 @@
-package main
+package com.apexinnovations.application
 {	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -11,9 +11,9 @@ package main
 	
 	import spark.components.Application;
 	
-	import ui.tooltip.TooltipBase;
+	import com.apexinnovations.ui.tooltip.TooltipBase;
 	
-	[Frame(factoryClass="main.CustomManager")]
+	[Frame(factoryClass="com.apexinnovations.application.CustomManager")]
 	public class TranswarpPrototype extends Application {
 		
 		public function TranswarpPrototype() {
