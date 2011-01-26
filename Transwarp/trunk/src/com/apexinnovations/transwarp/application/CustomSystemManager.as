@@ -1,4 +1,7 @@
 package com.apexinnovations.transwarp.application {
+	import br.com.stimuli.loading.BulkLoader;
+	
+	import com.apexinnovations.transwarp.application.assets.AssetLoader;
 	import com.apexinnovations.transwarp.application.events.CustomSystemManagerEvent;
 	
 	import flash.events.Event;
@@ -14,6 +17,8 @@ package com.apexinnovations.transwarp.application {
 	public class CustomSystemManager extends SystemManager {
 		protected var _resumable:Boolean = false;
 		
+		protected var _xml:XML;
+				
 		public function CustomSystemManager()	{
 			var c:Class = TextContainerManager;
 			super();
@@ -35,6 +40,15 @@ package com.apexinnovations.transwarp.application {
 				_resumable = true;
 				kickOff();
 			}
+		}
+		
+		public function get xml():XML { return _xml;}
+		public function set xml(value:XML):void {
+			_xml = value;
+		}
+		
+		protected function assetsLoaded(e:Event):void {
+			resumeNextFrame();		
 		}
 	}
 }

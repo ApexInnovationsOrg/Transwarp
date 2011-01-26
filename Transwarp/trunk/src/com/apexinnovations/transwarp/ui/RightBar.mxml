@@ -2,13 +2,41 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
-		 width="40" height="100%">
+		 width="40" height="100%" xmlns:ui="com.apexinnovations.transwarp.ui.*" xmlns:tooltip="com.apexinnovations.transwarp.ui.tooltip.*">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.application.CustomSystemManager;
+			import com.apexinnovations.transwarp.application.assets.AssetLoader;
+			import com.apexinnovations.transwarp.ui.tooltip.SimpleTooltip;
+			import com.apexinnovations.transwarp.ui.tooltip.TooltipAttachPoint;
+			
+			protected var tooltip:SimpleTooltip; 
+						
+			protected override function createChildren():void {
+				super.createChildren();
+								
+				tooltip = new SimpleTooltip(this,"", TooltipAttachPoint.LEFT);
+								
+				for(var i:int=0; i < buttonGroup.numElements; ++i) {
+					var b:SidebarIconButton = buttonGroup.getElementAt(i) as SidebarIconButton;
+					b.addEventListener(MouseEvent.ROLL_OVER, rollOver);
+					b.addEventListener(MouseEvent.ROLL_OUT, rollOut);
+				}
+			}
+			
+			protected function rollOver(e:MouseEvent):void {
+				tooltip.text = (e.target as SidebarIconButton).localizedName;
+				tooltip.anchorObject = e.target as DisplayObject;
+				tooltip.delayedShow(0.5);
+			}
+			
+			protected function rollOut(e:MouseEvent):void {
+				tooltip.hide();
+			}
 			
 		]]>
 	</fx:Script>
@@ -24,5 +52,16 @@
 			<s:SolidColorStroke color="0x333333"/>
 		</s:stroke>
 	</s:Rect>
+	
+	<s:VGroup bottom="5" gap="5" id="buttonGroup" horizontalAlign="center" width="100%">
+		<ui:SidebarIconButton id="toolsButton" artID="hammer" />
+		<ui:SidebarIconButton id="bookmarkButton" artID="star" />
+		<ui:SidebarIconButton id="commentButton" artID="comment" />
+		<ui:SidebarIconButton id="linksButton" artID="globe" />
+		<ui:SidebarIconButton id="transcriptButton" artID="sound" />
+		<ui:SidebarIconButton id="criticalQuestionButton" artID="question2" />
+		<ui:SidebarIconButton id="instructionsButton" artID="information" />
+		
+	</s:VGroup>
 	
 </s:Group>

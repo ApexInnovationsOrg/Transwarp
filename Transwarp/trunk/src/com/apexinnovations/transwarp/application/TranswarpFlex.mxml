@@ -7,41 +7,8 @@
 						 preloader="com.apexinnovations.transwarp.application.preloader.CustomPreloader"
 						 width="1020" height="715" frameRate="30" >
 
-	<!--<main:layout>
-		<s:BasicLayout />
-	</main:layout>
-	!-->
-	<fx:Script>
-		<![CDATA[
-			import com.apexinnovations.transwarp.ui.tooltip.SimpleTooltip;
-			import com.apexinnovations.transwarp.ui.tooltip.TextFlowTooltip;
-			import mx.managers.SystemManager;
-			
-			private var tip:TextFlowTooltip;
-			
-			private var points:Array = ["topright","right","bottomright","bottom","bottomleft","left","topleft","top"];
-			private var p:int = 0;
-			
-			public function showTip(e:Event):void {
-				if(!tip) {
-					tip = new TextFlowTooltip();
-					tip.paddingX = tip.paddingY = 5;
-				}
-				//tip.anchorObject = DisplayObject(e.target);
-				tip.setText(<div><img src="../artwork/globe.png"/> woah embedded image<ol><li>hi</li></ol><p>oh hi there</p></div>);
-				tip.show();
-			}
-			
-			public function hideTip():void {
-				tip.hide();
-			}
-		]]>
-	</fx:Script>
 	
-	
-	<ui:RightBar id="RightBar" right="0"/>
+	<ui:RightBar id="rightBar" right="0"/>
 	<ui:TopBar />
-	
-	<s:Button name="Test Button" top="350" right="500" label="test" rollOver="showTip(event)" rollOut="hideTip()" click="tip.attachPoint = points[++p % points.length]; tip.update();"/>
 	
 </application:TranswarpPrototype>
