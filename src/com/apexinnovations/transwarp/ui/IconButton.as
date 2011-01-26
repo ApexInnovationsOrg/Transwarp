@@ -1,4 +1,7 @@
 package com.apexinnovations.transwarp.ui {
+	import com.apexinnovations.transwarp.application.assets.AssetLoader;
+	import com.apexinnovations.transwarp.ui.tooltip.TooltipAttachPoint;
+	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
@@ -9,15 +12,14 @@ package com.apexinnovations.transwarp.ui {
 	
 	import spark.core.SpriteVisualElement;
 	import spark.primitives.Rect;
-	
-	import com.apexinnovations.transwarp.ui.tooltip.TooltipAttachPoint;
 
 	public class IconButton extends SpriteVisualElement {
-		private var _art:DisplayObject;
-		private var down:Boolean;
-		private var _highlightIntensity:Number = 0.3
+		protected var _art:DisplayObject;
+		
+		protected var down:Boolean;
+		protected var _highlightIntensity:Number = 0.3;
 
-		private var filterList:Array;
+		protected var filterList:Array;
 
 		public function set artClass(value:Class):void { art = new value(); }
 		
@@ -26,9 +28,7 @@ package com.apexinnovations.transwarp.ui {
 			if(_art)
 				removeChild(_art);
 			addChild(_art=value); 
-			var bounds:Rectangle = getBounds(this);
-			width = bounds.width;
-			height = bounds.height
+			invalidateSize();
 		}
 
 		public function get highlightIntensity():Number { return _highlightIntensity; }
@@ -36,7 +36,7 @@ package com.apexinnovations.transwarp.ui {
 
 		public function IconButton(art:DisplayObject = null) {
 			if(art) 
-				this.art = art;			
+				this.art = DisplayObject(art);			
 			
 			buttonMode = true;
 
@@ -51,9 +51,10 @@ package com.apexinnovations.transwarp.ui {
 
 		protected function onAdded(e:Event):void {
 			stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
+			
 		}
 
-		private function initFilter():void {
+		protected function initFilter():void {
 			var a:Number = _highlightIntensity + 1;
 			var matrix:Array = [
 				a, 0, 0, 0, 0,
@@ -64,20 +65,20 @@ package com.apexinnovations.transwarp.ui {
 			filterList = [new ColorMatrixFilter(matrix)];
 		}
 
-		private function roll(e:Event):void {
+		protected function roll(e:Event):void {
 			if (e.type == MouseEvent.ROLL_OVER)
 				filters = filterList;
 			else
 				filters = [];
 		}
 
-		private function mouseUp(e:Event):void {
+		protected function mouseUp(e:Event):void {
 			if (down && _art)
 				_art.x -= 2, _art.y -= 2;
 			down = false;
 		}
 
-		private function mouseDown(e:Event):void {
+		protected function mouseDown(e:Event):void {
 			down = true;
 			if(_art)
 				_art.x += 2, _art.y += 2;

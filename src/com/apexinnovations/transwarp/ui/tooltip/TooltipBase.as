@@ -58,10 +58,10 @@ package com.apexinnovations.transwarp.ui.tooltip
 
 		public function setOffset(x:Number, y:Number):void {ox=x, oy=y; update(); }
 		
-		public function TooltipBase(container:DisplayObjectContainer=null, attachPoint:String="topright", offsetX:Number=0, offsetY:Number=0) {
+		public function TooltipBase(container:DisplayObjectContainer, attachPoint:String="topright", offsetX:Number=0, offsetY:Number=0) {
 			super();
 			
-			this.container = container != null ? container : defaultContainer;
+			this.container = container; //? container : defaultContainer;
 			
 			if(this.container == null)
 				throw new ArgumentError("A default container (TooltipBase.defaultContainer) must be specified if one is not provided to the constructor");
@@ -210,7 +210,7 @@ package com.apexinnovations.transwarp.ui.tooltip
 									
 			var m:Matrix = new Matrix();
 			m.createGradientBox(1, bounds.height, Math.PI / 2, 0, 0);
-			graphics.beginGradientFill(GradientType.LINEAR, [0xffffff, 0xe9e9e9], [.9, .9], [0, 255], m);
+			graphics.beginGradientFill(GradientType.LINEAR, [0xffffff, 0xe9e9e9], [1, 1], [0, 255], m);
 
 			graphics.lineStyle(1, 0x575757, 1, true);
 			
