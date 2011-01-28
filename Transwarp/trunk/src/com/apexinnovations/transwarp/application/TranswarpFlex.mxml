@@ -7,8 +7,28 @@
 						 preloader="com.apexinnovations.transwarp.application.preloader.CustomPreloader"
 						 width="1020" height="715" frameRate="30" >
 
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.XMLListCollection;
+			
+			protected var manager:CustomSystemManager;
+			
+			protected override function createChildren():void {
+				super.createChildren();
+				manager = CustomSystemManager(systemManager);
+				
+				leftBar.productData = manager.xml.product.courses[0];
+			}
+		]]>
+	</fx:Script>	
 	
-	<ui:RightBar id="rightBar" right="0"/>
-	<ui:TopBar />
+	<s:VGroup width="100%" height="100%" gap="-1">
+		<ui:TopBar />
+		<s:Group width="100%" height="100%">
+			<ui:LeftBar id="leftBar" left="0" />
+			<ui:RightBar id="rightBar" right="0" />
+		</s:Group>
+	</s:VGroup>
+	
 	
 </application:TranswarpPrototype>

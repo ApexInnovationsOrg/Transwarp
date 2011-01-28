@@ -22,6 +22,7 @@ package com.apexinnovations.transwarp.application
 		public function TranswarpPrototype() {
 			super();
 			addEventListener(FlexEvent.PREINITIALIZE, preinit);
+			var t:TooltipBase;
 		}
 		
 		protected function preinit(e:Event):void {

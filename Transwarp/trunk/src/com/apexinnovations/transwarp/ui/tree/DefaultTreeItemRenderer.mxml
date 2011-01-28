@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				xmlns:assets="com.apexinnovations.transwarp.application.assets.*"
+				autoDrawBackground="true"
+				dataChange="update()"
+				click="click()">
+	
+	<s:layout>
+		<s:HorizontalLayout verticalAlign="middle" paddingTop="2" paddingBottom="2" paddingLeft="{indentation + 10}"/>
+	</s:layout>
+	
+	<assets:AssetImage assetID="{iconName}" />
+	<s:Label id="labelDisplay" fontWeight="{fontWeight}"/>
+
+	<fx:Script>
+		<![CDATA[
+			import spark.components.List;
+			
+			protected var _indentationGap:Number = 24;
+			
+			protected var isFolder:Boolean;
+			protected var isOpen:Boolean = false;
+						
+			public function get indentationGap():Number { return _indentationGap; }
+			public function set indentaionGap(value:Number):void {
+				_indentationGap = value;
+				update();
+			}
+						
+			[Bindable] protected var iconName:String;
+			[Bindable] protected var indentation:Number = 0;
+			[Bindable] protected var fontWeight:String = "normal";
+			
+			protected function click():void {
+				
+				XML(data).@visited = "true";
+				
+				if(isFolder) {
+					var list:XMLLinearIList = XMLLinearIList(List(owner).dataProvider);
+					if(!isOpen)
+						list.openNode(XML(data));
+					else
+						list.closeNode(XML(data));
+				}
+				
+				update();
+			}
+			
+			
+			protected function update():void {
+				var xml:XML = XML(data);
+				var list:XMLLinearIList = XMLLinearIList(List(owner).dataProvider);
+				
+				isOpen = list.openNodes.indexOf(xml) != -1; 
+				isFolder = xml.children().length() > 0;
+				fontWeight = xml.@visited == "true" ? "normal" : "bold";
+				indentation = (list.getDepth(xml) - 1) * _indentationGap;
+				iconName = isFolder ? "folder" : xml.hasOwnProperty("@bookmarked") ? "starsmall" : "page";
+			}
+		]]>
+	</fx:Script>
+	
+	
+	
+</s:ItemRenderer>
