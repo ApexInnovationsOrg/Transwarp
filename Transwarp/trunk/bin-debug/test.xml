@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<apexCourseware xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.apexsandbox.com/Classroom/engine/xsd/ApexCourseware.xsd" owner="Apex Innovations, LLC" copyright="Copyright (c) 2011 Apex Innovations, LLC. All rights reserved. Any unauthorized reproduction, duplication or transmission by any means, is prohibited." website="http://www.apexsandbox.com" rootFolder="/Classroom/repository"> 
+	<user id="56" name="Marianne Bourgeois" locale="en-us" lastAccess="2011-01-18T15:28:19" class="Nurse Beta" startPage="3"> 
+		<configuration> 
+			<autoHideNavigation>1</autoHideNavigation> 
+			<autoShowInstructions>1</autoShowInstructions> 
+			<animatePageTransitions>1</animatePageTransitions> 
+			<closedCaptioning></closedCaptioning> 
+		</configuration> 
+	</user> 
+	<product id="1" name="imPULSE" logo="images/imPULSE_logo.png">
+		<colors>
+			<color name="headerRightBackground" value="#2645FE"/>
+			<color name="navTabBackground" value="#2645FE"/>
+			<color name="headerLeftBackground" value="#2645FE"/>
+			<color name="pageBackground" value="#2645FE"/>
+		</colors>
+		<tools>
+			<tool id="calipers" name="ECG Measurement Calipers" url="tools/calipers.swf" icon="caliper">
+				<tooltip>This tool does something cool</tooltip>
+			</tool>
+			<tool id="obesity" name="U.S. Obesity Map" url="tools/obesity_map.swf" icon="icons/map32x32.png">
+				<tooltip>This tool does something cool</tooltip>
+			</tool>
+			<tool id="bmi" name="Body Mass Index Calculator" url="tools/bmi_calc.swf" icon="icons/bmi32x32.png">
+				<tooltip>This tool does something cool</tooltip>
+			</tool>
+		</tools>
+		<icons>
+			<icon id="help" name="Help" url="../artwork/help.png"/>
+			<icon id="close" name="Close" url="../artwork/close.png"/>
+			<icon id="star" name="Bookmarks" url="../artwork/star.png" />
+			<icon id="hammer" name="Tools" url="../artwork/hammer.png" />
+			<icon id="comment" name="Comment on this page" url="../artwork/comment.png" />
+			<icon id="globe" name="Related Links" url="../artwork/globe.png" highlightIntensity="0.25"/>
+			<icon id="gear" name="Options" url="../artwork/gear.png" />
+			<icon id="sound" name="Transcript" url="../artwork/sound.png" />
+			<icon id="information" name="Instructions" url="../artwork/information.png" />
+			<icon id="question2" name="Critical Question" url="../artwork/question2.png" />
+			<icon id="starsmall" url="../artwork/star24x24.png" />
+			<icon id="folder" url="../artwork/folder.png" />
+			<icon id="page" url="../artwork/page.png" />
+			<!--<icon name="caliper" url="../artwork/caliper32x32.png" />-->
+		</icons>
+		<videos>
+			<video name="Navigating the User Interface" url="help/navigating_ui.swf" icon="help/navigating_ui.png"/>
+			<video name="Taking a Test" url="help/testing.swf" icon="help/testing.png"/>
+		</videos> 
+		<courses>
+			<course id="1" level="1" name="Basic ECG" >
+				<page id="1" name="Course Overview" allow="LMS Beta" demo="true" deny="*">
+					<instructions>
+						<p>Be sure to read the instructions and text boxes on each page and click or hover on all buttons.</p>
+						<p>To begin a different level or course, select from the navigation console menu a the top of your page.</p>
+						<p>To locate a specific topic in a course, choose from the submenu on the left side of your screen.</p>
+					</instructions>
+					<keywords>introduction welcome basic ecg</keywords>
+				</page> 
+				<page id="2" name="Course Objectives">
+					<keywords>objectives basic ecg</keywords>
+					<toolInstances>
+						<toolInstance id="calipers" config="scale=1.432" />
+					</toolInstances>
+					<transcript>
+						<p>At the completion of Level I - Basic ECG - the learner will:</p>
+						<ol>
+							<li>Identify heart anatomy, muscle, chambers and vessels.</li>
+							<li>Describe heart physiology, including conduction pathways.</li>
+							<li>Differentiate waveform basics and their relationship to anatomy and physiology.</li>
+							<li>Demonstrate paper basics and heart rate determination.</li>
+						</ol>
+					</transcript>
+				</page> 
+				<folder name="Anatomy &amp; Physiology">
+					<page id="3" name="Introduction" timeline="true" updated="2010-05-04T08:58:17">
+						<keywords>anatomy physiology beat beats conception organ embryo heart bpm</keywords>
+						<toolInstances>
+							<toolInstance id="bmi" />
+						</toolInstances>
+						<transcript>
+							<p>The human heart... priceless. It begins to beat around the 22nd day after <a href="www.foo.com" target="_self">conception</a> and is the first organ to form in the developing embryo. As an adult, the heart beats an average of:</p>
+							<ul>
+								<li>70 Beats per minute</li>
+								<li>4,300 Beats per hour</li>
+								<li>100,000 Beats per day, and</li>
+								<li>36,500,000 Beats per year</li>
+							</ul>
+							<p>This unbelievable organ will beat without stopping, each and every day of your life without a break or a day off, <br/>3 billion times during an average life span of 80 years.</p>
+						</transcript>
+					</page> 
+					<page id="4" name="Heart Location">
+						<instructions>
+							<p>Click the blue buttons on the left to remove the structures and expose the heart.</p>
+							<p>To start over, click the Refresh button.</p>
+						</instructions>
+						<keywords>anatomy physiology heart location locate skin muscle, ribs trachea lungs</keywords>
+						<transcript title="Heart Location">
+							<p>The heart is located behind the ribs, between the lungs in the middle of the chest, slightly to the left and closer to the front chest wall.</p>
+						</transcript>
+					</page> 
+					<page id="5" name="Virtual Heart" bookmarked="true">
+						<instructions>
+							<p>Click the blue buttons to view the named region of the heart.</p>
+							<p>Hover your mouse over the heart to watch it rotate and beat.</p>
+						</instructions>
+						<keywords>wall lateral inferior posterior septal anterior rotate heart virtual animated area infarction</keywords>
+						<questions>
+							<question text="Which area of the heart most commonly experiences an infarction?" answer="The inferior wall of the heart."/>
+						</questions>
+						<transcript title="Heart Location">
+							<p>The heart is a fist sized, pear-shaped muscle. It weighs from 9 to 11 ounces and pumps about 5 quarts of blood through the body every minute. That's almost 2,000 gallons of blood a day!</p>
+							<p>Identifying the different regions of the heart is important because these locations relate to the 12 lead ECG. In this depiction, each region is colored coded as follows:</p>
+							<ul>
+								<li>Anterior Wall - Green</li>
+								<li>Septal Wall - Gold</li>
+								<li>Lateral Wall - Blue</li>
+								<li>Inferior Wall - Red</li>
+								<li>Posterior Wall - Purple</li>
+							</ul>
+						</transcript>
+					</page> 
+					<page id="6" name="Heart Structures" timeline="true" configuration="foobar.xml" updated="2011-01-20T12:15:37" allow="" deny="EMT LMS" demo="true">
+						<keywords>atria atrium ventricle vessel oxygen vein artery superior vena cava tricuspid valve mitral aorta pulmonary</keywords>
+						<questions>
+							<question text="What two vessels are considered to be the 'great vessels' and why??" answer="The two great vessels are the Aorta and the Pulmonary Artery because they receive blood pumped from the right and left ventricles."/>
+						</questions>
+						<transcript>
+							<ol>
+								<li>A sophisticated network of <font color="#FF0000" size="22" face="Courier New">vessels</font> connects with the heart and lungs so that the entire body can be maintained and sustained with oxygen rich blood.</li>
+								<li>Arteries carry oxygenated blood away from the heart, while veins return unoxygenated blood to the heart.</li>
+								<li>Note that the superior vena cava returns blood from the head and arms while the inferior vena cava returns blood from the trunk and legs.</li>
+								<li>Unoxygenated blood enters the heart filling the right atrium passing through the tricuspid valve into the right ventricle.</li>
+								<li>It is pumped out of the right ventricle through the pulmonary artery and into the lungs where it is re-oxygenated.</li>
+								<li>Next the pulmonary vein receives oxygenated blood and fills the left atrium, passes through the mitral valve into the left ventricle, where it is pumped out to the body through the aorta, the largest artery in the body.</li>
+							</ol>
+						</transcript>
+					</page> 
+					<page id="7" name="Coronary Vessels">
+					</page> 
+					<page id="8" name="Myocardial Muscle">
+					</page> 
+					<page id="9" name="Cardiac Valves">
+					</page> 
+					<page id="10" name="Conduction Pathway">
+					</page> 
+					<page id="11" name="Cardiac Muscle Fibers">
+					</page> 
+					<page id="12" name="Normal Waveform">
+					</page> 
+					<page id="13" name="Automaticity">
+					</page> 
+				</folder>
+				<folder name="Waveform &amp; Paper">
+					<page id="14" name="Basics">
+					</page> 
+					<page id="15" name="Calibration &amp; Lead Names">
+					</page> 
+					<page id="16" name="Deflection">
+					</page> 
+				</folder>
+				<folder name="Build &amp; Measure">
+					<page id="17" name="Building the Waveform">
+					</page> 
+					<page id="18" name="QRS Nomenclature">
+					</page> 
+					<page id="19" name="Counting Methods">
+					</page> 
+				</folder>
+				<page id="20" name="Bibliography">
+					<links>
+						<link name="This is a link" url="http://www.example.com/foo.htm" />
+						<link name="This is another link" url="http://www.anotherexample.com/fubar.htm" />
+					</links>
+				</page> 
+				<page id="21" name="Test Out">
+				</page> 
+			</course> 
+			<course id="2" level="2" name="Obtaining ECGs">
+			</course> 
+		</courses>
+	</product> 
+</apexCourseware> 
