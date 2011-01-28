@@ -42,7 +42,7 @@ package com.apexinnovations.transwarp.application.preloader {
 			var assets:AssetLoader = AssetLoader.instance;
 			
 			for each (var icon:XML in xml.product.icons.children()) {
-				var hi:Number = icon.attribute("highlightIntensity").length() > 0 ? icon.@highlightIntensity : 0.3;
+				var hi:Number = icon.hasOwnProperty("@highlightIntensity") ? icon.@highlightIntensity : 0.3;
 				assets.addIconAsset(icon.@url, icon.@id, icon.@name, hi);
 			}			
 			assets.addEventListener(Event.COMPLETE, assetsLoaded);

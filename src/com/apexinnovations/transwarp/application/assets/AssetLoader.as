@@ -43,7 +43,6 @@ package com.apexinnovations.transwarp.application.assets
 			}
 			
 			dispatchEvent(new Event(Event.COMPLETE));
-			trace(Event.COMPLETE);
 		}
 		
 		public function addIconAsset(url:String, id:String, name:String="", highlightIntensity:Number = 0.3):void {	

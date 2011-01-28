@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" height="100%" xmlns:sparkTree="com.sparkTree.*" xmlns:tree="com.apexinnovations.transwarp.ui.tree.*">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.ui.tree.XMLLinearIList;
+			
+			
+			protected var _productData:XML;
+
+			public function get productData():XML {
+				return _productData;
+			}
+			
+			public function set productData(value:XML):void {
+				value = value.copy(); // Ensure that no changes to the structure propagate up.
+				preProcess(value);				
+				tree.dataProvider = new XMLLinearIList(value, []);
+				_productData = value;
+			}
+
+			protected function preProcess(xml:XML):void {
+				if(xml.localName() == "page")
+					delete xml.*; 				// Trim children of page nodes since they need to be the leaves for this tree.
+				
+				xml.@visited = "false";
+				
+				if(xml.children().length() > 0)
+					for each(var child:XML in xml.children())
+					preProcess(child);
+			}			
+			
+		]]>
+	</fx:Script>
+	
+	<tree:Tree id="tree" height="100%" width="300" top="1" borderVisible="false" />
+	
+</s:Group>
