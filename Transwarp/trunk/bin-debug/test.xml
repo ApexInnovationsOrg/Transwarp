@@ -40,6 +40,7 @@
 			<icon id="starsmall" url="../artwork/star24x24.png" />
 			<icon id="folder" url="../artwork/folder.png" />
 			<icon id="page" url="../artwork/page.png" />
+			<icon id="disclosure" url="../artwork/resultset_next.png" />
 			<!--<icon name="caliper" url="../artwork/caliper32x32.png" />-->
 		</icons>
 		<videos>
@@ -48,7 +49,7 @@
 		</videos> 
 		<courses>
 			<course id="1" level="1" name="Basic ECG" >
-				<page id="1" name="Course Overview" allow="LMS Beta" demo="true" deny="*">
+				<page id="1" name="Course Overview" url="../../configtest.swf" allow="LMS Beta" demo="true" deny="*">
 					<instructions>
 						<p>Be sure to read the instructions and text boxes on each page and click or hover on all buttons.</p>
 						<p>To begin a different level or course, select from the navigation console menu a the top of your page.</p>
@@ -56,7 +57,7 @@
 					</instructions>
 					<keywords>introduction welcome basic ecg</keywords>
 				</page> 
-				<page id="2" name="Course Objectives">
+				<page id="2" name="Course Objectives" url="test2.swf">
 					<keywords>objectives basic ecg</keywords>
 					<toolInstances>
 						<toolInstance id="calipers" config="scale=1.432" />
@@ -72,7 +73,7 @@
 					</transcript>
 				</page> 
 				<folder name="Anatomy &amp; Physiology">
-					<page id="3" name="Introduction" timeline="true" updated="2010-05-04T08:58:17">
+					<page id="3" name="Introduction" timeline="true" url="test3.swf" updated="2010-05-04T08:58:17">
 						<keywords>anatomy physiology beat beats conception organ embryo heart bpm</keywords>
 						<toolInstances>
 							<toolInstance id="bmi" />

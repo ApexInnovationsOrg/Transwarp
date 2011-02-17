@@ -79,9 +79,9 @@ package com.apexinnovations.transwarp.ui {
 		
 		protected function setupListeners():void {
 			if(!_textFlow) return;
-			_textFlow.addEventListener(StatusChangeEvent.INLINE_GRAPHIC_STATUS_CHANGE, inlineGraphicsUpdate);
-			_textFlow.addEventListener(UpdateCompleteEvent.UPDATE_COMPLETE, broadcastUpdate);
-			_textFlow.addEventListener(CompositionCompleteEvent.COMPOSITION_COMPLETE, broadcastUpdate);
+			_textFlow.addEventListener(StatusChangeEvent.INLINE_GRAPHIC_STATUS_CHANGE, inlineGraphicsUpdate, false, 0, true);
+			_textFlow.addEventListener(UpdateCompleteEvent.UPDATE_COMPLETE, broadcastUpdate, false, 0, true);
+			_textFlow.addEventListener(CompositionCompleteEvent.COMPOSITION_COMPLETE, broadcastUpdate, false, 0, true);
 		}
 		
 		protected function broadcastUpdate(e:Event):void {

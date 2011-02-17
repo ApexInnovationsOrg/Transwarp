@@ -8,11 +8,13 @@
 				click="click()">
 	
 	<s:layout>
-		<s:HorizontalLayout verticalAlign="middle" paddingTop="2" paddingBottom="2" paddingLeft="{indentation + 10}"/>
+		<s:HorizontalLayout verticalAlign="middle" paddingTop="2" paddingBottom="2" paddingLeft="{indentation + 10}" paddingRight="20" gap="0"/>
 	</s:layout>
 	
+	<assets:AssetImage assetID="disclosure" id="disclosure"/>
 	<assets:AssetImage assetID="{iconName}" />
-	<s:Label id="labelDisplay" fontWeight="{fontWeight}"/>
+	
+	<s:Label id="labelDisplay" fontWeight="{fontWeight}" paddingLeft="5"/>
 
 	<fx:Script>
 		<![CDATA[
@@ -55,6 +57,10 @@
 				
 				isOpen = list.openNodes.indexOf(xml) != -1; 
 				isFolder = xml.children().length() > 0;
+				
+				disclosure.visible = isFolder;
+				disclosure.rotation = isOpen ? 90 : 0;
+				
 				fontWeight = xml.@visited == "true" ? "normal" : "bold";
 				indentation = (list.getDepth(xml) - 1) * _indentationGap;
 				iconName = isFolder ? "folder" : xml.hasOwnProperty("@bookmarked") ? "starsmall" : "page";
