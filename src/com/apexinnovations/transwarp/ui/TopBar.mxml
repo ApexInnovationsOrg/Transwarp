@@ -14,4 +14,8 @@
 			</s:LinearGradient>
 		</s:fill>
 	</s:Rect>
+	
+	<s:filters>
+		<s:DropShadowFilter alpha="0.5"  angle="90"/>
+	</s:filters>
 </s:Group>

@@ -4,8 +4,8 @@
 		xmlns:mx="library://ns.adobe.com/flex/mx"
 		xmlns:ui="com.apexinnovations.transwarp.ui.*"
 		itemRenderer="com.apexinnovations.transwarp.ui.tree.DefaultTreeItemRenderer"
-		labelField="@name"
-		useVirtualLayout="true" change="onChange()" changing="onChanging(event)">
+		labelField="@name" 
+		useVirtualLayout="true" changing="onChanging(event)">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
@@ -16,14 +16,10 @@
 			
 			protected function onChanging(e:IndexChangeEvent):void {
 				var list:XMLLinearIList = XMLLinearIList(dataProvider);
-				if(XML(list.getItemAt(e.newIndex)).*.length() > 0) 
+				if(XML(list.getItemAt(e.newIndex)).localName() != "page")
 					e.preventDefault();
 			}
-			
-			protected function onChange():void {
-				
-			}
-			
+						
 		]]>
 	</fx:Script>
 </s:List>

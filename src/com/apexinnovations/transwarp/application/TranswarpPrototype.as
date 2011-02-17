@@ -1,17 +1,11 @@
 package com.apexinnovations.transwarp.application
 {	
-	import br.com.stimuli.loading.BulkLoader;
-	
 	import com.apexinnovations.transwarp.ui.tooltip.TooltipBase;
 	
-	import flash.display.Sprite;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
-	import flash.events.MouseEvent;
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
 	
 	import mx.events.FlexEvent;
-	import mx.managers.ISystemManager;
 	import mx.managers.SystemManager;
 	
 	import spark.components.Application;
@@ -22,11 +16,16 @@ package com.apexinnovations.transwarp.application
 		public function TranswarpPrototype() {
 			super();
 			addEventListener(FlexEvent.PREINITIALIZE, preinit);
-			var t:TooltipBase;
+			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 		
 		protected function preinit(e:Event):void {
 			TooltipBase.defaultContainer = SystemManager(this.systemManager);
 		}
+		
+		protected function onAdded(event:Event):void {
+			stage.scaleMode = StageScaleMode.SHOW_ALL;
+		}
+		
 	}	
 }
