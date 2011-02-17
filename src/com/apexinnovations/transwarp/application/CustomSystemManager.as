@@ -1,7 +1,4 @@
 package com.apexinnovations.transwarp.application {
-	import br.com.stimuli.loading.BulkLoader;
-	
-	import com.apexinnovations.transwarp.application.assets.AssetLoader;
 	import com.apexinnovations.transwarp.application.events.CustomSystemManagerEvent;
 	
 	import flash.events.Event;
