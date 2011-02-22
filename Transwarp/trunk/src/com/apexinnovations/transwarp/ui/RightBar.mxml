@@ -63,7 +63,6 @@
 		<ui:SidebarIconButton id="transcriptButton" artID="sound" />
 		<ui:SidebarIconButton id="criticalQuestionButton" artID="question2" />
 		<ui:SidebarIconButton id="instructionsButton" artID="information" />
-		
 	</s:VGroup>
 	
 </s:Group>

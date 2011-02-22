@@ -9,6 +9,11 @@ package com.apexinnovations.transwarp.ui {
 		protected var _artID:String;
 		protected var _asset:IconAsset;
 				
+		override public function set art(value:DisplayObject):void {
+			super.art = value;
+			_art.width = _art.height = 32;			
+		}
+		
 		public function set artID(value:String):void {
 			_artID = value;
 			_asset = AssetLoader.instance.getIconAsset(_artID);

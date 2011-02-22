@@ -24,8 +24,7 @@ package com.apexinnovations.transwarp.application
 		}
 		
 		protected function onAdded(event:Event):void {
-			stage.scaleMode = StageScaleMode.SHOW_ALL;
-		}
-		
+			//stage.scaleMode = StageScaleMode.SHOW_ALL; //Scale whole window instead of flowing to fill the space
+		}		
 	}	
 }

@@ -5,7 +5,7 @@
 						 xmlns:application="com.apexinnovations.transwarp.application.*"
 						 xmlns:ui="com.apexinnovations.transwarp.ui.*"
 						 preloader="com.apexinnovations.transwarp.application.preloader.CustomPreloader"
-						 width="1020" height="715" frameRate="30" >
+						 frameRate="30"  >
 
 	<fx:Script>
 		<![CDATA[
@@ -29,6 +29,8 @@
 				leftBar.productData = manager.xml.product.courses[0];
 
 				container.addEventListener(Event.COMPLETE, loadComplete);
+				
+				container.mask = contentMask;
 			}
 
 			protected function pageSelectionChanged(event:PageSelectionEvent):void {
@@ -40,10 +42,7 @@
 				}
 			}
 
-
 			protected function loadComplete(event:Event):void {
-				
-				
 				var content:DisplayObject = container.content;
 				if(content is IConfigurationAcceptor)
 					IConfigurationAcceptor(content).config = <div>woah, brah</div>;
@@ -54,15 +53,27 @@
 	</fx:Script>	
 	
 	
-	<s:VGroup width="100%" height="100%">
+	<application:layout>
+		<ui:TranswarpLayout />
+	</application:layout>
+	
+	<s:VGroup width="100%" height="100%" gap="0">
 		<ui:TopBar depth="1" />
-		<s:Group width="100%" height="100%" depth="0">
-			<!--<s:SpriteVisualElement id="contentContainer" left="20" width="960" height="672"/>-->
-			<mx:SWFLoader id="container" width="960" height="672" left="20" trustContent="{!DEBUG}"/>
-			<ui:LeftBar id="leftBar" x="0" pageSelectionChanged="pageSelectionChanged(event)"/>
+		<s:Group depth="0" width="100%" height="100%">
+			<mx:SWFLoader id="container" left="20" right="40" bottom="0" top="0" trustContent="{!DEBUG}"/>
+			<ui:LeftBar id="leftBar" x="0" top="5" bottom="5" pageSelectionChanged="pageSelectionChanged(event)"/>
 			<ui:RightBar id="rightBar" right="0" />
+			
+			<s:Group id="contentMask"  top="0" bottom="0" left="19" right="39">
+				<s:Rect height="100%" width="100%">
+					<s:fill>
+						<s:SolidColor color="0x00ffff" alpha="0"/>
+					</s:fill>
+				</s:Rect>
+			</s:Group>
 		</s:Group>
 	</s:VGroup>
-	
+
+
 	
 </application:TranswarpPrototype>
