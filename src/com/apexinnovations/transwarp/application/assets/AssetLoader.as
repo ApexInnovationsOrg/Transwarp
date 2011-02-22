@@ -21,8 +21,7 @@ package com.apexinnovations.transwarp.application.assets
 			if(!_instance)
 				new AssetLoader();
 			return _instance;
-		}
-		
+		}		
 		
 		public function AssetLoader() {
 			if(_instance)
@@ -32,9 +31,13 @@ package com.apexinnovations.transwarp.application.assets
 			
 			loader = new BulkLoader();
 			loader.addEventListener(BulkLoader.COMPLETE, onComplete);
+			loader.logLevel = BulkLoader.LOG_ERRORS;
 			
+			loader.addEventListener(BulkLoader.ERROR, onLoadError);
 			iconAssets = new Dictionary();
 		}
+		
+		
 		
 		protected function onComplete(e:Event):void {
 			for(var i:* in iconAssets){
@@ -57,6 +60,11 @@ package com.apexinnovations.transwarp.application.assets
 		public function getIconAsset(id:String):IconAsset {
 			return IconAsset(iconAssets[id]);
 		}
-			
+		
+		protected function onLoadError(event:Event):void {
+			//TODO: Handle Load Errors
+		}
+		
+		
 	}
 }
