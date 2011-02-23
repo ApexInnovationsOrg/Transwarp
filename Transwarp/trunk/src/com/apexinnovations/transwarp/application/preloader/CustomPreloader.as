@@ -40,7 +40,7 @@ package com.apexinnovations.transwarp.application.preloader {
 			
 			// If we're running locally, supply dummy data
 			if (requestVars.baseURL == 'undefined') {
-				requestVars.data = '1d2755448ffeb751d9379ab13da703aa6f9efd847c0457ecbe22a981463b65931f07c1c834b9501ddedfbc2885422b83';
+				requestVars.data = '1d2755448ffeb751d9379ab13da703aa6f9efd847c0457ecbe22a981463b65931f07c1c834b9501ddedfbc2885422b83';	// userID = courseID = seatID = 0, timestamp = 42
 				requestVars.baseURL = 'http://www.apexsandbox.com';
 			}
 			ApexWebService.baseURL = requestVars.baseURL;
