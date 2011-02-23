@@ -9,6 +9,7 @@
 
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.webservices.ApexWebService;
 			import com.apexinnovations.transwarp.application.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.config.IConfigurationAcceptor;
 			
@@ -34,8 +35,9 @@
 			}
 
 			protected function pageSelectionChanged(event:PageSelectionEvent):void {
-				var page:XML = manager.xml..page.(@id==event.id)[0];
-				var url:String = page.@url;
+				ApexWebService.pageID = uint(event.id);
+				var page:XML = manager.xml.product.courses..page.(@id==event.id)[0];
+				var url:String = ApexWebService.baseURL + manager.xml.@rootFolder + '/PAGE_' + zeroPad(page.@id, 6) + '.swf';
 				if(url) {
 					container.unloadAndStop();
 					container.load(url);
@@ -49,6 +51,11 @@
 				
 			}
 
+			private function zeroPad(number:int, width:int):String {
+				var s:String = '' + number;
+				while(s.length < width) s = '0' + s;
+				return s;
+			}
 		]]>
 	</fx:Script>	
 	
