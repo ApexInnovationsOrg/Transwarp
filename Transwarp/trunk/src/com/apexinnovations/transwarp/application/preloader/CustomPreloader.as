@@ -65,6 +65,7 @@ package com.apexinnovations.transwarp.application.preloader {
 				// Dispatch a log entry
 				log.dispatch(0, 0, 0, xml.text());
 			} else {
+				// Note the user/course/page
 				ApexWebService.userID = xml.user.@id;
 				ApexWebService.pageID = xml.user.@startPage;
 				for each (var course:XML in xml.product.courses.children()) {
@@ -92,7 +93,7 @@ package com.apexinnovations.transwarp.application.preloader {
 					}
 				}
 	
-				
+				// Now load up any required assets
 				var assets:AssetLoader = AssetLoader.instance;
 				
 				for each (var icon:XML in xml.product.images.children()) {
