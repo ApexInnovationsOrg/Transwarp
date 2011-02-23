@@ -16,7 +16,7 @@
 			
 			protected function onChanging(e:IndexChangeEvent):void {
 				var list:XMLLinearIList = XMLLinearIList(dataProvider);
-				if(XML(list.getItemAt(e.newIndex)).localName() != "page")
+				if(XML(list.getItemAt(e.newIndex)).localName() != "page")  //Only pages are selectable.
 					e.preventDefault();
 			}
 						
