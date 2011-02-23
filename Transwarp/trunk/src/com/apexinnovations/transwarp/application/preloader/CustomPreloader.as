@@ -1,4 +1,5 @@
 package com.apexinnovations.transwarp.application.preloader {
+	import com.apexinnovations.transwarp.crypto.ApexWebService;
 	import com.apexinnovations.transwarp.application.CustomSystemManager;
 	import com.apexinnovations.transwarp.application.assets.AssetLoader;
 	import com.apexinnovations.transwarp.application.events.CustomSystemManagerEvent;
@@ -35,6 +36,7 @@ package com.apexinnovations.transwarp.application.preloader {
 
 			requestVars.data = String(paramObj['data']);
 			requestVars.baseURL = String(paramObj['baseURL']);
+			ApexWebService.baseURL = requestVars.baseURL;
 			
 			var req:URLRequest = new URLRequest(requestVars.baseURL + "/Classroom/engine/load.php");
 			req.data = requestVars;
@@ -54,7 +56,6 @@ package com.apexinnovations.transwarp.application.preloader {
 			var assets:AssetLoader = AssetLoader.instance;
 			
 			for each (var icon:XML in xml.product.images.children()) {
-trace(icon.toXMLString());
 				var hi:Number = icon.hasOwnProperty("@highlightIntensity") ? icon.@highlightIntensity : 0.3;
 				assets.addIconAsset(icon.@url, icon.@id, icon.@name, hi);
 			}			
