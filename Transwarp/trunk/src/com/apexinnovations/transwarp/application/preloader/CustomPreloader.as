@@ -1,5 +1,5 @@
 package com.apexinnovations.transwarp.application.preloader {
-	import com.apexinnovations.transwarp.crypto.ApexWebService;
+	import com.apexinnovations.transwarp.webservices.ApexWebService;
 	import com.apexinnovations.transwarp.application.CustomSystemManager;
 	import com.apexinnovations.transwarp.application.assets.AssetLoader;
 	import com.apexinnovations.transwarp.application.events.CustomSystemManagerEvent;
@@ -36,9 +36,15 @@ package com.apexinnovations.transwarp.application.preloader {
 
 			requestVars.data = String(paramObj['data']);
 			requestVars.baseURL = String(paramObj['baseURL']);
+			
+			// If we're running locally, supply dummy data
+			if (requestVars.baseURL == 'undefined') {
+				requestVars.data = '1d2755448ffeb751d9379ab13da703aa6f9efd847c0457ecbe22a981463b65931f07c1c834b9501ddedfbc2885422b83';
+				requestVars.baseURL = 'http://www.apexsandbox.com';
+			}
 			ApexWebService.baseURL = requestVars.baseURL;
 			
-			var req:URLRequest = new URLRequest(requestVars.baseURL + "/Classroom/engine/load.php");
+			var req:URLRequest = new URLRequest(ApexWebService.baseURL + "/Classroom/engine/load.php");
 			req.data = requestVars;
 			req.method = URLRequestMethod.POST;
 			
@@ -53,11 +59,24 @@ package com.apexinnovations.transwarp.application.preloader {
 			_xml = xml;
 			_manager.xml = xml;
 			
+			ApexWebService.userID = xml.user.@id;
+			ApexWebService.pageID = xml.user.@startPage;
+			ApexWebService.courseID = xml.product.courses.course[0].@id;
+			for each (var course:XML in xml.product.courses.children()) {
+				for each (var page:XML in course.children()) {
+					if (ApexWebService.pageID == page.@id) {
+						ApexWebService.courseID = course.@id;
+						break;
+					}
+				}
+				if (ApexWebService.courseID != 0) break;
+			}			
+			
 			var assets:AssetLoader = AssetLoader.instance;
 			
 			for each (var icon:XML in xml.product.images.children()) {
 				var hi:Number = icon.hasOwnProperty("@highlightIntensity") ? icon.@highlightIntensity : 0.3;
-				assets.addIconAsset(icon.@url, icon.@id, icon.@name, hi);
+				assets.addIconAsset(ApexWebService.baseURL + "/Classroom/engine/" + icon.@url, icon.@id, icon.@name, hi);
 			}			
 			assets.addEventListener(Event.COMPLETE, assetsLoaded);
 		}
