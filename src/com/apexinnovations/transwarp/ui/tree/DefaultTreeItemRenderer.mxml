@@ -36,7 +36,6 @@
 			[Bindable] protected var fontWeight:String = "normal";
 			
 			protected function click():void {
-				
 				XML(data).@visited = "true";
 				
 				if(isFolder) {
@@ -54,7 +53,7 @@
 			protected function update():void {
 				var xml:XML = XML(data);
 				var list:XMLLinearIList = XMLLinearIList(List(owner).dataProvider);
-				
+								
 				isOpen = list.openNodes.indexOf(xml) != -1; 
 				isFolder = xml.children().length() > 0;
 				
