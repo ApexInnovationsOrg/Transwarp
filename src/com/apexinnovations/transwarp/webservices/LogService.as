@@ -4,10 +4,11 @@
 */   
 package com.apexinnovations.transwarp.webservices
 {
+	import com.adobe.serialization.json.*;
+	
 	import flash.events.*;
 	import flash.net.*;
 	import flash.utils.Dictionary;
-	import com.adobe.serialization.json.*;
 	
 	public class LogService extends ApexWebService {
 		public function LogService(baseURL:String='') {
@@ -39,8 +40,8 @@ package com.apexinnovations.transwarp.webservices
 		// Dispatch the COMPLETE event
 		protected function jsonLoaded(e:Event):void {
 			var myJSON:Object = JSON.decode(URLLoader(e.target).data);
-			
-			trace(this.getClass() + ': JSON data received [success=' + myJSON.success + (myJSON.insertID ? ', insertID=' + myJSON.insertID : '') + (myJSON.debugInfo ? ', debugInfo=(' + myJSON.debugInfo + ')' : '') + ']');
+
+			trace(this.getClass() + ': JSON data received [success=' + myJSON.success + (myJSON.insertID ? ', insertID=' + myJSON.insertID : '') + (myJSON.debugInfo ? ', debugInfo=(' + myJSON.debugInfo + ')' : '') + ']'); 
 			dispatchEvent(new ApexWebServiceEvent(ApexWebServiceEvent.LOG_COMPLETE, myJSON));
 		}
 		// Dispatch the FAILURE event
