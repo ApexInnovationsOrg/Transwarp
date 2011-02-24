@@ -76,7 +76,7 @@ package com.apexinnovations.transwarp.application.preloader {
 					}
 				}
 	
-				// Mark visited and bookmarked pages
+				// Mark visited, bookmarked, and updated pages
 				var visitedPages:Array = xml.user.visitedPages.text().split(' ');
 				var bookmarkedPages:Array = xml.user.bookmarkedPages.text().split(' ');
 				for each (var page:XML in xml..page) {
