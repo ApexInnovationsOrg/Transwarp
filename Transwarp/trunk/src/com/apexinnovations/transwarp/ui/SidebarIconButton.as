@@ -31,8 +31,6 @@ package com.apexinnovations.transwarp.ui {
 				artID = String(art);
 			else if(art is DisplayObject)
 				this.art = DisplayObject(art);
-		}
-		
-		
+		}		
 	}
 }

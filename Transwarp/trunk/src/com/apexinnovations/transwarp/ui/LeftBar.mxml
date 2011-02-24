@@ -11,9 +11,13 @@
 		<![CDATA[
 			import com.apexinnovations.transwarp.application.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.ui.tree.XMLLinearIList;
+			import com.greensock.TweenLite;
+			import com.greensock.easing.*;
 			
 			protected var _productData:XML;
-
+			protected var _isOpen:Boolean = true;
+			protected var _tween:TweenLite;			
+			
 			public function get productData():XML {
 				return _productData;
 				
@@ -41,19 +45,52 @@
 				var data:XML = XML(tree.selectedItem);
 				dispatchEvent(new PageSelectionEvent(data.@id));
 			}
+						
+			
+			public function collapse():void {
+				if(!_isOpen)
+					return;
+				if(_tween)
+					_tween.kill();
+							
+				_tween = TweenLite.to(this, 0.5, {x: -width+20, ease: Sine.easeIn}); 
+				_isOpen = false;
+			}
+			
+			public function open():void {
+				if(_isOpen)
+					return;
+				if(_tween)
+					_tween.kill();
+				
+				_tween = TweenLite.to(this, 0.5, {x: 0, ease: Sine.easeOut});
+				_isOpen = true;
+			}
+			
+			public function toggleCollapse():void {
+				if(_isOpen)
+					collapse();
+				else
+					open();
+			}
 			
 		]]>
 	</fx:Script>
 	
 	<s:Rect top="0" topRightRadiusX="10" bottomRightRadiusX="10" width="100%" height="100%">
-		<!--<s:stroke>
-			<s:SolidColorStroke color="0x000000" />
-		</s:stroke>-->
 		<s:fill>
 			<s:SolidColor color="0x9999aa"/>
 		</s:fill>
 	</s:Rect>
-		
+	
+	<s:Group width="20" height="100%" right="0" buttonMode="true" click="toggleCollapse()">
+		<s:Rect width="100%" height="100%" topRightRadiusX="10" bottomRightRadiusX="10">
+			<s:fill>
+				<s:SolidColor color="0xff00ff" alpha="0"/>
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+	
 	<tree:Tree id="tree" top="10" bottom="10" right="20" left="5" minWidth="300" change="selectionChange()"/>
 		
 	<s:filters>
