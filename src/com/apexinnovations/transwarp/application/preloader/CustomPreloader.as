@@ -41,6 +41,7 @@ package com.apexinnovations.transwarp.application.preloader {
 			// If we're running locally, supply dummy data
 			if (requestVars.baseURL == 'undefined') {
 				requestVars.data = '1d2755448ffeb751d9379ab13da703aa6f9efd847c0457ecbe22a981463b65931f07c1c834b9501ddedfbc2885422b83';	// userID = courseID = seatID = 0, timestamp = 42
+				requestVars.data = '087cde65e1afb3e743ff05bb1cf95be16af0c3f614117ffb531ce0aa6b73d39201860cc41362c5f9ece1a5392d049d10e054300b9b075578c909a752be2ed35b'; //tmp
 				requestVars.baseURL = 'http://www.apexsandbox.com';
 			}
 			ApexWebService.baseURL = requestVars.baseURL;
@@ -58,41 +59,31 @@ package com.apexinnovations.transwarp.application.preloader {
 			var xml:XML = new XML(loader.data);
 			var log:LogService = new LogService();
 			
-			_xml = xml;
-			_manager.xml = xml;
-			
 			if (xml.localName() == 'error') {
 				// Dispatch a log entry
 				log.dispatch(0, 0, 0, xml.text());
 			} else {
 				// Note the user/course/page
 				ApexWebService.userID = xml.user.@id;
+				ApexWebService.courseID = xml.user.@startCourse;
 				ApexWebService.pageID = xml.user.@startPage;
-				for each (var course:XML in xml.product.courses.children()) {
-					for each (var page:XML in course.children()) {
-						if (ApexWebService.pageID == page.@id) {
-							ApexWebService.courseID = course.@id;
-							break;
-						}
-					}
-					if (ApexWebService.courseID != 0) break;
-				}
 				
 				// Delete file inclusion errors, if any
-				for each (course in xml.product.courses.children()) {
-					if (course.localName() == 'FILE_INCLUSION_ERROR') {
-						log.dispatch(ApexWebService.userID, ApexWebService.courseID, ApexWebService.pageID, "FILE_INCLUSION_ERROR: " + course.text());
-						deleteXMLNode(course);
-					} else {
-						for each (page in course.children()) {
-							if (page.localName() == 'FILE_INCLUSION_ERROR') {
-								log.dispatch(ApexWebService.userID, ApexWebService.courseID, ApexWebService.pageID, "FILE_INCLUSION_ERROR: " + page.text());
-								deleteXMLNode(page);
-							}
-						}
+				for each (var item:XML in xml.product.courses.elements()) {	// courses or pages
+					if (item.localName() == 'FILE_INCLUSION_ERROR') {
+						log.dispatch(ApexWebService.userID, ApexWebService.courseID, ApexWebService.pageID, "FILE_INCLUSION_ERROR: " + item.text());
+						deleteXMLNode(item);
 					}
 				}
 	
+				// Mark visited and bookmarked pages
+				var visitedPages:Array = xml.user.visitedPages.text().split(' ');
+				var bookmarkedPages:Array = xml.user.bookmarkedPages.text().split(' ');
+				for each (var page:XML in xml..page) {
+					page.@visited = (visitedPages.indexOf(String(page.@id)) != -1);
+					page.@bookmarked = (bookmarkedPages.indexOf(String(page.@id)) != -1);
+				}
+				
 				// Now load up any required assets
 				var assets:AssetLoader = AssetLoader.instance;
 				
@@ -102,6 +93,8 @@ package com.apexinnovations.transwarp.application.preloader {
 				}			
 				assets.addEventListener(Event.COMPLETE, assetsLoaded);
 			}
+			_xml = xml;
+			_manager.xml = xml;
 		}
 		
 		//TODO: Handle assets failing to load
