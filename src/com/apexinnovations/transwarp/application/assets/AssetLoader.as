@@ -1,8 +1,10 @@
 package com.apexinnovations.transwarp.application.assets
 {
-	import br.com.stimuli.loading.BulkLoader;
+	import br.com.stimuli.loading.*;
 	
 	import com.apexinnovations.transwarp.application.errors.AssetConflictError;
+	import com.apexinnovations.transwarp.webservices.ApexWebService;
+	import com.apexinnovations.transwarp.webservices.LogService;
 	
 	import flash.display.Bitmap;
 	import flash.errors.IllegalOperationError;
@@ -14,7 +16,6 @@ package com.apexinnovations.transwarp.application.assets
 	public class AssetLoader extends EventDispatcher {
 		protected var loader:BulkLoader;
 		protected var iconAssets:Dictionary;
-		
 		protected static var _instance:AssetLoader;
 		
 		public static function get instance():AssetLoader {
@@ -32,8 +33,9 @@ package com.apexinnovations.transwarp.application.assets
 			loader = new BulkLoader();
 			loader.addEventListener(BulkLoader.COMPLETE, onComplete);
 			loader.logLevel = BulkLoader.LOG_ERRORS;
-			
 			loader.addEventListener(BulkLoader.ERROR, onLoadError);
+			loader.addEventListener(BulkLoader.PROGRESS, onProgress);
+			
 			iconAssets = new Dictionary();
 		}
 		
@@ -62,9 +64,16 @@ package com.apexinnovations.transwarp.application.assets
 		}
 		
 		protected function onLoadError(event:Event):void {
-			//TODO: Handle Load Errors
+			var log:LogService = new LogService();
+			var failedItems:Array = loader.getFailedItems();
+			for (var i:uint = 0; i < failedItems.length; i++) {
+				log.dispatch(ApexWebService.userID, ApexWebService.courseID, ApexWebService.pageID, "Error loading asset: " + failedItems[i].toString());
+			}
+			loader.removeFailedItems();		// Allows complete event to fire
 		}
 		
-		
+		protected function onProgress(event:BulkProgressEvent):void {
+			//TODO: Handle Progress updates
+		}		
 	}
 }
