@@ -9,16 +9,24 @@
 
 	<fx:Script>
 		<![CDATA[
-			import com.apexinnovations.transwarp.webservices.ApexWebService;
 			import com.apexinnovations.transwarp.application.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.config.IConfigurationAcceptor;
+			import com.apexinnovations.transwarp.webservices.*;
+			
+			import flash.events.TimerEvent;
+			import flash.utils.Timer;
 			
 			import flashx.textLayout.elements.IConfiguration;
 			
 			import mx.collections.XMLListCollection;
 			
+			
+			
 			protected var manager:CustomSystemManager;
 			protected var loader:Loader;
+			protected var visitTimer:Timer = new Timer(1000);
+			protected var visit:PageService = new PageService();
+			protected static var visitSession:uint = 0;
 			
 			[Bindable]
 			protected var DEBUG:Boolean = true;
@@ -30,27 +38,79 @@
 				leftBar.productData = manager.xml.product.courses[0];
 
 				container.addEventListener(Event.COMPLETE, loadComplete);
+				container.addEventListener(IOErrorEvent.IO_ERROR, loadError);
 				
 				container.mask = contentMask;
 			}
 
 			protected function pageSelectionChanged(event:PageSelectionEvent):void {
-				ApexWebService.pageID = uint(event.id);
-				var page:XML = manager.xml.product.courses..page.(@id==event.id)[0];
-				var url:String = ApexWebService.baseURL + manager.xml.@rootFolder + '/PAGE_' + zeroPad(page.@id, 6) + '.swf';
-				if(url) {
-					container.unloadAndStop();
-					container.load(url);
+				// stop any old timers
+				visitTimer.stop();
+				
+				// update the current visit
+				if (visitSession > 0) {
+					visit.dispatch(ApexWebService.userID, ApexWebService.courseID, ApexWebService.pageID, visitSession);					
 				}
+				
+				// set the new pageID
+				ApexWebService.pageID = uint(event.id);
+				
+				// stop current page from running and load new page
+				var page:XML = manager.xml.product.courses..page.(@id==event.id)[0];
+				SoundMixer.stopAll();
+				container.unloadAndStop();
+				container.load(getURL(page.@id));
+
+				// Allow 5 seconds to begin saving a new visit
+				visitTimer.delay = 5000;
+				visitTimer.addEventListener(TimerEvent.TIMER, timerHandler);
+				visitTimer.start();
+			}
+			
+			protected function timerHandler(event:TimerEvent):void {
+				// stop the timer
+				visitTimer.stop();
+				
+				if (visitTimer.delay == 5000 || visitSession == 0) {
+					// create new visitSession
+					visitSession = 0;
+					visit.addEventListener(ApexWebServiceEvent.PAGE_COMPLETE, visitSaved);
+					visit.addEventListener(ApexWebServiceEvent.PAGE_FAILURE, visitFailed);
+					visit.dispatch(ApexWebService.userID, ApexWebService.courseID, ApexWebService.pageID);					
+				} else {
+					// update current session
+					visit.dispatch(ApexWebService.userID, ApexWebService.courseID, ApexWebService.pageID, visitSession);					
+				}
+				
+				// restart timer with delay of 1 minute
+				visitTimer.delay = 60000;
+				visitTimer.start();
 			}
 
+			protected function visitSaved(event:ApexWebServiceEvent):void {
+				visitSession = event.data.insertID;
+			}
+			
+			protected function visitFailed(event:ApexWebServiceEvent):void {
+				// TODO: How are we handling this?
+			}
+			
 			protected function loadComplete(event:Event):void {
 				var content:DisplayObject = container.content;
 				if(content is IConfigurationAcceptor)
 					IConfigurationAcceptor(content).config = <div>woah, brah</div>;
 				
 			}
+			
+			protected function loadError(event:Event):void {
+				var log:LogService = new LogService();
+				log.dispatch(ApexWebService.userID, ApexWebService.courseID, ApexWebService.pageID, "Unable to load page content: " + getURL(ApexWebService.pageID));
+			}
 
+			private function getURL(number:int):String {
+				return ApexWebService.baseURL + manager.xml.@rootFolder + '/PAGE_' + zeroPad(number, 6) + '.swf';
+			}
+			
 			private function zeroPad(number:int, width:int):String {
 				var s:String = '' + number;
 				while(s.length < width) s = '0' + s;
