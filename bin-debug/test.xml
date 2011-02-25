@@ -26,23 +26,23 @@
 				<tooltip>This tool does something cool</tooltip>
 			</tool>
 		</tools>
-		<icons>
-			<icon id="help" name="Help" url="../artwork/help.png"/>
-			<icon id="close" name="Close" url="../artwork/close.png"/>
-			<icon id="star" name="Bookmarks" url="../artwork/star.png" />
-			<icon id="hammer" name="Tools" url="../artwork/hammer.png" />
-			<icon id="comment" name="Comment on this page" url="../artwork/comment.png" />
-			<icon id="globe" name="Related Links" url="../artwork/globe.png" highlightIntensity="0.25"/>
-			<icon id="gear" name="Options" url="../artwork/gear.png" />
-			<icon id="sound" name="Transcript" url="../artwork/sound.png" />
-			<icon id="information" name="Instructions" url="../artwork/information.png" />
-			<icon id="question2" name="Critical Question" url="../artwork/question2.png" />
-			<icon id="starsmall" url="../artwork/star24x24.png" />
-			<icon id="folder" url="../artwork/folder.png" />
-			<icon id="page" url="../artwork/page.png" />
-			<icon id="disclosure" url="../artwork/resultset_next.png" />
+		<images>
+			<image id="help" name="Help" url="../artwork/help.png"/>
+			<image id="close" name="Close" url="../artwork/close.png"/>
+			<image id="star" name="Bookmarks" url="../artwork/star.png" />
+			<image id="hammer" name="Tools" url="../artwork/hammer.png" />
+			<image id="comment" name="Comment on this page" url="../artwork/comment.png" />
+			<image id="globe" name="Related Links" url="../artwork/globe.png" highlightIntensity="0.25"/>
+			<image id="gear" name="Options" url="../artwork/gear.png" />
+			<image id="sound" name="Transcript" url="../artwork/sound.png" />
+			<image id="information" name="Instructions" url="../artwork/information.png" />
+			<image id="question2" name="Critical Question" url="../artwork/question2.png" />
+			<image id="starsmall" url="../artwork/star24x24.png" />
+			<image id="folder" url="../artwork/folder.png" />
+			<image id="page" url="../artwork/page.png" />
+			<image id="disclosure" url="../artwork/resultset_next.png" />
 			<!--<icon name="caliper" url="../artwork/caliper32x32.png" />-->
-		</icons>
+		</images>
 		<videos>
 			<video name="Navigating the User Interface" url="help/navigating_ui.swf" icon="help/navigating_ui.png"/>
 			<video name="Taking a Test" url="help/testing.swf" icon="help/testing.png"/>
