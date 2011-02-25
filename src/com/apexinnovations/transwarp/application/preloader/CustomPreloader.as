@@ -97,8 +97,6 @@ package com.apexinnovations.transwarp.application.preloader {
 			_manager.xml = xml;
 		}
 		
-		//TODO: Handle assets failing to load
-				
 		protected function assetsLoaded(e:Event):void {
 			_manager.resumeNextFrame();
 		}

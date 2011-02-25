@@ -1,0 +1,29 @@
+<course id="_FILE_ID_" level="1" name="Basic ECG" >
+	<xi:include href="PAGE_000001"/>
+	<xi:include href="PAGE_000002"/>
+	<folder name="Anatomy &amp; Physiology">
+		<xi:include href="PAGE_000003"/>
+		<xi:include href="PAGE_000004"/>
+		<xi:include href="PAGE_000005"/>
+		<xi:include href="PAGE_000006"/>
+		<xi:include href="PAGE_000007"/>
+		<xi:include href="PAGE_000008"/>
+		<xi:include href="PAGE_000009"/>
+		<xi:include href="PAGE_000010"/>
+		<xi:include href="PAGE_000011"/>
+		<xi:include href="PAGE_000012"/>
+		<xi:include href="PAGE_000013"/>
+	</folder>
+	<folder name="Waveform &amp; Paper">
+		<xi:include href="PAGE_000014"/>
+		<xi:include href="PAGE_000015"/>
+		<xi:include href="PAGE_000016"/>
+	</folder>
+	<folder name="Build &amp; Measure">
+		<xi:include href="PAGE_000017"/>
+		<xi:include href="PAGE_000018"/>
+		<xi:include href="PAGE_000019"/>
+	</folder>
+	<xi:include href="PAGE_000020"/>
+	<xi:include href="PAGE_000021"/>
+</course>
