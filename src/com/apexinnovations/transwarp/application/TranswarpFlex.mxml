@@ -107,7 +107,7 @@
 			}
 
 			private function getURL(number:int):String {
-				return ApexWebService.baseURL + manager.xml.@rootFolder + '/PAGE_' + zeroPad(number, 6) + '.swf';
+				return manager.xml.@rootFolder + '/PAGE_' + zeroPad(number, 6) + '.swf';
 			}
 			
 			private function zeroPad(number:int, width:int):String {
