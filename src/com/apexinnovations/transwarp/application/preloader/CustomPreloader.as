@@ -10,6 +10,7 @@ package com.apexinnovations.transwarp.application.preloader {
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.net.*;
+	import flash.system.Security;
 	
 	import mx.preloaders.SparkDownloadProgressBar;
 
@@ -41,7 +42,7 @@ package com.apexinnovations.transwarp.application.preloader {
 			// If we're running locally, supply dummy data
 			if (requestVars.baseURL == 'undefined') {
 				requestVars.data = '1d2755448ffeb751d9379ab13da703aa6f9efd847c0457ecbe22a981463b65931f07c1c834b9501ddedfbc2885422b83';	// userID = courseID = seatID = 0, timestamp = 42
-				requestVars.data = '087cde65e1afb3e743ff05bb1cf95be16af0c3f614117ffb531ce0aa6b73d39201860cc41362c5f9ece1a5392d049d10e054300b9b075578c909a752be2ed35b'; //tmp
+				requestVars.data = '8998d80e3ea4b7688fb3e724c80a9f8f595fdefe848dda2407dbe3c2a1f7a039e41a2f6dc36ac5ee02c3b1494a236afdcfd51e186a766ab5fa9c202deea38f40'; //tmp
 				requestVars.baseURL = 'http://www.apexsandbox.com';
 			}
 			ApexWebService.baseURL = requestVars.baseURL;
