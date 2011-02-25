@@ -34,8 +34,6 @@
 				if(xml.localName() == "page")
 					delete xml.*;			// Trim children of page nodes since they need to be the leaves for this tree.
 				
-				xml.@visited = "false";
-				
 				if(xml.children().length() > 0)
 					for each(var child:XML in xml.children())
 					preProcess(child);
