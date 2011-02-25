@@ -42,6 +42,7 @@
 			protected function selectionChange():void {
 				var data:XML = XML(tree.selectedItem);
 				dispatchEvent(new PageSelectionEvent(data.@id));
+				collapse();
 			}
 						
 			
