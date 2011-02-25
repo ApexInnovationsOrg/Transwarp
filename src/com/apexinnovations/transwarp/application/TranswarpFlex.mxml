@@ -25,7 +25,7 @@
 			protected var manager:CustomSystemManager;
 			protected var loader:Loader;
 			protected var visitTimer:Timer = new Timer(1000);
-			protected var visit:PageService = new PageService();
+			protected var visit:VisitService = new VisitService();
 			protected static var visitSession:uint = 0;
 			
 			[Bindable]

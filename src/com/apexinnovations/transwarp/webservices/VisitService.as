@@ -1,4 +1,4 @@
-/* LogService - Processes a page request to the Apex Website
+/* LogService - Processes a visit request to the Apex Website
 * 
 * Copyright (c) 2011 Apex Innovations, LLC. All rights reserved. Any unauthorized reproduction, duplication or transmission by any means, is prohibited.
 */   
@@ -9,8 +9,8 @@ package com.apexinnovations.transwarp.webservices
 	import flash.utils.Dictionary;
 	import com.adobe.serialization.json.*;
 	
-	public class PageService extends ApexWebService {
-		public function PageService(baseURL:String='') {
+	public class VisitService extends ApexWebService {
+		public function VisitService(baseURL:String='') {
 			super(baseURL);
 		}
 		
