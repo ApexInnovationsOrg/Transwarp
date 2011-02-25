@@ -88,6 +88,9 @@
 			}
 
 			protected function visitSaved(event:ApexWebServiceEvent):void {
+				if (event.data.insertID) {
+					visitSession = event.data.insertID;
+				}
 			}
 			
 			protected function visitFailed(event:ApexWebServiceEvent):void {
