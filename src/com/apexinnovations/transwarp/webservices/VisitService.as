@@ -23,7 +23,7 @@ package com.apexinnovations.transwarp.webservices
 			if (visitID != 0) arr['visitID'] = visitID;
 			
 			// Package up the URLRequest
-			var req:URLRequest = super.createRequest('page', super.encrypt(arr));
+			var req:URLRequest = super.createRequest('visit', super.encrypt(arr));
 			
 			// Add event listeners for success and failure
 			var loader:URLLoader= new URLLoader();
