@@ -1,0 +1,28 @@
+<page id="_FILE_ID_" name="Virtual Heart" updated="2011-03-01T00:00:00">
+	<instructions>
+		<p>Click the blue buttons to view the named region of the heart.</p>
+		<p>Hover your mouse over the heart to watch it rotate and beat.</p>
+	</instructions>
+	<keywords>wall lateral inferior posterior septal anterior rotate heart virtual animated area infarction</keywords>
+	<questions>
+		<question>
+			<query>
+				<p>Which area of the heart most commonly experiences an infarction?</p>
+			</query>
+			<answer>
+				<p>The inferior wall of the heart.</p>
+			</answer>
+		</question>
+	</questions>
+	<transcript title="Heart Location">
+		<p>The heart is a fist sized, pear-shaped muscle. It weighs from 9 to 11 ounces and pumps about 5 quarts of blood through the body every minute. That's almost 2,000 gallons of blood a day!</p>
+		<p>Identifying the different regions of the heart is important because these locations relate to the 12 lead ECG. In this depiction, each region is colored coded as follows:</p>
+		<ul>
+			<li>Anterior Wall - Green</li>
+			<li>Septal Wall - Gold</li>
+			<li>Lateral Wall - Blue</li>
+			<li>Inferior Wall - Red</li>
+			<li>Posterior Wall - Purple</li>
+		</ul>
+	</transcript>
+</page>
