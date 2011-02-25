@@ -90,7 +90,7 @@ package com.apexinnovations.transwarp.application.preloader {
 				
 				for each (var icon:XML in xml.product.images.children()) {
 					var hi:Number = icon.hasOwnProperty("@highlightIntensity") ? icon.@highlightIntensity : 0.3;
-					assets.addIconAsset(ApexWebService.baseURL + "/Classroom/engine/" + icon.@url, icon.@id, icon.@name, hi);
+					assets.addIconAsset(icon.@url, icon.@id, icon.@name, hi);
 				}			
 				assets.addEventListener(Event.COMPLETE, assetsLoaded);
 			}
