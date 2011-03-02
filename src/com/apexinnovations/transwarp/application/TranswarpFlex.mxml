@@ -48,18 +48,16 @@
 				
 				// update the current visit
 				if (visitSession > 0) {
-					visit.dispatch(ApexWebService.userID, ApexWebService.courseID, ApexWebService.pageID, visitSession);					
+					visit.dispatch(visitSession);					
 				}
 				
 				// set the new pageID
 				ApexWebService.pageID = uint(event.id);
 				
 				// stop current page from running and load new page
-				var page:XML = manager.xml.product.courses..page.(@id==event.id)[0];
-				
 				SoundMixer.stopAll();
 				container.unloadAndStop();
-				container.load(getURL(page.@id));
+				container.load(getURL(ApexWebService.pageID));
 
 				// Allow 5 seconds to begin saving a new visit
 				visitTimer.delay = 5000;
@@ -76,10 +74,10 @@
 					visitSession = 0;
 					visit.addEventListener(ApexWebServiceEvent.PAGE_COMPLETE, visitSaved);
 					visit.addEventListener(ApexWebServiceEvent.PAGE_FAILURE, visitFailed);
-					visit.dispatch(ApexWebService.userID, ApexWebService.courseID, ApexWebService.pageID);					
+					visit.dispatch();					
 				} else {
 					// update current session
-					visit.dispatch(ApexWebService.userID, ApexWebService.courseID, ApexWebService.pageID, visitSession);					
+					visit.dispatch(visitSession);					
 				}
 				
 				// restart timer with delay of 1 minute
@@ -106,7 +104,7 @@
 			
 			protected function loadError(event:Event):void {
 				var log:LogService = new LogService();
-				log.dispatch(ApexWebService.userID, ApexWebService.courseID, ApexWebService.pageID, "Unable to load page content: " + getURL(ApexWebService.pageID));
+				log.dispatch("Unable to load page content: " + getURL(ApexWebService.pageID));
 			}
 
 			private function getURL(number:int):String {
