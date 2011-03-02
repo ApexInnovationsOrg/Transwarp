@@ -53,13 +53,14 @@ package com.apexinnovations.transwarp.ui.tree
         public function openNode(xml:XML):void
         {
             openNodes.push(xml);
-            var arr:Array = [];
+ /*           var arr:Array = [];
             addChildren(xml, arr);
             var i:int = getItemIndex(xml);
             while (arr.length)
             {
                 addItemAt(arr.shift(), ++i);
-            }
+            }*/
+			reset();
         }
 
         public function closeNode(xml:XML):void
