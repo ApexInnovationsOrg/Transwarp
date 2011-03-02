@@ -14,22 +14,41 @@
 			import com.greensock.TweenLite;
 			import com.greensock.easing.*;
 			
+			protected var xmlRoot:XML = new XML();
+			
 			protected var _productData:XML;
 			protected var _isOpen:Boolean = true;
 			protected var _tween:TweenLite;			
 			
 			public function get productData():XML {
 				return _productData;
-				
 			}
 			
 			public function set productData(value:XML):void {
-				value = value.copy(); 		// Ensure that no changes to the structure propagate up.
+				value = value.copy();	// Ensure that no changes to the structure propagate up.
+				
 				preProcess(value);				
 				tree.dataProvider = new XMLLinearIList(value, []);
 				_productData = value;
+			}	
+			
+			public function setSelection(pageID:uint, suppreessChangeEvent:Boolean=false):void {
+				var startPage:XML = _productData..page.(@id==pageID)[0];
+				var node:XML = startPage.parent();
+				if(!node)
+					return;
+				var list:XMLLinearIList = tree.dataProvider as XMLLinearIList;
+				
+				while(node && node != _productData) {
+					list.openNode(node);
+					node = node.parent();
+				}
+								
+				tree.selectedItem = startPage;
+				if(!suppreessChangeEvent)
+					dispatchEvent(new PageSelectionEvent(pageID));
 			}
-
+			
 			protected function preProcess(xml:XML):void {
 				if(xml.localName() == "page")
 					delete xml.*;			// Trim children of page nodes since they need to be the leaves for this tree.
@@ -40,9 +59,9 @@
 			}
 			
 			protected function selectionChange():void {
+				collapse();
 				var data:XML = XML(tree.selectedItem);
 				dispatchEvent(new PageSelectionEvent(data.@id));
-				collapse();
 			}
 						
 			
