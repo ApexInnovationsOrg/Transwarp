@@ -5,10 +5,10 @@ package com.apexinnovations.transwarp.application.events {
 		
 		public static const PAGE_SELECTION_CHANGED:String = "pageSelectionChanged";
 		
-		public var id:String;
+		public var id:uint;
 		
-		public function PageSelectionEvent(id:String, bubbles:Boolean=false, cancelable:Boolean=false) {
-			this.id = id;			
+		public function PageSelectionEvent(id:uint, bubbles:Boolean=false, cancelable:Boolean=false) {
+			this.id = id;
 			super(PAGE_SELECTION_CHANGED, bubbles, cancelable);
 		}
 	}
