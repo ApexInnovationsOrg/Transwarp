@@ -15,11 +15,11 @@ package com.apexinnovations.transwarp.webservices
 		}
 		
 		// The real class-specific work is done here
-		public function dispatch(userID:uint, courseID:uint, pageID:uint, del:Boolean = false):void { 
+		public function dispatch(del:Boolean = false):void { 
 			var arr:Array = new Array();
-			arr['userID'] = userID;
-			arr['courseID'] = courseID;
-			arr['pageID'] = pageID;
+			arr['userID'] = ApexWebService.userID;
+			arr['courseID'] = ApexWebService.courseID;
+			arr['pageID'] = ApexWebService.pageID;
 			if (del) arr['delete'] = del;
 			
 			// Package up the URLRequest

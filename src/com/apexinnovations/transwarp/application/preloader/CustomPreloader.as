@@ -61,7 +61,7 @@ package com.apexinnovations.transwarp.application.preloader {
 			
 			if (xml.localName() == 'error') {
 				// Dispatch a log entry
-				log.dispatch(0, 0, 0, xml.text());
+				log.dispatch(xml.text());
 			} else {
 				// Note the user/course/page
 				ApexWebService.userID = xml.user.@id;
@@ -71,7 +71,7 @@ package com.apexinnovations.transwarp.application.preloader {
 				// Delete file inclusion errors, if any
 				for each (var item:XML in xml.product.courses.elements()) {	// courses or pages
 					if (item.localName() == 'FILE_INCLUSION_ERROR') {
-						log.dispatch(ApexWebService.userID, ApexWebService.courseID, ApexWebService.pageID, "FILE_INCLUSION_ERROR: " + item.text());
+						log.dispatch("FILE_INCLUSION_ERROR: " + item.text());
 						deleteXMLNode(item);
 					}
 				}
