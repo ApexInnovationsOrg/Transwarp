@@ -15,11 +15,11 @@ package com.apexinnovations.transwarp.webservices
 		}
 		
 		// The real class-specific work is done here
-		public function dispatch(userID:uint, courseID:uint, pageID:uint, search:String):void { 
+		public function dispatch(search:String):void { 
 			var arr:Array = new Array();
-			arr['userID'] = userID;
-			arr['courseID'] = courseID;
-			arr['pageID'] = pageID;
+			arr['userID'] = ApexWebService.userID;
+			arr['courseID'] = ApexWebService.courseID;
+			arr['pageID'] = ApexWebService.pageID;
 			arr['search'] = search;
 			
 			// Package up the URLRequest

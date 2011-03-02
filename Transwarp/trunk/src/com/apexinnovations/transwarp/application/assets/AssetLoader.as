@@ -67,7 +67,7 @@ package com.apexinnovations.transwarp.application.assets
 			var log:LogService = new LogService();
 			var failedItems:Array = loader.getFailedItems();
 			for (var i:uint = 0; i < failedItems.length; i++) {
-				log.dispatch(ApexWebService.userID, ApexWebService.courseID, ApexWebService.pageID, "Error loading asset: " + failedItems[i].toString());
+				log.dispatch("Error loading asset: " + failedItems[i].toString());
 			}
 			loader.removeFailedItems();		// Allows complete event to fire
 		}
