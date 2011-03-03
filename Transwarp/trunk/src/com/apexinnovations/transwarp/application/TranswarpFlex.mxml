@@ -182,14 +182,14 @@
 
 				var page:XML = manager.xml.product..page[ApexWebService.pageID - 1];
 				
-				rightBar.updatesButton.enabled = page.updates.length > 0;
-				rightBar.toolsButton.enabled = page.tools.length > 0;
+				rightBar.updatesButton.enabled = page.updates.hasComplexContent();
+				rightBar.toolsButton.enabled = page.tools.hasComplexContent();
 				rightBar.bookmarksButton.enabled = true;
 				rightBar.commentsButton.enabled = true;
-				rightBar.linksButton.enabled = page.links.length > 0;
-				rightBar.transcriptButton.enabled = page.transcript;
-				rightBar.questionsButton.enabled = page.questions.length > 0;
-				rightBar.instructionsButton.enabled = page.transcript;
+				rightBar.linksButton.enabled = page.links.hasComplexContent();
+				rightBar.transcriptButton.enabled = page.transcript.hasComplexContent();
+				rightBar.questionsButton.enabled = page.questions.hasComplexContent();
+				rightBar.instructionsButton.enabled = page.instructions.hasComplexContent();
 			}
 			
 			protected function loadProgress(event:ProgressEvent):void {
