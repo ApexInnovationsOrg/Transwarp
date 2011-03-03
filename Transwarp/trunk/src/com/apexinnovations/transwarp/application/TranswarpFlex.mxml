@@ -18,13 +18,14 @@
 			import com.apexinnovations.transwarp.application.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.config.IConfigurationAcceptor;
 			import com.apexinnovations.transwarp.webservices.*;
-			import mx.managers.PopUpManager;
+			
 			import flash.events.TimerEvent;
 			import flash.utils.Timer;
 			
 			import flashx.textLayout.elements.IConfiguration;
 			
 			import mx.collections.XMLListCollection;
+			import mx.managers.PopUpManager;
 			
 			
 			
@@ -39,12 +40,14 @@
 				manager = CustomSystemManager(systemManager);
 				
 				if (!manager.xml || manager.xml.localName() == 'error') {
+					// XML load error
 					displayError('There was an error loading data from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
 				} else {
-					leftBar.productData = manager.xml.product.courses[0];
+						leftBar.productData = manager.xml.product.courses[0];
 					leftBar.setSelection(manager.xml.user.@startPage);
 					
 					container.addEventListener(Event.COMPLETE, loadComplete);
+					container.addEventListener(ProgressEvent.PROGRESS, loadProgress);
 					container.addEventListener(IOErrorEvent.IO_ERROR, loadError);
 					
 					container.mask = contentMask;
@@ -79,6 +82,9 @@
 				visitTimer.delay = 5000;
 				visitTimer.addEventListener(TimerEvent.TIMER, timerHandler);
 				visitTimer.start();
+
+				progressPanel.visible = true;
+				progressBar.setProgress(0,100);
 			}
 			
 			protected function timerHandler(event:TimerEvent):void {
@@ -115,12 +121,17 @@
 				var content:DisplayObject = container.content;
 				if(content is IConfigurationAcceptor)
 					IConfigurationAcceptor(content).config = <div>woah, brah</div>;
-				
+				progressPanel.visible = false;
+			}
+			
+			protected function loadProgress(event:ProgressEvent):void {
+				progressBar.setProgress(event.bytesLoaded, event.bytesTotal);
 			}
 			
 			protected function loadError(event:Event):void {
 				var log:LogService = new LogService();
 				log.dispatch("Unable to load page content: " + getURL(ApexWebService.pageID));
+				progressPanel.visible = false;
 				displayError('There was an error loading the page from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111. (ID: ' + ApexWebService.pageID + ')');
 			}
 
@@ -147,6 +158,11 @@
 			<mx:SWFLoader id="container" left="20" right="40" bottom="0" top="0" trustContent="false"/>
 			<ui:LeftBar id="leftBar" x="0" top="5" bottom="5" pageSelectionChanged="pageSelectionChanged(event)"/>
 			<ui:RightBar id="rightBar" right="0" />
+			<s:Panel id="progressPanel" title="Loading..." width="30%" height="78" horizontalCenter="0" verticalCenter="0" visible="false" backgroundColor="0xFFFFFF">
+				<s:VGroup left="10" right="10" top="10" bottom="10">
+					<mx:ProgressBar id="progressBar" labelPlacement="bottom" minimum="0" maximum="100" label="0%" direction="right" mode="manual" width="100%"/>
+				</s:VGroup>
+			</s:Panel>
 			
 			<s:Group id="contentMask"  top="0" bottom="0" left="19" right="39">
 				<s:Rect height="100%" width="100%">
