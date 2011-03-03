@@ -27,7 +27,7 @@ package com.apexinnovations.transwarp.ui {
 		public function set art(value:DisplayObject):void {
 			if(_art)
 				removeChild(_art);
-			addChild(_art=value); 
+			if (value) addChild(_art=value); 
 			invalidateSize();
 		}
 
