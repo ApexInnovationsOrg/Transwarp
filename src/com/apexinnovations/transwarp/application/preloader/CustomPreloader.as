@@ -62,6 +62,7 @@ package com.apexinnovations.transwarp.application.preloader {
 			if (xml.localName() == 'error') {
 				// Dispatch a log entry
 				log.dispatch(xml.text());
+				_manager.resumeNextFrame();
 			} else {
 				// Note the user/course/page
 				ApexWebService.userID = xml.user.@id;
@@ -86,7 +87,7 @@ package com.apexinnovations.transwarp.application.preloader {
 				
 				// Now load up any required assets
 				var assets:AssetLoader = AssetLoader.instance;
-				
+			
 				for each (var icon:XML in xml.product.images.children()) {
 					var hi:Number = icon.hasOwnProperty("@highlightIntensity") ? icon.@highlightIntensity : 0.3;
 					assets.addIconAsset(icon.@url, icon.@id, icon.@name, hi);

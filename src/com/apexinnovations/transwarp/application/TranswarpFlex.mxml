@@ -7,12 +7,18 @@
 						 preloader="com.apexinnovations.transwarp.application.preloader.CustomPreloader"
 						 frameRate="30">
 
+	<fx:Declarations>
+		<s:TitleWindow title="Error" id="errorWindow" close="PopUpManager.removePopUp(errorWindow)" width="400" height="300">
+			<s:TextArea id="errorText" height="100%" width="100%"/> 
+		</s:TitleWindow>
+	</fx:Declarations>
+	
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.application.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.config.IConfigurationAcceptor;
 			import com.apexinnovations.transwarp.webservices.*;
-			
+			import mx.managers.PopUpManager;
 			import flash.events.TimerEvent;
 			import flash.utils.Timer;
 			
@@ -32,13 +38,23 @@
 				super.createChildren();
 				manager = CustomSystemManager(systemManager);
 				
-				leftBar.productData = manager.xml.product.courses[0];
-				leftBar.setSelection(manager.xml.user.@startPage);
-				
-				container.addEventListener(Event.COMPLETE, loadComplete);
-				container.addEventListener(IOErrorEvent.IO_ERROR, loadError);
-				
-				container.mask = contentMask;
+				if (!manager.xml || manager.xml.localName() == 'error') {
+					displayError('There was an error loading data from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
+				} else {
+					leftBar.productData = manager.xml.product.courses[0];
+					leftBar.setSelection(manager.xml.user.@startPage);
+					
+					container.addEventListener(Event.COMPLETE, loadComplete);
+					container.addEventListener(IOErrorEvent.IO_ERROR, loadError);
+					
+					container.mask = contentMask;
+				}
+			}
+			
+			protected function displayError(errStr:String):void {
+				PopUpManager.addPopUp(errorWindow, this, true);
+				PopUpManager.centerPopUp(errorWindow);
+				errorText.text = errStr;
 			}
 			
 			protected function pageSelectionChanged(event:PageSelectionEvent):void {
@@ -105,6 +121,7 @@
 			protected function loadError(event:Event):void {
 				var log:LogService = new LogService();
 				log.dispatch("Unable to load page content: " + getURL(ApexWebService.pageID));
+				displayError('There was an error loading the page from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111. (ID: ' + ApexWebService.pageID + ')');
 			}
 
 			private function getURL(number:int):String {
