@@ -8,8 +8,8 @@
 						 frameRate="30">
 
 	<fx:Declarations>
-		<s:TitleWindow title="Error" id="errorWindow" close="PopUpManager.removePopUp(errorWindow)" width="400" height="300">
-			<s:TextArea id="errorText" height="100%" width="100%"/> 
+		<s:TitleWindow title="Title" id="infoDialog" close="PopUpManager.removePopUp(infoDialog)" width="400" height="300">
+			<s:TextArea id="infoText" height="100%" width="100%"/> 
 		</s:TitleWindow>
 	</fx:Declarations>
 	
@@ -32,8 +32,11 @@
 			protected var manager:CustomSystemManager;
 			protected var loader:Loader;
 			protected var visitTimer:Timer = new Timer(1000);
+			protected var idleTimer:Timer = new Timer(1000);
 			protected var visit:VisitService = new VisitService();
-			protected static var visitSession:uint = 0;
+			protected var visitSession:uint = 0;
+			protected var timeout:uint = 0;
+			protected var currentlyIdle:Boolean = false;
 			
 			protected override function createChildren():void {
 				super.createChildren();
@@ -41,23 +44,71 @@
 				
 				if (!manager.xml || manager.xml.localName() == 'error') {
 					// XML load error
-					displayError('There was an error loading data from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
+					popupInfoDialog('There was an error loading data from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
 				} else {
-						leftBar.productData = manager.xml.product.courses[0];
+					leftBar.productData = manager.xml.product.courses[0];
 					leftBar.setSelection(manager.xml.user.@startPage);
+					timeout = uint(manager.xml.user.@coursewareTimeout);
 					
 					container.addEventListener(Event.COMPLETE, loadComplete);
 					container.addEventListener(ProgressEvent.PROGRESS, loadProgress);
 					container.addEventListener(IOErrorEvent.IO_ERROR, loadError);
 					
+					// Add event listeners to prevent courseware "timeout"
+					manager.addEventListener(KeyboardEvent.KEY_DOWN, resetTimeout);
+					manager.addEventListener(MouseEvent.CLICK, resetTimeout);
+					manager.addEventListener(MouseEvent.MOUSE_MOVE, resetTimeout);
+					
+					// Set the idle timer
+					idleTimer.delay = 1000 * timeout;
+					idleTimer.addEventListener(TimerEvent.TIMER, idleTimeout);
+					idleTimer.start();
+
 					container.mask = contentMask;
 				}
 			}
 			
-			protected function displayError(errStr:String):void {
-				PopUpManager.addPopUp(errorWindow, this, true);
-				PopUpManager.centerPopUp(errorWindow);
-				errorText.text = errStr;
+			protected function resetTimeout(event:Event):void {
+				if (currentlyIdle) {
+					currentlyIdle = infoDialog.isPopUp;	// turns false when popup closed
+				}
+				if (!currentlyIdle) {
+					// Set the idle timer
+					idleTimer.reset();
+					idleTimer.delay = 1000 * timeout;
+					idleTimer.start();
+					
+					if (!visitTimer.running) {
+						// Need to start a new visit
+						timerHandler(new TimerEvent(TimerEvent.TIMER_COMPLETE));
+					}
+				}
+			}
+			
+			protected function idleTimeout(event:Event):void {
+				if (!currentlyIdle) {
+					// close current session
+					visit.dispatch(visitSession);
+					visitSession = 0;
+					
+					// stop all timers and popup dialog
+					idleTimer.stop();
+					visitTimer.stop();
+					popupInfoDialog('You have been idle for ' + timeout/60 + ' minutes.\n\nPlease close this dialog box to resume the course.', 'You Appear to be Idle');
+
+					currentlyIdle = true;
+				}
+			}
+			
+			protected function popupInfoDialog(info:String, title:String = 'Error'):void {
+				if (!currentlyIdle) {
+					if (infoDialog.isPopUp) PopUpManager.removePopUp(infoDialog);	// Take down any currently displayed dialogs
+					
+					PopUpManager.addPopUp(infoDialog, this, true);
+					PopUpManager.centerPopUp(infoDialog);
+					infoText.text = info;
+					infoDialog.title = title;
+				}
 			}
 			
 			protected function pageSelectionChanged(event:PageSelectionEvent):void {
@@ -132,7 +183,7 @@
 				var log:LogService = new LogService();
 				log.dispatch("Unable to load page content: " + getURL(ApexWebService.pageID));
 				progressPanel.visible = false;
-				displayError('There was an error loading the page from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111. (ID: ' + ApexWebService.pageID + ')');
+				popupInfoDialog('There was an error loading the page from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111. (ID: ' + ApexWebService.pageID + ')', 'Page Not Found');
 			}
 
 			private function getURL(number:int):String {
