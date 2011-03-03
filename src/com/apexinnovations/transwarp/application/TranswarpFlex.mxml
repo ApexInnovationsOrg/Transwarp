@@ -51,6 +51,7 @@
 					timeout = uint(manager.xml.user.@coursewareTimeout);
 					
 					container.addEventListener(Event.COMPLETE, loadComplete);
+					container.addEventListener(Event.OPEN, loadStarted);
 					container.addEventListener(ProgressEvent.PROGRESS, loadProgress);
 					container.addEventListener(IOErrorEvent.IO_ERROR, loadError);
 					
@@ -134,6 +135,7 @@
 				visitTimer.addEventListener(TimerEvent.TIMER, timerHandler);
 				visitTimer.start();
 
+				progressPanel.title = 'Loading ' + manager.xml.product..page[ApexWebService.pageID - 1].@name + '...';
 				progressPanel.visible = true;
 				progressBar.setProgress(0,100);
 			}
@@ -168,6 +170,11 @@
 				// TODO: How are we handling this?
 			}
 			
+			protected function loadStarted(event:Event): void {
+				// TODO
+				progressPanel.alpha = 0.5;
+			}
+			
 			protected function loadComplete(event:Event):void {
 				var content:DisplayObject = container.content;
 				if(content is IConfigurationAcceptor)
@@ -183,7 +190,7 @@
 				var log:LogService = new LogService();
 				log.dispatch("Unable to load page content: " + getURL(ApexWebService.pageID));
 				progressPanel.visible = false;
-				popupInfoDialog('There was an error loading the page from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111. (ID: ' + ApexWebService.pageID + ')', 'Page Not Found');
+				popupInfoDialog('There was an error loading the page from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111. (ID: ' + ApexWebService.pageID + ')', 'Page Not Found - ' + manager.xml.product..page[ApexWebService.pageID - 1].@name);
 			}
 
 			private function getURL(number:int):String {
