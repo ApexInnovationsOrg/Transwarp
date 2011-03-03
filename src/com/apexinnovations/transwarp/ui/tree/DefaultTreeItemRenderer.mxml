@@ -62,7 +62,7 @@
 				
 				fontWeight = xml.@visited == "true" ? "normal" : "bold";
 				indentation = (list.getDepth(xml) - 1) * _indentationGap;
-				iconName = isFolder ? "folder" : xml.@bookmarked == true ? "starsmall" : "page";
+				iconName = isFolder ? "folder" : xml.@bookmarked == true ? "bookmarked" : "page";
 			}
 		]]>
 	</fx:Script>

@@ -172,7 +172,6 @@
 			
 			protected function loadStarted(event:Event): void {
 				// TODO
-				progressPanel.alpha = 0.5;
 			}
 			
 			protected function loadComplete(event:Event):void {
@@ -180,6 +179,17 @@
 				if(content is IConfigurationAcceptor)
 					IConfigurationAcceptor(content).config = <div>woah, brah</div>;
 				progressPanel.visible = false;
+
+				var page:XML = manager.xml.product..page[ApexWebService.pageID - 1];
+				
+				rightBar.updatesButton.enabled = page.updates.length > 0;
+				rightBar.toolsButton.enabled = page.tools.length > 0;
+				rightBar.bookmarksButton.enabled = true;
+				rightBar.commentsButton.enabled = true;
+				rightBar.linksButton.enabled = page.links.length > 0;
+				rightBar.transcriptButton.enabled = page.transcript;
+				rightBar.questionsButton.enabled = page.questions.length > 0;
+				rightBar.instructionsButton.enabled = page.transcript;
 			}
 			
 			protected function loadProgress(event:ProgressEvent):void {
@@ -187,10 +197,21 @@
 			}
 			
 			protected function loadError(event:Event):void {
+				var page:XML = manager.xml.product..page[ApexWebService.pageID - 1];
+
+				rightBar.updatesButton.enabled = false;
+				rightBar.toolsButton.enabled = false;
+				rightBar.bookmarksButton.enabled = false;
+				rightBar.commentsButton.enabled = false;
+				rightBar.linksButton.enabled = false;
+				rightBar.transcriptButton.enabled = false;
+				rightBar.questionsButton.enabled = false;
+				rightBar.instructionsButton.enabled = false;
+				
 				var log:LogService = new LogService();
 				log.dispatch("Unable to load page content: " + getURL(ApexWebService.pageID));
 				progressPanel.visible = false;
-				popupInfoDialog('There was an error loading the page from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111. (ID: ' + ApexWebService.pageID + ')', 'Page Not Found - ' + manager.xml.product..page[ApexWebService.pageID - 1].@name);
+				popupInfoDialog('There was an error loading the page from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111. (ID: ' + ApexWebService.pageID + ')', 'Page Not Found - ' + page.@name);
 			}
 
 			private function getURL(number:int):String {

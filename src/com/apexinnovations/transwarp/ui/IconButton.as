@@ -49,6 +49,20 @@ package com.apexinnovations.transwarp.ui {
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 
+		
+		public function set enabled(val:Boolean):void {
+			this.alpha = val ? 1.0 : 0.5;
+			if (val) {
+				addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
+			} else {
+				removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
+			}
+		}
+		
+		public function get enabled():Boolean {
+			return (this.alpha == 1.0);
+		}
+
 		protected function onAdded(e:Event):void {
 			stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 			
