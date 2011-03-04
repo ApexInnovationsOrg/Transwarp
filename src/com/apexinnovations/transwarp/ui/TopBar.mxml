@@ -1,7 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="42">
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:ui="com.apexinnovations.transwarp.ui.*"
+		 xmlns:tooltip="com.apexinnovations.transwarp.ui.tooltip.*"
+		 width="100%" height="42">
+
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.application.CustomSystemManager;
+			import com.apexinnovations.transwarp.application.assets.AssetLoader;
+			import com.apexinnovations.transwarp.ui.tooltip.SimpleTooltip;
+			import com.apexinnovations.transwarp.ui.tooltip.TooltipAttachPoint;
+			
+			protected var tooltip:SimpleTooltip; 
+			
+			protected override function createChildren():void {
+				super.createChildren();
+				
+				tooltip = new SimpleTooltip(this,"", TooltipAttachPoint.LEFT);
+				
+				for(var i:int=0; i < optionsGroup.numElements; ++i) {
+					var b:SidebarIconButton = optionsGroup.getElementAt(i) as SidebarIconButton;
+					b.addEventListener(MouseEvent.ROLL_OVER, rollOver);
+					b.addEventListener(MouseEvent.ROLL_OUT, rollOut);
+				}
+			}
+			
+			protected function rollOver(e:MouseEvent):void {
+				tooltip.text = (e.target as SidebarIconButton).localizedName;
+				tooltip.anchorObject = e.target as DisplayObject;
+				tooltip.delayedShow(0.5);
+			}
+			
+			protected function rollOut(e:MouseEvent):void {
+				tooltip.hide();
+			}
+			
+		]]>
+	</fx:Script>
 
 	<s:Rect width="100%" height="100%">
 		<s:stroke>
@@ -14,7 +51,12 @@
 			</s:LinearGradient>
 		</s:fill>
 	</s:Rect>
-	
+
+	<s:HGroup right="5" gap="5" id="optionsGroup" verticalAlign="middle" height="100%">
+		<ui:SidebarIconButton id="optionsButton" artID="options" />
+		<ui:SidebarIconButton id="helpButton" artID="help" />
+	</s:HGroup>
+
 	<s:filters>
 		<s:DropShadowFilter alpha="0.5"  angle="90"/>
 	</s:filters>

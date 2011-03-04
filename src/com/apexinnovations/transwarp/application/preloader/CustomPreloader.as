@@ -83,6 +83,20 @@ package com.apexinnovations.transwarp.application.preloader {
 				for each (var page:XML in xml..page) {
 					page.@visited = (visitedPages.indexOf(String(page.@id)) != -1);
 					page.@bookmarked = (bookmarkedPages.indexOf(String(page.@id)) != -1);
+					
+					var updated:Boolean = false;
+					if (page.updates.hasComplexContent()) {
+						for each (var update:XML in page..update) {
+trace('updated: ' + update.@time + ' lastAccess: ' + xml.user.@lastAccess);
+							if (update.@time >= xml.user.@lastAccess) {
+								trace("UPDATED");
+								updated = true;
+								break;
+							}
+						}
+					}
+					page.@updated = updated;
+trace(page.@id + ': ' + page.@updated);
 				}
 				
 				// Now load up any required assets
