@@ -18,8 +18,12 @@ package com.apexinnovations.transwarp.ui {
 		
 		protected var down:Boolean;
 		protected var _highlightIntensity:Number = 0.3;
+		protected var _enabled:Boolean = true;
 
 		protected var filterList:Array;
+		protected var defaultFilter:ColorMatrixFilter = initDefaultFilter();
+		protected var highlightFilter:ColorMatrixFilter = initHighlightFilter();
+		protected var disabledFilter:ColorMatrixFilter = initDisabledFilter();
 
 		public function set artClass(value:Class):void { art = new value(); }
 		
@@ -32,7 +36,7 @@ package com.apexinnovations.transwarp.ui {
 		}
 
 		public function get highlightIntensity():Number { return _highlightIntensity; }
-		public function set highlightIntensity(value:Number):void {	_highlightIntensity = value; initFilter(); }
+		public function set highlightIntensity(value:Number):void {	_highlightIntensity = value; highlightFilter = initHighlightFilter(); }
 
 		public function IconButton(art:DisplayObject = null) {
 			if(art) 
@@ -40,7 +44,7 @@ package com.apexinnovations.transwarp.ui {
 			
 			buttonMode = true;
 
-			initFilter();
+			highlightFilter = initHighlightFilter();
 
 			addEventListener(MouseEvent.ROLL_OVER, roll);
 			addEventListener(MouseEvent.ROLL_OUT, roll);
@@ -51,8 +55,12 @@ package com.apexinnovations.transwarp.ui {
 
 		
 		public function set enabled(val:Boolean):void {
-			this.alpha = val ? 1.0 : 0.5;
-			if (val) {
+			_enabled = val;
+			
+			filters = [_enabled ? defaultFilter : disabledFilter];
+			
+			// Toggle ability to handle mouse-down events
+			if (_enabled) {
 				addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 			} else {
 				removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
@@ -60,30 +68,52 @@ package com.apexinnovations.transwarp.ui {
 		}
 		
 		public function get enabled():Boolean {
-			return (this.alpha == 1.0);
+			return _enabled;
 		}
 
 		protected function onAdded(e:Event):void {
 			stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 			
 		}
-
-		protected function initFilter():void {
+		
+		protected function initDefaultFilter():ColorMatrixFilter {
+			var matrix:Array = [
+				1, 0, 0, 0, 0,
+				0, 1, 0, 0, 0,
+				0, 0, 1, 0, 0,
+				0, 0, 0, 1, 0];
+			
+			return new ColorMatrixFilter(matrix);
+		}
+		
+		protected function initDisabledFilter():ColorMatrixFilter {
+			var matrix:Array = [
+				0.309, 0.609, 0.082, 0, 0,
+				0.309, 0.609, 0.082, 0, 0,
+				0.309, 0.609, 0.082, 0, 0,
+				0.5, 0.5, 0.5, 0, 0];
+			
+			return new ColorMatrixFilter(matrix);
+		}
+		
+		protected function initHighlightFilter():ColorMatrixFilter {
 			var a:Number = _highlightIntensity + 1;
 			var matrix:Array = [
 				a, 0, 0, 0, 0,
 				0, a, 0, 0, 0,
 				0, 0, a, 0, 0,
 				0, 0, 0, 1, 0];
-
-			filterList = [new ColorMatrixFilter(matrix)];
+			
+			return new ColorMatrixFilter(matrix);
 		}
-
+		
 		protected function roll(e:Event):void {
-			if (e.type == MouseEvent.ROLL_OVER)
-				filters = filterList;
-			else
-				filters = [];
+			if (_enabled) {
+				if (e.type == MouseEvent.ROLL_OVER)
+					filters = [highlightFilter];
+				else
+					filters = [];
+			}
 		}
 
 		protected function mouseUp(e:Event):void {
