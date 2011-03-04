@@ -91,7 +91,7 @@ package com.apexinnovations.transwarp.ui {
 				0.309, 0.609, 0.082, 0, 0,
 				0.309, 0.609, 0.082, 0, 0,
 				0.309, 0.609, 0.082, 0, 0,
-				0.5, 0.5, 0.5, 0, 0];
+				0.6, 0.6, 0.6, 0, 0];
 			
 			return new ColorMatrixFilter(matrix);
 		}
