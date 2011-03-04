@@ -94,7 +94,6 @@ package com.apexinnovations.transwarp.application.preloader {
 						}
 					}
 					page.@updated = updated;
-trace(page.@id + ': ' + page.@updated);
 				}
 				
 				// Now load up any required assets
