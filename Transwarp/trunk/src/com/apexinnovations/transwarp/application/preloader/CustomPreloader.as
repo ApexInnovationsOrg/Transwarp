@@ -87,9 +87,7 @@ package com.apexinnovations.transwarp.application.preloader {
 					var updated:Boolean = false;
 					if (page.updates.hasComplexContent()) {
 						for each (var update:XML in page..update) {
-trace('updated: ' + update.@time + ' lastAccess: ' + xml.user.@lastAccess);
-							if (update.@time >= xml.user.@lastAccess) {
-								trace("UPDATED");
+							if (String(update.@time) >= String(xml.user.@lastAccess)) {
 								updated = true;
 								break;
 							}
