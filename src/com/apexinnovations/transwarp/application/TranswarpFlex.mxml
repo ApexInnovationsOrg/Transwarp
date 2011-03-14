@@ -5,7 +5,8 @@
 						 xmlns:application="com.apexinnovations.transwarp.application.*"
 						 xmlns:ui="com.apexinnovations.transwarp.ui.*"
 						 preloader="com.apexinnovations.transwarp.application.preloader.CustomPreloader"
-						 frameRate="30">
+						 frameRate="30"
+						 mask="{appMask}">
 
 	<fx:Declarations>
 		<s:TitleWindow title="Title" id="infoDialog" close="PopUpManager.removePopUp(infoDialog)" width="400" height="300">
@@ -83,7 +84,7 @@
 					
 					if (!visitTimer.running) {
 						// Need to start a new visit
-						timerHandler();
+						visitTimerHandler();
 					}
 				}
 			}
@@ -149,15 +150,11 @@
 				}
 					
 					
-				// stop current page from running and load new page
 				SoundMixer.stopAll();
-				//container.unloadAndStop();
-				//container.load(getURL(ApexWebService.pageID));
 				
-
 				// Allow 5 seconds to begin saving a new visit
 				visitTimer.delay = 5000;
-				visitTimer.addEventListener(TimerEvent.TIMER, timerHandler);
+				visitTimer.addEventListener(TimerEvent.TIMER, visitTimerHandler);
 				visitTimer.start();
 
 				progressPanel.title = 'Loading ' + manager.xml.product..page.(@id == ApexWebService.pageID).@name + '...';
@@ -165,7 +162,7 @@
 				progressBar.setProgress(0,100);
 			}
 			
-			protected function timerHandler(event:TimerEvent = null):void {
+			protected function visitTimerHandler(event:TimerEvent = null):void {
 				// stop the timer
 				visitTimer.stop();
 				
@@ -193,10 +190,6 @@
 			
 			protected function visitFailed(event:ApexWebServiceEvent):void {
 				// TODO: How are we handling this?
-			}
-			
-			protected function loadStarted(event:Event): void {
-				// TODO
 			}
 			
 			protected function loadComplete(event:Event = null):void {
@@ -252,7 +245,7 @@
 			}
 			
 			private function zeroPad(number:int, width:int):String {
-				var s:String = '' + number;
+				var s:String = String(number);
 				while(s.length < width) s = '0' + s;
 				return s;
 			}
@@ -305,8 +298,19 @@
 						<s:SolidColor color="0x00ffff" alpha="0"/>
 					</s:fill>
 				</s:Rect>
-			</s:Group>
+			</s:Group>			
 		</s:Group>
+		
 	</s:VGroup>
+	
+	<s:Group id="appMask" x="0" y="0" width="100%" height="100%">
+		<s:Rect height="100%" width="100%">
+			<s:fill>
+				<s:SolidColor color="0x00ffff" alpha="0.25"/>
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+	
+	
 	
 </application:TranswarpPrototype>
