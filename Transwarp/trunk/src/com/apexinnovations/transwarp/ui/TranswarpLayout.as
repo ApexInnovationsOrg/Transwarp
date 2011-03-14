@@ -9,12 +9,19 @@ package com.apexinnovations.transwarp.ui {
 		}
 		
 		override public function updateDisplayList(width:Number, height:Number):void {
-			if(height / width < 0.7)
-				width = height / 0.7;
-			else
-				height = width * 0.7;
+			var newWidth:Number, newHeight:Number;
 			
-			super.updateDisplayList(width, height);
+			if(height / width < 0.7) {
+				newWidth = height / 0.7;
+				newHeight = height;
+				target.setLayoutBoundsPosition((width - newWidth) / 2, 0); 		// center horizontally
+			} else {
+				newWidth = width;
+				newHeight = width * 0.7;
+				target.setLayoutBoundsPosition(0,  (height - newHeight) / 2);	// center vertically
+			}
+			
+			super.updateDisplayList(newWidth, newHeight);
 		}
 	}
 }
