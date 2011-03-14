@@ -15,12 +15,16 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import br.com.stimuli.loading.BulkLoader;
+			import br.com.stimuli.loading.loadingtypes.LoadingItem;
+			
 			import com.apexinnovations.transwarp.application.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.config.IConfigurationAcceptor;
 			import com.apexinnovations.transwarp.webservices.*;
 			
 			import flash.events.TimerEvent;
 			import flash.utils.Timer;
+			import flash.utils.setTimeout;
 			
 			import flashx.textLayout.elements.IConfiguration;
 			
@@ -30,13 +34,15 @@
 			
 			
 			protected var manager:CustomSystemManager;
-			protected var loader:Loader;
+			protected var loader:BulkLoader;
 			protected var visitTimer:Timer = new Timer(1000);
 			protected var idleTimer:Timer = new Timer(1000);
 			protected var visit:VisitService = new VisitService();
 			protected var visitSession:uint = 0;
-			protected var timeout:uint = 0;
+			protected var timeout:uint = 0;	
 			protected var currentlyIdle:Boolean = false;
+			protected var flatContent:Array; 										// Holds a flat list of all pageIDs for the currently loaded product
+			protected var connection:LocalConnection = new LocalConnection(); 
 			
 			protected override function createChildren():void {
 				super.createChildren();
@@ -46,15 +52,13 @@
 					// XML load error
 					popupInfoDialog('There was an error loading data from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
 				} else {
+					setupContentLoading();
+					
 					leftBar.productData = manager.xml.product.courses[0];
-					leftBar.setSelection(manager.xml.user.@startPage);
+					// Load the start page after a short delay to prevent a Security Domain error
+					setTimeout(leftBar.setSelection,1000, manager.xml.user.@startPage);
+					
 					timeout = uint(manager.xml.user.@coursewareTimeout);
-					
-					container.addEventListener(Event.COMPLETE, loadComplete);
-					container.addEventListener(Event.OPEN, loadStarted);
-					container.addEventListener(ProgressEvent.PROGRESS, loadProgress);
-					container.addEventListener(IOErrorEvent.IO_ERROR, loadError);
-					
 					// Add event listeners to prevent courseware "timeout"
 					manager.addEventListener(KeyboardEvent.KEY_DOWN, resetTimeout);
 					manager.addEventListener(MouseEvent.CLICK, resetTimeout);
@@ -63,9 +67,7 @@
 					// Set the idle timer
 					idleTimer.delay = 1000 * timeout;
 					idleTimer.addEventListener(TimerEvent.TIMER, idleTimeout);
-					idleTimer.start();
-
-					container.mask = contentMask;
+					idleTimer.start();				
 				}
 			}
 			
@@ -81,7 +83,7 @@
 					
 					if (!visitTimer.running) {
 						// Need to start a new visit
-						timerHandler(new TimerEvent(TimerEvent.TIMER_COMPLETE));
+						timerHandler();
 					}
 				}
 			}
@@ -123,24 +125,47 @@
 				}
 				
 				// set the new pageID
-				ApexWebService.pageID = uint(event.id);
+				var pageID:uint = uint(event.id);
+				ApexWebService.pageID = pageID;
 				
+				//check the loading status of the requested page
+				var loadingItem:LoadingItem = loader.get(pageID);
+				if(loadingItem.status == LoadingItem.STATUS_FINISHED) {
+					loadComplete();
+				} else if(loadingItem.status == LoadingItem.STATUS_ERROR) {
+					loadError();
+				} else {
+					container.content = null;
+					var priority:int = loader.highestPriority + 4;
+					loader.changeItemPriority(String(pageID), priority--);
+					var index:int = flatContent.indexOf(pageID);
+					changePriorityInRange(index, index+2, priority)
+					changePriorityInRange(index-1, index-1, priority-3);
+					
+					loadingItem.addEventListener(Event.COMPLETE, loadComplete);
+					loadingItem.addEventListener(ProgressEvent.PROGRESS, loadProgress);
+					
+					progressPanel.visible = true;
+				}
+					
+					
 				// stop current page from running and load new page
 				SoundMixer.stopAll();
-				container.unloadAndStop();
-				container.load(getURL(ApexWebService.pageID));
+				//container.unloadAndStop();
+				//container.load(getURL(ApexWebService.pageID));
+				
 
 				// Allow 5 seconds to begin saving a new visit
 				visitTimer.delay = 5000;
 				visitTimer.addEventListener(TimerEvent.TIMER, timerHandler);
 				visitTimer.start();
 
-				progressPanel.title = 'Loading ' + manager.xml.product..page[ApexWebService.pageID - 1].@name + '...';
-				progressPanel.visible = true;
+				progressPanel.title = 'Loading ' + manager.xml.product..page.(@id == ApexWebService.pageID).@name + '...';
+				//progressPanel.visible = true;
 				progressBar.setProgress(0,100);
 			}
 			
-			protected function timerHandler(event:TimerEvent):void {
+			protected function timerHandler(event:TimerEvent = null):void {
 				// stop the timer
 				visitTimer.stop();
 				
@@ -174,13 +199,21 @@
 				// TODO
 			}
 			
-			protected function loadComplete(event:Event):void {
-				var content:DisplayObject = container.content;
-				if(content is IConfigurationAcceptor)
-					IConfigurationAcceptor(content).config = <div>woah, brah</div>;
+			protected function loadComplete(event:Event = null):void {
+				if(event)
+					trace(event.target);
+				var content:Loader = loader.getDisplayObjectLoader(String(ApexWebService.pageID));
+				
+				container.content = content;
+				
+				if(content.content is IConfigurationAcceptor)
+					IConfigurationAcceptor(content.content).config = <div>woah, brah</div>;
+				if(content.content is AVM1Movie)
+					connection.send("PAGE_" + zeroPad(ApexWebService.pageID, 6) + ".swf", "play");
+				
 				progressPanel.visible = false;
 
-				var page:XML = manager.xml.product..page[ApexWebService.pageID - 1];
+				var page:XML = manager.xml.product..page.(@id == ApexWebService.pageID)[0];
 				
 				rightBar.updatesButton.enabled = (page.@updated == true);	// Have no idea why just "= page.@updated;" isn't working
 				rightBar.toolsButton.enabled = page.tools.hasComplexContent();
@@ -196,8 +229,8 @@
 				progressBar.setProgress(event.bytesLoaded, event.bytesTotal);
 			}
 			
-			protected function loadError(event:Event):void {
-				var page:XML = manager.xml.product..page[ApexWebService.pageID - 1];
+			protected function loadError(event:Event = null):void {
+				var page:XML = manager.xml.product..page.(@id == ApexWebService.pageID)[0];
 
 				rightBar.updatesButton.enabled = false;
 				rightBar.toolsButton.enabled = false;
@@ -211,7 +244,7 @@
 				var log:LogService = new LogService();
 				log.dispatch("Unable to load page content: " + getURL(ApexWebService.pageID));
 				progressPanel.visible = false;
-				popupInfoDialog('There was an error loading the page from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111. (ID: ' + ApexWebService.pageID + ')', 'Page Not Found - ' + page.@name);
+				popupInfoDialog('There was an error loading the page from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111. \n(Page ID: ' + ApexWebService.pageID + ')', 'Page Not Found - ' + page.@name);
 			}
 
 			private function getURL(number:int):String {
@@ -223,6 +256,29 @@
 				while(s.length < width) s = '0' + s;
 				return s;
 			}
+
+			protected function setupContentLoading():void {
+				flatContent = [];
+				loader = new BulkLoader();
+				loader.maxConnectionsPerHost = 4;
+				for each(var page:XML in manager.xml..page) {
+					var id:uint = uint(page.@id);
+					flatContent[flatContent.length] = uint;
+					loader.add(getURL(id), {id:id});
+				}
+				loader.start();
+			}
+
+			private function changePriorityInRange(startIndex:int, endIndex:int, startPriority:int):void {
+				for(var i:int = startIndex; i <= endIndex; ++i) {
+					try {
+						loader.changeItemPriority(String(flatContent[i]), startPriority--);
+					} catch(e:RangeError) {
+						
+					}
+				}
+			}
+
 		]]>
 	</fx:Script>	
 	
@@ -234,7 +290,7 @@
 	<s:VGroup width="100%" height="100%" gap="0">
 		<ui:TopBar depth="1" />
 		<s:Group depth="0" width="100%" height="100%">
-			<mx:SWFLoader id="container" left="20" right="40" bottom="0" top="0" trustContent="false"/>
+			<ui:ContentContainer id="container" left="20" right="40" bottom="0" top="0" mask="{contentMask}"/>
 			<ui:LeftBar id="leftBar" x="0" top="5" bottom="5" pageSelectionChanged="pageSelectionChanged(event)"/>
 			<ui:RightBar id="rightBar" right="0" />
 			<s:Panel id="progressPanel" title="Loading..." width="30%" height="78" horizontalCenter="0" verticalCenter="0" visible="false" backgroundColor="0xFFFFFF">

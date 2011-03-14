@@ -18,9 +18,9 @@ package com.apexinnovations.transwarp.ui {
 		}
 
 		/**
-		 * <code>invalidate</code> Queues a redraw on the next frame.  By queing the draw, multiple updates during a single frame only generate a single draw event.
+		 * <code>invalidate</code> Queues a redraw on the next frame.  By queuing the draw, multiple updates during a single frame only generate a single draw event.
 		 * 
-		 * @param e The <code>Event</code> parameter is thrown away.  It's only present to allow easily invalidating in response to an event without using another helper function  
+		 * @param e:Event The <code>Event</code> parameter is thrown away.  It's only present to allow easily invalidating in response to an event without using another helper function  
 		 */
 		public function invalidate(e:Event = null):void {
 			addEventListener(Event.ENTER_FRAME, onInvalidate);
@@ -30,7 +30,7 @@ package com.apexinnovations.transwarp.ui {
 			removeEventListener(Event.ENTER_FRAME, onInvalidate);
 			draw();
 		}
-
+		
 		public function draw():void {
 			dispatchEvent(new Event(Component.DRAW));
 		}

@@ -1,0 +1,26 @@
+<projectDescription>
+  <id>1299884850180</id>
+  <name>repo test</name>
+  <asVersion>1</asVersion>
+  <boundTemplate>file:///C|/Users/matt/AppData/Local/Adobe/Flash CS5/en_US/Configuration/ActionScript 3.0/Templates/boundClass_as2.as</boundTemplate>
+  <classTemplate>file:///C|/Users/matt/AppData/Local/Adobe/Flash CS5/en_US/Configuration/ActionScript 3.0/Templates/standardClass_as2.as</classTemplate>
+  <classPath>.</classPath>
+  <defaultApp/>
+  <rootURI>file:///C|/Users/matt/Documents/flash doodles/as3/TranswarpPrototype/bin-debug/repository/</rootURI>
+  <flexSDK/>
+  <sources editable="false"/>
+  <libraries editable="false"/>
+  <externalLibraries editable="false"/>
+  <compileList editable="false">
+    <uri label="PAGE_000001.fla">file:///C|/Users/matt/Documents/flash doodles/as3/TranswarpPrototype/bin-debug/repository/PAGE_000001.fla</uri>
+    <uri label="PAGE_000002.fla">file:///C|/Users/matt/Documents/flash doodles/as3/TranswarpPrototype/bin-debug/repository/PAGE_000002.fla</uri>
+    <uri label="PAGE_000003.fla">file:///C|/Users/matt/Documents/flash doodles/as3/TranswarpPrototype/bin-debug/repository/PAGE_000003.fla</uri>
+    <uri label="PAGE_000004.fla">file:///C|/Users/matt/Documents/flash doodles/as3/TranswarpPrototype/bin-debug/repository/PAGE_000004.fla</uri>
+    <uri label="PAGE_000005.fla">file:///C|/Users/matt/Documents/flash doodles/as3/TranswarpPrototype/bin-debug/repository/PAGE_000005.fla</uri>
+    <uri label="PAGE_000006.fla">file:///C|/Users/matt/Documents/flash doodles/as3/TranswarpPrototype/bin-debug/repository/PAGE_000006.fla</uri>
+  </compileList>
+  <recentFiles editable="false">
+    <uri label="PAGE_000003.fla">file:///C|/Users/matt/Documents/flash doodles/as3/TranswarpPrototype/bin-debug/repository/PAGE_000003.fla</uri>
+  </recentFiles>
+  <locations editable="false"/>
+</projectDescription>
