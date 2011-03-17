@@ -21,6 +21,10 @@ package com.apexinnovations.transwarp.application {
 			super();
 		}
 		
+		override mx_internal function initialize():void {
+			super.initialize();
+		}
+		
 		override mx_internal function docFrameHandler(event:Event=null):void {
 			if(_resumable)
 				kickOff();
@@ -28,7 +32,7 @@ package com.apexinnovations.transwarp.application {
 		
 		override mx_internal function preloader_completeHandler(event:Event):void {
 			preloader.removeEventListener(Event.COMPLETE, preloader_completeHandler);
-			preloader.dispatchEvent(new CustomSystemManagerEvent(this))
+			preloader.dispatchEvent(new CustomSystemManagerEvent(this));
 		}
 		
 		

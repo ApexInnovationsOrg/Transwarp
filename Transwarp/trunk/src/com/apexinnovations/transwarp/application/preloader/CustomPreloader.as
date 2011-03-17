@@ -9,9 +9,10 @@ package com.apexinnovations.transwarp.application.preloader {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
+	import flash.events.ProgressEvent;
 	import flash.net.*;
-	import flash.system.Security;
 	
+	import mx.events.RSLEvent;
 	import mx.preloaders.SparkDownloadProgressBar;
 
 	public class CustomPreloader extends SparkDownloadProgressBar {
@@ -19,23 +20,56 @@ package com.apexinnovations.transwarp.application.preloader {
 		protected var _manager:CustomSystemManager;
 		
 		protected var _xml:XML;
+		protected var _assetsDone:Boolean = false;
+
+		protected var _rslDone:Boolean = false;
+		protected var _rslsLoaded:int = 0;
+		protected var _estimatedRSLSize:Number = 343000;
+		protected var _estimatedRSLTotalSize:Number = _estimatedRSLSize * 4;
+		protected var _currentRSLIndex:Number = -1;
+		protected var _rslBytesTotal:Number = -1;
+		protected var _rslBytesLoaded:Number = 0;
+		protected var _currentRSLBytesLoaded:Number = 0;
+		
+		protected var _estimatedAppSize:Number = 700000;
+		protected var _appBytesTotal:Number = -1;
+		protected var _appBytesLoaded:Number = 0;
 		
 		public function CustomPreloader() {
 			super();
 		}
 		
+		// Embed the background image.     
+		[Embed(source="/../assets/apex-logo.png")] public var ApexLogo:Class;
+					
 		override public function set preloader(value:Sprite):void {
 			super.preloader = value;
 			value.addEventListener(CustomSystemManagerEvent.FRAME_SUSPENDED, onSuspend);
 		}
 		
+		public function get rslBytesLoaded():Number { return _rslBytesLoaded + _currentRSLBytesLoaded; }
+		public function get rslBytesTotal():Number { return _rslBytesTotal == -1 ? _estimatedRSLTotalSize : _rslBytesTotal; }	
+		
+		public function get appBytesTotal():Number { return _appBytesTotal == -1 ? _estimatedAppSize : _appBytesTotal; }
+		public function get appBytesLoaded():Number { return _appBytesLoaded; }
+		
+		public function get combinedBytesTotal():Number { return rslBytesTotal + appBytesTotal; }
+		public function get combinedBytesLoaded():Number { return rslBytesLoaded + appBytesLoaded; }
+		
 		protected function onSuspend(e:CustomSystemManagerEvent):void {
+			trace("on suspend");
 			(e.target as IEventDispatcher).removeEventListener(CustomSystemManagerEvent.FRAME_SUSPENDED, onSuspend);
 			_manager = e.manager;
-			
-			var paramObj:Object = LoaderInfo(this.root.loaderInfo).parameters;
+			if(_xml)
+				_manager.xml = _xml;
+			advanceFrame();
+		}
+		
+		protected function loadXML():void {
+			trace("xml loaded");
+			var paramObj:Object = LoaderInfo(root.loaderInfo).parameters;
 			var requestVars:URLVariables = new URLVariables();
-
+			
 			requestVars.data = String(paramObj['data']);
 			requestVars.baseURL = String(paramObj['baseURL']);
 			
@@ -51,10 +85,10 @@ package com.apexinnovations.transwarp.application.preloader {
 			req.method = URLRequestMethod.POST;
 			
 			var loader:URLLoader = new URLLoader(req);
-			loader.addEventListener(Event.COMPLETE, xmlLoaded);
+			loader.addEventListener(Event.COMPLETE, loadAssets);
 		}
 		
-		protected function xmlLoaded(e:Event):void {
+		protected function loadAssets(e:Event):void {
 			var loader:URLLoader = URLLoader(e.target);
 			var xml:XML = new XML(loader.data);
 			var log:LogService = new LogService();
@@ -106,15 +140,68 @@ package com.apexinnovations.transwarp.application.preloader {
 				assets.addEventListener(Event.COMPLETE, assetsLoaded);
 			}
 			_xml = xml;
-			_manager.xml = xml;
+			if(_manager)
+				_manager.xml = xml;
+		}
+		
+		override public function initialize():void {
+			super.initialize();
+			backgroundImage = ApexLogo;
+			loadXML();
+			visible = true;
+		}
+		
+		override protected function progressHandler(event:ProgressEvent):void {
+			_appBytesTotal = event.bytesTotal;
+			_appBytesLoaded = event.bytesLoaded;
+			updateProgress();
+		}
+		
+		protected function updateProgress():void {
+			var progress:Number = combinedBytesLoaded / combinedBytesTotal; 
+			trace(progress);
+			if(progress > 1)
+				trace("uh...");
+			setDownloadProgress(combinedBytesLoaded, combinedBytesTotal);
+		}
+				
+		override protected function rslProgressHandler(event:RSLEvent):void {
+			if(event.rslIndex > _currentRSLIndex) {
+				if(_rslBytesTotal == -1)
+					_rslBytesTotal = event.rslTotal * _estimatedRSLSize;
+				
+				_rslBytesTotal += event.bytesTotal - _estimatedRSLSize; // Recalculate total rsl size with new information
+				_currentRSLIndex++;
+			}
+			_currentRSLBytesLoaded = event.bytesLoaded;
+			updateProgress();
+			//trace("rslProgress: " + rslBytesLoaded / rslBytesTotal);
+		}
+		
+		override protected function rslCompleteHandler(event:RSLEvent):void {
+			_rslBytesLoaded += event.bytesLoaded;
+			_currentRSLBytesLoaded = 0;
+			if(event.rslIndex == event.rslTotal - 1) {
+				trace("rsls done");
+				_rslDone = true;
+				advanceFrame();
+			}				
 		}
 		
 		protected function assetsLoaded(e:Event):void {
-			_manager.resumeNextFrame();
+			trace("assets loaded");
+			_assetsDone = true;
+			advanceFrame();
+		}
+		
+		private function advanceFrame():void {
+			if(_assetsDone && _rslDone && _manager)
+				_manager.resumeNextFrame();
 		}
 		
 		private function deleteXMLNode(node:XML): void {
 			delete node.parent().children()[node.childIndex()];
 		}
+		
 	}
 }
