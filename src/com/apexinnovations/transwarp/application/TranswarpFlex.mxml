@@ -303,9 +303,7 @@
 				for(var i:int = startIndex; i <= endIndex; ++i) {
 					try {
 						loader.changeItemPriority(String(flatContent[i]), startPriority--);
-					} catch(e:RangeError) {
-						
-					}
+					} catch(e:RangeError) { }
 				}
 			}
 
