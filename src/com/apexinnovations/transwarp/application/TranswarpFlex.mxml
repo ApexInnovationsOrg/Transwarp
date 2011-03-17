@@ -43,7 +43,7 @@
 			protected var timeout:uint = 0;	
 			protected var currentlyIdle:Boolean = false;
 			protected var flatContent:Array; 										// Holds a flat list of all pageIDs for the currently loaded product
-			protected var connection:LocalConnection = new LocalConnection(); 
+			protected var currentRequest:String;
 			
 			protected override function createChildren():void {
 				super.createChildren();
@@ -57,8 +57,9 @@
 					
 					leftBar.productData = manager.xml.product.courses[0];
 					// Load the start page after a short delay to prevent a Security Domain error
-					setTimeout(leftBar.setSelection,1000, manager.xml.user.@startPage);
-					
+					trace("set initial selection");
+					leftBar.setSelection(manager.xml.user.@startPage);
+										
 					timeout = uint(manager.xml.user.@coursewareTimeout);
 					// Add event listeners to prevent courseware "timeout"
 					manager.addEventListener(KeyboardEvent.KEY_DOWN, resetTimeout);
@@ -70,6 +71,13 @@
 					idleTimer.addEventListener(TimerEvent.TIMER, idleTimeout);
 					idleTimer.start();				
 				}
+				
+				loader.logLevel = BulkLoader.LOG_SILENT;
+			}
+			
+			protected override function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+				//trace(container.height / container.width);
 			}
 			
 			protected function resetTimeout(event:Event):void {
@@ -125,31 +133,42 @@
 					visit.dispatch(visitSession);					
 				}
 				
+				if(container.content != null) {
+					var item:LoadingItem = loader.get(String(ApexWebService.pageID));
+					if(item && item._content is AVM1Movie)
+						loader.remove(item);
+					loader.start();
+				}
+								
 				// set the new pageID
 				var pageID:uint = uint(event.id);
+				//var page:XML = 
 				ApexWebService.pageID = pageID;
 				
 				//check the loading status of the requested page
 				var loadingItem:LoadingItem = loader.get(pageID);
+				if(!loadingItem) {
+					loadingItem = loader.add(getURL(pageID), {id:pageID});
+					loader.start();
+				}
+				
 				if(loadingItem.status == LoadingItem.STATUS_FINISHED) {
 					loadComplete();
+				
 				} else if(loadingItem.status == LoadingItem.STATUS_ERROR) {
 					loadError();
-				} else {
-					container.content = null;
+				} else { //Loading, but not yet complete
 					var priority:int = loader.highestPriority + 4;
 					loader.changeItemPriority(String(pageID), priority--);
 					var index:int = flatContent.indexOf(pageID);
 					changePriorityInRange(index, index+2, priority)
 					changePriorityInRange(index-1, index-1, priority-3);
 					
-					loadingItem.addEventListener(Event.COMPLETE, loadComplete);
-					loadingItem.addEventListener(ProgressEvent.PROGRESS, loadProgress);
-					
-					progressPanel.visible = true;
+					loadingItem.addEventListener(Event.INIT, loadComplete, false, 0, true);
+					loadingItem.addEventListener(Event.COMPLETE, loadComplete, false, 0, true);
+					loadingItem.addEventListener(ProgressEvent.PROGRESS, loadProgress, false, 0, true);
 				}
-					
-					
+				
 				SoundMixer.stopAll();
 				
 				// Allow 5 seconds to begin saving a new visit
@@ -157,8 +176,7 @@
 				visitTimer.addEventListener(TimerEvent.TIMER, visitTimerHandler);
 				visitTimer.start();
 
-				progressPanel.title = 'Loading ' + manager.xml.product..page.(@id == ApexWebService.pageID).@name + '...';
-				//progressPanel.visible = true;
+				progressPanel.title = 'Loading ' + manager.xml.product..page.(@id == pageID).@name + '...';
 				progressBar.setProgress(0,100);
 			}
 			
@@ -193,16 +211,33 @@
 			}
 			
 			protected function loadComplete(event:Event = null):void {
-				if(event)
-					trace(event.target);
-				var content:Loader = loader.getDisplayObjectLoader(String(ApexWebService.pageID));
+				var id:String, item:LoadingItem;
+				if(event) {
+					item = LoadingItem(event.target);
+					id = item.id;
+					item.removeEventListener(Event.COMPLETE, loadComplete);
+					item.removeEventListener(Event.INIT, loadComplete);
+					item.removeEventListener(ProgressEvent.PROGRESS, loadProgress);
+				} else {
+					id = String(ApexWebService.pageID);
+					item = loader.get(id);
+				}
 				
-				container.content = content;
+				var itemLoader:Loader = loader.getDisplayObjectLoader(id);
+				var content:* = itemLoader.content;
 				
-				if(content.content is IConfigurationAcceptor)
-					IConfigurationAcceptor(content.content).config = <div>woah, brah</div>;
-				if(content.content is AVM1Movie)
-					connection.send("PAGE_" + zeroPad(ApexWebService.pageID, 6) + ".swf", "play");
+				if(content is AVM1Movie && id != String(ApexWebService.pageID)) {
+					trace("removing "  + id);
+					loader.remove(id);
+					loader.start();
+					return;
+				}
+				
+				container.content = itemLoader;
+				
+				if(content is IConfigurationAcceptor) {
+					//TODO: Load config xml and apply it here like this: IConfigurationAcceptor(content).config = xml; 
+				}
 				
 				progressPanel.visible = false;
 
@@ -219,6 +254,7 @@
 			}
 			
 			protected function loadProgress(event:ProgressEvent):void {
+				progressPanel.visible = true;
 				progressBar.setProgress(event.bytesLoaded, event.bytesTotal);
 			}
 			
@@ -240,8 +276,8 @@
 				popupInfoDialog('There was an error loading the page from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111. \n(Page ID: ' + ApexWebService.pageID + ')', 'Page Not Found - ' + page.@name);
 			}
 
-			private function getURL(number:int):String {
-				return manager.xml.@rootFolder + '/PAGE_' + zeroPad(number, 6) + '.swf';
+			private function getURL(pageID:int, addGarbage:Boolean=false):String {
+				return manager.xml.@rootFolder + '/PAGE_' + zeroPad(pageID, 6) + '.swf' + (addGarbage ? '?' + ApexWebService.randString(10) : '?0000000000');
 			}
 			
 			private function zeroPad(number:int, width:int):String {
@@ -257,7 +293,8 @@
 				for each(var page:XML in manager.xml..page) {
 					var id:uint = uint(page.@id);
 					flatContent[flatContent.length] = uint;
-					loader.add(getURL(id), {id:id});
+					var item:LoadingItem = loader.add(getURL(id, page.@updated == true), {id:id});
+					item.addEventListener(Event.INIT, loadComplete);
 				}
 				loader.start();
 			}
@@ -277,11 +314,11 @@
 	
 	
 	<application:layout>
-		<ui:TranswarpLayout />
+		<ui:TranswarpLayout heightOffset="{topBar.height}" widthOffset="{rightBar.width + 20}" />
 	</application:layout>
 	
 	<s:VGroup width="100%" height="100%" gap="0">
-		<ui:TopBar depth="1" />
+		<ui:TopBar depth="1" id="topBar" />
 		<s:Group depth="0" width="100%" height="100%">
 			<ui:ContentContainer id="container" left="20" right="40" bottom="0" top="0" mask="{contentMask}"/>
 			<ui:LeftBar id="leftBar" x="0" top="5" bottom="5" pageSelectionChanged="pageSelectionChanged(event)"/>
@@ -300,7 +337,6 @@
 				</s:Rect>
 			</s:Group>			
 		</s:Group>
-		
 	</s:VGroup>
 	
 	<s:Group id="appMask" x="0" y="0" width="100%" height="100%">
@@ -310,7 +346,5 @@
 			</s:fill>
 		</s:Rect>
 	</s:Group>
-	
-	
-	
+
 </application:TranswarpPrototype>
