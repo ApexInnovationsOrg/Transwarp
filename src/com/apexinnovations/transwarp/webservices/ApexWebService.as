@@ -96,7 +96,7 @@ package com.apexinnovations.transwarp.webservices
 		
 	
 		// Generate a random character string 'len' characters long
-		private static function randString(len:Number, chars:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"):String{
+		public static function randString(len:Number, chars:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"):String{
 			var num_chars:Number = chars.length;
 			var randomChars:String = "";
 			  
