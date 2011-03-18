@@ -23,6 +23,8 @@
 		<image id="folder" url="artwork/folder.png" />
 		<image id="page" url="artwork/page.png" />
 		<image id="disclosure" url="artwork/resultset_next.png" />
+		<image id="previous" name="Previous" url="artwork/leftarrow.png" />
+		<image id="next" name="Next" url="artwork/rightarrow.png" />
 	</images>
 	<videos>
 		<video name="Navigating the User Interface" url="help/navigating_ui.swf" icon="help/navigating_ui.png"/>
