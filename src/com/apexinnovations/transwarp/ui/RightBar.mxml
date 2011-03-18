@@ -24,14 +24,14 @@
 				tooltip = new SimpleTooltip(this,"", TooltipAttachPoint.LEFT);
 								
 				for(var i:int=0; i < buttonGroup.numElements; ++i) {
-					var b:SidebarIconButton = buttonGroup.getElementAt(i) as SidebarIconButton;
+					var b:AssetIconButton = buttonGroup.getElementAt(i) as AssetIconButton;
 					b.addEventListener(MouseEvent.ROLL_OVER, rollOver);
 					b.addEventListener(MouseEvent.ROLL_OUT, rollOut);
 				}
 			}
 			
 			protected function rollOver(e:MouseEvent):void {
-				tooltip.text = (e.target as SidebarIconButton).localizedName;
+				tooltip.text = (e.target as AssetIconButton).localizedName;
 				tooltip.anchorObject = e.target as DisplayObject;
 				tooltip.delayedShow(0.5);
 			}
@@ -56,14 +56,14 @@
 	</s:Rect>
 	
 	<s:VGroup bottom="5" gap="5" id="buttonGroup" horizontalAlign="center" width="100%">
-		<ui:SidebarIconButton id="updatesButton" artID="updates" />
-		<ui:SidebarIconButton id="toolsButton" artID="tools" />
-		<ui:SidebarIconButton id="bookmarksButton" artID="bookmarks" />
-		<ui:SidebarIconButton id="commentsButton" artID="comments" />
-		<ui:SidebarIconButton id="linksButton" artID="links" />
-		<ui:SidebarIconButton id="transcriptButton" artID="transcript" />
-		<ui:SidebarIconButton id="questionsButton" artID="questions" />
-		<ui:SidebarIconButton id="instructionsButton" artID="instructions" />
+		<ui:AssetIconButton id="updatesButton" artID="updates" />
+		<ui:AssetIconButton id="toolsButton" artID="tools" />
+		<ui:AssetIconButton id="bookmarksButton" artID="bookmarks" />
+		<ui:AssetIconButton id="commentsButton" artID="comments" />
+		<ui:AssetIconButton id="linksButton" artID="links" />
+		<ui:AssetIconButton id="transcriptButton" artID="transcript" />
+		<ui:AssetIconButton id="questionsButton" artID="questions" />
+		<ui:AssetIconButton id="instructionsButton" artID="instructions" />
 	</s:VGroup>
 	
 </s:Group>

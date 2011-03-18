@@ -1,12 +1,12 @@
 package com.apexinnovations.transwarp.application.assets {
 	import spark.components.Image;
 
-	public class AssetImage extends Image {
+	public class AssetImageControl extends Image {
 		
 		protected var _assetID:String;
 		
 		
-		public function AssetImage(src:Object = null) {
+		public function AssetImageControl(src:Object = null) {
 			super();
 			if(src)
 				source = src;
@@ -16,7 +16,7 @@ package com.apexinnovations.transwarp.application.assets {
 		public function set assetID(value:String):void {
 			if(!value) 
 				return;
-			var asset:IconAsset = AssetLoader.instance.getIconAsset(value);
+			var asset:BitmapAsset = AssetLoader.instance.getBitmapAsset(value);
 			if(!asset)
 				throw new ArgumentError("'"+value+"' is an invalid assetID");
 			_assetID = value;

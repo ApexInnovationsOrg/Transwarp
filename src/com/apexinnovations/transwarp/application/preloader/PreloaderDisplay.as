@@ -15,7 +15,7 @@ package com.apexinnovations.transwarp.application.preloader {
 	import mx.events.RSLEvent;
 	import mx.preloaders.SparkDownloadProgressBar;
 
-	public class CustomPreloader extends SparkDownloadProgressBar {
+	public class PreloaderDisplay extends SparkDownloadProgressBar {
 		
 		protected var _manager:CustomSystemManager;
 		
@@ -35,7 +35,7 @@ package com.apexinnovations.transwarp.application.preloader {
 		protected var _appBytesTotal:Number = -1;
 		protected var _appBytesLoaded:Number = 0;
 		
-		public function CustomPreloader() {
+		public function PreloaderDisplay() {
 			super();
 		}
 		
@@ -135,7 +135,7 @@ package com.apexinnovations.transwarp.application.preloader {
 			
 				for each (var icon:XML in xml.product.images.children()) {
 					var hi:Number = icon.hasOwnProperty("@highlightIntensity") ? icon.@highlightIntensity : 0.3;
-					assets.addIconAsset(icon.@url, icon.@id, icon.@name, hi);
+					assets.addBitmapAsset(icon.@url, icon.@id, icon.@name, hi);
 				}			
 				assets.addEventListener(Event.COMPLETE, assetsLoaded);
 			}
@@ -159,9 +159,6 @@ package com.apexinnovations.transwarp.application.preloader {
 		
 		protected function updateProgress():void {
 			var progress:Number = combinedBytesLoaded / combinedBytesTotal; 
-			trace(progress);
-			if(progress > 1)
-				trace("uh...");
 			setDownloadProgress(combinedBytesLoaded, combinedBytesTotal);
 		}
 				
