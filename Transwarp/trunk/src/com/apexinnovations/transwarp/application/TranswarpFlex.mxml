@@ -4,7 +4,7 @@
 						 xmlns:mx="library://ns.adobe.com/flex/mx"
 						 xmlns:application="com.apexinnovations.transwarp.application.*"
 						 xmlns:ui="com.apexinnovations.transwarp.ui.*"
-						 preloader="com.apexinnovations.transwarp.application.preloader.CustomPreloader"
+						 preloader="com.apexinnovations.transwarp.application.preloader.PreloaderDisplay"
 						 frameRate="30"
 						 mask="{appMask}">
 
@@ -23,15 +23,7 @@
 			import com.apexinnovations.transwarp.config.IConfigurationAcceptor;
 			import com.apexinnovations.transwarp.webservices.*;
 			
-			import flash.events.TimerEvent;
-			import flash.utils.Timer;
-			import flash.utils.setTimeout;
-			
-			import flashx.textLayout.elements.IConfiguration;
-			
-			import mx.collections.XMLListCollection;
 			import mx.managers.PopUpManager;
-			
 			
 			
 			protected var manager:CustomSystemManager;
@@ -42,7 +34,7 @@
 			protected var visitSession:uint = 0;
 			protected var timeout:uint = 0;	
 			protected var currentlyIdle:Boolean = false;
-			protected var flatContent:Array; 										// Holds a flat list of all pageIDs for the currently loaded product
+			protected var flatContent:Array; 									// Holds a flat list of all pageIDs for the currently loaded product
 			protected var currentRequest:String;
 			
 			protected override function createChildren():void {
@@ -227,7 +219,7 @@
 				var content:* = itemLoader.content;
 				
 				if(content is AVM1Movie && id != String(ApexWebService.pageID)) {
-					trace("removing "  + id);
+					//trace("removing "  + id);
 					loader.remove(id);
 					loader.start();
 					return;

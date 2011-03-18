@@ -1,13 +1,13 @@
 package com.apexinnovations.transwarp.application.assets {
 	import flash.display.Bitmap;
 
-	public class IconAsset extends Bitmap{
+	public class BitmapAsset extends Bitmap{
 		protected var _url:String;
 		protected var _id:String;
 		protected var _name:String;
 		protected var _highlightIntensity:Number;
 		
-		public function IconAsset(url:String, id:String, name:String = "", highlightIntensity:Number = 0.3) {
+		public function BitmapAsset(url:String, id:String, name:String = "", highlightIntensity:Number = 0.3) {
 			_url  = url;
 			_id   = id;
 			_name = name;

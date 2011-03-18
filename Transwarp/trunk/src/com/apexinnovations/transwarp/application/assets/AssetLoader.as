@@ -1,17 +1,19 @@
 package com.apexinnovations.transwarp.application.assets
 {
 	import br.com.stimuli.loading.*;
+	import br.com.stimuli.loading.loadingtypes.LoadingItem;
 	
 	import com.apexinnovations.transwarp.application.errors.AssetConflictError;
 	import com.apexinnovations.transwarp.webservices.ApexWebService;
 	import com.apexinnovations.transwarp.webservices.LogService;
 	
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
-
+	
 	[Event(name="complete", type="flash.events.Event")]
 	public class AssetLoader extends EventDispatcher {
 		protected var loader:BulkLoader;
@@ -31,7 +33,7 @@ package com.apexinnovations.transwarp.application.assets
 			_instance = this;
 			
 			loader = new BulkLoader();
-			loader.addEventListener(BulkLoader.COMPLETE, onComplete);
+			loader.addEventListener(BulkLoader.COMPLETE, onAllComplete);
 			loader.logLevel = BulkLoader.LOG_ERRORS;
 			loader.addEventListener(BulkLoader.ERROR, onLoadError);
 			loader.addEventListener(BulkLoader.PROGRESS, onProgress);
@@ -40,27 +42,35 @@ package com.apexinnovations.transwarp.application.assets
 		}
 		
 		
-		
-		protected function onComplete(e:Event):void {
-			for(var i:* in iconAssets){
-				var asset:IconAsset = iconAssets[i];
-				asset.bitmapData = loader.getBitmapData(i);
-			}
+		protected function bitmapLoadComplete(event:Event):void {
+			var item:LoadingItem = event.target as LoadingItem;
+			var asset:BitmapAsset = BitmapAsset(iconAssets[item.id]);
+			asset.bitmapData = loader.getBitmapData(item.id);
 			
+			asset.dispatchEvent(new Event(Event.COMPLETE));			
+		}
+		
+		protected function onAllComplete(e:Event):void {		
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
-		public function addIconAsset(url:String, id:String, name:String="", highlightIntensity:Number = 0.3):void {	
+		public function addBitmapAsset(url:String, id:String, name:String="", highlightIntensity:Number = 0.3):BitmapAsset {	
 			if(iconAssets[id])
 				throw new AssetConflictError(id);
 			
-			iconAssets[id] = new IconAsset(url, id, name, highlightIntensity);
-			loader.add(url, {id:id});
+			var asset:BitmapAsset = new BitmapAsset(url, id, name, highlightIntensity);
+			iconAssets[id] = asset
+			
+			var item:LoadingItem = loader.add(url, {id:id});
 			loader.start();
+			item.addEventListener(Event.COMPLETE, bitmapLoadComplete)
+			
+			
+			return asset;
 		}
 			
-		public function getIconAsset(id:String):IconAsset {
-			return IconAsset(iconAssets[id]);
+		public function getBitmapAsset(id:String):BitmapAsset {
+			return BitmapAsset(iconAssets[id]);
 		}
 		
 		protected function onLoadError(event:Event):void {

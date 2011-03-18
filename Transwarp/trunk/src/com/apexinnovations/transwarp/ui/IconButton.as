@@ -31,8 +31,13 @@ package com.apexinnovations.transwarp.ui {
 		public function set art(value:DisplayObject):void {
 			if(_art)
 				removeChild(_art);
-			if (value) addChild(_art=value); 
-			invalidateSize();
+			
+			if (value) addChild(value);
+			
+			width = value ? value.width : 0;
+			height = value ? value.height : 0;
+			
+			_art = value;
 		}
 
 		public function get highlightIntensity():Number { return _highlightIntensity; }

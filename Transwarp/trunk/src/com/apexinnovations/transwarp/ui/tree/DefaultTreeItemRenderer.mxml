@@ -11,8 +11,8 @@
 		<s:HorizontalLayout verticalAlign="middle" paddingTop="2" paddingBottom="2" paddingLeft="{indentation + 10}" paddingRight="20" gap="0"/>
 	</s:layout>
 	
-	<assets:AssetImage assetID="disclosure" id="disclosure"/>
-	<assets:AssetImage assetID="{iconName}" />
+	<assets:AssetImageControl assetID="disclosure" id="disclosure"/>
+	<assets:AssetImageControl assetID="{iconName}" />
 	
 	<s:Label id="labelDisplay" fontWeight="{fontWeight}" paddingLeft="5"/>
 
