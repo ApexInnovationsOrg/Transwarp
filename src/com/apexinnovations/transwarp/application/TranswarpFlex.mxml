@@ -49,7 +49,6 @@
 					
 					leftBar.productData = manager.xml.product.courses[0];
 					// Load the start page after a short delay to prevent a Security Domain error
-					trace("set initial selection");
 					leftBar.setSelection(manager.xml.user.@startPage);
 										
 					timeout = uint(manager.xml.user.@coursewareTimeout);
@@ -61,10 +60,10 @@
 					// Set the idle timer
 					idleTimer.delay = 1000 * timeout;
 					idleTimer.addEventListener(TimerEvent.TIMER, idleTimeout);
-					idleTimer.start();				
+					idleTimer.start();
 				}
 				
-				loader.logLevel = BulkLoader.LOG_SILENT;
+				
 			}
 			
 			protected override function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
@@ -281,6 +280,7 @@
 			protected function setupContentLoading():void {
 				flatContent = [];
 				loader = new BulkLoader();
+				loader.logLevel = BulkLoader.LOG_SILENT;
 				loader.maxConnectionsPerHost = 4;
 				for each(var page:XML in manager.xml..page) {
 					var id:uint = uint(page.@id);

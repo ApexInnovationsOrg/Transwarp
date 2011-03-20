@@ -14,13 +14,9 @@ package com.apexinnovations.transwarp.application.assets {
 
 		
 		public function set assetID(value:String):void {
-			if(!value) 
-				return;
-			var asset:BitmapAsset = AssetLoader.instance.getBitmapAsset(value);
-			if(!asset)
-				throw new ArgumentError("'"+value+"' is an invalid assetID");
 			_assetID = value;
-			source = asset.bitmapData.clone();
+			var asset:BitmapAsset = AssetLoader.instance.getBitmapAsset(value);
+			source = asset ? asset.bitmapData.clone() : null;
 		}
 		
 		public function get assetID():String { return _assetID; }

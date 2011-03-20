@@ -21,7 +21,7 @@
 			protected override function createChildren():void {
 				super.createChildren();
 								
-				tooltip = new SimpleTooltip(this,"", TooltipAttachPoint.LEFT);
+				tooltip = new SimpleTooltip(this, "", TooltipAttachPoint.LEFT);
 								
 				for(var i:int=0; i < buttonGroup.numElements; ++i) {
 					var b:AssetIconButton = buttonGroup.getElementAt(i) as AssetIconButton;
@@ -56,14 +56,14 @@
 	</s:Rect>
 	
 	<s:VGroup bottom="5" gap="5" id="buttonGroup" horizontalAlign="center" width="100%">
-		<ui:AssetIconButton id="updatesButton" artID="updates" />
-		<ui:AssetIconButton id="toolsButton" artID="tools" />
-		<ui:AssetIconButton id="bookmarksButton" artID="bookmarks" />
-		<ui:AssetIconButton id="commentsButton" artID="comments" />
-		<ui:AssetIconButton id="linksButton" artID="links" />
-		<ui:AssetIconButton id="transcriptButton" artID="transcript" />
-		<ui:AssetIconButton id="questionsButton" artID="questions" />
-		<ui:AssetIconButton id="instructionsButton" artID="instructions" />
+		<ui:AssetIconButton id="updatesButton" assetID="updates" />
+		<ui:AssetIconButton id="toolsButton" assetID="tools" />
+		<ui:AssetIconButton id="bookmarksButton" assetID="bookmarks" />
+		<ui:AssetIconButton id="commentsButton" assetID="comments" />
+		<ui:AssetIconButton id="linksButton" assetID="links" />
+		<ui:AssetIconButton id="transcriptButton" assetID="transcript" />
+		<ui:AssetIconButton id="questionsButton" assetID="questions" />
+		<ui:AssetIconButton id="instructionsButton" assetID="instructions" />
 	</s:VGroup>
 	
 </s:Group>
