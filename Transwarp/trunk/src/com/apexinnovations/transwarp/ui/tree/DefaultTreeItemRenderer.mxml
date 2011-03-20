@@ -18,6 +18,8 @@
 
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.application.events.TreeOpenCloseEvent;
+			
 			import spark.components.List;
 			
 			protected var _indentationGap:Number = 24;
@@ -34,6 +36,7 @@
 			[Bindable] protected var iconName:String;
 			[Bindable] protected var indentation:Number = 0;
 			[Bindable] protected var fontWeight:String = "normal";
+
 			
 			protected function click():void {
 				XML(data).@visited = "true";
@@ -44,6 +47,7 @@
 						list.openNode(XML(data));
 					else
 						list.closeNode(XML(data));
+					owner.dispatchEvent(new TreeOpenCloseEvent());
 				}
 				
 				update();

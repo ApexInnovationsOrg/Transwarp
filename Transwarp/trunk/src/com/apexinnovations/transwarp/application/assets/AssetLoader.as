@@ -28,7 +28,7 @@ package com.apexinnovations.transwarp.application.assets
 		
 		public function AssetLoader() {
 			if(_instance)
-				throw new IllegalOperationError("AssetLoader is a singleton");
+				throw new IllegalOperationError("AssetLoader is a singleton: use AssetLoader.instance to get an instance.");
 			
 			_instance = this;
 			
@@ -46,7 +46,6 @@ package com.apexinnovations.transwarp.application.assets
 			var item:LoadingItem = event.target as LoadingItem;
 			var asset:BitmapAsset = BitmapAsset(iconAssets[item.id]);
 			asset.bitmapData = loader.getBitmapData(item.id);
-			
 			asset.dispatchEvent(new Event(Event.COMPLETE));			
 		}
 		
@@ -56,21 +55,19 @@ package com.apexinnovations.transwarp.application.assets
 		
 		public function addBitmapAsset(url:String, id:String, name:String="", highlightIntensity:Number = 0.3):BitmapAsset {	
 			if(iconAssets[id])
-				throw new AssetConflictError(id);
-			
-			var asset:BitmapAsset = new BitmapAsset(url, id, name, highlightIntensity);
-			iconAssets[id] = asset
+				throw new AssetConflictError(url, id, iconAssets[id]);
 			
 			var item:LoadingItem = loader.add(url, {id:id});
 			loader.start();
 			item.addEventListener(Event.COMPLETE, bitmapLoadComplete)
-			
+			var asset:BitmapAsset = new BitmapAsset(item, name, highlightIntensity);
+			iconAssets[id] = asset			
 			
 			return asset;
 		}
 			
-		public function getBitmapAsset(id:String):BitmapAsset {
-			return BitmapAsset(iconAssets[id]);
+		public function getBitmapAsset(id:String):BitmapAsset {		
+			return iconAssets[id] as BitmapAsset;			
 		}
 		
 		protected function onLoadError(event:Event):void {

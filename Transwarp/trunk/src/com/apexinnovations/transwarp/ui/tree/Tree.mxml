@@ -5,14 +5,44 @@
 		xmlns:ui="com.apexinnovations.transwarp.ui.*"
 		itemRenderer="com.apexinnovations.transwarp.ui.tree.DefaultTreeItemRenderer"
 		labelField="@name" 
-		useVirtualLayout="true" changing="onChanging(event)">
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
+		useVirtualLayout="true"
+		changing="onChanging(event)"
+		change="onChange()">
+	
+	<fx:Metadata>
+		[Event(name="treeOpenClose", type="com.apexinnovations.transwarp.application.events.TreeOpenCloseEvent")]
+	</fx:Metadata>
+	
 	
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.application.events.TreeOpenCloseEvent;
+			
 			import spark.events.IndexChangeEvent;
+			
+			// used to preserve the selection across opening and closing nodes.  (if the selection's parent node is closed, the list would forget the selection)
+			protected var _selectedItem:*;
+			
+			override protected function createChildren():void {
+				addEventListener(TreeOpenCloseEvent.OPEN_CLOSE, onOpenOrClose);
+			}
+			
+			protected function onOpenOrClose(event:Event):void {
+				var list:XMLLinearIList = dataProvider as XMLLinearIList;
+				// if the saved selection's parent nodes are open, reselect it
+				if(list && list.getItemIndex(_selectedItem) != -1)
+					super.selectedItem = _selectedItem;
+			}
+			
+			override public function set selectedItem(value:*):void {
+				_selectedItem = value;
+				super.selectedItem = value;
+			}
+			
+			
+			protected function onChange():void {
+				_selectedItem = this.selectedItem;
+			}
 			
 			protected function onChanging(e:IndexChangeEvent):void {
 				var list:XMLLinearIList = XMLLinearIList(dataProvider);

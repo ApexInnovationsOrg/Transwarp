@@ -14,6 +14,8 @@
 			import com.greensock.TweenLite;
 			import com.greensock.easing.*;
 			
+			import spark.events.IndexChangeEvent;
+			
 			protected var xmlRoot:XML = new XML();
 			
 			protected var _productData:XML;
@@ -58,10 +60,12 @@
 					preProcess(child);
 			}
 			
-			protected function selectionChange():void {
-				collapse();
-				var data:XML = XML(tree.selectedItem);
-				dispatchEvent(new PageSelectionEvent(data.@id));
+			protected function selectionChange(event:IndexChangeEvent):void {
+				if(event.oldIndex != -1 ) { //when the oldIndex is -1 this indicates that we're just resetting the selectedIndex and we should ignore this event.
+					collapse();
+					var data:XML = XML(tree.selectedItem);
+					dispatchEvent(new PageSelectionEvent(data.@id));
+				}
 			}
 						
 			
@@ -109,7 +113,7 @@
 		</s:Rect>
 	</s:Group>
 	
-	<tree:Tree id="tree" top="10" bottom="10" right="20" left="5" minWidth="300" change="selectionChange()"/>
+	<tree:Tree id="tree" top="10" bottom="10" right="20" left="5" minWidth="300" change="selectionChange(event)"/>
 		
 	<s:filters>
 		<s:DropShadowFilter alpha=".5" />

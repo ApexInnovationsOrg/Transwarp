@@ -9,6 +9,7 @@ package com.apexinnovations.transwarp.application.preloader {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
+	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
 	import flash.net.*;
 	
@@ -62,6 +63,8 @@ package com.apexinnovations.transwarp.application.preloader {
 			_manager = e.manager;
 			if(_xml)
 				_manager.xml = _xml;
+			if(_xml.localName() == 'error')
+				_manager.resumeNextFrame(); //If there is an error loading the xml, advance regardless of other download/init status;
 			advanceFrame();
 		}
 		
@@ -86,6 +89,15 @@ package com.apexinnovations.transwarp.application.preloader {
 			
 			var loader:URLLoader = new URLLoader(req);
 			loader.addEventListener(Event.COMPLETE, loadAssets);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, xmlLoadError);
+		}
+		
+		protected function xmlLoadError(event:IOErrorEvent):void {
+			var log:LogService = new LogService();
+			log.dispatch("XML load failure: " + event);
+			_xml = <error>{event}</error>;
+			if(_manager)
+				_manager.resumeNextFrame();
 		}
 		
 		protected function loadAssets(e:Event):void {
@@ -93,10 +105,13 @@ package com.apexinnovations.transwarp.application.preloader {
 			var xml:XML = new XML(loader.data);
 			var log:LogService = new LogService();
 			
+			_xml = xml;
+			if(_manager)
+				_manager.xml = xml;
+			
 			if (xml.localName() == 'error') {
 				// Dispatch a log entry
 				log.dispatch(xml.text());
-				_manager.resumeNextFrame();
 			} else {
 				// Note the user/course/page
 				ApexWebService.userID = xml.user.@id;
@@ -139,9 +154,6 @@ package com.apexinnovations.transwarp.application.preloader {
 				}			
 				assets.addEventListener(Event.COMPLETE, assetsLoaded);
 			}
-			_xml = xml;
-			if(_manager)
-				_manager.xml = xml;
 		}
 		
 		override public function initialize():void {
@@ -198,7 +210,7 @@ package com.apexinnovations.transwarp.application.preloader {
 		
 		private function deleteXMLNode(node:XML): void {
 			delete node.parent().children()[node.childIndex()];
-		}
+		}	
 		
 	}
 }

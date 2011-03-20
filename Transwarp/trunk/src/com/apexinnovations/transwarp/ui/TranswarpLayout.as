@@ -17,7 +17,6 @@ package com.apexinnovations.transwarp.ui {
 		
 		override public function updateDisplayList(width:Number, height:Number):void {
 			var newWidth:Number, newHeight:Number;
-			
 			if((height-heightOffset) / (width-widthOffset) < 0.7) {
 				newWidth = (height-heightOffset) / 0.7 + widthOffset;
 				newHeight = height;
