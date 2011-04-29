@@ -19,6 +19,8 @@ package com.apexinnovations.transwarp.assets {
 		public function get status():String { return _item.status;  }
 		public function get url():String	{ return _item.url.url; }
 		public function get id():String		{ return _item.id;      }
+		public function get isLoaded():Boolean { return _item.isLoaded; }
+		
 		
 		public function get localizedName():String { return _name; }
 		public function get highlightIntensity():Number { return _highlightIntensity; }

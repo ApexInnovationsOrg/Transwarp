@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<Graphic version="2.0" ATE:version="1.0.0" flm:version="1.0.0" d:using="" xmlns="http://ns.adobe.com/fxg/2008" xmlns:ATE="http://ns.adobe.com/ate/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008">
-	<Library />
-
-	<Group d:type="layer" d:userLabel="Icon">
-		<Path data="M33.2 23.5 33.2 2 3.45 2 3.45 23.5 33.2 23.5M34.9 0.3Q35.2 0.55 35.2 1L35.2 24.5Q35.2 24.9 34.9 25.2 34.6 25.5 34.2 25.5L2.45 25.5Q1.45 25.5 1.45 24.5L1.45 1Q1.45 0 2.45 0L34.2 0Q34.6 0 34.9 0.3M31.2 4 31.2 11.25 27.3 7.4 27.3 10.85 20.45 11.85
-		20.45 13.8 27.3 14.8 27.3 18.25 31.2 14.35 31.2 21.5 19.7 21.5 23.55 17.6 20.1 17.6 19.1 14.7 17.2 14.7 16.2 17.6 12.75 17.6 16.65 21.5 5.45 21.5 5.45 14.3 9.35 18.2 9.35 14.75 16.2 13.75 16.2 11.8 9.35 10.8 9.35 7.4 5.45 11.3 5.45 4 16.55
-		4 12.75 7.75 16.2 7.75 17.2 10.65 19.1 10.65 20.1 7.75 23.55 7.75 19.8 4 31.2 4">
-			<fill>
-				<SolidColor color="#FFFFFF"/>
-			</fill>
-		</Path>
-	</Group>
-
-	<Private/>
-
+<Graphic version="2.0" viewHeight="400" viewWidth="550" ATE:version="1.0.0" flm:version="1.0.0" d:using="" pd:backgroundColor="10066329" xmlns="http://ns.adobe.com/fxg/2008" xmlns:ATE="http://ns.adobe.com/ate/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008" xmlns:pd="http://ns.adobe.com/xfl/2008/pd">
+     <Group d:type="layer" d:userLabel="Layer 1">
+      <Path data="M22.8 11 20.9 9.15 18.1 11.95 16 9.85 18.8 7.05 16.95 5.15 16.95 5 22.95 5 22.95 11 22.8 11M22.8 16.95 22.95 16.95 22.95 22.95 16.95 22.95 16.95 22.8 18.8 20.9 16 18.1 18.1 16 20.9 18.8 22.8 16.95M11 5.15 9.15 7.05 11.95 9.85 9.85 11.95 7.05
+ 					9.15 5.15 11 5 11 5 5 11 5 11 5.15M7.05 18.8 9.85 16 11.95 18.1 9.15 20.9 11 22.8 11 22.95 5 22.95 5 16.95 5.15 16.95 7.05 18.8M26 2 2 2 2 26 26 26 26 2M0 0 28 0 28 28 0 28 0 0">
+        <fill>
+          <SolidColor color="#FFFFFF"/>
+        </fill>
+      </Path>
+    </Group>
+  <Private/>
 </Graphic>

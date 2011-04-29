@@ -36,6 +36,7 @@ package com.apexinnovations.transwarp.ui {
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 			
 			filters = getNormalFilters();
+			mouseChildren = false;
 		}		
 		
 /*==========================================================================

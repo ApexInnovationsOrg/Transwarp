@@ -46,7 +46,7 @@ package com.apexinnovations.transwarp.assets
 			var item:LoadingItem = event.target as LoadingItem;
 			var asset:BitmapAsset = BitmapAsset(iconAssets[item.id]);
 			asset.bitmapData = loader.getBitmapData(item.id);
-			asset.dispatchEvent(new Event(Event.COMPLETE));			
+			asset.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
 		protected function onAllComplete(e:Event):void {		

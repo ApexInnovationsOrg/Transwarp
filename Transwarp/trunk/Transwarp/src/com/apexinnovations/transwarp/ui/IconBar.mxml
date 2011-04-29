@@ -4,10 +4,13 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 xmlns:gfx="com.apexinnovations.transwarp.graphics.*"
 		 xmlns:ui="com.apexinnovations.transwarp.ui.*"
-		 width="50" minHeight="{buttonGroup.height + 70}">
+		 width="50" minHeight="{buttonGroup.height + 70}"
+		 addedToStage="onAdded()">
 
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.events.MaximizeEvent;
+			import com.apexinnovations.transwarp.events.TranswarpEvent;
 			import com.apexinnovations.transwarp.graphics.*;
 			
 			import mx.core.IVisualElement;
@@ -27,10 +30,25 @@
 							buttonGroup.addElementAt(new IconSeparator(), i+1);
 					}
 				}
+				
 			}
 			
+			protected function maximize(event:FullScreenEvent):void {
+				currentState = event.fullScreen ? "maximized" : "default";
+			}
+
+
+			protected function onAdded():void {
+				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);
+			}
+
 		]]>
 	</fx:Script>
+	
+	<s:states>
+		<s:State name="default" />
+		<s:State name="maximized" />
+	</s:states>
 	
 	<s:Rect width="100%" height="100%" topRightRadiusX="12" bottomRightRadiusX="12">
 		<s:fill>
@@ -45,7 +63,7 @@
 		</s:filters>
 	</s:Rect>
 	
-	<s:VGroup id="buttonGroup" top="15" left="6.5" horizontalAlign="center" gap="10">
+	<s:VGroup id="buttonGroup" top="15" width="100%" horizontalAlign="center" gap="10">
 		<ui:IconButton artClass="{KeyQuestionIcon}" />
 		<ui:IconButton artClass="{SupportingTextIcon}" enabled="false"/>
 		<ui:IconButton artClass="{HistoryIcon}"/>		
@@ -59,9 +77,10 @@
 		<ui:IconButton artClass="{HelpIcon}" />
 	</s:VGroup>
 	
-	<s:VGroup left="6.5" horizontalAlign="center" gap="10" bottom="10">
+	<s:VGroup width="100%" horizontalAlign="center" gap="10" bottom="10">
 		<ui:IconSeparator visible="{height == minHeight}"/>
-		<ui:IconButton id="maximizeButton" artClass="{MaximizeIcon}" width="30" height="30"/>
+		<ui:IconButton artClass="{MaximizeIcon}" width="30" height="30" click="stage.displayState=StageDisplayState.FULL_SCREEN" includeIn="default" />
+		<ui:IconButton artClass="{MinimizeIcon}" width="30" height="30" click="stage.displayState=StageDisplayState.NORMAL" includeIn="maximized"/>
 	</s:VGroup>
 	
 	
