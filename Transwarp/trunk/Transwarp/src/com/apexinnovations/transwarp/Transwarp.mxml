@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transwarp:TranswarpBase xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   xmlns:transwarp="com.apexinnovations.transwarp.*"
+			   xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			   preloader="com.apexinnovations.transwarp.preloader.PreloaderDisplay">
+	<fx:Script>
+		<![CDATA[
+			[Bindable] protected var themeColor:uint = 0xcc3337;
+			
+			protected var manager:TranswarpSystemManager;		
+			
+			override protected function createChildren():void {
+				super.createChildren();
+				
+				manager = systemManager as TranswarpSystemManager;
+				trace(manager.xml);
+				var c:String = manager.xml.product[0].@color;
+				themeColor = uint("0x" + c.substr(1,6));
+			}
+			
+			
+		]]>
+	</fx:Script>
+	
+	<ui:LeftBar color="{themeColor}"/>
+	
+
+</transwarp:TranswarpBase>
