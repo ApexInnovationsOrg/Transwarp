@@ -1,0 +1,42 @@
+package com.apexinnovations.transwarp
+{
+	import com.apexinnovations.transwarp.Product;
+	import com.apexinnovations.transwarp.User;
+	
+	import flash.errors.*;
+	
+	public class Courseware {
+		private static var _instance:User;
+		private var _website:String = '';
+		private var _rootFolder:String = '';
+		private var _user:User = null;
+		private var _product:Product = null;
+
+		public static function get instance():Courseware {
+			if(!_instance)
+				new Courseware();
+			return _instance;
+		}		
+
+		public function Courseware(xml:XML) {
+			if(_instance)
+				throw new IllegalOperationError("Courseware is a singleton");
+			
+			_instance = this;
+			
+			try {
+				_website = xml.@website;
+				_rootFolder = xml.@rootFolder;
+				_user = new User(xml.user[0]);
+				_product = new Product(xml.product[0]);
+			} catch ( e:Error ) {
+				throw new ArgumentError("Invalid Initialization XML");
+			}
+		}
+		
+		public function get website():String { return _website; }
+		public function get rootFolder():String { return _rootFolder; }
+		public function get user():User { return _user; }
+		public function get product():Product { return _product; }
+	}
+}
