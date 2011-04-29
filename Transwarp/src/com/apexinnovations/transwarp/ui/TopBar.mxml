@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 width="100%" height="178" xmlns:assets="com.apexinnovations.transwarp.assets.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.utils.ColorUtil;
+			
+			[Bindable] public var color:uint;
+			
+		]]>
+	</fx:Script>
+
+	
+	<s:Rect width="100%" height="144" top="0">
+		<s:fill>
+			<s:LinearGradient rotation="270" scaleX="-148">
+				<s:GradientEntry ratio="0" color="#E0E1E2"/>
+				<s:GradientEntry ratio="0.12156863" color="#E2E3E3"/>
+				<s:GradientEntry ratio="0.28235294" color="#E6E6E6"/>
+				<s:GradientEntry ratio="0.43137255" color="#EAEAE9"/>
+				<s:GradientEntry ratio="0.6745098" color="#E6E6E6"/>
+				<s:GradientEntry ratio="0.82745098" color="#DFDFDF"/>
+				<s:GradientEntry ratio="0.95294118" color="#D4D5D6"/>
+				<s:GradientEntry ratio="1" color="#CFD0D0"/>		
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	
+	<s:Rect width="100%" height="34" bottom="0">
+		<s:fill>
+			<s:LinearGradient rotation="270" scaleX="-43.4">
+				<s:GradientEntry ratio="0.12941176" color="#4E4D4F"/>
+				<s:GradientEntry ratio="0.14117647" color="#5A5A5C"/>
+				<s:GradientEntry ratio="0.16862745" color="#696A6C"/>
+				<s:GradientEntry ratio="0.19607843" color="#747577"/>
+				<s:GradientEntry ratio="0.22745098" color="#797B7D"/>
+				<s:GradientEntry ratio="0.28235294" color="#7B7D7F"/>
+				<s:GradientEntry ratio="0.55294118" color="#727476"/>
+				<s:GradientEntry ratio="0.63921569" color="#6E6F71"/>
+				<s:GradientEntry ratio="0.75294118" color="#626365"/>
+				<s:GradientEntry ratio="0.87843137" color="#4E4D4F"/>
+			</s:LinearGradient>			
+		</s:fill>
+	</s:Rect>
+	
+	
+	<s:Graphic left="270" top="0">
+		<s:Path data="M 0 0 L 16 16 L {width} 16 L {width} 0 Z">
+			<s:fill>
+				<s:LinearGradient x="494.95" y="5.7875" scaleX="-11.625" rotation="270">
+					<s:GradientEntry color="{color}" ratio="0.08"/>
+					<s:GradientEntry color="{ColorUtil.adjustBrightness2(color, -50)}" ratio="0.9"/>
+				</s:LinearGradient>
+			</s:fill>
+		</s:Path>
+	</s:Graphic>	
+	
+	<s:VGroup horizontalAlign="right" left="29" verticalCenter="-25">
+		<assets:AssetImageControl assetID="logoBig"  />
+		<s:Label text="By Apex Innovations" fontStyle="italic" color="#5F6062"/>
+	</s:VGroup>
+	
+	
+</s:Group>

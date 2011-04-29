@@ -150,8 +150,9 @@ package com.apexinnovations.transwarp.preloader {
 				//trace(_xml.toXMLString());	
 				
 				// Now load up any required assets
-				AssetLoader.instance.addBitmapAsset(_xml.product[0].@logoBig, "logoBig");
-				AssetLoader.instance.addBitmapAsset(_xml.product[0].@logoSmall, "logoSmall");
+				
+				AssetLoader.instance.addBitmapAsset(_xml.@website + "/Classroom/engine/" + _xml.product[0].@logoBig, "logoBig");
+				AssetLoader.instance.addBitmapAsset(_xml.@website + "/Classroom/engine/" + _xml.product[0].@logoSmall, "logoSmall");
 				
 				advanceFrame();
 				

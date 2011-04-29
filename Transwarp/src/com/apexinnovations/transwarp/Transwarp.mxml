@@ -23,8 +23,11 @@
 			
 		]]>
 	</fx:Script>
+	<s:VGroup width="100%" height="100%" gap="-53">
+		<ui:TopBar color="{themeColor}"/>
+		<ui:LeftBar color="{themeColor}"/>
+	</s:VGroup>
 	
-	<ui:LeftBar color="{themeColor}"/>
 	
 
 </transwarp:TranswarpBase>
