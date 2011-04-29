@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="229">
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.utils.ColorUtil;
+			[Bindable] public var color:uint;
+			
+			
+		]]>
+	</fx:Script>
+	
+	<s:Rect width="100%" height="100%" topRightRadiusX="12" bottomRightRadiusX="12">
+		<s:fill>
+			<s:LinearGradient rotation="90" >
+				<s:GradientEntry color="0xeaeae9" />
+				<s:GradientEntry color="0xcfd0d0" />
+			</s:LinearGradient>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter blurX="5" blurY="5" distance="5" alpha="0.09" angle="225" inner="true"/>
+		</s:filters>
+	</s:Rect>
+	
+	<s:Rect width="100%" height="66" topRightRadiusX="12">
+		<s:fill>
+			<s:LinearGradient>
+				<s:GradientEntry color="{ColorUtil.adjustBrightness2(color, -30)}"/>
+				<s:GradientEntry color="{color}" />
+			</s:LinearGradient>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter blurX="5" blurY="5" distance="5" alpha="0.2" angle="225" inner="true"/> 
+		</s:filters>
+	</s:Rect>
+	
+	
+</s:Group>
