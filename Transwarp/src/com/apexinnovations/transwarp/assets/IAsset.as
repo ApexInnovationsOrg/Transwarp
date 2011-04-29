@@ -7,6 +7,7 @@ package com.apexinnovations.transwarp.assets {
 		function get url():String;
 		function get id():String;
 		function get status():String;
+		function get isLoaded():Boolean;
 		
 	}
 }

@@ -1,8 +1,9 @@
 package com.apexinnovations.transwarp.assets {
 	import br.com.stimuli.loading.BulkLoader;
 	
-	import spark.components.Image;
 	import flash.events.Event;
+	
+	import spark.components.Image;
 
 	public class AssetImageControl extends Image {
 		
@@ -20,9 +21,9 @@ package com.apexinnovations.transwarp.assets {
 			_assetID = value;
 			_asset = AssetLoader.instance.getBitmapAsset(value);
 			
-			if(_asset.status == BulkLoader.COMPLETE)
+			if(_asset.isLoaded)
 				source = _asset.bitmapData.clone();
-			else
+			else 
 				_asset.addEventListener(BulkLoader.COMPLETE, loadComplete);	
 		}
 		

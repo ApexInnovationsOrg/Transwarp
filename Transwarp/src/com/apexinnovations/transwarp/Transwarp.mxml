@@ -4,29 +4,51 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
 			   xmlns:transwarp="com.apexinnovations.transwarp.*"
 			   xmlns:ui="com.apexinnovations.transwarp.ui.*"
-			   preloader="com.apexinnovations.transwarp.preloader.PreloaderDisplay">
+			   preloader="com.apexinnovations.transwarp.preloader.PreloaderDisplay"
+			   addedToStage="onAdded()">
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.events.MaximizeEvent;
+			import com.apexinnovations.transwarp.events.TranswarpEvent;
 			[Bindable] protected var themeColor:uint = 0xcc3337;
 			
 			protected var manager:TranswarpSystemManager;		
+			
+			protected var maximized:Boolean = false;
 			
 			override protected function createChildren():void {
 				super.createChildren();
 				
 				manager = systemManager as TranswarpSystemManager;
-				trace(manager.xml);
+				
+				
+				//WENDT:
+				//manager.xml
+				
 				var c:String = manager.xml.product[0].@color;
 				themeColor = uint("0x" + c.substr(1,6));
+				
 			}
 			
-			
+			protected function maximize(event:FullScreenEvent):void {
+				currentState = event.fullScreen ? "maximized" : "default";
+			}
+
+			protected function onAdded():void {
+				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);
+			}
+
 		]]>
 	</fx:Script>
-	<s:VGroup width="100%" height="100%" gap="-53">
-		<ui:TopBar color="{themeColor}"/>
-		<ui:LeftBar color="{themeColor}"/>
-	</s:VGroup>
+	<transwarp:states>
+		<s:State name="default" />
+		<s:State name="maximized" />
+	</transwarp:states>
+	
+	<s:VGroup width="100%" height="100%" gap.default="-53" gap.maximized="-35">
+		<ui:TopBar  color="{themeColor}"/>
+		<ui:LeftBar id="leftBar" color="{themeColor}"/>
+	</s:VGroup> 
 	
 	
 

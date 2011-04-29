@@ -7,8 +7,6 @@
 		<![CDATA[
 			import mx.utils.ColorUtil;
 			[Bindable] public var color:uint;
-			
-			
 		]]>
 	</fx:Script>
 	
