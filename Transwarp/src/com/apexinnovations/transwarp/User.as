@@ -1,5 +1,6 @@
 package com.apexinnovations.transwarp
 {
+	import flash.utils.*;
 	import flash.errors.*;
 	import mx.formatters.DateFormatter;
 	
@@ -13,6 +14,7 @@ package com.apexinnovations.transwarp
 		private var _timeout:int = 0;	// seconds
 		private var _courseID:int = 0;
 		private var _pageID:int = 0;
+		private var _classes:String = '';
 		
 		public static function get instance():User {
 			if(!_instance)
@@ -22,7 +24,7 @@ package com.apexinnovations.transwarp
 		
 		public function User(xml:XML) {
 			if(_instance)
-				throw new IllegalOperationError("User is a singleton");
+				throw new IllegalOperationError(getQualifiedClassName(this) + " is a singleton");
 			
 			_instance = this;
 
@@ -34,8 +36,9 @@ package com.apexinnovations.transwarp
 				_timeout = xml.@coursewareTimeout;
 				_courseID = xml.@startCourse;
 				_pageID = xml.@startPage;
+				_classes = xml.@classes;
 			} catch ( e:Error ) {
-				throw new ArgumentError("Invalid Initialization XML");
+				throw new ArgumentError(getQualifiedClassName(this) + " - Invalid Initialization XML - " + e.toString());
 			}
 		}
 
@@ -46,5 +49,10 @@ package com.apexinnovations.transwarp
 		public function get timeout():int { return _timeout; }
 		public function get startCourseID():int { return _courseID; }
 		public function get startPageID():int { return _pageID; }
+		public function get lms():Boolean { return (_classes.indexOf('LMS') > 0); }
+		public function get beta():Boolean { return (_classes.indexOf('Beta') > 0); }
+		public function get doctor():Boolean { return (_classes.indexOf('Doctor') > 0); }
+		public function get nurse():Boolean { return (_classes.indexOf('Nurse') > 0); }
+		public function get emt():Boolean { return (_classes.indexOf('EMT') > 0); }
 	}
 }

@@ -1,26 +1,23 @@
 package com.apexinnovations.transwarp
 {
-	import flash.utils.*;
 	import flash.errors.*;
+	import flash.utils.*;
 	
-	// This represents a help page to display
-	public class HelpPage {
+	// This represents the course being taken
+	public class Page {
+		private var _id:uint = 0;
 		private var _name:String = '';
-		private var _url:String = '';
-		private var _icon:String = '';
 		
-		public function HelpPage(xml:XML) {
+		public function Page(xml:XML) {
 			try {
+				_id = xml.@id;
 				_name = xml.@name;
-				_url = xml.@url;
-				_icon = xml.@icon;
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName(this) + " - Invalid Initialization XML - " + e.toString());
 			}
 		}
 		
+		public function get id():uint { return _id; }
 		public function get name():String { return _name; }
-		public function get url():String { return _url; }
-		public function get icon():String { return _icon; }
 	}
 }
