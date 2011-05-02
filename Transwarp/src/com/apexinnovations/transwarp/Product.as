@@ -33,11 +33,6 @@ package com.apexinnovations.transwarp
 				_logoSmall = xml.@logoSmall;
 				var prodColor:String = xml.@color;
 				_color = uint("0x" + prodColor.substr(1,6));	// @color like '#FF00FF'
-				var c:XML;
-				for each (c in xml.courses.course) {
-					var x:Course = new Course(c);
-					if (x != null) _courseList.push(x);
-				}
 			} catch ( e:Error ) {
 				throw new ArgumentError("Invalid Initialization XML" + e.toString());
 			}
