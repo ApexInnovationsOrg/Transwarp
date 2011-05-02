@@ -1,6 +1,8 @@
 package com.apexinnovations.transwarp
 {
 	import flash.errors.*;
+	
+	import flashx.textLayout.conversion.TextConverter;
 	import flashx.textLayout.elements.TextFlow;
 	
 	// This represents an update to a page
@@ -11,7 +13,7 @@ package com.apexinnovations.transwarp
 		public function Update(xml:XML) {
 			try {
 				_time = xml.@time;
-				_textFlow = xml[0];
+				_textFlow = TextConverter.importToFlow(xml[0], TextConverter.TEXT_LAYOUT_FORMAT);
 			} catch ( e:Error ) {
 				throw new ArgumentError("Invalid Initialization XML");
 			}

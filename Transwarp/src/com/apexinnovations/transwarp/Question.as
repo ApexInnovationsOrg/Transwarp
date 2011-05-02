@@ -1,6 +1,8 @@
 package com.apexinnovations.transwarp
 {
 	import flash.errors.*;
+	
+	import flashx.textLayout.conversion.TextConverter;
 	import flashx.textLayout.elements.TextFlow;
 	
 	// This represents a question and answer related to a page
@@ -10,8 +12,8 @@ package com.apexinnovations.transwarp
 		
 		public function Question(xml:XML) {
 			try {
-				_qTextFlow = xml.query[0];
-				_aTextFlow = xml.answer[0];
+				_qTextFlow = TextConverter.importToFlow(xml.query[0], TextConverter.TEXT_LAYOUT_FORMAT);
+				_aTextFlow = TextConverter.importToFlow(xml.answer[0], TextConverter.TEXT_LAYOUT_FORMAT);
 			} catch ( e:Error ) {
 				throw new ArgumentError("Invalid Initialization XML");
 			}
