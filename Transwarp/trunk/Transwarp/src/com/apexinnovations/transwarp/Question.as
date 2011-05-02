@@ -1,7 +1,7 @@
 package com.apexinnovations.transwarp
 {
+	import flash.utils.*;
 	import flash.errors.*;
-	
 	import flashx.textLayout.conversion.TextConverter;
 	import flashx.textLayout.elements.TextFlow;
 	
@@ -15,7 +15,7 @@ package com.apexinnovations.transwarp
 				_qTextFlow = TextConverter.importToFlow(xml.query[0], TextConverter.TEXT_LAYOUT_FORMAT);
 				_aTextFlow = TextConverter.importToFlow(xml.answer[0], TextConverter.TEXT_LAYOUT_FORMAT);
 			} catch ( e:Error ) {
-				throw new ArgumentError("Invalid Initialization XML");
+				throw new ArgumentError(getQualifiedClassName(this) + " - Invalid Initialization XML - " + e.toString());
 			}
 		}
 		
