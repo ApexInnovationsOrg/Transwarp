@@ -5,8 +5,9 @@ package com.apexinnovations.transwarp
 	
 	import flash.errors.*;
 	
+	// This represents the user taking the class and the product being taken
 	public class Courseware {
-		private static var _instance:User;
+		private static var _instance:Courseware;
 		private var _website:String = '';
 		private var _rootFolder:String = '';
 		private var _user:User = null;
@@ -14,7 +15,7 @@ package com.apexinnovations.transwarp
 
 		public static function get instance():Courseware {
 			if(!_instance)
-				new Courseware();
+				new Courseware(<courseware/>);
 			return _instance;
 		}		
 
@@ -30,7 +31,7 @@ package com.apexinnovations.transwarp
 				_user = new User(xml.user[0]);
 				_product = new Product(xml.product[0]);
 			} catch ( e:Error ) {
-				throw new ArgumentError("Invalid Initialization XML");
+				throw new ArgumentError("Invalid Initialization XML " + e.toString());
 			}
 		}
 		

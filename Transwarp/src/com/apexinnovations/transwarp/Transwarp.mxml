@@ -8,26 +8,25 @@
 			   addedToStage="onAdded()">
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.Courseware;
 			import com.apexinnovations.transwarp.events.MaximizeEvent;
 			import com.apexinnovations.transwarp.events.TranswarpEvent;
 			[Bindable] protected var themeColor:uint = 0xcc3337;
 			
-			protected var manager:TranswarpSystemManager;		
+			protected var manager:TranswarpSystemManager;
+			
+			protected var cw:Courseware;
 			
 			protected var maximized:Boolean = false;
 			
 			override protected function createChildren():void {
 				super.createChildren();
-				
+			
 				manager = systemManager as TranswarpSystemManager;
 				
-				
-				//WENDT:
-				//manager.xml
-				
-				var c:String = manager.xml.product[0].@color;
-				themeColor = uint("0x" + c.substr(1,6));
-				
+				cw = new Courseware(manager.xml);
+
+				themeColor = cw.product.color;
 			}
 			
 			protected function maximize(event:FullScreenEvent):void {

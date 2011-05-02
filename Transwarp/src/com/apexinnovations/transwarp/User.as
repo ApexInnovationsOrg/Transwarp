@@ -3,9 +3,10 @@ package com.apexinnovations.transwarp
 	import flash.errors.*;
 	import mx.formatters.DateFormatter;
 	
+	// This represents the user taking the class
 	public class User {
 		private static var _instance:User;
-		private var _id:int = 0;
+		private var _id:uint = 0;
 		private var _name:String = '';
 		private var _locale:String = '';
 		private var _lastAccess:Date;	// XML format: YYYY-MM-DDTHH:MM:SS
@@ -15,7 +16,7 @@ package com.apexinnovations.transwarp
 		
 		public static function get instance():User {
 			if(!_instance)
-				new User();
+				new User(<user/>);
 			return _instance;
 		}		
 		
@@ -38,18 +39,12 @@ package com.apexinnovations.transwarp
 			}
 		}
 
-		public function get id():int { return _id; }
+		public function get id():uint { return _id; }
 		public function get name():String { return _name; }
-		public function get locale():int { return _locale; }
+		public function get locale():String { return _locale; }
 		public function get lastAccess():Date { return _lastAccess; }
 		public function get timeout():int { return _timeout; }
-		public function get courseID():int { return _courseID; }
-		public function set courseID(value:int):void {
-			_courseID = value;
-		}
-		public function get pageID():int { return _pageID; }
-		public function set pageID(value:int):void {
-			_pageID = value;
-		}
+		public function get startCourseID():int { return _courseID; }
+		public function get startPageID():int { return _pageID; }
 	}
 }
