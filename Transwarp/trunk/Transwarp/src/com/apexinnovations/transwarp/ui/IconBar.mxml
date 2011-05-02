@@ -9,8 +9,6 @@
 
 	<fx:Script>
 		<![CDATA[
-			import com.apexinnovations.transwarp.events.MaximizeEvent;
-			import com.apexinnovations.transwarp.events.TranswarpEvent;
 			import com.apexinnovations.transwarp.graphics.*;
 			
 			import mx.core.IVisualElement;

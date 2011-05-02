@@ -8,7 +8,7 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import com.apexinnovations.transwarp.events.MaximizeEvent;
+			
 			[Bindable] public var color:uint; 
 			
 			protected function maximize(event:FullScreenEvent):void {

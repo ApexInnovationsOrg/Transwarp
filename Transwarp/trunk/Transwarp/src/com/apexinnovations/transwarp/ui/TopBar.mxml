@@ -3,14 +3,15 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 width="100%" height.default="178" xmlns:assets="com.apexinnovations.transwarp.assets.*"
-		 addedToStage="onAdded()">
+		 addedToStage="onAdded()" xmlns:graphics="com.apexinnovations.transwarp.graphics.*">
 	<fx:Script>
 		<![CDATA[
-			import com.apexinnovations.transwarp.events.MaximizeEvent;
-			
 			import mx.utils.ColorUtil;
 			
 			[Bindable] public var color:uint;
+			[Bindable] public var hasSearch:Boolean = true;
+			[Bindable] public var searchPrompt:String = "Search";			
+			
 			override protected function createChildren():void {
 				super.createChildren();
 				
@@ -24,6 +25,7 @@
 			protected function onAdded():void {
 				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);
 			}
+
 
 		]]>
 	</fx:Script>
@@ -63,12 +65,21 @@
 				<s:GradientEntry ratio="0.87843137" color="#4E4D4F"/>
 			</s:LinearGradient>			
 		</s:fill>
-	</s:Rect>	
+	</s:Rect>
+	
+	<s:Rect width="{logoSmall.width + 250}" height="34" bottom="0" visible.default="false">
+		<s:fill>
+			<s:LinearGradient>
+				<s:GradientEntry color="0xffffff" alpha=".9"/>
+				<s:GradientEntry color="0x7b7b7b" alpha="0" />
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
 	
 	<s:Graphic left="270" top="0" includeIn="default">
 		<s:Path data="M 0 0 L 16 16 L {width} 16 L {width} 0 Z">
 			<s:fill>
-				<s:LinearGradient x="494.95" y="5.7875" scaleX="-11.625" rotation="270">
+				<s:LinearGradient scaleX="-11.625" rotation="270">
 					<s:GradientEntry color="{color}" ratio="0.08"/>
 					<s:GradientEntry color="{ColorUtil.adjustBrightness2(color, -50)}" ratio="0.9"/>
 				</s:LinearGradient>
@@ -81,10 +92,16 @@
 		<s:Label text="By Apex Innovations" fontStyle="italic" color="#5F6062"/>
 	</s:VGroup>
 	
-	<assets:AssetImageControl assetID="logoSmall" includeIn="maximized" left="60" verticalCenter="0">
+	<assets:AssetImageControl id="logoSmall" assetID="logoSmall" includeIn="maximized" left="60" verticalCenter="0">
 		<assets:filters>
-			<s:GlowFilter color="0xffffff" blurX="5" blurY="5" />
+			<s:GlowFilter color="0xffffff" alpha="0.9" blurX="5" blurY="5" />
 		</assets:filters>
-	</assets:AssetImageControl>	
+	</assets:AssetImageControl>
 	
+	<s:HGroup height="32" verticalAlign="middle" bottom="1" right="10">
+		<s:HGroup height="32" verticalAlign="middle" visible="{hasSearch}" width="{hasSearch? NaN : 0}">
+			<s:TextInput id="searchInput" prompt="{searchPrompt}" width="183" />
+			<graphics:SearchIcon/>
+		</s:HGroup>
+	</s:HGroup>	
 </s:Group>

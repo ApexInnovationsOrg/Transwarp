@@ -8,25 +8,25 @@
 			   addedToStage="onAdded()">
 	<fx:Script>
 		<![CDATA[
-			import com.apexinnovations.transwarp.Courseware;
-			import com.apexinnovations.transwarp.events.MaximizeEvent;
-			import com.apexinnovations.transwarp.events.TranswarpEvent;
+			
 			[Bindable] protected var themeColor:uint = 0xcc3337;
 			
 			protected var manager:TranswarpSystemManager;
-			
-			protected var cw:Courseware;
+			protected var courseware:Courseware;
 			
 			protected var maximized:Boolean = false;
+			
 			
 			override protected function createChildren():void {
 				super.createChildren();
 			
 				manager = systemManager as TranswarpSystemManager;
 				
-				cw = new Courseware(manager.xml);
-
-				themeColor = cw.product.color;
+				courseware = new Courseware(manager.xml);
+				themeColor = courseware.product.color;
+				
+				topBar.searchPrompt = "Search " + courseware.product.name;
+				//topBar.hasSearch = false;
 			}
 			
 			protected function maximize(event:FullScreenEvent):void {
@@ -44,8 +44,9 @@
 		<s:State name="maximized" />
 	</transwarp:states>
 	
-	<s:VGroup width="100%" height="100%" gap.default="-53" gap.maximized="-35">
-		<ui:TopBar  color="{themeColor}"/>
+	<!--Setting this group's width to "100%" resulted in it being 10,000 px wide instead of what was expected.-->
+	<s:VGroup width="{width}" height="100%" gap.default="-53" gap.maximized="-35">
+		<ui:TopBar id="topBar" color="{themeColor}"/>
 		<ui:LeftBar id="leftBar" color="{themeColor}"/>
 	</s:VGroup> 
 	
