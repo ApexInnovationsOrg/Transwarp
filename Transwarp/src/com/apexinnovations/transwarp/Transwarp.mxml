@@ -37,7 +37,7 @@
 					themeColor = courseware.product.color;
 				
 					topBar.searchPrompt = "Search " + courseware.product.name;
-					//topBar.hasSearch = false;
+					//topBar.hasSearch = false;		
 				} catch ( e:Error ) {
 					var log:LogService = new LogService();
 					

@@ -1,9 +1,14 @@
 package com.apexinnovations.transwarp
 {
+	import com.apexinnovations.transwarp.webservices.*;
+	
 	import flash.errors.*;
 	import flash.utils.*;
+	
+	import flashx.textLayout.TextLayoutVersion;
 	import flashx.textLayout.conversion.TextConverter;
 	import flashx.textLayout.elements.TextFlow;
+	
 	import mx.formatters.DateFormatter;
 	
 	// This represents a page in the course
@@ -36,10 +41,16 @@ package com.apexinnovations.transwarp
 				_deny = xml.@deny;
 				_allow = xml.@allow;
 				_id = xml.@id;
-				_instructions = TextConverter.importToFlow(xml.instructions[0], TextConverter.TEXT_LAYOUT_FORMAT);
+
+//if (_id == 1) trace(xml.instructions);
+//if (_id == 1) trace('============');
+//if (_id == 1) trace(xml.instructions.TextFlow[0]);
+				_instructions = (xml.instructions == undefined ? null : TextConverter.importToFlow(xml.instructions.TextFlow[0], TextConverter.TEXT_LAYOUT_FORMAT));
+//if (_id == 1) trace('============');
+//if (_id == 1) trace(_instructions);
 				_keywords = xml.@keywords;
 				_name = xml.@name;
-				_supportText = TextConverter.importToFlow(xml.supportText[0], TextConverter.TEXT_LAYOUT_FORMAT);
+				_supportText = (xml.supportText == undefined ? null : TextConverter.importToFlow(xml.supportText.TextFlow[0], TextConverter.TEXT_LAYOUT_FORMAT));
 				_swf = xml.@swf;
 				_timeline = xml.@timeline;
 				_visited = xml.@visited;
@@ -54,7 +65,7 @@ package com.apexinnovations.transwarp
 					_updates[_updates.length] = new Update(u);
 				}
 			} catch ( e:Error ) {
-				throw new ArgumentError(getQualifiedClassName(this) + " - Invalid Initialization XML - " + e.toString());
+				throw new ArgumentError(getQualifiedClassName(this) + " - Invalid Initialization XML - " + e.message);
 			}
 		}
 		
@@ -84,12 +95,20 @@ package com.apexinnovations.transwarp
 		public function bookmark():void {
 			this._bookmarked = true;
 			
-			// NEEDS WORK - log the bookmark, highlight the menu item
+			var bookmark:BookmarkService = new BookmarkService();
+			
+			this.initAWS();
+			
+			bookmark.dispatch();
 		}
 		
 		// Does everything associated with commenting on this page 
 		public function comment(s:String):void {
-			// NEEDS WORK - log the comment
+			var comment:CommentService = new CommentService();
+			
+			this.initAWS();
+
+			comment.dispatch(s);
 		}
 		
 		// Searches the page for keywords, returns a weight
@@ -106,13 +125,29 @@ package com.apexinnovations.transwarp
 			return 0;
 		}
 		
-		// Does everything associated with visiting this page
+		// Does everything associated with visiting this page, except screen updates, which is handled by event
 		public function visit():void {
 			this._visited = true;
 			
 			Courseware.instance.currentPage = this;
 			
-			// NEEDS WORK - log the page visit, load the SWF, unbold the menu item, etc.
+//			var visit:VisitService = new VisitService();
+//			
+//			this.initAWS();
+//
+//			visit.dispatch();	// Need to keep track of visitID
+			
+			// NEEDS WORK - dispatch an event that will load the SWF, unbold the menu item, record the visit with the VisitService, do timers, etc.
+		}
+		
+		
+		// Makes sure the ApexWebService is initialized
+		private function initAWS():void {
+			var cw:Courseware = Courseware.instance;
+			
+			ApexWebService.userID = cw.user.id;
+			ApexWebService.courseID = cw.currentCourse.id;
+			ApexWebService.pageID = this._id;
 		}
 	}
 }
