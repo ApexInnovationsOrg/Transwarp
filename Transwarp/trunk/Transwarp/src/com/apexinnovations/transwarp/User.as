@@ -6,14 +6,14 @@ package com.apexinnovations.transwarp
 	
 	// This represents the user taking the class
 	public class User {
-		private static var _instance:User;
-		private var _classes:String = '';
-		private var _id:uint = 0;
-		private var _lastAccess:Date;	// XML format: YYYY-MM-DDTHH:MM:SS
-		private var _locale:String = '';
-		private var _name:String = '';
-		private var _startCourseID:int = 0;
-		private var _startPageID:int = 0;
+		private static var _instance:User;	// Make this class a singleton
+		private var _classes:String = '';	// Space separated list of classes this user falls into (e.g. 'LMS Doctor Beta')
+		private var _id:uint = 0;			// Unique UserID from database
+		private var _lastAccess:Date;		// XML format: YYYY-MM-DDTHH:MM:SS
+		private var _locale:String = '';	// User's locale (e.g. 'en-US')
+		private var _name:String = '';		// First and last name of user
+		private var _startCourseID:int = 0;	// CourseID to start with
+		private var _startPageID:int = 0;	// PageID to start with
 		
 		public static function get instance():User {
 			if(!_instance)

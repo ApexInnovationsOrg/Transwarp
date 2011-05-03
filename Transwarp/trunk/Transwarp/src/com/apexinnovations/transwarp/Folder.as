@@ -4,11 +4,11 @@ package com.apexinnovations.transwarp
 	import flash.utils.*;
 	import com.apexinnovations.transwarp.Page;
 	
-	// This represents the course being taken
+	// This represents a folder of pages and subfolders (of pages)
 	public class Folder {
-		private var _name:String = '';
+		private var _name:String = '';		// The name of this folder
 		
-		private var _contents:Array = [];
+		private var _contents:Array = [];	// An ordered collection of the contents of this folder (pages and other folders)
 		
 		public function Folder(xml:XML) {
 			try {
