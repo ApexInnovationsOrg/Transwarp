@@ -4,6 +4,7 @@ package com.apexinnovations.transwarp
 	import com.apexinnovations.transwarp.Page;
 	import com.apexinnovations.transwarp.Product;
 	import com.apexinnovations.transwarp.User;
+	import com.apexinnovations.transwarp.webservices.*;
 	
 	import flash.errors.*;
 	import flash.utils.*;
@@ -65,10 +66,13 @@ package com.apexinnovations.transwarp
 		public function set currentCourse(course:Course):void { _currentCourse = course; }
 		public function set currentPage(page:Page):void { _currentPage = page; }
 
-		// Logs whatever we're told to log
+		// Logs whatever the user wants to log
 		public function log(logEvent:String):void {
-			// NEEDS WORK
+			var log:LogService = new LogService();
 			
+			this.initAWS();
+			
+			log.dispatch(logEvent);
 		}
 		
 		// Searches the product for pages with the keywords, returns an ordered list of pages, by weight
@@ -85,6 +89,14 @@ package com.apexinnovations.transwarp
 				}
 			}
 			return pages;
+		}
+
+	
+		// Makes sure the ApexWebService is initialized
+		private function initAWS():void {
+			ApexWebService.userID = this.user.id;
+			ApexWebService.courseID = this.currentCourse.id;
+			ApexWebService.pageID = this.currentPage.id;
 		}
 	}
 }
