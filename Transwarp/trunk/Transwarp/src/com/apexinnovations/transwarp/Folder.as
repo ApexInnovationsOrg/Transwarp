@@ -7,26 +7,27 @@ package com.apexinnovations.transwarp
 	// This represents the course being taken
 	public class Folder {
 		private var _name:String = '';
-		private var _content:Array = [];
+		
+		private var _contents:Array = [];
 		
 		public function Folder(xml:XML) {
 			try {
 				_name = xml.@name;
 
-/*				for (var i:uint = 0; i < xml.length(); i++) {
-					var x:* = xml[i];
-					if (x.hasOwnProperty('id')) {
-						_content[_content.length] = new Page(x);
+				for each (var child:XML in xml.children()) {
+					if (child.@visited != undefined) {
+						_contents[_contents.length] = new Page(child);
 					} else {
-						_content[_content.length] = new Folder(x);
+						_contents[_contents.length] = new Folder(child);
 					}
-				}*/
+				}
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName(this) + " - Invalid Initialization XML - " + e.toString());
 			}
 		}
 		
 		public function get name():String { return _name; }
-		public function get contents():Array { return _content; }
+		
+		public function get contents():Array { return _contents; }
 	}
 }
