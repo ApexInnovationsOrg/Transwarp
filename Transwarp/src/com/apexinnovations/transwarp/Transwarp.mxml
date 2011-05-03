@@ -51,7 +51,7 @@
 					}
 					log.dispatch('XML Load Failure: ' + e.toString());
 
-					themeColor = 0xff0000;
+					themeColor = 0xa8a8a8;
 					popupInfoDialog('There was an error loading data from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
 				}
 			}

@@ -25,7 +25,7 @@
 						e.width = 30;
 						e.height = 30;
 						if(i+1 < buttonGroup.numElements)
-							buttonGroup.addElementAt(new IconSeparator(), i+1);
+							buttonGroup.addElementAt(new HorizontalSeparator(), i+1);
 					}
 				}
 				
@@ -76,7 +76,7 @@
 	</s:VGroup>
 	
 	<s:VGroup width="100%" horizontalAlign="center" gap="10" bottom="10">
-		<ui:IconSeparator visible="{height == minHeight}"/>
+		<ui:HorizontalSeparator visible="{height == minHeight}"/>
 		<ui:IconButton artClass="{MaximizeIcon}" width="30" height="30" click="stage.displayState=StageDisplayState.FULL_SCREEN" includeIn="default" />
 		<ui:IconButton artClass="{MinimizeIcon}" width="30" height="30" click="stage.displayState=StageDisplayState.NORMAL" includeIn="maximized"/>
 	</s:VGroup>

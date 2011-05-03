@@ -3,9 +3,13 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 width="100%" height.default="178" xmlns:assets="com.apexinnovations.transwarp.assets.*"
-		 addedToStage="onAdded()" xmlns:graphics="com.apexinnovations.transwarp.graphics.*">
+		 addedToStage="onAdded()" xmlns:graphics="com.apexinnovations.transwarp.graphics.*" xmlns:ui="com.apexinnovations.transwarp.ui.*">
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.graphics.ArrowNextIcon;
+			import com.apexinnovations.transwarp.graphics.ArrowPreviousIcon;
+			import com.apexinnovations.transwarp.graphics.ReplayIcon;
+			
 			import mx.utils.ColorUtil;
 			
 			[Bindable] public var color:uint;
@@ -98,8 +102,14 @@
 		</assets:filters>
 	</assets:AssetImageControl>
 	
-	<s:HGroup height="32" verticalAlign="middle" bottom="1" right="10">
-		<s:HGroup height="32" verticalAlign="middle" visible="{hasSearch}" width="{hasSearch? NaN : 0}">
+	<s:HGroup height="32" verticalAlign="middle" bottom="1" right="10" gap="12">
+		<ui:TopBarButton icon="{ArrowPreviousIcon}" label="PREV"/>
+		<ui:VerticalSeparator />
+		<ui:TopBarButton icon="{ArrowNextIcon}" label="NEXT" iconOnRight="true"/>
+		<ui:VerticalSeparator />
+		<ui:TopBarButton icon="{ReplayIcon}" label="REPLAY" />
+		
+		<s:HGroup height="32" verticalAlign="middle" visible="{hasSearch}" width="{hasSearch? NaN : 0}" paddingLeft="{hasSearch ? 10 : 0}">
 			<s:TextInput id="searchInput" prompt="{searchPrompt}" width="183" />
 			<graphics:SearchIcon/>
 		</s:HGroup>
