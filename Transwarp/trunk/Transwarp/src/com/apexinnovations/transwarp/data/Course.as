@@ -1,7 +1,7 @@
-package com.apexinnovations.transwarp
+package com.apexinnovations.transwarp.data
 {
-	import com.apexinnovations.transwarp.Folder;
-	import com.apexinnovations.transwarp.Page;
+	import com.apexinnovations.transwarp.data.Folder;
+	import com.apexinnovations.transwarp.data.Page;
 	
 	import flash.errors.*;
 	import flash.utils.*;

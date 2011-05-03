@@ -1,4 +1,4 @@
-package com.apexinnovations.transwarp
+package com.apexinnovations.transwarp.data
 {
 	import flash.utils.*;
 	import flash.errors.*;
@@ -13,7 +13,7 @@ package com.apexinnovations.transwarp
 		public function Link(xml:XML) {
 			try {
 				_url = xml.@url;
-				_textFlow = TextConverter.importToFlow(xml[0], TextConverter.TEXT_LAYOUT_FORMAT);
+				_textFlow = TextConverter.importToFlow(xml.children()[0], TextConverter.TEXT_LAYOUT_FORMAT);
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName(this) + " - Invalid Initialization XML - " + e.toString());
 			}

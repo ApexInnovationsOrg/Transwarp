@@ -1,4 +1,4 @@
-package com.apexinnovations.transwarp
+package com.apexinnovations.transwarp.data
 {
 	import com.apexinnovations.transwarp.webservices.*;
 	
@@ -41,16 +41,10 @@ package com.apexinnovations.transwarp
 				_deny = xml.@deny;
 				_allow = xml.@allow;
 				_id = xml.@id;
-
-//if (_id == 1) trace(xml.instructions);
-//if (_id == 1) trace('============');
-//if (_id == 1) trace(xml.instructions.TextFlow[0]);
-				_instructions = (xml.instructions == undefined ? null : TextConverter.importToFlow(xml.instructions.TextFlow[0], TextConverter.TEXT_LAYOUT_FORMAT));
-//if (_id == 1) trace('============');
-//if (_id == 1) trace(_instructions);
+				_instructions = (xml.instructions == undefined ? null : TextConverter.importToFlow(xml.instructions.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
 				_keywords = xml.@keywords;
 				_name = xml.@name;
-				_supportText = (xml.supportText == undefined ? null : TextConverter.importToFlow(xml.supportText.TextFlow[0], TextConverter.TEXT_LAYOUT_FORMAT));
+				_supportText = (xml.supportText == undefined ? null : TextConverter.importToFlow(xml.supportText.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
 				_swf = xml.@swf;
 				_timeline = xml.@timeline;
 				_visited = xml.@visited;

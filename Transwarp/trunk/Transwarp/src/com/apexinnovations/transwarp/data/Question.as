@@ -1,4 +1,4 @@
-package com.apexinnovations.transwarp
+package com.apexinnovations.transwarp.data
 {
 	import flash.utils.*;
 	import flash.errors.*;
@@ -12,8 +12,8 @@ package com.apexinnovations.transwarp
 		
 		public function Question(xml:XML) {
 			try {
-				_qTextFlow = TextConverter.importToFlow(xml.query[0], TextConverter.TEXT_LAYOUT_FORMAT);
-				_aTextFlow = TextConverter.importToFlow(xml.answer[0], TextConverter.TEXT_LAYOUT_FORMAT);
+				_qTextFlow = TextConverter.importToFlow(xml.query.children()[0], TextConverter.TEXT_LAYOUT_FORMAT);
+				_aTextFlow = TextConverter.importToFlow(xml.answer.children()[0], TextConverter.TEXT_LAYOUT_FORMAT);
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName(this) + " - Invalid Initialization XML - " + e.toString());
 			}

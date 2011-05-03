@@ -1,8 +1,8 @@
-package com.apexinnovations.transwarp
+package com.apexinnovations.transwarp.data
 {
 	import flash.errors.*;
 	import flash.utils.*;
-	import com.apexinnovations.transwarp.Page;
+	import com.apexinnovations.transwarp.data.Page;
 	
 	// This represents a folder of pages and subfolders (of pages)
 	public class Folder {

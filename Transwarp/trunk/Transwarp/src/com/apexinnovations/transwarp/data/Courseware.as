@@ -1,9 +1,9 @@
-package com.apexinnovations.transwarp
+package com.apexinnovations.transwarp.data
 {
-	import com.apexinnovations.transwarp.Course;
-	import com.apexinnovations.transwarp.Page;
-	import com.apexinnovations.transwarp.Product;
-	import com.apexinnovations.transwarp.User;
+	import com.apexinnovations.transwarp.data.Course;
+	import com.apexinnovations.transwarp.data.Page;
+	import com.apexinnovations.transwarp.data.Product;
+	import com.apexinnovations.transwarp.data.User;
 	import com.apexinnovations.transwarp.webservices.*;
 	
 	import flash.errors.*;
