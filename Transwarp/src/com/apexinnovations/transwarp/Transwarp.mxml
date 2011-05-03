@@ -6,8 +6,17 @@
 			   xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			   preloader="com.apexinnovations.transwarp.preloader.PreloaderDisplay"
 			   addedToStage="onAdded()">
+	<fx:Declarations>
+		<s:TitleWindow title="Title" id="infoDialog" close="PopUpManager.removePopUp(infoDialog)" width="400" height="300">
+			<s:TextArea id="infoText" height="100%" width="100%"/> 
+		</s:TitleWindow>
+	</fx:Declarations>
+
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.webservices.*;
+			
+			import mx.managers.PopUpManager;
 			
 			[Bindable] protected var themeColor:uint = 0xcc3337;
 			
@@ -15,6 +24,7 @@
 			protected var courseware:Courseware;
 			
 			protected var maximized:Boolean = false;
+			protected var currentlyIdle:Boolean = false;
 			
 			
 			override protected function createChildren():void {
@@ -22,11 +32,28 @@
 			
 				manager = systemManager as TranswarpSystemManager;
 				
-				courseware = new Courseware(manager.xml);
-				themeColor = courseware.product.color;
+				try {
+					courseware = new Courseware(manager.xml);
+					themeColor = courseware.product.color;
 				
-				topBar.searchPrompt = "Search " + courseware.product.name;
-				//topBar.hasSearch = false;
+					topBar.searchPrompt = "Search " + courseware.product.name;
+					//topBar.hasSearch = false;
+				} catch ( e:Error ) {
+					var log:LogService = new LogService();
+					
+					try {
+						// Try to set these to better debug the error
+						ApexWebService.userID = manager.xml.user.@id;
+						ApexWebService.courseID = manager.xml.user.@startCourse;
+						ApexWebService.pageID = manager.xml.user.@startPage;
+					} catch ( e2:Error ) {
+						// Nothing - just won't be able to record userID, courseID and/or pageID
+					}
+					log.dispatch('XML Load Failure: ' + e.toString());
+
+					themeColor = 0xff0000;
+					popupInfoDialog('There was an error loading data from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
+				}
 			}
 			
 			protected function maximize(event:FullScreenEvent):void {
@@ -37,6 +64,17 @@
 				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);
 			}
 
+			protected function popupInfoDialog(info:String, title:String = 'Error'):void {
+				if (!currentlyIdle) {
+					if (infoDialog.isPopUp) PopUpManager.removePopUp(infoDialog);	// Take down any currently displayed dialogs
+					
+					PopUpManager.addPopUp(infoDialog, this, true);
+					PopUpManager.centerPopUp(infoDialog);
+					infoText.text = info;
+					infoDialog.title = title;
+				}
+			}
+			
 		]]>
 	</fx:Script>
 	<transwarp:states>
