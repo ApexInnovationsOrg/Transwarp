@@ -8,10 +8,10 @@ package com.apexinnovations.transwarp
 		
 	// This represents the course being taken
 	public class Course {
-		private var _id:uint = 0;
-		private var _level:uint = 0;
-		private var _name:String = '';
-		private var _restricted:Boolean = false;
+		private var _id:uint = 0;					// The CourseID from the database
+		private var _level:uint = 0;				// The level of this course
+		private var _name:String = '';				// The name of this course
+		private var _restricted:Boolean = false;	// Is the user restricted from using this course?
 
 		private var _contents:Array = [];
 		

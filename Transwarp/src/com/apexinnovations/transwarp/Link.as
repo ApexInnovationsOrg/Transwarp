@@ -7,8 +7,8 @@ package com.apexinnovations.transwarp
 	
 	// This represents and outside link related to a page
 	public class Link {
-		private var _url:String = '';
-		private var _textFlow:TextFlow = null;
+		private var _url:String = '';			// The URL of this link
+		private var _textFlow:TextFlow = null;	// The text description of this link, as a TextFlow
 		
 		public function Link(xml:XML) {
 			try {

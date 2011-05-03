@@ -7,16 +7,16 @@ package com.apexinnovations.transwarp
 		
 	// This represents the the product being taken
 	public class Product {
-		private static var _instance:Product;
-		private var _color:uint = 0xFFFFFF;
-		private var _id:uint = 0;
-		private var _logoBig:String = '';
-		private var _logoSmall:String = '';
-		private var _name:String = '';
-		private var _released:Date;	// XML format: YYYY-MM-DDTHH:MM:SS
+		private static var _instance:Product;	// Make this class a singleton
+		private var _color:uint = 0xFFFFFF;		// The background color to use for this product in the engine's UI
+		private var _id:uint = 0;				// Unique ProductID from the database
+		private var _logoBig:String = '';		// URL to a large representation of this product's logo
+		private var _logoSmall:String = '';		// URL to a small representation of this product's logo
+		private var _name:String = '';			// The name of this product
+		private var _released:Date;				// XML format: YYYY-MM-DDTHH:MM:SS
 		
-		private var _courses:Vector.<Course> = new Vector.<Course>();
-		private var _helpPages:Vector.<HelpPage> = new Vector.<HelpPage>();
+		private var _courses:Vector.<Course> = new Vector.<Course>();		// Vector (array) of courses for this product
+		private var _helpPages:Vector.<HelpPage> = new Vector.<HelpPage>();	// Vector (array) of help pages for this product
 
 		public static function get instance():Product {
 			if(!_instance)

@@ -7,8 +7,8 @@ package com.apexinnovations.transwarp
 	
 	// This represents a question and answer related to a page
 	public class Question {
-		private var _qTextFlow:TextFlow = null;
-		private var _aTextFlow:TextFlow = null;
+		private var _qTextFlow:TextFlow = null;	// The question text, as a TextFlow
+		private var _aTextFlow:TextFlow = null;	// The answer text, as a TextFlow
 		
 		public function Question(xml:XML) {
 			try {
