@@ -1,7 +1,7 @@
 package com.apexinnovations.transwarp.application.events
 {
 	import flash.events.Event;
-	import com.apexinnovations.transwarp.Page;
+	import com.apexinnovations.transwarp.data.Page;
 	
 	public class PageSelectionEvent extends Event {
 		

@@ -50,7 +50,6 @@
 		<s:GlowFilter color="0xffffff" alpha="{hovered ? 0.6 : 0}" blurX="5" blurY="5" />
 	</s:filters>
 	
-	
 	<s:Rect top="-2" bottom="-2" left="-2" right="-2">
 		<s:fill>
 			<s:SolidColor alpha="0" color="0x00ff00" />

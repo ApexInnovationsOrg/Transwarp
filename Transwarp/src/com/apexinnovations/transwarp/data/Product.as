@@ -1,9 +1,9 @@
-package com.apexinnovations.transwarp
+package com.apexinnovations.transwarp.data
 {
 	import flash.errors.*;
 	import flash.utils.*;
 	import mx.formatters.DateFormatter;
-	import com.apexinnovations.transwarp.Course;
+	import com.apexinnovations.transwarp.data.Course;
 		
 	// This represents the the product being taken
 	public class Product {
