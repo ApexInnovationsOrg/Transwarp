@@ -128,9 +128,11 @@ package com.apexinnovations.transwarp.preloader {
 					}
 				}
 	
-				// A little preprocessing of the XML... Mark visited, bookmarked, and updated pages
-				var visitedPages:Array = xml.user.visitedPages.text().split(' ');
-				var bookmarkedPages:Array = xml.user.bookmarkedPages.text().split(' ');
+				// A little preprocessing of the XML...
+				
+				// ...Mark visited, bookmarked, and updated pages
+				var visitedPages:Array = (xml.user.visitedPages.text() != undefined ? xml.user.visitedPages.text().split(' ') : []);
+				var bookmarkedPages:Array = (xml.user.bookmarkedPages.text() != undefined ? xml.user.bookmarkedPages.text().split(' ') : []);
 				for each (var page:XML in xml..page) {
 					page.@visited = (visitedPages.indexOf(String(page.@id)) != -1);
 					page.@bookmarked = (bookmarkedPages.indexOf(String(page.@id)) != -1);
@@ -146,24 +148,20 @@ package com.apexinnovations.transwarp.preloader {
 					}
 					page.@updated = updated;
 				}
+				// ...Mark courseware timeout
+				xml.timeout = xml.user.coursewareTimeout;
 				
-				//trace(_xml.toXMLString());	
+				// ...Mark restricted courses
+				var restrictedCourses:Array = (xml.user.restrictedCourses.text() != undefined ? xml.user.restrictedCourses.text().split(' ') : []);
+				for each (var course:XML in xml..course) {
+					course.@restricted = (restrictedCourses.indexOf(String(course.@id)) != -1);
+				}
 				
 				// Now load up any required assets
-				
 				AssetLoader.instance.addBitmapAsset(_xml.@website + "/Classroom/engine/" + _xml.product[0].@logoBig, "logoBig");
 				AssetLoader.instance.addBitmapAsset(_xml.@website + "/Classroom/engine/" + _xml.product[0].@logoSmall, "logoSmall");
 				
 				advanceFrame();
-				
-				/*var assets:AssetLoader = AssetLoader.instance;
-				for each (var icon:XML in xml.product.images.children()) {
-					var hi:Number = icon.hasOwnProperty("@highlightIntensity") ? icon.@highlightIntensity : 0.3;
-					assets.addBitmapAsset(icon.@url, icon.@id, icon.@name, hi);
-					noassets = false;
-				}
-				trace("loading assets");
-				assets.addEventListener(Event.COMPLETE, assetsLoaded); */
 			}
 		}
 		
