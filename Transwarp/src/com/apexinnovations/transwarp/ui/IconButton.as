@@ -112,7 +112,7 @@ package com.apexinnovations.transwarp.ui {
 		}
 		
 		protected static function initHighlightFilter():BitmapFilter  {
-			return new GlowFilter(0xffffff, .5, 12, 12);		
+			return new GlowFilter(0xffffff, .5, 5, 5);		
 		}
 		
 		protected static function initDropShadowFilter():DropShadowFilter {
