@@ -54,21 +54,21 @@ package com.apexinnovations.transwarp.ui {
 			
 			if (value) addChild(value);
 			
-			centerArt();
+			positionArt();
 			
 			_art = value;
 		}
 		
 		override public function set width(value:Number):void {
 			super.width = value;
-			centerArt();
+			positionArt();
 			initializeHitArea();
 			
 		}
 		
 		override public function set height(value:Number):void {
 			super.height = value;
-			centerArt();
+			positionArt();
 			initializeHitArea();
 		}
 
@@ -134,7 +134,7 @@ package com.apexinnovations.transwarp.ui {
 				
 	///////////////////////////////////////////////////////////
 		
-		protected function centerArt():void {
+		protected function positionArt():void {
 			if(!_art)
 				return;
 			

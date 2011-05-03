@@ -1,5 +1,7 @@
 package com.apexinnovations.transwarp {	
+	import flashx.textLayout.TextLayoutVersion;
 	import flashx.textLayout.container.TextContainerManager;
+	import flashx.textLayout.conversion.TextConverter;
 	
 	import spark.components.Application;
 	

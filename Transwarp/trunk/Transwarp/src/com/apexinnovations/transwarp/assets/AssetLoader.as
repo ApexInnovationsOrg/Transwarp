@@ -4,6 +4,7 @@ package com.apexinnovations.transwarp.assets
 	import br.com.stimuli.loading.loadingtypes.LoadingItem;
 	
 	import com.apexinnovations.transwarp.errors.AssetConflictError;
+	import com.apexinnovations.transwarp.events.AssetAddedEvent;
 	import com.apexinnovations.transwarp.webservices.ApexWebService;
 	import com.apexinnovations.transwarp.webservices.LogService;
 	
@@ -15,10 +16,12 @@ package com.apexinnovations.transwarp.assets
 	import flash.utils.Dictionary;
 	
 	[Event(name="complete", type="flash.events.Event")]
+	[Event(name="assetAdded", type="com.apexinnovations.transwarp.events.AssetAddedEvent")]
 	public class AssetLoader extends EventDispatcher {
 		protected var loader:BulkLoader;
 		protected var iconAssets:Dictionary;
 		protected static var _instance:AssetLoader;
+		
 		
 		public static function get instance():AssetLoader {
 			if(!_instance)
@@ -63,6 +66,8 @@ package com.apexinnovations.transwarp.assets
 			var asset:BitmapAsset = new BitmapAsset(item, name, highlightIntensity);
 			iconAssets[id] = asset			
 			
+			dispatchEvent(new AssetAddedEvent(asset));
+				
 			return asset;
 		}
 			
