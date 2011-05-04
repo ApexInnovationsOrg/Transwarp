@@ -7,7 +7,7 @@
 			   preloader="com.apexinnovations.transwarp.preloader.PreloaderDisplay"
 			   addedToStage="onAdded()">
 	<fx:Declarations>
-		<s:TitleWindow title="Title" id="infoDialog" close="PopUpManager.removePopUp(infoDialog)" width="400" height="300">
+		<s:TitleWindow title="Title" id="infoDialog" close="PopUpManager.removePopUp(infoDialog); System.exit(0);" width="400" height="300">
 			<s:TextArea id="infoText" height="100%" width="100%"/> 
 		</s:TitleWindow>
 	</fx:Declarations>
@@ -17,6 +17,7 @@
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.webservices.*;
 			
+			import flash.system.System;
 			import mx.managers.PopUpManager;
 			
 			[Bindable] protected var themeColor:uint = 0xcc3337;
