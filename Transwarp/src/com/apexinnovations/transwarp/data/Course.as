@@ -13,7 +13,7 @@ package com.apexinnovations.transwarp.data
 		private var _name:String = '';				// The name of this course
 		private var _restricted:Boolean = false;	// Is the user restricted from using this course?
 
-		private var _contents:Array = [];
+		private var _contents:Array = [];			// An ordered collection of the contents of this folder (pages and other folders)
 		
 		public function Course(xml:XML) {
 			try {
@@ -40,6 +40,21 @@ package com.apexinnovations.transwarp.data
 		public function get restricted():Boolean { return _restricted; }
 		
 		public function get contents():Array { return _contents; }
+		public function pages(recurse:Boolean = true):Vector.<Page> {
+			var _pages:Vector.<Page> = new Vector.<Page>();
+			
+			for each (var item:* in _contents) {
+				if (item is Page) {
+					_pages[_pages.length] = item as Page;
+				} else if (recurse) {
+					var _more:Vector.<Page> = (item as Folder).pages(recurse);
+					for each (var x:Page in _more) {
+						_pages.push(x);
+					}
+				}
+			}
+			return _pages;
+		}
 
 			
 		private function roman(n:int):String {
