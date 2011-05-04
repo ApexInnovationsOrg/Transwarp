@@ -8,7 +8,7 @@ package com.apexinnovations.transwarp.data
 	
 	import flash.errors.*;
 	import flash.utils.*;
-			
+	
 	// This represents the user taking the class and the product being taken
 	public class Courseware {
 		private static var _instance:Courseware;	// Make this class a singleton
@@ -77,26 +77,57 @@ package com.apexinnovations.transwarp.data
 		
 		// Searches the product for pages with the keywords, returns an ordered list of pages, by weight
 		public function search(keywords:String):Vector.<Page> {
-			// NEEDS WORK - doesn't weight the search results, needs to log the search
 			var pages:Vector.<Page> = new Vector.<Page>();
+
+			// LMS users aren't allowed to search
+			if (this.user.lms) return pages;
+			
+trace('Searching all pages for keywords: "' + keywords + '"');
+			// NEEDS WORK - not truly recursive
 			for each (var course:Course in this.product.courses) {
+				// Allow search even within courses that this user is restricted from
 				for each (var item:* in course.contents) {
 					if (item is Page) {
 						if (item.search(keywords)) {
 							pages[pages.length] = item;
 						}
+					} else {
+						for each (var subitem:* in item.contents) {
+							if (subitem is Page) {
+								if (subitem.search(keywords)) {
+									pages[pages.length] = subitem;
+								}
+							} else {
+								for each (var subsubitem:* in subitem.contents) {
+									// Ad nauseum
+								}
+							}
+						}
 					}
 				}
 			}
-			return pages;
+			// Log the search
+			var srch:SearchService = new SearchService();
+			
+			this.initAWS();
+			
+			srch.dispatch(keywords);
+			
+			// Sort and return the results
+			return pages.sort(this.pageWeightCompare);
 		}
 
 	
 		// Makes sure the ApexWebService is initialized
 		private function initAWS():void {
-			ApexWebService.userID = this.user.id;
-			ApexWebService.courseID = this.currentCourse.id;
-			ApexWebService.pageID = this.currentPage.id;
+			if (this.user)			ApexWebService.userID = this.user.id;
+			if (this.currentCourse)	ApexWebService.courseID = this.currentCourse.id;
+			if (this.currentPage)	ApexWebService.pageID = this.currentPage.id;
+		}
+		
+		// Comparison function to sort pages by weight
+		private function pageWeightCompare(x:Page, y:Page):Number {
+			return y.weight - x.weight;
 		}
 	}
 }
