@@ -8,7 +8,6 @@ package com.apexinnovations.transwarp.data
 	// This represents the the product being taken
 	public class Product {
 		private static var _instance:Product;	// Make this class a singleton
-		private var _color:uint = 0xFFFFFF;		// The background color to use for this product in the engine's UI
 		private var _id:uint = 0;				// Unique ProductID from the database
 		private var _logoBig:String = '';		// URL to a large representation of this product's logo
 		private var _logoSmall:String = '';		// URL to a small representation of this product's logo
@@ -31,7 +30,6 @@ package com.apexinnovations.transwarp.data
 			_instance = this;
 			
 			try {
-				_color = uint("0x" + String(xml.@color).substr(1,6));	// @color like '#FF00FF'
 				_id = xml.@id;
 				_logoBig = xml.@logoBig;
 				_logoSmall = xml.@logoSmall;
@@ -49,7 +47,6 @@ package com.apexinnovations.transwarp.data
 			}
 		}
 		
-		public function get color():uint { return _color; }
 		public function get id():uint { return _id; }
 		public function get logoBig():String { return _logoBig; }
 		public function get logoSmall():String { return _logoSmall; }

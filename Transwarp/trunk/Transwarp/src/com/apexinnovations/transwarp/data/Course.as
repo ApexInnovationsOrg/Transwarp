@@ -40,6 +40,8 @@ package com.apexinnovations.transwarp.data
 		public function get restricted():Boolean { return _restricted; }
 		
 		public function get contents():Array { return _contents; }
+		
+		// Returns a Vector (array) of Pages in this Course
 		public function pages(recurse:Boolean = true):Vector.<Page> {
 			var _pages:Vector.<Page> = new Vector.<Page>();
 			
