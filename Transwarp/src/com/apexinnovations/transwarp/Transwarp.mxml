@@ -5,9 +5,10 @@
 			   xmlns:transwarp="com.apexinnovations.transwarp.*"
 			   xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			   preloader="com.apexinnovations.transwarp.preloader.PreloaderDisplay"
-			   addedToStage="onAdded()">
+			   addedToStage="onAdded()"
+			   applicationComplete="applicationCompleteHandler()">
 	<fx:Declarations>
-		<s:TitleWindow title="Title" id="infoDialog" close="PopUpManager.removePopUp(infoDialog); System.exit(0);" width="400" height="300">
+		<s:TitleWindow title="Title" id="errorDialog" close="PopUpManager.removePopUp(errorDialog); System.exit(0);" width="400" height="300">
 			<s:TextArea id="infoText" height="100%" width="100%"/> 
 		</s:TitleWindow>
 	</fx:Declarations>
@@ -17,7 +18,9 @@
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.webservices.*;
 			
+			import flash.events.*;
 			import flash.system.System;
+			
 			import mx.managers.PopUpManager;
 			
 			[Bindable] protected var themeColor:uint = 0xcc3337;
@@ -36,6 +39,10 @@
 				
 				try {
 					courseware = new Courseware(manager.xml);
+
+					ApexWebService.userID = courseware.user.id;
+					ApexWebService.courseID = courseware.user.startCourseID;
+					ApexWebService.pageID = courseware.user.startPageID;
 					themeColor = courseware.product.color;
 				
 					topBar.searchPrompt = "Search " + courseware.product.name;
@@ -54,7 +61,7 @@
 					log.dispatch('XML Load Failure: ' + e.toString());
 
 					themeColor = 0xa8a8a8;
-					popupInfoDialog('There was an error loading data from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
+					popupErrorDialog('There was an error loading data from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
 				}
 			}
 			
@@ -66,17 +73,44 @@
 				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);
 			}
 
-			protected function popupInfoDialog(info:String, title:String = 'Error'):void {
+			protected function popupErrorDialog(info:String, title:String = 'Error'):void {
 				if (!currentlyIdle) {
-					if (infoDialog.isPopUp) PopUpManager.removePopUp(infoDialog);	// Take down any currently displayed dialogs
+					if (errorDialog.isPopUp) PopUpManager.removePopUp(errorDialog);	// Take down any currently displayed dialogs
 					
-					PopUpManager.addPopUp(infoDialog, this, true);
-					PopUpManager.centerPopUp(infoDialog);
+					PopUpManager.addPopUp(errorDialog, this, true);
+					PopUpManager.centerPopUp(errorDialog);
 					infoText.text = info;
-					infoDialog.title = title;
+					errorDialog.title = title;
+				}
+			}
+
+			private function applicationCompleteHandler():void {
+				loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
+			}
+			
+			private function uncaughtErrorHandler(event:UncaughtErrorEvent):void {
+				var log:LogService = new LogService();
+				
+				if (event.error is Error) {
+					var error:Error = event.error as Error;
+					
+					log.dispatch('UNHANDLED ERROR: ' + error.message);
+					
+					popupErrorDialog('We are sorry, but there has been a problem and the application must be closed.\n\n' + error.message + '\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
+				} else if (event.error is ErrorEvent) {
+					var errorEvent:ErrorEvent = event.error as ErrorEvent;
+					
+					log.dispatch('UNHANDLED EVENT: ' + errorEvent.type);
+					
+					popupErrorDialog('We are sorry, but there has been a problem and the application must be closed.\n\n' + errorEvent.type + '\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
+				} else {
+					// a non-Error, non-ErrorEvent type was thrown and uncaught
 				}
 			}
 			
+			private function clickHandler(event:MouseEvent):void {
+				throw new Error("CRASH!");
+			}
 		]]>
 	</fx:Script>
 	<transwarp:states>
@@ -89,7 +123,7 @@
 		<ui:TopBar id="topBar" color="{themeColor}"/>
 		<ui:LeftBar id="leftBar" color="{themeColor}"/>
 	</s:VGroup> 
-	
+<!--	<s:Button label="Cause Error" click="clickHandler(event);"/> -->
 	
 
 </transwarp:TranswarpBase>
