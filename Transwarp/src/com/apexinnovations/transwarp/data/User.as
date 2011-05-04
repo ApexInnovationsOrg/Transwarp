@@ -40,15 +40,15 @@ package com.apexinnovations.transwarp.data
 			}
 		}
 
-		public function get beta():Boolean { return (_classes.indexOf('Beta') > 0); }
-		public function get doctor():Boolean { return (_classes.indexOf('Doctor') > 0); }
-		public function get emt():Boolean { return (_classes.indexOf('EMT') > 0); }
+		public function get beta():Boolean { return (_classes.indexOf('Beta') != -1); }
+		public function get doctor():Boolean { return (_classes.indexOf('Doctor') != -1); }
+		public function get emt():Boolean { return (_classes.indexOf('EMT') != -1); }
 		public function get id():uint { return _id; }
 		public function get lastAccess():Date { return _lastAccess; }
-		public function get lms():Boolean { return (_classes.indexOf('LMS') > 0); }
+		public function get lms():Boolean { return (_classes.indexOf('LMS') != -1); }
 		public function get locale():String { return _locale; }
 		public function get name():String { return _name; }
-		public function get nurse():Boolean { return (_classes.indexOf('Nurse') > 0); }
+		public function get nurse():Boolean { return (_classes.indexOf('Nurse') != -1); }
 		public function get startCourseID():int { return _startCourseID; }
 		public function get startPageID():int { return _startPageID; }
 	}
