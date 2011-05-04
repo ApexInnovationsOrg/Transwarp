@@ -12,6 +12,7 @@ package com.apexinnovations.transwarp.data
 	// This represents the user taking the class and the product being taken
 	public class Courseware {
 		private static var _instance:Courseware;	// Make this class a singleton
+		private var _color:uint = 0xFFFFFF;		// The background color to use for this product in the engine's UI
 		private var _copyright:String = '';			// Copyright information about this engine
 		private var _currentCourse:Course = null;	// Current course the user is viewing
 		private var _currentPage:Page = null;		// Current page the user is viewing
@@ -37,6 +38,7 @@ package com.apexinnovations.transwarp.data
 			_instance = this;
 			
 			try {
+				_color = uint("0x" + String(xml.@color).substr(1,6));	// @color like '#FF00FF'
 				_copyright = xml.@copyright;
 				_debug = xml.@debug;
 				_owner = xml.@owner;
@@ -51,6 +53,7 @@ package com.apexinnovations.transwarp.data
 			}
 		}
 		
+		public function get color():uint { return _color; }
 		public function get copyright():String { return _copyright; }
 		public function get currentCourse():Course { return _currentCourse; }
 		public function get currentPage():Page { return _currentPage; }

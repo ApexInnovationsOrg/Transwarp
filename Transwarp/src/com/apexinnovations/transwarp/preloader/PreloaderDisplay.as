@@ -148,8 +148,9 @@ package com.apexinnovations.transwarp.preloader {
 					}
 					page.@updated = updated;
 				}
-				// ...Mark courseware timeout
-				xml.timeout = xml.user.coursewareTimeout;
+				// ...Mark courseware timeout, color
+				xml.@timeout = xml.user.@coursewareTimeout;
+				xml.@color = xml.product.@color;
 				
 				// ...Mark restricted courses
 				var restrictedCourses:Array = (xml.user.restrictedCourses.text() != undefined ? xml.user.restrictedCourses.text().split(' ') : []);
