@@ -7,6 +7,7 @@ package com.apexinnovations.transwarp.data
 	import com.apexinnovations.transwarp.webservices.*;
 	
 	import flash.errors.*;
+	import flash.events.Event;
 	import flash.utils.*;
 	
 	// This represents the user taking the class and the product being taken
@@ -26,8 +27,6 @@ package com.apexinnovations.transwarp.data
 		private var _user:User = null;				// The user that's accessing the courseware
 
 		public static function get instance():Courseware {
-			if(!_instance)
-				new Courseware(<courseware/>);
 			return _instance;
 		}		
 
@@ -74,6 +73,7 @@ package com.apexinnovations.transwarp.data
 			var log:LogService = new LogService();
 			
 			this.initAWS();
+
 			
 			log.dispatch(logEvent);
 		}

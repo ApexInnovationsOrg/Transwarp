@@ -28,7 +28,6 @@ package com.apexinnovations.transwarp.ui {
 			
 			buttonMode = true;
 			
-			
 			addEventListener(MouseEvent.ROLL_OVER, roll);
 			addEventListener(MouseEvent.ROLL_OUT, roll);
 			addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
