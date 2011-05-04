@@ -3,6 +3,7 @@ package com.apexinnovations.transwarp.data
 	import com.apexinnovations.transwarp.webservices.*;
 	
 	import flash.errors.*;
+	import flash.events.EventDispatcher;
 	import flash.utils.*;
 	
 	import flashx.textLayout.conversion.ConversionType;
@@ -12,7 +13,7 @@ package com.apexinnovations.transwarp.data
 	import mx.formatters.DateFormatter;
 	
 	// This represents a page in the course
-	public class Page {
+	public class Page extends EventDispatcher {
 		private var _allow:String = '';				// Space separated list of types of user allowed to view this page (e.g. 'LMS Doctor Beta'). '' means all
 		private var _bookmarked:Boolean = false;	// Has this page been bookmarked by the user?
 		private var _configuration:String = '';		// URL of XML file to be loaded by SWF as configuration

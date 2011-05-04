@@ -1,5 +1,6 @@
 package com.apexinnovations.transwarp.data
 {
+	import com.apexinnovations.transwarp.data.Courseware;
 	import flash.utils.*;
 	import flash.errors.*;
 	
