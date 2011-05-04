@@ -1,8 +1,9 @@
 package com.apexinnovations.transwarp.data
 {
+	import com.apexinnovations.transwarp.data.Page;
+	
 	import flash.errors.*;
 	import flash.utils.*;
-	import com.apexinnovations.transwarp.data.Page;
 	
 	// This represents a folder of pages and subfolders (of pages)
 	public class Folder {
@@ -29,5 +30,20 @@ package com.apexinnovations.transwarp.data
 		public function get name():String { return _name; }
 		
 		public function get contents():Array { return _contents; }
+		public function pages(recurse:Boolean = true):Vector.<Page> {
+			var _pages:Vector.<Page> = new Vector.<Page>();
+			
+			for each (var item:* in _contents) {
+				if (item is Page) {
+					_pages[_pages.length] = item as Page;
+				} else if (recurse) {
+					var _more:Vector.<Page> = (item as Folder).pages(recurse);
+					for each (var x:Page in _more) {
+						_pages.push(x);
+					}
+				}
+			}
+			return _pages;
+		}
 	}
 }

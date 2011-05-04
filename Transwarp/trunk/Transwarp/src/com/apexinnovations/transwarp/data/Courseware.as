@@ -83,26 +83,10 @@ package com.apexinnovations.transwarp.data
 			if (this.user.lms) return pages;
 			
 trace('Searching all pages for keywords: "' + keywords + '"');
-			// NEEDS WORK - not truly recursive
 			for each (var course:Course in this.product.courses) {
-				// Allow search even within courses that this user is restricted from
-				for each (var item:* in course.contents) {
-					if (item is Page) {
-						if (item.search(keywords)) {
-							pages[pages.length] = item;
-						}
-					} else {
-						for each (var subitem:* in item.contents) {
-							if (subitem is Page) {
-								if (subitem.search(keywords)) {
-									pages[pages.length] = subitem;
-								}
-							} else {
-								for each (var subsubitem:* in subitem.contents) {
-									// Ad nauseum
-								}
-							}
-						}
+				for each (var item:Page in course.pages()) {
+					if (item.search(keywords)) {
+						pages[pages.length] = item;
 					}
 				}
 			}
