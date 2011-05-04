@@ -35,7 +35,8 @@ package com.apexinnovations.transwarp.data
 		}
 		
 		public function get id():uint { return _id; }
-		public function get level():String { return roman(_level); }
+		public function get level():uint {return _level;}
+		public function get levelRoman():String { return roman(_level); }
 		public function get name():String { return _name; }
 		public function get restricted():Boolean { return _restricted; }
 		
@@ -58,7 +59,6 @@ package com.apexinnovations.transwarp.data
 			return _pages;
 		}
 
-			
 		private function roman(n:int):String {
 			if( n >= 4000 || n < 1)
 				return "N/A";

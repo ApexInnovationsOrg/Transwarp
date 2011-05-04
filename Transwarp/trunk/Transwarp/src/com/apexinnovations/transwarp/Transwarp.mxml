@@ -12,10 +12,11 @@
 			<s:TextArea id="infoText" height="100%" width="100%"/> 
 		</s:TitleWindow>
 	</fx:Declarations>
-
+	
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.User;
 			import com.apexinnovations.transwarp.webservices.*;
 			
 			import flash.events.*;
@@ -51,9 +52,10 @@ for each (var p:Page in results) {
 	trace('   ' + p.name + ' (ID: ' + p.id + ') - ' + p.weight);
 }
 					themeColor = courseware.color;
-				
+					
+									
 					topBar.searchPrompt = "Search " + courseware.product.name;
-					//topBar.hasSearch = false;		
+					topBar.hasSearch = !User.instance.lms;
 				} catch ( e:Error ) {
 					var log:LogService = new LogService();
 					
@@ -70,6 +72,8 @@ for each (var p:Page in results) {
 					themeColor = 0xa8a8a8;
 					popupErrorDialog('There was an error loading data from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
 				}
+				
+				topBar.courses = courseware.product.courses;
 			}
 			
 			protected function maximize(event:FullScreenEvent):void {
@@ -131,6 +135,7 @@ for each (var p:Page in results) {
 		<ui:LeftBar id="leftBar" color="{themeColor}"/>
 	</s:VGroup> 
 <!--	<s:Button label="Cause Error" click="clickHandler(event);"/> -->
+	
 	
 
 </transwarp:TranswarpBase>

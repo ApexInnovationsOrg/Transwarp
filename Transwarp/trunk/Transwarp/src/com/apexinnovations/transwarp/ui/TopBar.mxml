@@ -6,20 +6,26 @@
 		 addedToStage="onAdded()" xmlns:graphics="com.apexinnovations.transwarp.graphics.*" xmlns:ui="com.apexinnovations.transwarp.ui.*">
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.data.Course;
+			import com.apexinnovations.transwarp.data.User;
 			import com.apexinnovations.transwarp.graphics.ArrowNextIcon;
 			import com.apexinnovations.transwarp.graphics.ArrowPreviousIcon;
 			import com.apexinnovations.transwarp.graphics.ReplayIcon;
 			
+			import mx.binding.utils.BindingUtils;
 			import mx.utils.ColorUtil;
 			
 			[Bindable] public var color:uint;
 			[Bindable] public var hasSearch:Boolean = true;
+			[Bindable] public var hasRightGradient:Boolean = true;
 			[Bindable] public var searchPrompt:String = "Search";			
+			
+			protected var _courses:Vector.<Course>;
 			
 			override protected function createChildren():void {
 				super.createChildren();
-				
-				
+				if(_courses)
+					initLevelNav();
 			}
 			
 			protected function maximize(event:FullScreenEvent):void {
@@ -29,7 +35,37 @@
 			protected function onAdded():void {
 				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);
 			}
-
+			
+			public function set courses(value:Vector.<Course>):void {
+				_courses = value;
+				if(_courses && _courses.length > 1)
+					hasRightGradient = false;
+				
+				if(levelNav)
+					initLevelNav();
+			}
+			
+			protected function initLevelNav():void {
+				var i:int = 0;
+				for each(var c:Course in _courses) {
+					var b:LevelButton;
+					
+					if(i < levelNav.numElements)
+						b = levelNav.getElementAt(i) as LevelButton;
+					else {
+						b = new LevelButton();
+						levelNav.addElement(b);	
+					}
+					
+					if(i==0)
+						b.selected = true;
+					
+					b.levelName = c.name;
+					b.levelRoman = c.levelRoman;
+					BindingUtils.bindProperty(b, "color", this, "color");
+					i++;
+				}					
+			}
 
 		]]>
 	</fx:Script>
@@ -39,7 +75,8 @@
 		<s:State name="maximized" />
 	</s:states>
 	
-	<s:Rect width="100%" height="144" top="0" includeIn="default">
+	<!--Gray Gradient at top-->
+	<s:Rect width="100%" height="144" top="0" excludeFrom="maximized">
 		<s:fill>
 			<s:LinearGradient rotation="270" scaleX="-148">
 				<s:GradientEntry ratio="0" color="#E0E1E2"/>
@@ -54,6 +91,29 @@
 		</s:fill>
 	</s:Rect>
 	
+	<!--Color gradient for products with only 1 level-->
+	<s:Rect height="144" width="40%" bottom="34" right="0" alpha="{hasRightGradient ? 1 : 0}" blendMode="multiply" excludeFrom="maximized">
+		<s:fill>
+			<s:LinearGradient>
+				<s:GradientEntry color="0xffffff" alpha="0" />
+				<s:GradientEntry color="{ColorUtil.adjustBrightness2(color,25)}" alpha=".65" />
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	
+	<!--"Flair" graphic at the top of the gray gradient-->
+	<s:Graphic left="270" top="0" includeIn="default">
+		<s:Path data="M 0 0 16 16 {width} 16 {width} 0 Z">
+			<s:fill>
+				<s:LinearGradient scaleX="-11.625" rotation="270">
+					<s:GradientEntry color="{color}" ratio="0.08"/>
+					<s:GradientEntry color="{ColorUtil.adjustBrightness2(color, -50)}" ratio="0.9"/>
+				</s:LinearGradient>
+			</s:fill>
+		</s:Path>
+	</s:Graphic>
+	
+	<!--Darker Gray bar that serves as background for Next, Prev, Replay etc-->
 	<s:Rect width="100%" height="34" bottom="0">
 		<s:fill>
 			<s:LinearGradient rotation="270" scaleX="-43.4">
@@ -71,25 +131,15 @@
 		</s:fill>
 	</s:Rect>
 	
-	<s:Rect width="{logoSmall.width + 250}" height="34" bottom="0" visible.default="false">
+	<!--Light Gradient to sit behind the small logo-->
+	<s:Rect width="{logoSmall.width + 250}" height="34" bottom="0" includeIn="maximized">
 		<s:fill>
 			<s:LinearGradient>
 				<s:GradientEntry color="0xffffff" alpha=".9"/>
 				<s:GradientEntry color="0x7b7b7b" alpha="0" />
 			</s:LinearGradient>
 		</s:fill>
-	</s:Rect>
-	
-	<s:Graphic left="270" top="0" includeIn="default">
-		<s:Path data="M 0 0 L 16 16 L {width} 16 L {width} 0 Z">
-			<s:fill>
-				<s:LinearGradient scaleX="-11.625" rotation="270">
-					<s:GradientEntry color="{color}" ratio="0.08"/>
-					<s:GradientEntry color="{ColorUtil.adjustBrightness2(color, -50)}" ratio="0.9"/>
-				</s:LinearGradient>
-			</s:fill>
-		</s:Path>
-	</s:Graphic>	
+	</s:Rect>	
 	
 	<s:VGroup horizontalAlign="right" left="29" verticalCenter="-25" includeIn="default">
 		<assets:AssetImageControl assetID="logoBig" />
@@ -101,6 +151,8 @@
 			<s:GlowFilter color="0xffffff" alpha="0.9" blurX="5" blurY="5" />
 		</assets:filters>
 	</assets:AssetImageControl>
+	
+	<s:TileGroup id="levelNav" left="285" right="40" top="30" requestedRowCount="3" orientation="columns" verticalGap="10" horizontalGap="10"/>
 	
 	<s:HGroup height="32" verticalAlign="middle" bottom="1" right="10" gap="12">
 		<ui:TopBarButton icon="{ArrowPreviousIcon}" label="PREV"/>
