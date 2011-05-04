@@ -5,7 +5,7 @@ package com.apexinnovations.transwarp.data
 	import flash.errors.*;
 	import flash.utils.*;
 	
-	import flashx.textLayout.TextLayoutVersion;
+	import flashx.textLayout.conversion.ConversionType;
 	import flashx.textLayout.conversion.TextConverter;
 	import flashx.textLayout.elements.TextFlow;
 	
@@ -27,6 +27,7 @@ package com.apexinnovations.transwarp.data
 		private var _swf:String = '';				// URL of SWF file to load
 		private var _timeline:Boolean = false;		// Does this page have a timeline across the bottom to show progress?
 		private var _visited:Boolean = false;		// Has this page been visited by the user?
+		private var _weight:uint = 0;				// The 'weight' of the page in a search ranking
 
 		private var _links:Vector.<Link> = new Vector.<Link>();				// Vector (array) of related Links
 		private var _questions:Vector.<Question> = new Vector.<Question>();	// Vector (array) of related Questions
@@ -63,11 +64,11 @@ package com.apexinnovations.transwarp.data
 			}
 		}
 		
-		public function get allowBeta():Boolean { return ((_allow == '' || _allow.indexOf('Beta') > 0) && !(_deny.indexOf('Beta') > 0)); }
-		public function get allowDoctor():Boolean { return ((_allow == '' || _allow.indexOf('Doctor') > 0) && !(_deny.indexOf('Doctor') > 0)); }
-		public function get allowEMT():Boolean { return ((_allow == '' || _allow.indexOf('EMT') > 0) && !(_deny.indexOf('EMT') > 0)); }
-		public function get allowLMS():Boolean { return ((_allow == '' || _allow.indexOf('LMS') > 0) && !(_deny.indexOf('LMS') > 0)); }
-		public function get allowNurse():Boolean { return ((_allow == '' || _allow.indexOf('Nurse') > 0) && !(_deny.indexOf('Nurse') > 0)); }
+		public function get allowBeta():Boolean { return ((_allow == '' || _allow.indexOf('Beta') != -1) && !(_deny.indexOf('Beta') != -1)); }
+		public function get allowDoctor():Boolean { return ((_allow == '' || _allow.indexOf('Doctor') != -1) && !(_deny.indexOf('Doctor') != -1)); }
+		public function get allowEMT():Boolean { return ((_allow == '' || _allow.indexOf('EMT') != -1) && !(_deny.indexOf('EMT') != -1)); }
+		public function get allowLMS():Boolean { return ((_allow == '' || _allow.indexOf('LMS') != -1) && !(_deny.indexOf('LMS') != -1)); }
+		public function get allowNurse():Boolean { return ((_allow == '' || _allow.indexOf('Nurse') != -1) && !(_deny.indexOf('Nurse') != -1)); }
 		public function get bookmarked():Boolean { return _bookmarked; }
 		public function get configuration():String { return _configuration; }
 		public function get created():Date { return _created; }
@@ -80,6 +81,7 @@ package com.apexinnovations.transwarp.data
 		public function get swf():String { return _swf; }
 		public function get timeline():Boolean { return _timeline; }
 		public function get visited():Boolean { return _visited; }
+		public function get weight():uint { return _weight; }
 
 		public function get links():Vector.<Link> { return _links; }
 		public function get questions():Vector.<Question> { return _questions; }
@@ -105,18 +107,30 @@ package com.apexinnovations.transwarp.data
 			comment.dispatch(s);
 		}
 		
-		// Searches the page for keywords, returns a weight
+		// Searches the page for keywords, stores and returns a weight
 		public function search(s:String):uint {
-			// NEEDS WORK - needs to search other fields, return a weight
 			var keywords:Array = s.split(' ');
+			_weight = 0;	// Initialized on each search
 			for each (var word:String in keywords) {
-				if (_keywords.indexOf(word) > 0) {
-					return 1;	
-				} else if (false) {
-					// Need processing here for finding keywords in updates, links, questions, supportText, instructions
+				_weight += this.find(word, _name) * 5;
+				_weight += this.find(word, _keywords) * 2;
+							
+				if (_supportText)	_weight += this.find(word, this.TFtoStr(_supportText)) * 3;
+				if (_instructions)	_weight += this.find(word, this.TFtoStr(_instructions)) * 1;
+
+				for each (var l:Link in _links) {
+					if (l.textFlow)		_weight += this.find(word, this.TFtoStr(l.textFlow)) * 2;
+				}
+				for each (var q:Question in _questions) {
+					if (q.qTextFlow)	_weight += this.find(word, this.TFtoStr(q.qTextFlow)) * 1;
+					if (q.aTextFlow)	_weight += this.find(word, this.TFtoStr(q.aTextFlow)) * 2;
+				}
+				for each (var u:Update in _updates) {
+					if (u.textFlow)	_weight += this.find(word, this.TFtoStr(u.textFlow)) * 1;
 				}
 			}
-			return 0;
+//trace('   Page: ' + _id + ' (' + _name  + '): search weight = ' + _weight);
+			return _weight;
 		}
 		
 		// Does everything associated with visiting this page, except screen updates, which is handled by event
@@ -135,6 +149,21 @@ package com.apexinnovations.transwarp.data
 		}
 		
 		
+		
+		// Counts the number of occurrences of needle in haystack
+		private function find(needle:String, haystack:String, caseInsensitive:Boolean = true):uint {
+			var i:int = -1, c:uint = 0;
+			if ( caseInsensitive ) {
+				needle = needle.toLowerCase();
+				haystack = haystack.toLowerCase();
+			}
+			do {
+				i = haystack.indexOf(needle, i + 1);
+				if (i != -1) c++;
+			} while(i != -1);
+			return c;
+		}
+		
 		// Makes sure the ApexWebService is initialized
 		private function initAWS():void {
 			var cw:Courseware = Courseware.instance;
@@ -143,5 +172,17 @@ package com.apexinnovations.transwarp.data
 			ApexWebService.courseID = cw.currentCourse.id;
 			ApexWebService.pageID = this._id;
 		}
+		
+		// Converts a TextFlow into a String
+		private function TFtoStr(tf:TextFlow):String {
+			if (tf == null) return '';
+			var tfx:XML = XML(TextConverter.export(tf, TextConverter.TEXT_LAYOUT_FORMAT, ConversionType.XML_TYPE));
+			var s:String = '';
+			for each (var x:XML in tfx..*.text()) {
+				s += x + ' ';
+			}
+			return s.substr(0, s.length - 1).replace(/  /g, ' '); // remove double spaces and trailing space
+		}
+		
 	}
 }
