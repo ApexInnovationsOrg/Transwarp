@@ -22,9 +22,9 @@ package com.apexinnovations.transwarp.data
 
 			for each (var child:XML in xml.children()) {
 				if (child.@visited != undefined) {
-					_contents[_contents.length] = new Page(child, this);
+					_contents.push(new Page(child, this));
 				} else {
-					_contents[_contents.length] = new Folder(child, this);
+					_contents.push(new Folder(child, this));
 				}
 			}
 		}
@@ -41,7 +41,7 @@ package com.apexinnovations.transwarp.data
 			
 			for each (var item:* in _contents) {
 				if (item is Page) {
-					_pages[_pages.length] = item as Page;
+					_pages.push(item as Page);
 				} else if (recurse) {
 					for each (var x:Page in (item as Folder).pages(recurse)) {
 						_pages.push(x);
@@ -56,7 +56,7 @@ package com.apexinnovations.transwarp.data
 			var _viewable:Array = [];
 			
 			for each (var item:* in _contents) {
-				_viewable[_viewable.length] = item;
+				_viewable.push(item);
 				if ((item is Folder) && item.open) {
 					for each (var x:* in item.viewableContents()) {
 						_viewable.push(x);

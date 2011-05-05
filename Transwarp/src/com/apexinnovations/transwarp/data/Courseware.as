@@ -54,7 +54,7 @@ package com.apexinnovations.transwarp.data
 			for each (var course:Course in _instance.product.courses) {
 				for each (var item:Page in course.pages()) {
 					if (item.search(keywords)) {
-						pages[pages.length] = item;
+						pages.push(item);
 					}
 				}
 			}
