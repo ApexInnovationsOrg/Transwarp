@@ -11,9 +11,12 @@ package com.apexinnovations.transwarp.data
 		private var _name:String = '';		// The name of this folder
 		private var _open:Boolean = false;	// Is this folder open (contents are visible in the menu)?
 		private var _parent:Object = null;	// A link back to the parent (folder or course)
-				
-		public function Folder(xml:XML, parent:Object) {
+		private var _depth:int;		
+		
+		
+		public function Folder(xml:XML, parent:Object, depth:int) {
 			try {
+				_depth = depth;
 				_name = xml.@name;
 				_parent = parent;
 			} catch ( e:Error ) {
@@ -22,9 +25,9 @@ package com.apexinnovations.transwarp.data
 
 			for each (var child:XML in xml.children()) {
 				if (child.@visited != undefined) {
-					_contents.push(new Page(child, this));
+					_contents.push(new Page(child, this, _depth + 1));
 				} else {
-					_contents.push(new Folder(child, this));
+					_contents.push(new Folder(child, this, _depth + 1));
 				}
 			}
 		}
@@ -34,6 +37,9 @@ package com.apexinnovations.transwarp.data
 		public function get open():Boolean { return _open; }
 		public function set open(val:Boolean):void { _open = val; }
 		public function get parent():Object { return _parent; }
+		
+		public function get depth():int { return _depth; }
+		public function set depth(value:int):void { _depth = value;	}
 		
 		// Returns a Vector (array) of Pages in this Folder
 		public function pages(recurse:Boolean = true):Vector.<Page> {

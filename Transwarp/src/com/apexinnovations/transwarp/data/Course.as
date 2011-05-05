@@ -29,9 +29,9 @@ package com.apexinnovations.transwarp.data
 
 			for each (var child:XML in xml.children()) {
 				if (child.localName() == "page") {
-					_contents.push(new Page(child, this));
+					_contents.push(new Page(child, this, 0));
 				} else {
-					_contents.push(new Folder(child, this));
+					_contents.push(new Folder(child, this, 0));
 				}
 			}
 		}
