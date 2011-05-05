@@ -97,6 +97,7 @@ package com.apexinnovations.transwarp.data
 		
 		
 		[Bindable] public function get color():uint { return _color; }
+		public function set color(value:uint):void { _color = value; }
 		public function get copyright():String { return _copyright; }
 		public function get currentCourse():Course { return _currentCourse; }
 		public function set currentCourse(course:Course):void { _currentCourse = course; }
@@ -110,9 +111,6 @@ package com.apexinnovations.transwarp.data
 		public function get user():User { return _user; }
 		public function get website():String { return _website; }
 
-		public function set color(value:uint):void {
-			_color = value;
-		}
 
 		// Does what's necessary to have the user visit the page specified
 		public function visit(page:Page):void {
