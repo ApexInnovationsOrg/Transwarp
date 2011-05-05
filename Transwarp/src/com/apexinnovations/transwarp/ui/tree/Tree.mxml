@@ -2,18 +2,47 @@
 <s:List xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		xmlns:s="library://ns.adobe.com/flex/spark" 
 		xmlns:mx="library://ns.adobe.com/flex/mx"
-		borderVisible="false" contentBackgroundAlpha="0" selectionColor="{color}"
-		itemRenderer="com.apexinnovations.transwarp.ui.tree.TranswarpTreeItemRenderer">
+		borderVisible="false" contentBackgroundAlpha="0"
+		itemRenderer="com.apexinnovations.transwarp.ui.tree.TranswarpTreeItemRenderer"
+		changing="changingHandler(event)" requireSelection="false">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
 	<fx:Script>
 		<![CDATA[
-			[Bindable] public var color:uint; 
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.Folder;
+			import com.apexinnovations.transwarp.events.TranswarpEvent;
+			
+			import mx.collections.IList;
+			import mx.events.CollectionEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+ 			/* override public function set dataProvider(value:IList):void {
+				if(dataProvider)
+					dataProvider.removeEventListener(CollectionEvent.COLLECTION_CHANGE, dataChange);
+				
+				super.dataProvider = value;
+				
+				value.addEventListener(TranswarpEvent.FOLDER_OPEN_CLOSE, dataChange);
+			}  */
+
+			protected function changingHandler(event:IndexChangeEvent):void {
+				var selection:Object = dataProvider.getItemAt(event.newIndex);
+				if(selection is Folder)
+					event.preventDefault();
+			}
+
+			protected function invalidateList():void {
+				var _itemRenderer:IFactory = itemRenderer;
+				itemRenderer = null;
+				itemRenderer = _itemRenderer;
+			}
 			
 			
-			
+
 		]]>
 	</fx:Script>
 	

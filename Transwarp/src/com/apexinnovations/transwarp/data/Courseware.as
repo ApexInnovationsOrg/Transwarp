@@ -87,7 +87,7 @@ package com.apexinnovations.transwarp.data
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
 			}
-
+			
 			_product = new Product(xml.product[0], this);
 			_user = new User(xml.user[0], this);
 			
@@ -98,11 +98,22 @@ package com.apexinnovations.transwarp.data
 		
 		[Bindable] public function get color():uint { return _color; }
 		public function set color(value:uint):void { _color = value; }
+		
 		public function get copyright():String { return _copyright; }
-		public function get currentCourse():Course { return _currentCourse; }
+		
+		[Bindable] public function get currentCourse():Course { return _currentCourse; }
 		public function set currentCourse(course:Course):void { _currentCourse = course; }
-		public function get currentPage():Page { return _currentPage; }
-		public function set currentPage(page:Page):void { _currentPage = page; }
+		
+		[Bindable] public function get currentPage():Page { return _currentPage; }
+		public function set currentPage(page:Page):void {
+			if(_currentPage == page)
+				return;
+			_currentPage = page;
+			page.visited = true;
+			
+			dispatchEvent(new PageSelectionEvent(page));		
+		}
+		
 		public function get debug():Boolean { return _debug; }
 		public function get owner():String { return _owner; }
 		public function get product():Product { return _product; }
@@ -110,14 +121,6 @@ package com.apexinnovations.transwarp.data
 		public function get timeout():int { return _timeout; }
 		public function get user():User { return _user; }
 		public function get website():String { return _website; }
-
-
-		// Does what's necessary to have the user visit the page specified
-		public function visit(page:Page):void {
-			page.visited = true;
-			
-			dispatchEvent(new PageSelectionEvent(page));
-		}
 		
 		
 		// Gets the minimal class name for an object
