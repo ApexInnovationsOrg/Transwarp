@@ -69,13 +69,6 @@ package com.apexinnovations.transwarp.data
 			return pages.sort(_instance.pageWeightCompare);
 		}
 		
-		// Does what's necessary to have the user visit the page specified
-		public static function visit(page:Page):void {
-			page.visited = true;
-			
-			//dispatchEvent(new PageSelectionEvent());
-		}
-		
 			
 		public function Courseware(xml:XML) {
 			if(_instance)
@@ -119,6 +112,13 @@ package com.apexinnovations.transwarp.data
 
 		public function set color(value:uint):void {
 			_color = value;
+		}
+
+		// Does what's necessary to have the user visit the page specified
+		public function visit(page:Page):void {
+			page.visited = true;
+			
+			dispatchEvent(new PageSelectionEvent(page));
 		}
 		
 		
