@@ -42,10 +42,10 @@ package com.apexinnovations.transwarp.data
 			}
 
 			for each (var c:XML in xml.courses.course) {
-				_courses[_courses.length] = new Course(c, this);
+				_courses.push(new Course(c, this));
 			}
 			for each (var h:XML in xml.courses.helpPages) {
-				_helpPages[_helpPages.length] = new HelpPage(h, this);
+				_helpPages.push(new HelpPage(h, this));
 			}
 		}
 		

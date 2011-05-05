@@ -55,13 +55,13 @@ package com.apexinnovations.transwarp.data
 			}
 
 			for each (var l:XML in xml.links.link) {
-				_links[_links.length] = new Link(l, this);
+				_links.push(new Link(l, this));
 			}
 			for each (var q:XML in xml.questions.question) {
-				_questions[_questions.length] = new Question(q, this);
+				_questions.push(new Question(q, this));
 			}
 			for each (var u:XML in xml.updates.update) {
-				_updates[_updates.length] = new Update(u, this);
+				_updates.push(new Update(u, this));
 			}
 		}
 		
