@@ -152,7 +152,7 @@
 		</assets:filters>
 	</assets:AssetImageControl>
 	
-	<s:TileGroup id="levelNav" left="285" right="40" top="30" requestedRowCount="3" orientation="columns" verticalGap="10" horizontalGap="10"/>
+	<s:TileGroup id="levelNav" left="285" right="40" top="30" requestedRowCount="3" orientation="columns" verticalGap="10" horizontalGap="10" height.maximized="0" visible.maximized="false"/>
 	
 	<s:HGroup height="32" verticalAlign="middle" bottom="1" right="10" gap="12">
 		<ui:TopBarButton icon="{ArrowPreviousIcon}" label="PREV"/>
