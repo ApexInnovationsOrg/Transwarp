@@ -22,7 +22,7 @@ package com.apexinnovations.transwarp.data
 				_level = xml.@level;
 				_name = xml.@name;
 				_parent = parent;
-				_restricted = xml.@restricted;
+				_restricted = xml.@restricted == 'true';
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
 			}
@@ -43,8 +43,6 @@ package com.apexinnovations.transwarp.data
 		public function get name():String { return _name; }
 		public function get parent():Product { return _parent; }
 		public function get restricted():Boolean { return _restricted; }
-		
-		// Returns an array of viewable (folder open) pages and folders within this page
 		public function get viewableContents():Array {
 			var _viewable:Array = [];
 			
@@ -57,8 +55,7 @@ package com.apexinnovations.transwarp.data
 				}
 			}
 			return _viewable;
-		}		
-		
+		}
 		
 		// Returns a Vector (array) of Pages in this Course
 		public function pages(recurse:Boolean = true):Vector.<Page> {
