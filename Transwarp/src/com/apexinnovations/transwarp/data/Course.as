@@ -11,36 +11,38 @@ package com.apexinnovations.transwarp.data
 		private var _id:uint = 0;					// The CourseID from the database
 		private var _level:uint = 0;				// The level of this course
 		private var _name:String = '';				// The name of this course
+		private var _parent:Product = null;			// A link back to the product
 		private var _restricted:Boolean = false;	// Is the user restricted from using this course?
 
 		private var _contents:Array = [];			// An ordered collection of the contents of this folder (pages and other folders)
 		
-		public function Course(xml:XML) {
+		public function Course(xml:XML, parent:Product) {
 			try {
 				_id = xml.@id;
 				_level = xml.@level;
 				_name = xml.@name;
+				_parent = parent;
 				_restricted = xml.@restricted;
-
-				for each (var child:XML in xml.children()) {
-					if (child.@visited != undefined) {
-						_contents[_contents.length] = new Page(child);
-					} else {
-						_contents[_contents.length] = new Folder(child);
-					}
-				}
 			} catch ( e:Error ) {
-				throw new ArgumentError(getQualifiedClassName(this) + " - Invalid Initialization XML - " + e.toString());
+				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
+			}
+
+			for each (var child:XML in xml.children()) {
+				if (child.@visited != undefined) {
+					_contents[_contents.length] = new Page(child, this);
+				} else {
+					_contents[_contents.length] = new Folder(child, this);
+				}
 			}
 		}
 		
+		public function get contents():Array { return _contents; }		
 		public function get id():uint { return _id; }
 		public function get level():uint {return _level;}
 		public function get levelRoman():String { return roman(_level); }
 		public function get name():String { return _name; }
+		public function get parent():Product { return _parent; }
 		public function get restricted():Boolean { return _restricted; }
-		
-		public function get contents():Array { return _contents; }
 		
 		// Returns a Vector (array) of Pages in this Course
 		public function pages(recurse:Boolean = true):Vector.<Page> {
@@ -50,8 +52,7 @@ package com.apexinnovations.transwarp.data
 				if (item is Page) {
 					_pages[_pages.length] = item as Page;
 				} else if (recurse) {
-					var _more:Vector.<Page> = (item as Folder).pages(recurse);
-					for each (var x:Page in _more) {
+					for each (var x:Page in (item as Folder).pages(recurse)) {
 						_pages.push(x);
 					}
 				}
@@ -82,6 +83,21 @@ package com.apexinnovations.transwarp.data
 			}
 			
 			return x;
+		}
+
+		// Returns an array of viewable (folder open) pages and folders within this page
+		public function viewableContents():Array {
+			var _viewable:Array = [];
+			
+			for each (var item:* in _contents) {
+				_viewable[_viewable.length] = item;
+				if ((item is Folder) && item.open) {
+					for each (var x:* in item.viewableContents()) {
+						_viewable.push(x);
+					}
+				}
+			}
+			return _viewable;
 		}
 	}
 }
