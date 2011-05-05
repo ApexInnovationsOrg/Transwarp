@@ -46,7 +46,7 @@
 		</s:filters>
 	</s:Rect>
 	
-	<tree:Tree left="20" top="72" bottom="50" right="10" color="{color}" dataProvider="{courseList}">
+	<tree:Tree left="20" top="72" bottom="50" right="10" color="{color}" dataProvider="{courseList}" selectedItem="@{Courseware.instance.currentPage}">
 	
 	</tree:Tree>	
 </s:Group>

@@ -58,7 +58,7 @@ package com.apexinnovations.transwarp.data
 		}
 		
 		// Returns an array of viewable (folder open) pages and folders within this page
-		public function viewableContents():Array {
+		public function get viewableContents():Array {
 			var _viewable:Array = [];
 			
 			for each (var item:* in _contents) {
