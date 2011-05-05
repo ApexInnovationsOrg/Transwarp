@@ -13,7 +13,7 @@ package com.apexinnovations.transwarp.data
 	import mx.formatters.DateFormatter;
 	
 	// This represents a page in the course
-	public class Page extends EventDispatcher {
+	public class Page {
 		private var _allow:String = '';										// Space separated list of types of user allowed to view this page (e.g. 'LMS Doctor Beta'). '' means all
 		private var _bookmarked:Boolean = false;							// Has this page been bookmarked by the user?
 		private var _configuration:String = '';								// URL of XML file to be loaded by SWF as configuration
@@ -37,11 +37,10 @@ package com.apexinnovations.transwarp.data
 		public function Page(xml:XML, parent:Object) {
 			try {
 				_allow = xml.@allow;
-				_bookmarked = xml.@bookmarked;
+				_bookmarked = xml.@bookmarked == 'true';
 				_configuration = xml.@configuration;
 				_created = DateFormatter.parseDateString(xml.@created);
 				_deny = xml.@deny;
-				_allow = xml.@allow;
 				_id = xml.@id;
 				_instructions = (xml.instructions == undefined ? null : TextConverter.importToFlow(xml.instructions.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
 				_keywords = xml.@keywords;
@@ -50,8 +49,7 @@ package com.apexinnovations.transwarp.data
 				_supportText = (xml.supportText == undefined ? null : TextConverter.importToFlow(xml.supportText.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
 				_swf = xml.@swf;
 				_timeline = xml.@timeline;
-							
-				_visited = xml.@visited == "true";
+				_visited = xml.@visited == 'true';
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
 			}
@@ -92,6 +90,7 @@ package com.apexinnovations.transwarp.data
 		public function get swf():String { return _swf; }
 		public function get timeline():Boolean { return _timeline; }
 		public function get visited():Boolean { return _visited; }
+		public function set visited(val:Boolean):void { _visited = val; }
 		public function get updates():Vector.<Update> { return _updates; }
 		public function get weight():uint { return _weight; }
 
@@ -140,22 +139,6 @@ package com.apexinnovations.transwarp.data
 			//trace('   Page: ' + _id + ' (' + _name  + '): search weight = ' + _weight);
 			return _weight;
 		}
-		
-		// Does everything associated with visiting this page, except screen updates, which is handled by event
-		public function visit():void {
-			this._visited = true;
-			
-			Courseware.instance.currentPage = this;
-			
-//			var visit:VisitService = new VisitService();
-//			
-//			this.initAWS();
-//
-//			visit.dispatch();	// Need to keep track of visitID
-			
-			// NEEDS WORK - dispatch an event that will load the SWF, unbold the menu item, record the visit with the VisitService, do timers, etc.
-		}
-		
 		
 		
 		// Counts the number of occurrences of needle in haystack

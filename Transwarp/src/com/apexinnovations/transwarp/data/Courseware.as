@@ -4,6 +4,7 @@ package com.apexinnovations.transwarp.data
 	import com.apexinnovations.transwarp.data.Page;
 	import com.apexinnovations.transwarp.data.Product;
 	import com.apexinnovations.transwarp.data.User;
+	import com.apexinnovations.transwarp.events.PageSelectionEvent;
 	import com.apexinnovations.transwarp.webservices.*;
 	
 	import flash.errors.*;
@@ -13,7 +14,7 @@ package com.apexinnovations.transwarp.data
 	import flash.utils.*;
 	
 	// This represents the user taking the class and the product being taken
-	public class Courseware {
+	public class Courseware extends EventDispatcher {
 		private static var _instance:Courseware;	// Make this class a singleton
 		
 		private var _color:uint = 0xFFFFFF;			// The background color to use for this product in the engine's UI
@@ -68,7 +69,14 @@ package com.apexinnovations.transwarp.data
 			return pages.sort(_instance.pageWeightCompare);
 		}
 		
+		// Does what's necessary to have the user visit the page specified
+		public static function visit(page:Page):void {
+			page.visited = true;
+			
+			//dispatchEvent(new PageSelectionEvent());
+		}
 		
+			
 		public function Courseware(xml:XML) {
 			if(_instance)
 				throw new IllegalOperationError(getQualifiedClassName(this) + " is a singleton");
@@ -78,7 +86,7 @@ package com.apexinnovations.transwarp.data
 			try {
 				_color = uint("0x" + String(xml.@color).substr(1,6));	// @color like '#FF00FF'
 				_copyright = xml.@copyright;
-				_debug = xml.@debug;
+				_debug = xml.@debug == 'true';
 				_owner = xml.@owner;
 				_rootFolder = xml.@rootFolder;
 				_timeout = xml.@timeout;
