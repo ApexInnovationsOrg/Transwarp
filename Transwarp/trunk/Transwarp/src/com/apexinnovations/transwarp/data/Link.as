@@ -1,5 +1,6 @@
 package com.apexinnovations.transwarp.data
 {
+	import com.apexinnovations.transwarp.data.Courseware;
 	import flash.utils.*;
 	import flash.errors.*;
 	import flashx.textLayout.conversion.TextConverter;
@@ -7,19 +8,23 @@ package com.apexinnovations.transwarp.data
 	
 	// This represents and outside link related to a page
 	public class Link {
-		private var _url:String = '';			// The URL of this link
+		private var _parent:Page = null;		// A link back to the page
 		private var _textFlow:TextFlow = null;	// The text description of this link, as a TextFlow
+		private var _url:String = '';			// The URL of this link
 		
-		public function Link(xml:XML) {
+		public function Link(xml:XML, parent:Page) {
 			try {
-				_url = xml.@url;
+				_parent = parent;
 				_textFlow = TextConverter.importToFlow(xml.children()[0], TextConverter.TEXT_LAYOUT_FORMAT);
+				_url = xml.@url;
 			} catch ( e:Error ) {
-				throw new ArgumentError(getQualifiedClassName(this) + " - Invalid Initialization XML - " + e.toString());
+				// No need to throw an error, just log it
+				Courseware.log('Bad Initialization XML:  [' + e.message + ']', this);
 			}
 		}
 		
-		public function get url():String { return _url; }
+		public function get parent():Page { return _parent; }
 		public function get textFlow():TextFlow { return _textFlow; }
+		public function get url():String { return _url; }
 	}
 }

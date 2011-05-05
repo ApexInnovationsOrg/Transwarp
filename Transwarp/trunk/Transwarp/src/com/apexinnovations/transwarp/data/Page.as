@@ -14,27 +14,27 @@ package com.apexinnovations.transwarp.data
 	
 	// This represents a page in the course
 	public class Page extends EventDispatcher {
-		private var _allow:String = '';				// Space separated list of types of user allowed to view this page (e.g. 'LMS Doctor Beta'). '' means all
-		private var _bookmarked:Boolean = false;	// Has this page been bookmarked by the user?
-		private var _configuration:String = '';		// URL of XML file to be loaded by SWF as configuration
-		private var _created:Date;					// XML format: YYYY-MM-DDTHH:MM:SS
-		private var _demo:Boolean = false;			// Is this page viewable on the demo?
-		private var _deny:String = '';				// Space separated list of types of user prevented from viewing this page (e.g. 'LMS Doctor Beta'). '' means none
-		private var _id:uint = 0;					// Unique PageID from repository/database
-		private var _instructions:TextFlow = null;	// Instruction text, as a TextFlow
-		private var _keywords:String = '';			// Space separated list of keywords for this page
-		private var _name:String = '';				// Display name of this page
-		private var _supportText:TextFlow = null;	// Any supporting text, as a TextFlow
-		private var _swf:String = '';				// URL of SWF file to load
-		private var _timeline:Boolean = false;		// Does this page have a timeline across the bottom to show progress?
-		private var _visited:Boolean = false;		// Has this page been visited by the user?
-		private var _weight:uint = 0;				// The 'weight' of the page in a search ranking
-
+		private var _allow:String = '';										// Space separated list of types of user allowed to view this page (e.g. 'LMS Doctor Beta'). '' means all
+		private var _bookmarked:Boolean = false;							// Has this page been bookmarked by the user?
+		private var _configuration:String = '';								// URL of XML file to be loaded by SWF as configuration
+		private var _created:Date;											// XML format: YYYY-MM-DDTHH:MM:SS
+		private var _demo:Boolean = false;									// Is this page viewable on the demo?
+		private var _deny:String = '';										// Space separated list of types of user prevented from viewing this page (e.g. 'LMS Doctor Beta'). '' means none
+		private var _id:uint = 0;											// Unique PageID from repository/database
+		private var _instructions:TextFlow = null;							// Instruction text, as a TextFlow
+		private var _keywords:String = '';									// Space separated list of keywords for this page
 		private var _links:Vector.<Link> = new Vector.<Link>();				// Vector (array) of related Links
+		private var _name:String = '';										// Display name of this page
+		private var _parent:Object = null;									// A link back to the parent (folder or course)
 		private var _questions:Vector.<Question> = new Vector.<Question>();	// Vector (array) of related Questions
+		private var _supportText:TextFlow = null;							// Any supporting text, as a TextFlow
+		private var _swf:String = '';										// URL of SWF file to load
+		private var _timeline:Boolean = false;								// Does this page have a timeline across the bottom to show progress?
 		private var _updates:Vector.<Update> = new Vector.<Update>();		// Vector (array) of related Updates
+		private var _visited:Boolean = false;								// Has this page been visited by the user?
+		private var _weight:uint = 0;										// The 'weight' of the page in a search ranking
 
-		public function Page(xml:XML) {
+		public function Page(xml:XML, parent:Object) {
 			try {
 				_allow = xml.@allow;
 				_bookmarked = xml.@bookmarked;
@@ -46,22 +46,23 @@ package com.apexinnovations.transwarp.data
 				_instructions = (xml.instructions == undefined ? null : TextConverter.importToFlow(xml.instructions.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
 				_keywords = xml.@keywords;
 				_name = xml.@name;
+				_parent = parent;
 				_supportText = (xml.supportText == undefined ? null : TextConverter.importToFlow(xml.supportText.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
 				_swf = xml.@swf;
 				_timeline = xml.@timeline;
 				_visited = xml.@visited;
-
-				for each (var l:XML in xml.links.link) {
-					_links[_links.length] = new Link(l);
-				}
-				for each (var q:XML in xml.questions.question) {
-					_questions[_questions.length] = new Question(q);
-				}
-				for each (var u:XML in xml.updates.update) {
-					_updates[_updates.length] = new Update(u);
-				}
 			} catch ( e:Error ) {
-				throw new ArgumentError(getQualifiedClassName(this) + " - Invalid Initialization XML - " + e.message);
+				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
+			}
+
+			for each (var l:XML in xml.links.link) {
+				_links[_links.length] = new Link(l, this);
+			}
+			for each (var q:XML in xml.questions.question) {
+				_questions[_questions.length] = new Question(q, this);
+			}
+			for each (var u:XML in xml.updates.update) {
+				_updates[_updates.length] = new Update(u, this);
 			}
 		}
 		
@@ -77,17 +78,22 @@ package com.apexinnovations.transwarp.data
 		public function get id():uint { return _id; }
 		public function get instructions():TextFlow { return _instructions; }
 		public function get keywords():String { return _keywords; }
+		public function get links():Vector.<Link> { return _links; }
 		public function get name():String { return _name; }
+		public function get parent():Object { return _parent; }
+		public function get qualifiedName():String {
+			var p:* = this, qName:String = _name;
+			while (!((p = p.parent) is Course)) { qName = p.name + ' : ' + qName; }
+			return qName;
+		}
+		public function get questions():Vector.<Question> { return _questions; }
 		public function get supportText():TextFlow { return _supportText; }
 		public function get swf():String { return _swf; }
 		public function get timeline():Boolean { return _timeline; }
 		public function get visited():Boolean { return _visited; }
+		public function get updates():Vector.<Update> { return _updates; }
 		public function get weight():uint { return _weight; }
 
-		public function get links():Vector.<Link> { return _links; }
-		public function get questions():Vector.<Question> { return _questions; }
-		public function get updates():Vector.<Update> { return _updates; }
-		
 		// Does everything associated with bookmarking this page 
 		public function bookmark():void {
 			this._bookmarked = true;
@@ -130,7 +136,7 @@ package com.apexinnovations.transwarp.data
 					if (u.textFlow)	_weight += this.find(word, this.TFtoStr(u.textFlow)) * 1;
 				}
 			}
-//trace('   Page: ' + _id + ' (' + _name  + '): search weight = ' + _weight);
+			//trace('   Page: ' + _id + ' (' + _name  + '): search weight = ' + _weight);
 			return _weight;
 		}
 		

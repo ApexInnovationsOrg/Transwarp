@@ -8,22 +8,21 @@ package com.apexinnovations.transwarp.data
 	// This represents the the product being taken
 	public class Product {
 		private static var _instance:Product;	// Make this class a singleton
-		private var _id:uint = 0;				// Unique ProductID from the database
-		private var _logoBig:String = '';		// URL to a large representation of this product's logo
-		private var _logoSmall:String = '';		// URL to a small representation of this product's logo
-		private var _name:String = '';			// The name of this product
-		private var _released:Date;				// XML format: YYYY-MM-DDTHH:MM:SS
 		
 		private var _courses:Vector.<Course> = new Vector.<Course>();		// Vector (array) of courses for this product
 		private var _helpPages:Vector.<HelpPage> = new Vector.<HelpPage>();	// Vector (array) of help pages for this product
-
+		private var _id:uint = 0;											// Unique ProductID from the database
+		private var _logoBig:String = '';									// URL to a large representation of this product's logo
+		private var _logoSmall:String = '';									// URL to a small representation of this product's logo
+		private var _name:String = '';										// The name of this product
+		private var _parent:Courseware = null;								// A link back to the courseware
+		private var _released:Date;											// XML format: YYYY-MM-DDTHH:MM:SS
+		
 		public static function get instance():Product {
-			if(!_instance)
-				new Product(<product/>);
 			return _instance;
 		}		
 		
-		public function Product(xml:XML) {
+		public function Product(xml:XML, parent:Courseware) {
 			if(_instance)
 				throw new IllegalOperationError(getQualifiedClassName(this) + " is a singleton");
 			
@@ -34,26 +33,27 @@ package com.apexinnovations.transwarp.data
 				_logoBig = xml.@logoBig;
 				_logoSmall = xml.@logoSmall;
 				_name = xml.@name;
+				_parent = parent;
 				_released = DateFormatter.parseDateString(xml.@released);
-
-				for each (var c:XML in xml.courses.course) {
-					_courses[_courses.length] = new Course(c);
-				}
-				for each (var h:XML in xml.courses.helpPages) {
-					_helpPages[_helpPages.length] = new HelpPage(h);
-				}
 			} catch ( e:Error ) {
-				throw new ArgumentError(getQualifiedClassName(this) + " - Invalid Initialization XML - " + e.toString());
+				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
+			}
+
+			for each (var c:XML in xml.courses.course) {
+				_courses[_courses.length] = new Course(c, this);
+			}
+			for each (var h:XML in xml.courses.helpPages) {
+				_helpPages[_helpPages.length] = new HelpPage(h, this);
 			}
 		}
 		
+		public function get courses():Vector.<Course> { return _courses; }
+		public function get helpPages():Vector.<HelpPage> { return _helpPages; }
 		public function get id():uint { return _id; }
 		public function get logoBig():String { return _logoBig; }
 		public function get logoSmall():String { return _logoSmall; }
 		public function get name():String { return _name; }
+		public function get parent():Courseware { return _parent; }
 		public function get released():Date { return _released; }
-
-		public function get courses():Vector.<Course> { return _courses; }
-		public function get helpPages():Vector.<HelpPage> { return _helpPages; }
 	}
 }
