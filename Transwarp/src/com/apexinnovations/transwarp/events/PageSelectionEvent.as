@@ -1,4 +1,4 @@
-package com.apexinnovations.transwarp.application.events
+package com.apexinnovations.transwarp.events
 {
 	import flash.events.Event;
 	import com.apexinnovations.transwarp.data.Page;
