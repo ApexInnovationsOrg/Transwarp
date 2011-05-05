@@ -44,6 +44,22 @@ package com.apexinnovations.transwarp.data
 		public function get parent():Product { return _parent; }
 		public function get restricted():Boolean { return _restricted; }
 		
+		// Returns an array of viewable (folder open) pages and folders within this page
+		public function get viewableContents():Array {
+			var _viewable:Array = [];
+			
+			for each (var item:* in _contents) {
+				_viewable[_viewable.length] = item;
+				if ((item is Folder) && item.open) {
+					for each (var x:* in item.viewableContents()) {
+						_viewable.push(x);
+					}
+				}
+			}
+			return _viewable;
+		}		
+		
+		
 		// Returns a Vector (array) of Pages in this Course
 		public function pages(recurse:Boolean = true):Vector.<Page> {
 			var _pages:Vector.<Page> = new Vector.<Page>();
@@ -60,6 +76,13 @@ package com.apexinnovations.transwarp.data
 			return _pages;
 		}
 
+		public function getPageByID(pageID:uint):Page {
+			for each(var p:Page in pages(true))
+				if(p.id == pageID)
+					return p;
+			return null;
+		}
+		
 		private function roman(n:int):String {
 			if( n >= 4000 || n < 1)
 				return "N/A";
@@ -83,21 +106,6 @@ package com.apexinnovations.transwarp.data
 			}
 			
 			return x;
-		}
-
-		// Returns an array of viewable (folder open) pages and folders within this page
-		public function viewableContents():Array {
-			var _viewable:Array = [];
-			
-			for each (var item:* in _contents) {
-				_viewable[_viewable.length] = item;
-				if ((item is Folder) && item.open) {
-					for each (var x:* in item.viewableContents()) {
-						_viewable.push(x);
-					}
-				}
-			}
-			return _viewable;
 		}
 	}
 }

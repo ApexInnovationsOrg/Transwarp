@@ -50,7 +50,8 @@ package com.apexinnovations.transwarp.data
 				_supportText = (xml.supportText == undefined ? null : TextConverter.importToFlow(xml.supportText.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
 				_swf = xml.@swf;
 				_timeline = xml.@timeline;
-				_visited = xml.@visited;
+							
+				_visited = xml.@visited == "true";
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
 			}
