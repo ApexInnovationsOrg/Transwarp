@@ -33,9 +33,11 @@ package com.apexinnovations.transwarp.data
 		private var _updates:Vector.<Update> = new Vector.<Update>();		// Vector (array) of related Updates
 		private var _visited:Boolean = false;								// Has this page been visited by the user?
 		private var _weight:uint = 0;										// The 'weight' of the page in a search ranking
-
-		public function Page(xml:XML, parent:Object) {
+		private var _depth:int;
+		
+		public function Page(xml:XML, parent:Object, depth:int) {
 			try {
+				_depth = depth;
 				_allow = xml.@allow;
 				_bookmarked = xml.@bookmarked == 'true';
 				_configuration = xml.@configuration;
@@ -94,6 +96,9 @@ package com.apexinnovations.transwarp.data
 		public function get updates():Vector.<Update> { return _updates; }
 		public function get weight():uint { return _weight; }
 
+		public function get depth():int { return _depth; }
+		public function set depth(value:int):void { _depth = value;	}
+		
 		// Does everything associated with bookmarking this page 
 		public function bookmark():void {
 			this._bookmarked = true;
@@ -172,6 +177,7 @@ package com.apexinnovations.transwarp.data
 			for each (var x:XML in tfx..*.text()) {
 				s += x + ' ';
 			}
+
 			return s.substr(0, s.length - 1).replace(/  /g, ' '); // remove double spaces and trailing space
 		}
 		

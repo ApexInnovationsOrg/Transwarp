@@ -44,27 +44,6 @@
 					ApexWebService.userID = courseware.user.id;
 					ApexWebService.courseID = courseware.user.startCourseID;
 					ApexWebService.pageID = courseware.user.startPageID;
-// Test the search engine
-import com.apexinnovations.transwarp.data.Page;
-import com.apexinnovations.transwarp.data.Folder;
-var keywords:String = 'course objectives physiology blood something';
-trace('Searching all pages for keywords: "' + keywords + '"');
-var results:Vector.<Page> = Courseware.search(keywords);
-trace('Ranked Search Results:');
-for each (var p:Page in results) {
-	trace('   ' + p.qualifiedName + ' (ID: ' + p.id + ') - ' + p.weight);
-}
-
-
-// Test the menu stuff
-trace('Visible Menu:');
-courseware.product.courses[0].contents[3].open = true;
-courseware.product.courses[0].contents[4].open = true;
-for each (var p2:* in courseware.product.courses[0].viewableContents) {
-	if (p2 is Page) trace('   ' + p2.qualifiedName);
-	if (p2 is Folder) trace('  >' + p2.name);
-}
-
 
 					themeColor = courseware.color;
 					
