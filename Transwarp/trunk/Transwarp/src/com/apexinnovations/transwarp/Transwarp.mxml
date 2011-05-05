@@ -44,13 +44,7 @@
 					ApexWebService.userID = courseware.user.id;
 					ApexWebService.courseID = courseware.user.startCourseID;
 					ApexWebService.pageID = courseware.user.startPageID;
-// Test the search engine
-import com.apexinnovations.transwarp.data.Page;
-var results:Vector.<Page> = courseware.search('course objectives physiology blood something');
-trace('Ranked Search Results:');
-for each (var p:Page in results) {
-	trace('   ' + p.name + ' (ID: ' + p.id + ') - ' + p.weight);
-}
+
 					themeColor = courseware.color;
 					
 									

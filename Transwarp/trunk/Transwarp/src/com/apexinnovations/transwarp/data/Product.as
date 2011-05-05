@@ -1,9 +1,11 @@
 package com.apexinnovations.transwarp.data
 {
+	import com.apexinnovations.transwarp.data.Course;
+	
 	import flash.errors.*;
 	import flash.utils.*;
+	
 	import mx.formatters.DateFormatter;
-	import com.apexinnovations.transwarp.data.Course;
 		
 	// This represents the the product being taken
 	public class Product {
@@ -45,6 +47,13 @@ package com.apexinnovations.transwarp.data
 			for each (var h:XML in xml.courses.helpPages) {
 				_helpPages[_helpPages.length] = new HelpPage(h, this);
 			}
+		}
+		
+		public function getCourseByID(courseID:uint):Course {
+			for each(var c:Course in _courses)
+				if(c.id == courseID)
+					return c;
+			return null;
 		}
 		
 		public function get courses():Vector.<Course> { return _courses; }

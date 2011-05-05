@@ -9,6 +9,7 @@ package com.apexinnovations.transwarp.data
 	import flash.errors.*;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.external.ExternalInterface;
 	import flash.utils.*;
 	
 	// This represents the user taking the class and the product being taken
@@ -88,9 +89,13 @@ package com.apexinnovations.transwarp.data
 
 			_product = new Product(xml.product[0], this);
 			_user = new User(xml.user[0], this);
+			
+			_currentCourse = _product.getCourseByID(_user.startCourseID);
+			_currentPage = _currentCourse.getPageByID(_user.startPageID);
 		}
 		
-		public function get color():uint { return _color; }
+		
+		[Bindable] public function get color():uint { return _color; }
 		public function get copyright():String { return _copyright; }
 		public function get currentCourse():Course { return _currentCourse; }
 		public function set currentCourse(course:Course):void { _currentCourse = course; }
@@ -104,7 +109,11 @@ package com.apexinnovations.transwarp.data
 		public function get user():User { return _user; }
 		public function get website():String { return _website; }
 
-	
+		public function set color(value:uint):void {
+			_color = value;
+		}
+		
+		
 		// Gets the minimal class name for an object
 		private function getClassName(o:Object):String {
 			var fullClassName:String = getQualifiedClassName(o);

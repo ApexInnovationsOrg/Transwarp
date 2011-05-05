@@ -5,9 +5,19 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.ui.tree.CourseList;
+			
 			import mx.collections.ArrayList;
 			import mx.utils.ColorUtil;
 			[Bindable] public var color:uint;
+			[Bindable] protected var courseList:CourseList;
+			
+			override protected function createChildren():void {
+				super.createChildren();
+				courseList = new CourseList(Courseware.instance.currentCourse);
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -36,5 +46,7 @@
 		</s:filters>
 	</s:Rect>
 	
-	<tree:Tree left="40" top="72" bottom="50" right="10" color="{color}" dataProvider="{new ArrayList(['Example', 'Example', 'Example', 'Example', 'Example', 'Example', 'Example', 'Example'])}" />	
+	<tree:Tree left="20" top="72" bottom="50" right="10" color="{color}" dataProvider="{courseList}">
+	
+	</tree:Tree>	
 </s:Group>
