@@ -9,7 +9,7 @@ package com.apexinnovations.transwarp.ui.tree {
 		
 		protected var _course:Course;
 		
-		public function CourseList(source:Course) {
+		public function CourseList(source:Course = null) {
 			super();
 			course = source;
 		}
@@ -17,13 +17,10 @@ package com.apexinnovations.transwarp.ui.tree {
 		public function get course():Course { return _course; }
 		public function set course(value:Course):void {
 			_course = value;
-			if(!_course) {
+			if(_course)
+				reset();
+			else
 				source = null;
-				return;
-			}
-			
-			source = _course.viewableContents;	
-			
 		}
 		
 		public function toggleFolder(folder:Folder):void {

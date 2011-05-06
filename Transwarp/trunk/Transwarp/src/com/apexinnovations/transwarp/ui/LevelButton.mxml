@@ -3,19 +3,36 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 width="237" height="25" buttonMode="true" useHandCursor="true" mouseChildren="false"
-		 rollOver="rollOverOut(event)" rollOut="rollOverOut(event)" mouseDown="mouseDownUp(event)" addedToStage="onAdded(event)">
+		 rollOver="rollOverOut(event)" rollOut="rollOverOut(event)" mouseDown="mouseDownUp(event)" addedToStage="onAdded(event)" click="click(event)">
 
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.data.Course;
+			import com.apexinnovations.transwarp.data.Courseware;
+			
+			import mx.binding.utils.BindingUtils;
 			import mx.utils.ColorUtil;
-			[Bindable] public var color:uint;
-			[Bindable] public var levelRoman:String;
-			[Bindable] public var levelName:String;
+			
+			
+			[Bindable] protected var levelRoman:String;
+			[Bindable] protected var levelName:String;
+			
+			[Bindable] protected var _course:Course;
 			
 			protected var _selected:Boolean;
 			
 			[Bindable]
 			protected var down:Boolean;			
+			
+			
+			override protected function createChildren():void {
+				super.createChildren();
+				BindingUtils.bindSetter(currentCourseChange, Courseware.instance, "currentCourse");
+			}
+			
+			protected function currentCourseChange(value:Course):void {
+				selected = _course == value;
+			}
 			
 			public function get selected():Boolean { return _selected; }
 			public function set selected(value:Boolean):void {
@@ -23,12 +40,10 @@
 				currentState = _selected ? "selected" : "default";
 			}
 
-
 			protected function rollOverOut(event:MouseEvent):void {
 				if(currentState != "selected")
 					currentState = event.type == MouseEvent.ROLL_OVER ? "hovered" : "default";
 			}
-
 
 			protected function mouseDownUp(event:MouseEvent):void {
 				down = event.type == MouseEvent.MOUSE_DOWN;
@@ -36,6 +51,22 @@
 
 			protected function onAdded(event:Event):void {
 				stage.addEventListener(MouseEvent.MOUSE_UP, mouseDownUp);
+			}
+
+			public function get course():Course { return _course; }
+			public function set course(value:Course):void { 
+				_course = value; 
+				selected = _course == Courseware.instance.currentCourse;
+				if(_course) {
+					levelRoman = _course.levelRoman;
+					levelName = _course.name;
+					
+				}
+			}
+			
+			protected function click(event:MouseEvent):void {
+				if(_course)
+					Courseware.instance.currentCourse = _course;
 			}
 
 		]]>
@@ -62,14 +93,14 @@
 		<s:Rect width="42" height="100%" topLeftRadiusX="7" bottomLeftRadiusX="7">
 			<s:fill>
 				<s:LinearGradient rotation="270">
-					<s:GradientEntry color="{ColorUtil.adjustBrightness2(color, -50)}" />
-					<s:GradientEntry color="{color}" />
+					<s:GradientEntry color="{ColorUtil.adjustBrightness2(Courseware.instance.color, -50)}" />
+					<s:GradientEntry color="{Courseware.instance.color}" />
 				</s:LinearGradient>
 			</s:fill>
 		</s:Rect>
 		
 		<s:Label text="{levelRoman}" fontFamily="Arial" color="0xffffff" fontWeight="bold" fontSize="17" left="10" verticalCenter="0" />
-		<s:Label text="{levelName}" fontFamily="Arial" fontSize="12" color="0" color.selected="{color}" left="50" verticalCenter="0"/>	
+		<s:Label text="{levelName}" fontFamily="Arial" fontSize="12" color="0" color.selected="{Courseware.instance.color}" left="50" verticalCenter="0"/>	
 	</s:Group>		
 	
 </s:Group>

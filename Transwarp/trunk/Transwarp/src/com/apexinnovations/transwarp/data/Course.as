@@ -4,10 +4,11 @@ package com.apexinnovations.transwarp.data
 	import com.apexinnovations.transwarp.data.Page;
 	
 	import flash.errors.*;
+	import flash.events.EventDispatcher;
 	import flash.utils.*;
 		
 	// This represents the course being taken
-	public class Course {
+	public class Course extends EventDispatcher {
 		private var _contents:Array = [];						// An ordered collection of the contents of this course (pages and folders)
 		private var _id:uint = 0;								// The CourseID from the database
 		private var _level:uint = 0;							// The level of this course
@@ -44,21 +45,24 @@ package com.apexinnovations.transwarp.data
 			}
 		}
 		
+		//These gett
+		
 		public function get contents():Array { return _contents; }		
-		public function get id():uint { return _id; }
-		public function get level():uint {return _level;}
-		public function get levelRoman():String { return roman(_level); }
-		public function get name():String { return _name; }
+		[Bindable("courseChanged")] public function get id():uint { return _id; }
+		[Bindable("courseChanged")] public function get level():uint {return _level;}
+		[Bindable("courseChanged")] public function get levelRoman():String { return roman(_level); }
+		[Bindable("courseChanged")] public function get name():String { return _name; }
 		public function get pages():Vector.<Page> { return _pages; }
-		public function get parent():Product { return _parent; }
-		public function get restricted():Boolean { return _restricted; }
+		[Bindable("courseChanged")] public function get parent():Product { return _parent; }
+		[Bindable("courseChanged")] public function get restricted():Boolean { return _restricted; }
+		
 		public function get viewableContents():Array {
 			var _viewable:Array = [];
 			
 			for each (var item:* in _contents) {
 				_viewable.push(item);
 				if ((item is Folder) && item.open) {
-					_viewable.concat(item.viewableContents);
+					_viewable = _viewable.concat(item.viewableContents);
 				}
 			}
 			return _viewable;
