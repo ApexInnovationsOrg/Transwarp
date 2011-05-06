@@ -40,7 +40,6 @@ package com.apexinnovations.transwarp.data
 			
 			_instance.initAWS();
 			
-			
 			log.dispatch((obj ? _instance.getClassName(obj) + ': ' : '') + event);
 		}
 		
@@ -52,7 +51,7 @@ package com.apexinnovations.transwarp.data
 			if (_instance.user.lms) return pages;
 			
 			for each (var course:Course in _instance.product.courses) {
-				for each (var item:Page in course.pages()) {
+				for each (var item:Page in course.pages) {
 					if (item.search(keywords)) {
 						pages.push(item);
 					}
@@ -123,6 +122,14 @@ package com.apexinnovations.transwarp.data
 		public function get website():String { return _website; }
 		
 		
+		public function getCourseByID(courseID:uint):Course {
+			for each(var c:Course in _instance.product.courses)
+			if(c.id == courseID)
+				return c;
+			return null;
+		}
+		
+
 		// Gets the minimal class name for an object
 		private function getClassName(o:Object):String {
 			var fullClassName:String = getQualifiedClassName(o);

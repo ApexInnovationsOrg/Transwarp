@@ -8,13 +8,14 @@ package com.apexinnovations.transwarp.data
 		
 	// This represents the course being taken
 	public class Course {
-		private var _id:uint = 0;					// The CourseID from the database
-		private var _level:uint = 0;				// The level of this course
-		private var _name:String = '';				// The name of this course
-		private var _parent:Product = null;			// A link back to the product
-		private var _restricted:Boolean = false;	// Is the user restricted from using this course?
+		private var _contents:Array = [];						// An ordered collection of the contents of this course (pages and folders)
+		private var _id:uint = 0;								// The CourseID from the database
+		private var _level:uint = 0;							// The level of this course
+		private var _name:String = '';							// The name of this course
+		private var _pages:Vector.<Page> = new Vector.<Page>();	// An ordered collection of pages of this course
+		private var _parent:Product = null;						// A link back to the product
+		private var _restricted:Boolean = false;				// Is the user restricted from using this course?
 
-		private var _contents:Array = [];			// An ordered collection of the contents of this folder (pages and other folders)
 		
 		public function Course(xml:XML, parent:Product) {
 			try {
@@ -29,9 +30,16 @@ package com.apexinnovations.transwarp.data
 
 			for each (var child:XML in xml.children()) {
 				if (child.localName() == "page") {
-					_contents.push(new Page(child, this, 0));
+					var p:Page = new Page(child, this, 0);
+					_contents.push(p);
+					_pages.push(p);
 				} else {
-					_contents.push(new Folder(child, this, 0));
+					var f:Folder = new Folder(child, this, 0);
+					_contents.push(f);
+					for each (var q:Page in f.pages) {
+						_pages.push(q);
+					}
+					//_pages.concat(f.pages);	NOT WORKING???
 				}
 			}
 		}
@@ -41,6 +49,7 @@ package com.apexinnovations.transwarp.data
 		public function get level():uint {return _level;}
 		public function get levelRoman():String { return roman(_level); }
 		public function get name():String { return _name; }
+		public function get pages():Vector.<Page> { return _pages; }
 		public function get parent():Product { return _parent; }
 		public function get restricted():Boolean { return _restricted; }
 		public function get viewableContents():Array {
@@ -49,32 +58,15 @@ package com.apexinnovations.transwarp.data
 			for each (var item:* in _contents) {
 				_viewable.push(item);
 				if ((item is Folder) && item.open) {
-					for each (var x:* in item.viewableContents) {
-						_viewable.push(x);
-					}
+					_viewable.concat(item.viewableContents);
 				}
 			}
 			return _viewable;
 		}
 		
-		// Returns a Vector (array) of Pages in this Course
-		public function pages(recurse:Boolean = true):Vector.<Page> {
-			var _pages:Vector.<Page> = new Vector.<Page>();
-			
-			for each (var item:* in _contents) {
-				if (item is Page) {
-					_pages.push(item as Page);
-				} else if (recurse) {
-					for each (var x:Page in (item as Folder).pages(recurse)) {
-						_pages.push(x);
-					}
-				}
-			}
-			return _pages;
-		}
 
 		public function getPageByID(pageID:uint):Page {
-			for each(var p:Page in pages(true))
+			for each(var p:Page in pages)
 				if(p.id == pageID)
 					return p;
 			return null;
