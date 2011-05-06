@@ -13,6 +13,7 @@ package com.apexinnovations.transwarp.data
 		private var _open:Boolean = false;						// Is this folder open (contents are visible in the menu)?
 		private var _pages:Vector.<Page> = new Vector.<Page>();	// An ordered collection of pages of this course
 		private var _parent:Object = null;						// A link back to the parent (folder or course)
+		private var _visited:Boolean = false;					// Is everything in this folder visited
 		
 		
 		public function Folder(xml:XML, parent:Object, depth:int) {
@@ -58,6 +59,19 @@ package com.apexinnovations.transwarp.data
 				}
 			}
 			return _viewable;
+		}
+		[Bindable] public function get visited():Boolean { return _visited; }
+		public function set visited(val:Boolean):void { _visited = val; }
+		
+		
+		public function updateVisited():void {
+			if (_visited) return;
+			
+			for each (var item:* in _contents) {
+				if (!item.visited) return;
+			}
+			this.visited = true;
+			if (_parent is Folder) parent.updateVisited();
 		}
 	}
 }

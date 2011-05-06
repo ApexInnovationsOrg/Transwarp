@@ -76,6 +76,8 @@ package com.apexinnovations.transwarp.data
 		public function get configuration():String { return _configuration; }
 		public function get created():Date { return _created; }
 		public function get demo():Boolean { return _demo; }
+		public function get depth():int { return _depth; }
+		public function set depth(value:int):void { _depth = value;	}
 		public function get id():uint { return _id; }
 		public function get instructions():TextFlow { return _instructions; }
 		public function get keywords():String { return _keywords; }
@@ -91,13 +93,14 @@ package com.apexinnovations.transwarp.data
 		public function get supportText():TextFlow { return _supportText; }
 		public function get swf():String { return _swf; }
 		public function get timeline():Boolean { return _timeline; }
-		public function get visited():Boolean { return _visited; }
-		public function set visited(val:Boolean):void { _visited = val; }
+		[Bindable] public function get visited():Boolean { return _visited; }
+		public function set visited(val:Boolean):void {
+			_visited = val;
+			if (_visited && _parent is Folder) _parent.updateVisited();
+		}
 		public function get updates():Vector.<Update> { return _updates; }
 		public function get weight():uint { return _weight; }
 
-		public function get depth():int { return _depth; }
-		public function set depth(value:int):void { _depth = value;	}
 		
 		// Does everything associated with bookmarking this page 
 		public function bookmark():void {
