@@ -10,6 +10,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.graphics.*;
+			import flash.printing.*;
 			
 			import mx.core.IVisualElement;
 			import mx.utils.ColorUtil;
@@ -38,6 +39,39 @@
 
 			protected function onAdded():void {
 				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);
+			}
+
+			protected function PrintStage(evt:MouseEvent):void {
+				var printJob:PrintJob = new PrintJob();
+				var options:PrintJobOptions = new PrintJobOptions();
+				options.printAsBitmap = true;
+				
+				if (printJob.start()) {
+					var printSprite:Sprite = new Sprite();
+					
+					var bitmapData:BitmapData = new BitmapData(stage.stageWidth,stage.stageHeight);
+					bitmapData.draw(stage);
+					var screenShot:Bitmap = new Bitmap(bitmapData);
+										
+					//scale it to fill the page (portrait orientation):
+					var myScale:Number;
+					printSprite.addChild(screenShot);
+					
+					//========== printjob bug fix - prevent blank pages: ==========
+					printSprite.x = 2000; //keep it hidden to the side of the stage
+					stage.addChild(printSprite); //add to stage - prevents blank pages
+					//=============================================================
+					
+					myScale = Math.min(printJob.pageWidth/printSprite.width, printJob.pageHeight/printSprite.height);
+					printSprite.scaleX = printSprite.scaleY = myScale;
+					var printArea:Rectangle = new Rectangle(0, 0, printJob.pageWidth/myScale, printJob.pageHeight/myScale);
+					
+					printJob.addPage(printSprite,printArea,options);
+					printJob.send();
+					
+					stage.removeChild(printSprite);
+					printSprite = null;
+				}
 			}
 
 		]]>
@@ -71,7 +105,7 @@
 		<ui:IconButton artClass="{PaintbrushIcon}" />
 		<ui:IconButton artClass="{AudioIcon}" />
 		<ui:IconButton artClass="{ConfigurationIcon}" />
-		<ui:IconButton artClass="{SnapshotIcon}" />
+		<ui:IconButton artClass="{SnapshotIcon}" click="PrintStage(event);" />
 		<ui:IconButton artClass="{HelpIcon}" />
 	</s:VGroup>
 	
