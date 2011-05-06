@@ -14,6 +14,7 @@
 			import com.apexinnovations.transwarp.data.Page;
 			
 			import flash.text.engine.FontWeight;
+			import flash.text.engine.FontPosture;
 			
 			import mx.binding.utils.BindingUtils;
 			import mx.events.FlexEvent;
@@ -29,20 +30,21 @@
 				if(data is Page) {
 					var p:Page = data as Page;
 					labelDisplay.setStyle("fontWeight", p.visited ? FontWeight.NORMAL : FontWeight.BOLD);
-					indentation = p.depth * 7;
+					indentation = p.depth * 12;
 					labelDisplay.text = p.name;
 					disclosure.visible = false;
 					disclosureWidth = 0;
 					
 				} else if(data is Folder) {
-					labelDisplay.setStyle("fontWeight", FontWeight.NORMAL);
 					var f:Folder = data as Folder
+					labelDisplay.setStyle("fontWeight", f.visited ? FontWeight.NORMAL : FontWeight.BOLD);
+					labelDisplay.setStyle("fontStyle", FontPosture.ITALIC);
 					disclosure.visible = true;
 					disclosureWidth = 12;
 					
 					disclosure.rotation = f.open ? 90 : 0;
 					
-					indentation = f.depth * 7;
+					indentation = f.depth * 12;
 					labelDisplay.text = f.name;
 				}
 			}
