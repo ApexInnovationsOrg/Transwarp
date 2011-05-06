@@ -49,7 +49,7 @@ package com.apexinnovations.transwarp.data
 			for each (var item:* in _contents) {
 				_viewable.push(item);
 				if ((item is Folder) && item.open) {
-					for each (var x:* in item.viewableContents()) {
+					for each (var x:* in item.viewableContents) {
 						_viewable.push(x);
 					}
 				}
