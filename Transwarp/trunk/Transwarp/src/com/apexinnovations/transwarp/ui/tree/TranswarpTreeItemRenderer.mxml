@@ -30,7 +30,7 @@
 				if(data is Page) {
 					var p:Page = data as Page;
 					labelDisplay.setStyle("fontWeight", p.visited ? FontWeight.NORMAL : FontWeight.BOLD);
-					indentation = p.depth * 12;
+					indentation = (p.depth + 1) * 12;
 					labelDisplay.text = p.name;
 					disclosure.visible = false;
 					disclosureWidth = 0;
