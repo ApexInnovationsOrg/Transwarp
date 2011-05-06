@@ -16,6 +16,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.data.User;
 			import com.apexinnovations.transwarp.webservices.*;
 			
@@ -46,7 +47,6 @@
 					ApexWebService.pageID = courseware.user.startPageID;
 
 					themeColor = courseware.color;
-					
 									
 					topBar.searchPrompt = "Search " + courseware.product.name;
 					topBar.hasSearch = !User.instance.lms;
@@ -125,7 +125,7 @@
 	
 	<!--Setting this group's width to "100%" resulted in it being 10,000 px wide instead of what was expected.-->
 	<s:VGroup width="{width}" height="100%" gap.default="-53" gap.maximized="-35">
-		<ui:TopBar id="topBar" color="{themeColor}"/>
+		<ui:TopBar id="topBar"/>
 		<ui:LeftBar id="leftBar" color="{themeColor}"/>
 	</s:VGroup> 
 <!--	<s:Button label="Cause Error" click="clickHandler(event);"/> -->

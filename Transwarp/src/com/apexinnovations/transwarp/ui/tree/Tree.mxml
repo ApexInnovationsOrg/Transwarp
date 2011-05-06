@@ -17,31 +17,57 @@
 			
 			import mx.collections.IList;
 			import mx.events.CollectionEvent;
+			import mx.events.CollectionEventKind;
 			
 			import spark.events.IndexChangeEvent;
 			
- 			/* override public function set dataProvider(value:IList):void {
-				if(dataProvider)
-					dataProvider.removeEventListener(CollectionEvent.COLLECTION_CHANGE, dataChange);
+			
+			protected var dataProviderChanged:Boolean = false;
+			
+			override protected function createChildren():void {
+				super.createChildren();
+				
+				scroller.setStyle("horizontalScrollPolicy", false);
+			}
+			
+ 			override public function set dataProvider(value:IList):void {
+				if(dataProvider) {
+					dataProvider.removeEventListener(TranswarpEvent.FOLDER_OPEN_CLOSE, folderOpenClose);
+					
+				}
 				
 				super.dataProvider = value;
 				
-				value.addEventListener(TranswarpEvent.FOLDER_OPEN_CLOSE, dataChange);
-			}  */
+				value.addEventListener(CollectionEvent.COLLECTION_CHANGE, collectionChange); 
+				value.addEventListener(TranswarpEvent.FOLDER_OPEN_CLOSE, folderOpenClose);
+			}
 
 			protected function changingHandler(event:IndexChangeEvent):void {
+				if(event.newIndex == -1)
+					return;
+				
 				var selection:Object = dataProvider.getItemAt(event.newIndex);
 				if(selection is Folder)
 					event.preventDefault();
 			}
-
-			protected function invalidateList():void {
-				var _itemRenderer:IFactory = itemRenderer;
-				itemRenderer = null;
-				itemRenderer = _itemRenderer;
+			
+			protected function folderOpenClose(event:Event):void {
+				selectedIndex = dataProvider.getItemIndex(Courseware.instance.currentPage);
 			}
 			
-			
+			override protected function commitProperties():void {
+				super.commitProperties();
+				if(dataProviderChanged) {
+					dataProviderChanged = false;
+					selectedIndex = dataProvider.getItemIndex(Courseware.instance.currentPage);
+				}
+			}
+
+
+			protected function collectionChange(event:CollectionEvent):void {
+				if(event.kind == CollectionEventKind.RESET)
+					dataProviderChanged = true;
+			}
 
 		]]>
 	</fx:Script>

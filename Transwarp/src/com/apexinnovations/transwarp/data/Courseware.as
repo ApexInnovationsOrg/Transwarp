@@ -105,7 +105,7 @@ package com.apexinnovations.transwarp.data
 		
 		[Bindable] public function get currentPage():Page { return _currentPage; }
 		public function set currentPage(page:Page):void {
-			if(_currentPage == page)
+			if(_currentPage == page || page == null)
 				return;
 			_currentPage = page;
 			page.visited = true;

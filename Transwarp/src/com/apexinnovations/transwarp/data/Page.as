@@ -10,10 +10,12 @@ package com.apexinnovations.transwarp.data
 	import flashx.textLayout.conversion.TextConverter;
 	import flashx.textLayout.elements.TextFlow;
 	
+	import mx.events.PropertyChangeEvent;
+	import mx.events.PropertyChangeEventKind;
 	import mx.formatters.DateFormatter;
 	
 	// This represents a page in the course
-	public class Page {
+	public class Page extends EventDispatcher {
 		private var _allow:String = '';										// Space separated list of types of user allowed to view this page (e.g. 'LMS Doctor Beta'). '' means all
 		private var _bookmarked:Boolean = false;							// Has this page been bookmarked by the user?
 		private var _configuration:String = '';								// URL of XML file to be loaded by SWF as configuration
@@ -96,6 +98,12 @@ package com.apexinnovations.transwarp.data
 		[Bindable] public function get visited():Boolean { return _visited; }
 		public function set visited(val:Boolean):void {
 			_visited = val;
+			
+			var event:PropertyChangeEvent = new PropertyChangeEvent(PropertyChangeEvent.PROPERTY_CHANGE);
+			event.source = this;
+			event.kind = PropertyChangeEventKind.UPDATE;
+			dispatchEvent(event);
+			
 			if (_visited && _parent is Folder) _parent.updateVisited();
 		}
 		public function get updates():Vector.<Update> { return _updates; }

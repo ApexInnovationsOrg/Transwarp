@@ -3,10 +3,15 @@ package com.apexinnovations.transwarp.data
 	import com.apexinnovations.transwarp.data.Page;
 	
 	import flash.errors.*;
+	import flash.events.EventDispatcher;
 	import flash.utils.*;
 	
+	import mx.events.CollectionEvent;
+	import mx.events.PropertyChangeEvent;
+	import mx.events.PropertyChangeEventKind;
+	
 	// This represents a folder of pages and subfolders (of pages)
-	public class Folder {
+	public class Folder extends EventDispatcher {
 		private var _contents:Array = [];						// An ordered collection of the contents of this folder (pages and other folders)
 		private var _depth:int;									// The depth at which this folder resides in the course hierarchy
 		private var _name:String = '';							// The name of this folder
@@ -33,10 +38,10 @@ package com.apexinnovations.transwarp.data
 				} else {
 					var f:Folder = new Folder(child, this, _depth + 1);
 					_contents.push(f);
-					for each (var q:Page in f.pages) {
-						_pages.push(q);
-					}
-					//_pages.concat(f.pages);	NOT WORKING???
+					//for each (var q:Page in f.pages) {
+					//	_pages.push(q);
+					//}
+					_pages = _pages.concat(f.pages);	//NOT WORKING???
 				}
 			}
 		}
@@ -46,7 +51,14 @@ package com.apexinnovations.transwarp.data
 		public function set depth(value:int):void { _depth = value;	}
 		public function get name():String { return _name; }
 		public function get open():Boolean { return _open; }
-		public function set open(val:Boolean):void { _open = val; }
+		public function set open(val:Boolean):void {
+			_open = val; 
+			
+			var event:PropertyChangeEvent = new PropertyChangeEvent(PropertyChangeEvent.PROPERTY_CHANGE);
+			event.source = this;
+			event.kind = PropertyChangeEventKind.UPDATE;
+			dispatchEvent(event);
+		}
 		public function get pages():Vector.<Page> { return _pages; }
 		public function get parent():Object { return _parent; }
 		public function get viewableContents():Array {
@@ -55,13 +67,22 @@ package com.apexinnovations.transwarp.data
 			for each (var item:* in _contents) {
 				_viewable.push(item);
 				if ((item is Folder) && item.open) {
-					_viewable.concat(item.viewableContents);
+					_viewable = _viewable.concat(item.viewableContents);
 				}
 			}
 			return _viewable;
 		}
 		[Bindable] public function get visited():Boolean { return _visited; }
-		public function set visited(val:Boolean):void { _visited = val; }
+		public function set visited(val:Boolean):void { 
+			_visited = val;
+			
+			var event:PropertyChangeEvent = new PropertyChangeEvent(PropertyChangeEvent.PROPERTY_CHANGE);
+			event.source = this;
+			event.kind = PropertyChangeEventKind.UPDATE;
+			dispatchEvent(event);
+			
+			if (_visited && _parent is Folder) _parent.updateVisited();
+		}
 		
 		
 		public function updateVisited():void {

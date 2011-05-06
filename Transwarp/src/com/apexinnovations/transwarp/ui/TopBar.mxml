@@ -7,6 +7,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Course;
+			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.User;
 			import com.apexinnovations.transwarp.graphics.ArrowNextIcon;
 			import com.apexinnovations.transwarp.graphics.ArrowPreviousIcon;
@@ -15,7 +16,6 @@
 			import mx.binding.utils.BindingUtils;
 			import mx.utils.ColorUtil;
 			
-			[Bindable] public var color:uint;
 			[Bindable] public var hasSearch:Boolean = true;
 			[Bindable] public var hasRightGradient:Boolean = true;
 			[Bindable] public var searchPrompt:String = "Search";			
@@ -57,12 +57,8 @@
 						levelNav.addElement(b);	
 					}
 					
-					if(i==0)
-						b.selected = true;
-					
-					b.levelName = c.name;
-					b.levelRoman = c.levelRoman;
-					BindingUtils.bindProperty(b, "color", this, "color");
+					b.course = c;
+
 					i++;
 				}					
 			}
@@ -96,7 +92,7 @@
 		<s:fill>
 			<s:LinearGradient>
 				<s:GradientEntry color="0xffffff" alpha="0" />
-				<s:GradientEntry color="{ColorUtil.adjustBrightness2(color,25)}" alpha=".65" />
+				<s:GradientEntry color="{ColorUtil.adjustBrightness2(Courseware.instance.color,25)}" alpha=".65" />
 			</s:LinearGradient>
 		</s:fill>
 	</s:Rect>
@@ -106,8 +102,8 @@
 		<s:Path data="M 0 0 16 16 {width} 16 {width} 0 Z">
 			<s:fill>
 				<s:LinearGradient scaleX="-11.625" rotation="270">
-					<s:GradientEntry color="{color}" ratio="0.08"/>
-					<s:GradientEntry color="{ColorUtil.adjustBrightness2(color, -50)}" ratio="0.9"/>
+					<s:GradientEntry color="{Courseware.instance.color}" ratio="0.08"/>
+					<s:GradientEntry color="{ColorUtil.adjustBrightness2(Courseware.instance.color, -50)}" ratio="0.9"/>
 				</s:LinearGradient>
 			</s:fill>
 		</s:Path>
