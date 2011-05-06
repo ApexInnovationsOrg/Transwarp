@@ -41,7 +41,7 @@
 				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);
 			}
 
-			protected function PrintStage(evt:MouseEvent):void {
+			protected function printStage(evt:MouseEvent):void {
 				var printJob:PrintJob = new PrintJob();
 				var options:PrintJobOptions = new PrintJobOptions();
 				options.printAsBitmap = true;
@@ -105,7 +105,7 @@
 		<ui:IconButton artClass="{PaintbrushIcon}" />
 		<ui:IconButton artClass="{AudioIcon}" />
 		<ui:IconButton artClass="{ConfigurationIcon}" />
-		<ui:IconButton artClass="{SnapshotIcon}" click="PrintStage(event);" />
+		<ui:IconButton artClass="{SnapshotIcon}" click="printStage(event);" />
 		<ui:IconButton artClass="{HelpIcon}" />
 	</s:VGroup>
 	
