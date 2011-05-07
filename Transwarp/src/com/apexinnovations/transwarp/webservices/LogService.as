@@ -1,7 +1,7 @@
 /* LogService - Processes a log request to the Apex Website
 * 
 * Copyright (c) 2011 Apex Innovations, LLC. All rights reserved. Any unauthorized reproduction, duplication or transmission by any means, is prohibited.
-*/   
+*/
 package com.apexinnovations.transwarp.webservices
 {
 	import com.adobe.serialization.json.*;
