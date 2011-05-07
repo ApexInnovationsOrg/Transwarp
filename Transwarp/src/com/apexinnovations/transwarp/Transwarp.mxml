@@ -50,7 +50,11 @@
 									
 					topBar.searchPrompt = "Search " + courseware.product.name;
 					topBar.hasSearch = !User.instance.lms;
+					
+					topBar.courses = courseware.product.courses;
+					
 				} catch ( e:Error ) {
+					
 					var log:LogService = new LogService();
 					
 					try {
@@ -61,13 +65,13 @@
 					} catch ( e2:Error ) {
 						// Nothing - just won't be able to record userID, courseID and/or pageID
 					}
-					log.dispatch('XML Load Failure: ' + e.toString());
+					log.dispatch('XML Load Failure: ' + e.toString() + '\n' + e.getStackTrace());
 
 					themeColor = 0xa8a8a8;
 					popupErrorDialog('There was an error loading data from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
 				}
 				
-				topBar.courses = courseware.product.courses;
+				
 			}
 			
 			protected function maximize(event:FullScreenEvent):void {
@@ -128,7 +132,7 @@
 		<ui:TopBar id="topBar"/>
 		<ui:LeftBar id="leftBar" color="{themeColor}"/>
 	</s:VGroup> 
-<!--	<s:Button label="Cause Error" click="clickHandler(event);"/> -->
+	<!--<s:Button label="Cause Error" click="clickHandler(event);"/>-->
 	
 	
 

@@ -49,8 +49,9 @@
 			}
 			
 			protected function click():void {
-				if(data is Folder)
-					CourseList(List(owner).dataProvider).toggleFolder(data as Folder);
+				var folder:Folder = data as Folder;
+				if(folder)
+					folder.open = !folder.open;
 			}
 			
 		]]>

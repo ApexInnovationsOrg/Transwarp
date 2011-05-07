@@ -5,6 +5,7 @@ package com.apexinnovations.transwarp.data
 	import com.apexinnovations.transwarp.data.Product;
 	import com.apexinnovations.transwarp.data.User;
 	import com.apexinnovations.transwarp.events.PageSelectionEvent;
+	import com.apexinnovations.transwarp.ui.tree.CourseList;
 	import com.apexinnovations.transwarp.webservices.*;
 	
 	import flash.errors.*;
@@ -21,6 +22,7 @@ package com.apexinnovations.transwarp.data
 		private var _copyright:String = '';			// Copyright information about this engine
 		private var _currentCourse:Course = null;	// Current course the user is viewing
 		private var _currentPage:Page = null;		// Current page the user is viewing
+		private var _currentCourseList:CourseList;
 		private var _debug:Boolean = false;			// Are we in debug mode?
 		private var _owner:String = '';				// The owner of this engine - Apex Innovations, e.g.
 		private var _product:Product = null;		// The product that we're working with
@@ -90,8 +92,9 @@ package com.apexinnovations.transwarp.data
 			_product = new Product(xml.product[0], this);
 			_user = new User(xml.user[0], this);
 			
-			_currentCourse = _product.getCourseByID(_user.startCourseID);
-			_currentPage = _currentCourse.getPageByID(_user.startPageID);
+			_currentCourseList = new CourseList();
+			currentCourse = _product.getCourseByID(_user.startCourseID);
+			currentPage = _currentCourse.getPageByID(_user.startPageID);
 		}
 		
 		
@@ -101,7 +104,15 @@ package com.apexinnovations.transwarp.data
 		public function get copyright():String { return _copyright; }
 		
 		[Bindable] public function get currentCourse():Course { return _currentCourse; }
-		public function set currentCourse(course:Course):void { _currentCourse = course; }
+		public function set currentCourse(course:Course):void { 
+			_currentCourse = course;
+			_currentCourseList.course = course;
+			dispatchEvent(new Event("courseChanged"));		
+		}
+		
+		[Bindable("courseChanged")] public function get currentCourseList():CourseList {
+			return _currentCourseList;	
+		}		
 		
 		[Bindable] public function get currentPage():Page { return _currentPage; }
 		public function set currentPage(page:Page):void {
@@ -147,5 +158,60 @@ package com.apexinnovations.transwarp.data
 		private function pageWeightCompare(x:Page, y:Page):Number {
 			return y.weight - x.weight;
 		}
+		
+		
+		public function nextPage():void {
+			moveSelection(pageToIndex(_currentPage) + 1, false);
+		}
+		
+		public function prevPage():void {
+			moveSelection(pageToIndex(_currentPage) - 1, true);
+		}
+		
+		protected function pageToIndex(page:Page):int {
+			var index:int = _currentCourseList.getItemIndex(_currentPage);
+			if(index < 0 && _currentCourse.pages.indexOf(page) > 0) {
+				var parent:* = page.parent;
+				while(parent is Folder) {
+					Folder(parent).open = true;
+					parent = Folder(parent).parent; 
+				}
+				return _currentCourseList.getItemIndex(page);
+			}
+
+			return index;			
+		}
+		
+		protected function moveSelection(newIndex:int, up:Boolean):void {
+			var list:CourseList = _currentCourseList;
+			
+			if(newIndex < 0 || newIndex >= list.length)
+				return;
+			
+			var newPage:* = list.getItemAt(newIndex);
+			if(newPage is Page) {
+				var page:Page = newPage as Page;
+				Courseware.instance.currentPage = page;
+				if(page.parent is Folder && !Folder(page.parent).open)
+					(page.parent as Folder).open = true;
+				
+			}
+			else { //newPage is Folder
+				var folder:Folder = newPage as Folder;
+				if(up) {
+					if(folder.open) {
+						moveSelection(newIndex - 1, up);
+					} else {
+						folder.open = true
+						moveSelection(folder.contents.length + newIndex, up);
+					}
+				} else {
+					folder.open = true;
+					moveSelection(newIndex + 1, up);
+				}						
+				
+			}
+		}
+		
 	}
 }
