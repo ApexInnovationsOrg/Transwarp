@@ -38,10 +38,7 @@ package com.apexinnovations.transwarp.data
 				} else {
 					var f:Folder = new Folder(child, this, _depth + 1);
 					_contents.push(f);
-					//for each (var q:Page in f.pages) {
-					//	_pages.push(q);
-					//}
-					_pages = _pages.concat(f.pages);	//NOT WORKING???
+					_pages = _pages.concat(f.pages);
 				}
 			}
 		}
@@ -50,17 +47,26 @@ package com.apexinnovations.transwarp.data
 		public function get depth():int { return _depth; }
 		public function set depth(value:int):void { _depth = value;	}
 		public function get name():String { return _name; }
+
 		public function get open():Boolean { return _open; }
-		public function set open(val:Boolean):void {
-			_open = val; 
+		public function set open(value:Boolean):void {
+			if(_open == value)
+				return;
 			
 			var event:PropertyChangeEvent = new PropertyChangeEvent(PropertyChangeEvent.PROPERTY_CHANGE);
 			event.source = this;
 			event.kind = PropertyChangeEventKind.UPDATE;
+			event.property = "open";
+			event.oldValue = _open;
+			event.newValue = value;
+			_open = value;
+			
 			dispatchEvent(event);
 		}
+		
 		public function get pages():Vector.<Page> { return _pages; }
 		public function get parent():Object { return _parent; }
+		
 		public function get viewableContents():Array {
 			var _viewable:Array = [];
 			
@@ -72,6 +78,7 @@ package com.apexinnovations.transwarp.data
 			}
 			return _viewable;
 		}
+		
 		[Bindable] public function get visited():Boolean { return _visited; }
 		public function set visited(val:Boolean):void { 
 			_visited = val;
@@ -83,7 +90,6 @@ package com.apexinnovations.transwarp.data
 			
 			if (_visited && _parent is Folder) _parent.updateVisited();
 		}
-		
 		
 		public function updateVisited():void {
 			if (_visited) return;

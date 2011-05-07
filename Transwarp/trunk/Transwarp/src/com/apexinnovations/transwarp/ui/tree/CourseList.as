@@ -1,9 +1,12 @@
 package com.apexinnovations.transwarp.ui.tree {
 	import com.apexinnovations.transwarp.data.Course;
+	import com.apexinnovations.transwarp.data.Courseware;
 	import com.apexinnovations.transwarp.data.Folder;
+	import com.apexinnovations.transwarp.data.Page;
 	import com.apexinnovations.transwarp.events.TranswarpEvent;
 	
 	import mx.collections.ArrayList;
+	import mx.events.PropertyChangeEvent;
 	
 	public class CourseList extends ArrayList {
 		
@@ -23,24 +26,27 @@ package com.apexinnovations.transwarp.ui.tree {
 				source = null;
 		}
 		
-		public function toggleFolder(folder:Folder):void {
-			folder.open = !folder.open;
-			var index:int = getItemIndex(folder);
-			var contents:Array = folder.viewableContents;
-			var open:Boolean = folder.open;
-			for each(var child:* in contents) {
-				if(open) {
-					addItemAt(child, ++index);
-				} else {
-					removeItemAt(index+1);
-				}
-			}
-			
-			dispatchEvent(new TranswarpEvent(TranswarpEvent.FOLDER_OPEN_CLOSE));
-		}
-		
 		public function reset():void {
 			source = _course.viewableContents;
+		}
+				
+		override protected function itemUpdateHandler(event:PropertyChangeEvent):void {
+			super.itemUpdateHandler(event);
+			
+			var folder:Folder = event.source as Folder;
+			if(folder && event.property == "open") {
+				var index:int = getItemIndex(folder);
+				var contents:Array = folder.viewableContents;
+				var open:Boolean = folder.open;
+				for each(var child:* in contents) {
+					if(open) {
+						addItemAt(child, ++index);
+					} else {
+						removeItemAt(index+1);
+					}
+				}
+				dispatchEvent(new TranswarpEvent(TranswarpEvent.FOLDER_OPEN_CLOSE));
+			}
 		}
 
 	}

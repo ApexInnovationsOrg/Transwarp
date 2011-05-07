@@ -9,6 +9,7 @@
 			import com.apexinnovations.transwarp.data.Course;
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.User;
+			import com.apexinnovations.transwarp.events.TranswarpEvent;
 			import com.apexinnovations.transwarp.graphics.ArrowNextIcon;
 			import com.apexinnovations.transwarp.graphics.ArrowPreviousIcon;
 			import com.apexinnovations.transwarp.graphics.ReplayIcon;
@@ -24,8 +25,7 @@
 			
 			override protected function createChildren():void {
 				super.createChildren();
-				if(_courses)
-					initLevelNav();
+				  
 			}
 			
 			protected function maximize(event:FullScreenEvent):void {
@@ -61,6 +61,14 @@
 
 					i++;
 				}					
+			}
+			
+			protected function prevClick():void {
+				Courseware.instance.prevPage();
+			}
+			
+			protected function nextClick():void {
+				Courseware.instance.nextPage();
 			}
 
 		]]>
@@ -151,9 +159,9 @@
 	<s:TileGroup id="levelNav" left="285" right="40" top="30" requestedRowCount="3" orientation="columns" verticalGap="10" horizontalGap="10" height.maximized="0" visible.maximized="false"/>
 	
 	<s:HGroup height="32" verticalAlign="middle" bottom="1" right="10" gap="12">
-		<ui:TopBarButton icon="{ArrowPreviousIcon}" label="PREV"/>
+		<ui:TopBarButton icon="{ArrowPreviousIcon}" label="PREV" click="prevClick()"/>
 		<ui:VerticalSeparator />
-		<ui:TopBarButton icon="{ArrowNextIcon}" label="NEXT" iconOnRight="true"/>
+		<ui:TopBarButton icon="{ArrowNextIcon}" label="NEXT" iconOnRight="true" click="nextClick()"/>
 		<ui:VerticalSeparator />
 		<ui:TopBarButton icon="{ReplayIcon}" label="REPLAY" />
 		
