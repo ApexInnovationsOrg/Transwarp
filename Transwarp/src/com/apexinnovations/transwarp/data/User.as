@@ -20,7 +20,6 @@ package com.apexinnovations.transwarp.data
 		private var _name:String = '';						// First and last name of user
 		private var _parent:Courseware = null;				// A link back to the courseware
 		private var _startCourseID:int = 0;					// CourseID to start with
-		private var _startPageID:int = 0;					// PageID to start with
 		
 		public static function get instance():User {
 			return _instance;
@@ -44,7 +43,7 @@ package com.apexinnovations.transwarp.data
 				_name = xml.@name;
 				_parent = parent;
 				_startCourseID = xml.@startCourse;
-				_startPageID = xml.@startPage;
+				
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
 			}
@@ -52,23 +51,32 @@ package com.apexinnovations.transwarp.data
 
 		[Bindable] public function get autoCloseMenu():Boolean { return _autoCloseMenu; }
 		public function set autoCloseMenu(val:Boolean):void { _autoCloseMenu = val; }
+		
 		[Bindable] public function get audioVolume():uint { return _audioVolume; }
 		public function set audioVolume(val:uint):void { _audioVolume = val; }
+		
 		[Bindable] public function get animatePageTransitions():Boolean { return _animatePageTransitions; }
 		public function set animatePageTransitions(val:Boolean):void { _animatePageTransitions = val; }
-		public function get beta():Boolean { return (_classes.indexOf('Beta') != -1); }
+		
 		[Bindable] public function get closedCaptioning():Boolean { return _closedCaptioning; }
 		public function set closedCaptioning(val:Boolean):void { _closedCaptioning = val; }
+		
+		public function get beta():Boolean { return (_classes.indexOf('Beta') != -1); }
 		public function get doctor():Boolean { return (_classes.indexOf('Doctor') != -1); }
 		public function get emt():Boolean { return (_classes.indexOf('EMT') != -1); }
-		public function get id():uint { return _id; }
-		public function get lastAccess():Date { return _lastAccess; }
 		public function get lms():Boolean { return (_classes.indexOf('LMS') != -1); }
-		public function get locale():String { return _locale; }
-		public function get name():String { return _name; }
-		public function get parent():Courseware { return _parent; }
 		public function get nurse():Boolean { return (_classes.indexOf('Nurse') != -1); }
+		
+		public function get id():uint { return _id; }
+		
+		public function get lastAccess():Date { return _lastAccess; }
+		
+		public function get locale():String { return _locale; }
+		
+		public function get name():String { return _name; }
+		
+		public function get parent():Courseware { return _parent; }
+		
 		public function get startCourseID():int { return _startCourseID; }
-		public function get startPageID():int { return _startPageID; }
 	}
 }
