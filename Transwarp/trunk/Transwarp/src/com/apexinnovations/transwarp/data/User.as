@@ -1,21 +1,26 @@
 package com.apexinnovations.transwarp.data
 {
-	import flash.utils.*;
 	import flash.errors.*;
+	import flash.utils.*;
+	
 	import mx.formatters.DateFormatter;
 	
 	// This represents the user taking the class
 	public class User {
 		private static var _instance:User;		// Make this class a singleton
 		
-		private var _classes:String = '';		// Space separated list of classes this user falls into (e.g. 'LMS Doctor Beta')
-		private var _id:uint = 0;				// Unique UserID from database
-		private var _lastAccess:Date;			// XML format: YYYY-MM-DDTHH:MM:SS
-		private var _locale:String = '';		// User's locale (e.g. 'en-US')
-		private var _name:String = '';			// First and last name of user
-		private var _parent:Courseware = null;	// A link back to the courseware
-		private var _startCourseID:int = 0;		// CourseID to start with
-		private var _startPageID:int = 0;		// PageID to start with
+		private var _autoCloseMenu:Boolean = false;			// Automatically close previous folders when opening new one at same level?
+		private var _audioVolume:uint = 50;					// Default audio volume (0-100)
+		private var _animatePageTransitions:Boolean = true;	// Animate page transitions?
+		private var _classes:String = '';					// Space separated list of classes this user falls into (e.g. 'LMS Doctor Beta')
+		private var _closedCaptioning:Boolean = false;		// Turn on closed captioning?
+		private var _id:uint = 0;							// Unique UserID from database
+		private var _lastAccess:Date;						// XML format: YYYY-MM-DDTHH:MM:SS
+		private var _locale:String = '';					// User's locale (e.g. 'en-US')
+		private var _name:String = '';						// First and last name of user
+		private var _parent:Courseware = null;				// A link back to the courseware
+		private var _startCourseID:int = 0;					// CourseID to start with
+		private var _startPageID:int = 0;					// PageID to start with
 		
 		public static function get instance():User {
 			return _instance;
@@ -28,7 +33,11 @@ package com.apexinnovations.transwarp.data
 			_instance = this;
 
 			try {
+				_autoCloseMenu = xml.@autoCloseMenu == 'true';
+				_audioVolume = uint(xml.@audioVolume);
+				_animatePageTransitions = xml.@animatePageTransitions == 'true';
 				_classes = xml.@classes;
+				_closedCaptioning = xml.@closedCaptioning == 'true';
 				_id = xml.@id;
 				_lastAccess = DateFormatter.parseDateString(xml.@lastAccess);
 				_locale = xml.@locale;
@@ -41,7 +50,15 @@ package com.apexinnovations.transwarp.data
 			}
 		}
 
+		[Bindable] public function get autoCloseMenu():Boolean { return _autoCloseMenu; }
+		public function set autoCloseMenu(val:Boolean):void { _autoCloseMenu = val; }
+		[Bindable] public function get audioVolume():uint { return _audioVolume; }
+		public function set audioVolume(val:uint):void { _audioVolume = val; }
+		[Bindable] public function get animatePageTransitions():Boolean { return _animatePageTransitions; }
+		public function set animatePageTransitions(val:Boolean):void { _animatePageTransitions = val; }
 		public function get beta():Boolean { return (_classes.indexOf('Beta') != -1); }
+		[Bindable] public function get closedCaptioning():Boolean { return _closedCaptioning; }
+		public function set closedCaptioning(val:Boolean):void { _closedCaptioning = val; }
 		public function get doctor():Boolean { return (_classes.indexOf('Doctor') != -1); }
 		public function get emt():Boolean { return (_classes.indexOf('EMT') != -1); }
 		public function get id():uint { return _id; }
