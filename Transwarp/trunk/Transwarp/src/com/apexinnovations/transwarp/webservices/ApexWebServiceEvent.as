@@ -11,6 +11,8 @@ package com.apexinnovations.transwarp.webservices
 		public static const BOOKMARK_FAILURE:String = "ApexBookmarkServiceFailure";
 		public static const COMMENT_COMPLETE:String = "ApexCommentServiceComplete";
 		public static const COMMENT_FAILURE:String = "ApexCommentServiceFailure";
+		public static const CONFIG_COMPLETE:String = "ApexConfigServiceComplete";
+		public static const CONFIG_FAILURE:String = "ApexConfigServiceFailure";
 		public static const LOG_COMPLETE:String = "ApexLogServiceComplete";
 		public static const LOG_FAILURE:String = "ApexLogServiceFailure";
 		public static const PAGE_COMPLETE:String = "ApexPageServiceComplete";
