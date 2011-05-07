@@ -5,6 +5,7 @@
 package com.apexinnovations.transwarp.webservices
 {
 	import com.adobe.serialization.json.*;
+	import com.apexinnovations.transwarp.data.Courseware;
 	
 	import flash.events.*;
 	import flash.net.*;
@@ -19,9 +20,13 @@ package com.apexinnovations.transwarp.webservices
 	// The real class-specific work is done here
 	public function dispatch(varName:String, value:String):void { 
 		var arr:Array = new Array();
-		arr['userID'] = ApexWebService.userID;
-		arr['courseID'] = ApexWebService.courseID;
-		arr['pageID'] = ApexWebService.pageID;
+		
+		var courseware:Courseware = Courseware.instance;
+		if(courseware) {
+			arr['userID'] = courseware.user.id;
+			arr['courseID'] = courseware.currentCourse.id;
+			arr['pageID'] = courseware.currentPage.id;
+		}
 		arr['config'] = varName + '=' + value;
 		
 		// Package up the URLRequest

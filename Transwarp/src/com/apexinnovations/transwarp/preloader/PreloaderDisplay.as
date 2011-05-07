@@ -115,10 +115,6 @@ package com.apexinnovations.transwarp.preloader {
 				// Dispatch a log entry
 				log.dispatch(xml.text());
 			} else {
-				// Note the user/course/page
-				ApexWebService.userID = xml.user.@id;
-				ApexWebService.courseID = xml.user.@startCourse;
-				ApexWebService.pageID = xml.user.@startPage;
 				
 				// Delete file inclusion errors, if any
 				for each (var item:XML in xml.product.courses.elements()) {	// courses or pages

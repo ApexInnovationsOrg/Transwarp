@@ -8,11 +8,13 @@
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Course;
 			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.data.User;
 			import com.apexinnovations.transwarp.events.TranswarpEvent;
 			import com.apexinnovations.transwarp.graphics.ArrowNextIcon;
 			import com.apexinnovations.transwarp.graphics.ArrowPreviousIcon;
 			import com.apexinnovations.transwarp.graphics.ReplayIcon;
+			import com.apexinnovations.transwarp.graphics.SearchIcon;
 			
 			import mx.binding.utils.BindingUtils;
 			import mx.utils.ColorUtil;
@@ -69,6 +71,14 @@
 			
 			protected function nextClick():void {
 				Courseware.instance.nextPage();
+			}
+			
+			protected function submitSearch():void {
+				var results:Vector.<Page> = Courseware.search(searchInput.text);
+				trace("=============================\nSearch Results:");
+				for each(var page:Page in results)
+					trace("      * " + page.qualifiedName + ' (' + page.weight + ')');
+				trace("=============================");
 			}
 
 		]]>
@@ -166,8 +176,8 @@
 		<ui:TopBarButton icon="{ReplayIcon}" label="REPLAY" />
 		
 		<s:HGroup height="32" verticalAlign="middle" visible="{hasSearch}" width="{hasSearch? NaN : 0}" paddingLeft="{hasSearch ? 10 : 0}">
-			<s:TextInput id="searchInput" prompt="{searchPrompt}" width="183" />
-			<graphics:SearchIcon/>
+			<s:TextInput id="searchInput" prompt="{searchPrompt}" width="183" enter="submitSearch()"/>
+			<ui:IconButton artClass="{SearchIcon}" click="submitSearch()" width="30" height="25"/>
 		</s:HGroup>
 	</s:HGroup>	
 </s:Group>

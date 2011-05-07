@@ -42,9 +42,6 @@
 				try {
 					courseware = new Courseware(manager.xml);
 
-					ApexWebService.userID = courseware.user.id;
-					ApexWebService.courseID = courseware.user.startCourseID;
-
 					themeColor = courseware.color;
 									
 					topBar.searchPrompt = "Search " + courseware.product.name;
@@ -56,14 +53,6 @@
 					
 					var log:LogService = new LogService();
 					
-					try {
-						// Try to set these to better debug the error
-						ApexWebService.userID = manager.xml.user.@id;
-						ApexWebService.courseID = manager.xml.user.@startCourse;
-						ApexWebService.pageID = manager.xml.user.@startPage;
-					} catch ( e2:Error ) {
-						// Nothing - just won't be able to record userID, courseID and/or pageID
-					}
 					log.dispatch('XML Load Failure: ' + e.toString() + '\n' + e.getStackTrace());
 
 					themeColor = 0xa8a8a8;

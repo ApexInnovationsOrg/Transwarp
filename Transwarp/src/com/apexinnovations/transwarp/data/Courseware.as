@@ -34,9 +34,7 @@ package com.apexinnovations.transwarp.data
 		// Logs whatever the user wants to log
 		public static function log(event:String, obj:Object = null):void {
 			var log:LogService = new LogService();
-			
-			_instance.initAWS();
-			
+					
 			log.dispatch((obj ? _instance.getClassName(obj) + ': ' : '') + event);
 		}
 		
@@ -56,8 +54,6 @@ package com.apexinnovations.transwarp.data
 			}
 			// Log the search
 			var srch:SearchService = new SearchService();
-			
-			_instance.initAWS();
 			
 			srch.dispatch(keywords);
 			
@@ -199,13 +195,6 @@ package com.apexinnovations.transwarp.data
 				}						
 				
 			}
-		}
-
-		// Makes sure the ApexWebService is initialized
-		private function initAWS():void {
-			if (this.user)			ApexWebService.userID = this.user.id;
-			if (this.currentCourse)	ApexWebService.courseID = this.currentCourse.id;
-			if (this.currentPage)	ApexWebService.pageID = this.currentPage.id;
 		}
 		
 	}	
