@@ -44,7 +44,6 @@
 
 					ApexWebService.userID = courseware.user.id;
 					ApexWebService.courseID = courseware.user.startCourseID;
-					ApexWebService.pageID = courseware.user.startPageID;
 
 					themeColor = courseware.color;
 									

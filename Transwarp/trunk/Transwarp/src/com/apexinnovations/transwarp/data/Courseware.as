@@ -1,9 +1,5 @@
 package com.apexinnovations.transwarp.data
 {
-	import com.apexinnovations.transwarp.data.Course;
-	import com.apexinnovations.transwarp.data.Page;
-	import com.apexinnovations.transwarp.data.Product;
-	import com.apexinnovations.transwarp.data.User;
 	import com.apexinnovations.transwarp.events.PageSelectionEvent;
 	import com.apexinnovations.transwarp.ui.tree.CourseList;
 	import com.apexinnovations.transwarp.webservices.*;
@@ -11,7 +7,6 @@ package com.apexinnovations.transwarp.data
 	import flash.errors.*;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.external.ExternalInterface;
 	import flash.utils.*;
 	
 	// This represents the user taking the class and the product being taken
@@ -94,7 +89,7 @@ package com.apexinnovations.transwarp.data
 			
 			_currentCourseList = new CourseList();
 			currentCourse = _product.getCourseByID(_user.startCourseID);
-			currentPage = _currentCourse.getPageByID(_user.startPageID);
+			currentPage = _currentCourse.pages[0];
 		}
 		
 		
@@ -134,9 +129,9 @@ package com.apexinnovations.transwarp.data
 		
 		
 		public function getCourseByID(courseID:uint):Course {
-			for each(var c:Course in _instance.product.courses)
-			if(c.id == courseID)
-				return c;
+			for each(var c:Course in product.courses)
+				if(c.id == courseID)
+					return c;
 			return null;
 		}
 		
@@ -145,13 +140,6 @@ package com.apexinnovations.transwarp.data
 		private function getClassName(o:Object):String {
 			var fullClassName:String = getQualifiedClassName(o);
 			return fullClassName.slice(fullClassName.lastIndexOf("::") + 2);
-		}
-		
-		// Makes sure the ApexWebService is initialized
-		private function initAWS():void {
-			if (this.user)			ApexWebService.userID = this.user.id;
-			if (this.currentCourse)	ApexWebService.courseID = this.currentCourse.id;
-			if (this.currentPage)	ApexWebService.pageID = this.currentPage.id;
 		}
 		
 		// Comparison function to sort pages by weight
@@ -212,6 +200,13 @@ package com.apexinnovations.transwarp.data
 				
 			}
 		}
+
+		// Makes sure the ApexWebService is initialized
+		private function initAWS():void {
+			if (this.user)			ApexWebService.userID = this.user.id;
+			if (this.currentCourse)	ApexWebService.courseID = this.currentCourse.id;
+			if (this.currentPage)	ApexWebService.pageID = this.currentPage.id;
+		}
 		
-	}
+	}	
 }
