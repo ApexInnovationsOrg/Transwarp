@@ -14,6 +14,7 @@ package com.apexinnovations.transwarp.webservices
 	public class ApexWebService extends EventDispatcher {
 		private static const FLASHVAR_INTERNAL_SEPARATOR:String = "|:|";
 		private static var crypto:AES = new AES("f30a06c050eba200830a0200300f007ede0007060034000aa00300f007ede00f", AES.MODE_CBC, AES.PADDING_ZEROS);
+		
 		private static var _baseURL:String = '';	// Base URL for interaction with Web Services
 		private static var _userID:uint = 0;		// Current User ID
 		private static var _courseID:uint = 0;		// Current Course ID
@@ -26,38 +27,15 @@ package com.apexinnovations.transwarp.webservices
 			if (baseURL != '') _baseURL = baseURL;
 		}
 		
-		
 		// Getters and setters
-		public static function get baseURL():String {
-			return _baseURL;
-		}
-		public static function set baseURL(baseURL:String):void {
-			_baseURL = baseURL;
-		}
-		public static function get userID():uint {
-			return _userID;
-		}
-		public static function set userID(userID:uint):void {
-			_userID = userID;
-		}
-		public static function get courseID():uint {
-			return _courseID;
-		}
-		public static function set courseID(courseID:uint):void {
-			_courseID = courseID;
-		}
-		public static function get pageID():uint {
-			return _pageID;
-		}
-		public static function set pageID(pageID:uint):void {
-			_pageID = pageID;
-		}
+		public static function get baseURL():String { return _baseURL; }
+		public static function set baseURL(baseURL:String):void { _baseURL = baseURL; }
+		
 		// Get the object class name
 		public function getClass():String {
 			var fullClassName:String = getQualifiedClassName(this);
 			return fullClassName.slice(fullClassName.lastIndexOf("::") + 2);
 		}
-		
 		
 		// Encrypts an array 
 		protected function encrypt(arr:Array):String {

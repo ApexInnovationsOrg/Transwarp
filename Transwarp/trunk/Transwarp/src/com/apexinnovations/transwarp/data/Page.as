@@ -116,17 +116,12 @@ package com.apexinnovations.transwarp.data
 			
 			var bookmark:BookmarkService = new BookmarkService();
 			
-			this.initAWS();
-			
 			bookmark.dispatch();
 		}
 		
 		// Does everything associated with commenting on this page 
 		public function comment(s:String):void {
 			var comment:CommentService = new CommentService();
-			
-			this.initAWS();
-
 			comment.dispatch(s);
 		}
 		
@@ -170,15 +165,7 @@ package com.apexinnovations.transwarp.data
 			} while(i != -1);
 			return c;
 		}
-		
-		// Makes sure the ApexWebService is initialized
-		private function initAWS():void {
-			var cw:Courseware = Courseware.instance;
-			
-			ApexWebService.userID = cw.user.id;
-			ApexWebService.courseID = cw.currentCourse.id;
-			ApexWebService.pageID = this._id;
-		}
+
 		
 		// Converts a TextFlow into a String
 		private function TFtoStr(tf:TextFlow):String {
