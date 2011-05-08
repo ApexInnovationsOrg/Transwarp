@@ -171,7 +171,7 @@
 	
 	<s:HGroup height="32" verticalAlign="middle" bottom="1" right="10" gap="12">
 		<s:HGroup height="32" verticalAlign="middle" paddingRight="{(this.width - searchGroup.width - navButtons.width - (levelNav.height ? 229 + 50 : 50) - 30) / 2}"> <!-- 229 = level men width, 50 = iconbar width, 30 = padding -->
-			<s:HGroup id="navButtons" >
+			<s:HGroup id="navButtons" verticalAlign="middle" >
 				<ui:TopBarButton icon="{ArrowPreviousIcon}" label="PREV" click="prevClick()"/>
 				<ui:VerticalSeparator />
 				<ui:TopBarButton icon="{ArrowNextIcon}" label="NEXT" iconOnRight="true" click="nextClick()"/>
