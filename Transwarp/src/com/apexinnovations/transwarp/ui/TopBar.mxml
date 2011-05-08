@@ -126,7 +126,7 @@
 			</s:fill>
 		</s:Path>
 	</s:Graphic>
-	<s:Label text="Version 4.0.0" width="100%" color="0xffffff" top="4" textAlign="right" fontSize="10" fontWeight="bold" paddingRight="4" includeIn="default" />
+	<s:Label text="Version 4.0.0" width="100%" color="0xffffff" top="3" textAlign="right" fontSize="12" paddingRight="4" includeIn="default" />
 	
 	<!--Darker Gray bar that serves as background for Next, Prev, Replay etc-->
 	<s:Rect width="100%" height="34" bottom="0">
@@ -170,13 +170,17 @@
 	<s:TileGroup id="levelNav" left="285" right="40" top="30" requestedRowCount="3" orientation="columns" verticalGap="10" horizontalGap="10" height.maximized="0" visible.maximized="false"/>
 	
 	<s:HGroup height="32" verticalAlign="middle" bottom="1" right="10" gap="12">
-		<ui:TopBarButton icon="{ArrowPreviousIcon}" label="PREV" click="prevClick()"/>
-		<ui:VerticalSeparator />
-		<ui:TopBarButton icon="{ArrowNextIcon}" label="NEXT" iconOnRight="true" click="nextClick()"/>
-		<ui:VerticalSeparator />
-		<ui:TopBarButton icon="{ReplayIcon}" label="REPLAY" />
+		<s:HGroup height="32" verticalAlign="middle" paddingRight="{(this.width - searchGroup.width - navButtons.width - (levelNav.height ? 229 + 50 : 50) - 30) / 2}"> <!-- 229 = level men width, 50 = iconbar width, 30 = padding -->
+			<s:HGroup id="navButtons" >
+				<ui:TopBarButton icon="{ArrowPreviousIcon}" label="PREV" click="prevClick()"/>
+				<ui:VerticalSeparator />
+				<ui:TopBarButton icon="{ArrowNextIcon}" label="NEXT" iconOnRight="true" click="nextClick()"/>
+				<ui:VerticalSeparator />
+				<ui:TopBarButton icon="{ReplayIcon}" label="REPLAY" />
+			</s:HGroup>
+		</s:HGroup>
 		
-		<s:HGroup height="32" verticalAlign="middle" visible="{hasSearch}" width="{hasSearch? NaN : 0}" paddingLeft="{hasSearch ? 10 : 0}">
+		<s:HGroup id="searchGroup" height="32" verticalAlign="middle" visible="{hasSearch}" width="{hasSearch? NaN : 0}" paddingLeft="{hasSearch ? 10 : 0}">
 			<s:TextInput id="searchInput" prompt="{searchPrompt}" width="183" enter="submitSearch()"/>
 			<ui:IconButton artClass="{SearchIcon}" click="submitSearch()" width="30" height="25"/>
 		</s:HGroup>
