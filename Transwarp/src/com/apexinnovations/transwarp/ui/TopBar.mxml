@@ -117,7 +117,7 @@
 	
 	<!--"Flair" graphic at the top of the gray gradient-->
 	<s:Graphic left="270" top="0" includeIn="default">
-		<s:Path data="M 0 0 16 16 {width} 16 {width} 0 Z">
+		<s:Path data="M 0 0 19 19 {width} 19 {width} 0 Z">
 			<s:fill>
 				<s:LinearGradient scaleX="-11.625" rotation="270">
 					<s:GradientEntry color="{Courseware.instance.color}" ratio="0.08"/>
@@ -126,7 +126,7 @@
 			</s:fill>
 		</s:Path>
 	</s:Graphic>
-	<s:Label text="Version 4.0.0" width="100%" color="0xffffff" top="3" textAlign="right" fontSize="12" paddingRight="4" includeIn="default" />
+	<s:Label text="Version 4.0.0" width="100%" color="0xffffff" top="4" textAlign="right" fontSize="12" paddingRight="4" includeIn="default" />
 	
 	<!--Darker Gray bar that serves as background for Next, Prev, Replay etc-->
 	<s:Rect width="100%" height="34" bottom="0">
@@ -167,7 +167,7 @@
 		</assets:filters>
 	</assets:AssetImageControl>
 	
-	<s:TileGroup id="levelNav" left="285" right="40" top="30" requestedRowCount="3" orientation="columns" verticalGap="10" horizontalGap="10" height.maximized="0" visible.maximized="false"/>
+	<s:TileGroup id="levelNav" left="285" right="40" top="32" requestedRowCount="3" orientation="columns" verticalGap="10" horizontalGap="10" height.maximized="0" visible.maximized="false"/>
 	
 	<s:HGroup height="32" verticalAlign="middle" bottom="1" right="10" gap="12">
 		<s:HGroup height="32" verticalAlign="middle" paddingRight="{(this.width - searchGroup.width - navButtons.width - (levelNav.height ? 229 + 50 : 50) - 30) / 2}"> <!-- 229 = level men width, 50 = iconbar width, 30 = padding -->
