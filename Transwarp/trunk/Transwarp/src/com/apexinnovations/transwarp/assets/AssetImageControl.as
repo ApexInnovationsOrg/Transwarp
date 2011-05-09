@@ -2,11 +2,15 @@ package com.apexinnovations.transwarp.assets {
 	import br.com.stimuli.loading.BulkLoader;
 	
 	import com.apexinnovations.transwarp.events.AssetAddedEvent;
+	import com.apexinnovations.transwarp.utils.Utils;
 	
 	import flash.events.Event;
 	
 	import spark.components.Image;
 
+	
+	Utils.revision = "$Rev$";
+	
 	public class AssetImageControl extends Image {
 		
 		protected var _asset:BitmapAsset;
