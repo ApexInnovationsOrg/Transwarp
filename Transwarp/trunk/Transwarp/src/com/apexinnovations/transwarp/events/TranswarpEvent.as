@@ -1,5 +1,10 @@
 package com.apexinnovations.transwarp.events {
+	import com.apexinnovations.transwarp.utils.Utils;
+	
 	import flash.events.Event;
+	
+	Utils.revision = "$Rev$";
+	
 	
 	public class TranswarpEvent extends Event {
 		

@@ -1,11 +1,17 @@
 package com.apexinnovations.transwarp.data
 {
-	import com.apexinnovations.transwarp.data.Courseware;
-	import flash.utils.*;
+	import com.apexinnovations.transwarp.utils.Utils;
+	
 	import flash.errors.*;
-	import mx.formatters.DateFormatter;
+	import flash.utils.*;
+	
 	import flashx.textLayout.conversion.TextConverter;
 	import flashx.textLayout.elements.TextFlow;
+	
+	import mx.formatters.DateFormatter;
+	
+	
+	Utils.revision = "$Rev$";
 	
 	// This represents an update to a page
 	public class Update {

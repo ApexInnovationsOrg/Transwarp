@@ -1,8 +1,12 @@
 package com.apexinnovations.transwarp.assets {
 	import br.com.stimuli.loading.loadingtypes.LoadingItem;
 	
+	import com.apexinnovations.transwarp.utils.Utils;
+	
 	import flash.display.Bitmap;
 
+	Utils.revision = "$Rev$";
+	
 	public class BitmapAsset extends Bitmap implements IAsset{
 		protected var _name:String;
 		protected var _highlightIntensity:Number;
