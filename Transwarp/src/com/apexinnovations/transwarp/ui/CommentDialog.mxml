@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			  xmlns:s="library://ns.adobe.com/flex/spark" 
+			  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="com.apexinnovations.transwarp.ui.*" width="400" height="300">
+	<ui:layout>
+		<s:VerticalLayout/>
+	</ui:layout>
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.webservices.CommentService;
+			
+			// Event handler for the OK button.
+			override protected function okHandler(event:Event):void {
+				var comment:CommentService = new CommentService();
+				
+				comment.dispatch(commentText.text);
+				
+				super.okHandler(event);
+			}
+		]]>
+	</fx:Script>
+	
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" >
+		<s:Label text="Please Type Your Comment:" />
+		<s:TextArea id="commentText" width="380" height="190" />
+		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
+			<s:Button label="OK" click="okHandler(event);"/>
+			<s:Button label="Cancel" click="super.cancelHandler(event);"/>
+		</s:HGroup>
+	</s:VGroup>
+</ui:DialogBox>
