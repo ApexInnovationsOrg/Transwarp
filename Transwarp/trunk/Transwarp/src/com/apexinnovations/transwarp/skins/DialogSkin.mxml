@@ -26,6 +26,13 @@
     minWidth="76" minHeight="76" alpha.disabled="0.5" alpha.disabledWithControlBar="0.5">
 	<fx:Metadata>[HostComponent("com.apexinnovations.transwarp.ui.DialogBox")]</fx:Metadata>
     
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.utils.Utils;
+			Utils.revision = "$Rev$";
+		]]>
+	</fx:Script>
+	
     <fx:Script fb:purpose="styling">
         <![CDATA[
 		import com.apexinnovations.transwarp.data.Courseware;
