@@ -15,6 +15,7 @@
 			import com.apexinnovations.transwarp.graphics.ArrowPreviousIcon;
 			import com.apexinnovations.transwarp.graphics.ReplayIcon;
 			import com.apexinnovations.transwarp.graphics.SearchIcon;
+			import com.apexinnovations.transwarp.utils.Utils;
 			
 			import mx.binding.utils.BindingUtils;
 			import mx.utils.ColorUtil;
@@ -26,8 +27,8 @@
 			protected var _courses:Vector.<Course>;
 			
 			override protected function createChildren():void {
+				Utils.revision = "$Rev$";
 				super.createChildren();
-				  
 			}
 			
 			protected function maximize(event:FullScreenEvent):void {
@@ -155,7 +156,7 @@
 		</s:fill>
 	</s:Rect>	
 	
-	<s:Label text="Version 4.0.$Rev$" right="0" color="{ColorUtil.adjustBrightness2(Courseware.instance.color, 50)}" top="4" textAlign="right" fontSize="12" paddingRight="4" includeIn="default" />
+	<s:Label text="Version 4.0.{Utils.revision}" right="0" color="{ColorUtil.adjustBrightness2(Courseware.instance.color, 50)}" top="4" textAlign="right" fontSize="12" paddingRight="4" includeIn="default" />
 	
 	<s:VGroup horizontalAlign="right" left="29" verticalCenter="-25" includeIn="default">
 		<assets:AssetImageControl assetID="logoBig" />
