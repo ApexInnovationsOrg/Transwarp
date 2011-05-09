@@ -6,10 +6,13 @@ package com.apexinnovations.transwarp.webservices
 {
 	import com.adobe.serialization.json.*;
 	import com.apexinnovations.transwarp.data.Courseware;
+	import com.apexinnovations.transwarp.utils.Utils;
 	
 	import flash.events.*;
 	import flash.net.*;
 	import flash.utils.Dictionary;
+	
+	Utils.revision = "$Rev$";
 	
 	public class ConfigService {
 		public function ConfigService(baseURL:String='') {

@@ -6,7 +6,12 @@
 
 	<fx:Script>
 		<![CDATA[
-			[Bindable] public var color:uint = 0xffffff; 
+			import com.apexinnovations.transwarp.utils.Utils;
+			
+			[Bindable] public var color:uint = 0xffffff;
+			
+			Utils.revision = "$Rev$";
+			
 		]]>
 	</fx:Script>
 	

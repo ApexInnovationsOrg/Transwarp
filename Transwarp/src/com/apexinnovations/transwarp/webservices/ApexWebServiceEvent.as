@@ -4,7 +4,11 @@
 */   
 package com.apexinnovations.transwarp.webservices
 {
+	import com.apexinnovations.transwarp.utils.Utils;
+	
 	import flash.events.*;
+	
+	Utils.revision = "$Rev$";
 	
 	public class ApexWebServiceEvent extends Event {
 		public static const BOOKMARK_COMPLETE:String = "ApexBookmarkServiceComplete";

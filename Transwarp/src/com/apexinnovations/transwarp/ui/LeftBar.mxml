@@ -8,6 +8,9 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.utils.Utils;
+			
+			Utils.revision = "$Rev$";
 			
 			[Bindable] public var color:uint; 
 			

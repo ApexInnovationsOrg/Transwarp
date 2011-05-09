@@ -12,15 +12,18 @@
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.Folder;
 			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.utils.Utils;
 			
-			import flash.text.engine.FontWeight;
 			import flash.text.engine.FontPosture;
+			import flash.text.engine.FontWeight;
 			
 			import mx.binding.utils.BindingUtils;
 			import mx.events.FlexEvent;
 			import mx.utils.ColorUtil;
 			
 			import spark.components.List;
+			
+			Utils.revision = "$Rev$";
 			
 			[Bindable] protected var indentation:int;
 			[Bindable] protected var disclosureWidth:int;

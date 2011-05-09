@@ -4,10 +4,14 @@
 */   
 package com.apexinnovations.transwarp.webservices
 {
+	import com.adobe.serialization.json.*;
+	import com.apexinnovations.transwarp.utils.Utils;
+	
 	import flash.events.*;
 	import flash.net.*;
 	import flash.utils.Dictionary;
-	import com.adobe.serialization.json.*;
+	
+	Utils.revision = "$Rev$";
 	
 	public class VisitService extends ApexWebService {
 		public function VisitService(baseURL:String='') {

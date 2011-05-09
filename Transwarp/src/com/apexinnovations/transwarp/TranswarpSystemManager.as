@@ -1,6 +1,7 @@
 package com.apexinnovations.transwarp {
 	
 	import com.apexinnovations.transwarp.events.SuspendFrameEvent;
+	import com.apexinnovations.transwarp.utils.Utils;
 	
 	import flash.events.Event;
 	
@@ -10,6 +11,8 @@ package com.apexinnovations.transwarp {
 	import mx.managers.SystemManager;
 	
 	use namespace mx_internal;
+	
+	Utils.revision = "$Rev$";
 	
 	[Event(name="frameSuspended", type="com.apexinnovations.transwarp.events.SuspendFrameEvent")]
 	public class TranswarpSystemManager extends SystemManager {

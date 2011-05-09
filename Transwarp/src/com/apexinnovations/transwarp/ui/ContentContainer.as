@@ -1,9 +1,13 @@
 package com.apexinnovations.transwarp.ui {
+	import com.apexinnovations.transwarp.utils.Utils;
+	
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	
 	import mx.core.UIComponent;
+	
+	Utils.revision = "$Rev$";
 	
 	public class ContentContainer extends UIComponent {
 		
