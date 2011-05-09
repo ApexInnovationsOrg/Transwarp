@@ -3,7 +3,6 @@ package com.apexinnovations.transwarp.utils {
 		
 		public function Utils() {}
 		
-		
 		static protected var _revision:uint;
 		
 		public static function set revision(value:String):void {
@@ -17,4 +16,7 @@ package com.apexinnovations.transwarp.utils {
 		}
 		
 	}
+	
+	Utils.revision = "$Rev$";
+	
 }

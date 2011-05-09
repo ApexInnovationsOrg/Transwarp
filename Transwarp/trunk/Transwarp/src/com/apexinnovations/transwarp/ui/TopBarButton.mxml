@@ -10,6 +10,10 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.utils.Utils;
+			
+			Utils.revision = "$Rev$";
+			
 			[Bindable] public var label:String;
 			[Bindable] public var icon:Object;
 			

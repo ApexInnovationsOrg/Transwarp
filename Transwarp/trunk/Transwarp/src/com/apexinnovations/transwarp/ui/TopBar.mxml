@@ -20,6 +20,9 @@
 			import mx.binding.utils.BindingUtils;
 			import mx.utils.ColorUtil;
 			
+			Utils.revision = "$Rev$";
+			
+			
 			[Bindable] public var hasSearch:Boolean = true;
 			[Bindable] public var hasRightGradient:Boolean = true;
 			[Bindable] public var searchPrompt:String = "Search";			
@@ -27,7 +30,6 @@
 			protected var _courses:Vector.<Course>;
 			
 			override protected function createChildren():void {
-				Utils.revision = "$Rev$";
 				super.createChildren();
 			}
 			

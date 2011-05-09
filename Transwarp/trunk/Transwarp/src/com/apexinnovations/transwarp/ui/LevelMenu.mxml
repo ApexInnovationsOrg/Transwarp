@@ -9,9 +9,13 @@
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.graphics.*;
 			import com.apexinnovations.transwarp.ui.tree.CourseList;
+			import com.apexinnovations.transwarp.utils.Utils;
 			
 			import mx.collections.ArrayList;
 			import mx.utils.ColorUtil;
+			
+			Utils.revision = "$Rev$";
+			
 			[Bindable] public var color:uint;
 			
 			override protected function createChildren():void {
