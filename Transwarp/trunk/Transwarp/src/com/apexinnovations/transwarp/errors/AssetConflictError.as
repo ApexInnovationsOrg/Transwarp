@@ -1,9 +1,9 @@
 package com.apexinnovations.transwarp.errors {
 	
 	import com.apexinnovations.transwarp.assets.IAsset;
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
-	Utils.revision = "$Rev$";
+	TranswarpVersion.revision = "$Rev$";
 	
 	public class AssetConflictError extends Error {
 		public var assetID:String;

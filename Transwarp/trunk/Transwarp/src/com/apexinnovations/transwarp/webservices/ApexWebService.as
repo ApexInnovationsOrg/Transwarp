@@ -4,7 +4,7 @@
 */   
 package com.apexinnovations.transwarp.webservices
 {
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	import com.apexinnovations.transwarp.webservices.AES;
 	import com.hurlant.util.Hex;
 	
@@ -12,7 +12,7 @@ package com.apexinnovations.transwarp.webservices
 	import flash.net.*;
 	import flash.utils.*;
 	
-	Utils.revision = "$Rev$";
+	TranswarpVersion.revision = "$Rev$";
 	
 	public class ApexWebService extends EventDispatcher {
 		private static const FLASHVAR_INTERNAL_SEPARATOR:String = "|:|";

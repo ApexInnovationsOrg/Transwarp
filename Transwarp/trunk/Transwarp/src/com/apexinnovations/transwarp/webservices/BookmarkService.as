@@ -6,13 +6,13 @@ package com.apexinnovations.transwarp.webservices
 {
 	import com.adobe.serialization.json.*;
 	import com.apexinnovations.transwarp.data.Courseware;
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
 	import flash.events.*;
 	import flash.net.*;
 	import flash.utils.Dictionary;
 	
-	Utils.revision = "$Rev$";
+	TranswarpVersion.revision = "$Rev$";
 	
 	public class BookmarkService extends ApexWebService {
 		public function BookmarkService(baseURL:String='') {

@@ -27,8 +27,8 @@
     
 	<fx:Script>
 		<![CDATA[
-			import com.apexinnovations.transwarp.utils.Utils;
-			Utils.revision = "$Rev$";
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			TranswarpVersion.revision = "$Rev$";
 		]]>
 	</fx:Script>
 	

@@ -1,5 +1,5 @@
 package com.apexinnovations.transwarp.ui {
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
@@ -12,7 +12,7 @@ package com.apexinnovations.transwarp.ui {
 	import spark.core.SpriteVisualElement;
 	import spark.filters.DropShadowFilter;
 	
-	Utils.revision = "$Rev$";
+	TranswarpVersion.revision = "$Rev$";
 	
 	public class IconButton extends SpriteVisualElement {
 		protected var _art:DisplayObject;

@@ -1,7 +1,7 @@
 package com.apexinnovations.transwarp.assets {
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
-	Utils.revision = "$Rev$";
+	TranswarpVersion.revision = "$Rev$";
 	
 	public class AssetType {
 		public static const BITMAP:String = "bitmap";

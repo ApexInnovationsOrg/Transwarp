@@ -6,11 +6,11 @@
 
 	<fx:Script>
 		<![CDATA[
-			import com.apexinnovations.transwarp.utils.Utils;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			[Bindable] public var color:uint = 0xffffff;
 			
-			Utils.revision = "$Rev$";
+			TranswarpVersion.revision = "$Rev$";
 			
 		]]>
 	</fx:Script>

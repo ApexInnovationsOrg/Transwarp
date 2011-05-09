@@ -1,12 +1,12 @@
 package com.apexinnovations.transwarp.data
 {
 	import com.apexinnovations.transwarp.data.Courseware;
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
 	import flash.errors.*;
 	import flash.utils.*;
 	
-	Utils.revision = "$Rev$";
+	TranswarpVersion.revision = "$Rev$";
 	
 	// This represents a help page to display
 	public class HelpPage {

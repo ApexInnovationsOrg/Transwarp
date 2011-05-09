@@ -1,7 +1,7 @@
 package com.apexinnovations.transwarp.data
 {
 	import com.apexinnovations.transwarp.data.Page;
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
 	import flash.errors.*;
 	import flash.events.EventDispatcher;
@@ -11,7 +11,7 @@ package com.apexinnovations.transwarp.data
 	import mx.events.PropertyChangeEvent;
 	import mx.events.PropertyChangeEventKind;
 	
-	Utils.revision = "$Rev$";
+	TranswarpVersion.revision = "$Rev$";
 	
 	// This represents a folder of pages and subfolders (of pages)
 	public class Folder extends EventDispatcher {

@@ -1,7 +1,7 @@
 package com.apexinnovations.transwarp.utils {
-	public class Utils {
+	public class TranswarpVersion {
 		
-		public function Utils() {}
+		public function TranswarpVersion() {}
 		
 		static protected var _revision:uint;
 		
@@ -17,6 +17,6 @@ package com.apexinnovations.transwarp.utils {
 		
 	}
 	
-	Utils.revision = "$Rev$";
+	TranswarpVersion.revision = "$Rev$";
 	
 }

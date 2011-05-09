@@ -1,6 +1,6 @@
 package com.apexinnovations.transwarp.data
 {
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
 	import flash.errors.*;
 	import flash.utils.*;
@@ -11,7 +11,7 @@ package com.apexinnovations.transwarp.data
 	import mx.formatters.DateFormatter;
 	
 	
-	Utils.revision = "$Rev$";
+	TranswarpVersion.revision = "$Rev$";
 	
 	// This represents an update to a page
 	public class Update {

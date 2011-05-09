@@ -1,7 +1,7 @@
 package com.apexinnovations.transwarp.data
 {
 	import com.apexinnovations.transwarp.data.Courseware;
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
 	import flash.errors.*;
 	import flash.utils.*;
@@ -9,7 +9,7 @@ package com.apexinnovations.transwarp.data
 	import flashx.textLayout.conversion.TextConverter;
 	import flashx.textLayout.elements.TextFlow;
 	
-	Utils.revision = "$Rev$";
+	TranswarpVersion.revision = "$Rev$";
 	
 	// This represents and outside link related to a page
 	public class Link {

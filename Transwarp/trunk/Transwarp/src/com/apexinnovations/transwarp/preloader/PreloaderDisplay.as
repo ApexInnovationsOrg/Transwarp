@@ -2,7 +2,7 @@ package com.apexinnovations.transwarp.preloader {
 	import com.apexinnovations.transwarp.TranswarpSystemManager;
 	import com.apexinnovations.transwarp.assets.AssetLoader;
 	import com.apexinnovations.transwarp.events.SuspendFrameEvent;
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	import com.apexinnovations.transwarp.webservices.ApexWebService;
 	import com.apexinnovations.transwarp.webservices.LogService;
 	
@@ -17,7 +17,7 @@ package com.apexinnovations.transwarp.preloader {
 	import mx.events.RSLEvent;
 	import mx.preloaders.SparkDownloadProgressBar;
 
-	Utils.revision = "$Rev$";
+	TranswarpVersion.revision = "$Rev$";
 	
 	public class PreloaderDisplay extends SparkDownloadProgressBar {
 		

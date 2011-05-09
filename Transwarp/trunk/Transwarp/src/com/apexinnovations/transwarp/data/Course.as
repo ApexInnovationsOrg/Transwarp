@@ -2,13 +2,13 @@ package com.apexinnovations.transwarp.data
 {
 	import com.apexinnovations.transwarp.data.Folder;
 	import com.apexinnovations.transwarp.data.Page;
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
 	import flash.errors.*;
 	import flash.events.EventDispatcher;
 	import flash.utils.*;
 	
-	Utils.revision = "$Rev$";
+	TranswarpVersion.revision = "$Rev$";
 	
 	// This represents the course being taken
 	public class Course extends EventDispatcher {
