@@ -1,9 +1,14 @@
 package com.apexinnovations.transwarp.data
 {
+	import com.apexinnovations.transwarp.utils.Utils;
+	
 	import flash.errors.*;
 	import flash.utils.*;
 	
 	import mx.formatters.DateFormatter;
+	
+	
+	Utils.revision = "$Rev$";
 	
 	// This represents the user taking the class
 	public class User {

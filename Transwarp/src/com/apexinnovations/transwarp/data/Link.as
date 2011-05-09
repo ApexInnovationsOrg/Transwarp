@@ -1,10 +1,15 @@
 package com.apexinnovations.transwarp.data
 {
 	import com.apexinnovations.transwarp.data.Courseware;
-	import flash.utils.*;
+	import com.apexinnovations.transwarp.utils.Utils;
+	
 	import flash.errors.*;
+	import flash.utils.*;
+	
 	import flashx.textLayout.conversion.TextConverter;
 	import flashx.textLayout.elements.TextFlow;
+	
+	Utils.revision = "$Rev$";
 	
 	// This represents and outside link related to a page
 	public class Link {

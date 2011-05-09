@@ -2,11 +2,14 @@ package com.apexinnovations.transwarp.data
 {
 	import com.apexinnovations.transwarp.data.Folder;
 	import com.apexinnovations.transwarp.data.Page;
+	import com.apexinnovations.transwarp.utils.Utils;
 	
 	import flash.errors.*;
 	import flash.events.EventDispatcher;
 	import flash.utils.*;
-		
+	
+	Utils.revision = "$Rev$";
+	
 	// This represents the course being taken
 	public class Course extends EventDispatcher {
 		private var _contents:Array = [];						// An ordered collection of the contents of this course (pages and folders)

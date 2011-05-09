@@ -1,7 +1,11 @@
 package com.apexinnovations.transwarp.events
 {
-	import flash.events.Event;
 	import com.apexinnovations.transwarp.data.Page;
+	import com.apexinnovations.transwarp.utils.Utils;
+	
+	import flash.events.Event;
+	
+	Utils.revision = "$Rev$";
 	
 	public class PageSelectionEvent extends Event {
 		

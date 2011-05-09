@@ -1,7 +1,10 @@
 package com.apexinnovations.transwarp.events {
 	import com.apexinnovations.transwarp.assets.IAsset;
+	import com.apexinnovations.transwarp.utils.Utils;
 	
 	import flash.events.Event;
+	
+	Utils.revision = "$Rev$";
 	
 	public class AssetAddedEvent extends Event {
 		

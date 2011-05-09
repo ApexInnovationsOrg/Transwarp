@@ -5,6 +5,7 @@ package com.apexinnovations.transwarp.assets
 	
 	import com.apexinnovations.transwarp.errors.AssetConflictError;
 	import com.apexinnovations.transwarp.events.AssetAddedEvent;
+	import com.apexinnovations.transwarp.utils.Utils;
 	import com.apexinnovations.transwarp.webservices.ApexWebService;
 	import com.apexinnovations.transwarp.webservices.LogService;
 	
@@ -14,6 +15,8 @@ package com.apexinnovations.transwarp.assets
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
+	
+	Utils.revision = "$Rev$";
 	
 	[Event(name="complete", type="flash.events.Event")]
 	[Event(name="assetAdded", type="com.apexinnovations.transwarp.events.AssetAddedEvent")]

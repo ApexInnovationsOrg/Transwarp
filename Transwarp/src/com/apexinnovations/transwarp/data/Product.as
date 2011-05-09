@@ -1,12 +1,15 @@
 package com.apexinnovations.transwarp.data
 {
 	import com.apexinnovations.transwarp.data.Course;
+	import com.apexinnovations.transwarp.utils.Utils;
 	
 	import flash.errors.*;
 	import flash.utils.*;
 	
 	import mx.formatters.DateFormatter;
-		
+	
+	Utils.revision = "$Rev$";
+	
 	// This represents the the product being taken
 	public class Product {
 		private static var _instance:Product;	// Make this class a singleton
