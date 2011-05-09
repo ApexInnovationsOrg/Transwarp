@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   width="400" height="300" horizontalCenter="this.stage" verticalCenter="this.stage"
+			   skinClass="com.apexinnovations.transwarp.skins.DialogSkin" addedToStage="onAdded(event);" >
+	<s:layout>
+		<s:VerticalLayout />
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			
+			// register closeHandler, center dialog
+			protected function onAdded(event:Event):void {
+				this.top = (this.stage.height - this.height)/2;
+				this.left = (this.stage.width - this.width)/2;
+trace(this.top+','+this.left);
+				this.addEventListener("close", closeHandler);
+			}
+			
+			// Event handler for the OK button.
+			protected function okHandler(event:Event):void {
+				// Do other stuff
+				closeHandler(event);
+			}
+			
+			// Event handler for the Cancel button.
+			protected function cancelHandler(event:Event):void {
+				// Do other stuff
+				closeHandler(event);
+			}
+			
+			// Event handler for the OK button.
+			protected function closeHandler(event:Event):void {
+				this.removeEventListener("close", closeHandler);
+				PopUpManager.removePopUp(this);
+			}
+		]]>
+	</fx:Script>
+	<s:Group height="100%">
+		
+	</s:Group>
+	<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
+		<s:Button label="OK" click="okHandler(event);"/>
+		<s:Button label="Cancel" click="cancelHandler(event);"/>
+	</s:HGroup>
+</s:TitleWindow>
