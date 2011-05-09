@@ -5,8 +5,12 @@
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.utils.Utils;
 			
 			import mx.utils.ColorUtil;
+			
+			Utils.revision = "$Rev$";			
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
