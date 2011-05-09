@@ -1,6 +1,6 @@
 package com.apexinnovations.transwarp.data
 {
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	import com.apexinnovations.transwarp.webservices.*;
 	
 	import flash.errors.*;
@@ -15,7 +15,7 @@ package com.apexinnovations.transwarp.data
 	import mx.events.PropertyChangeEventKind;
 	import mx.formatters.DateFormatter;
 	
-	Utils.revision = "$Rev$";
+	TranswarpVersion.revision = "$Rev$";
 		
 	// This represents a page in the course
 	public class Page extends EventDispatcher {

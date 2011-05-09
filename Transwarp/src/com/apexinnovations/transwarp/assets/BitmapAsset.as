@@ -1,11 +1,11 @@
 package com.apexinnovations.transwarp.assets {
 	import br.com.stimuli.loading.loadingtypes.LoadingItem;
 	
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
 	import flash.display.Bitmap;
 
-	Utils.revision = "$Rev$";
+	TranswarpVersion.revision = "$Rev$";
 	
 	public class BitmapAsset extends Bitmap implements IAsset{
 		protected var _name:String;

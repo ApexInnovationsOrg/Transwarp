@@ -10,7 +10,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.graphics.*;
-			import com.apexinnovations.transwarp.utils.Utils;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import flash.printing.*;
 
@@ -18,7 +18,7 @@
 			import mx.core.IVisualElement;
 			import mx.utils.ColorUtil;
 			
-			Utils.revision = "$Rev$";
+			TranswarpVersion.revision = "$Rev$";
 			
 			[Bindable] public var color:uint; 
 						

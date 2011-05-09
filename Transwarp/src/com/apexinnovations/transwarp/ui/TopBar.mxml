@@ -15,12 +15,12 @@
 			import com.apexinnovations.transwarp.graphics.ArrowPreviousIcon;
 			import com.apexinnovations.transwarp.graphics.ReplayIcon;
 			import com.apexinnovations.transwarp.graphics.SearchIcon;
-			import com.apexinnovations.transwarp.utils.Utils;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import mx.binding.utils.BindingUtils;
 			import mx.utils.ColorUtil;
 			
-			Utils.revision = "$Rev$";
+			TranswarpVersion.revision = "$Rev$";
 			
 			
 			[Bindable] public var hasSearch:Boolean = true;
@@ -158,7 +158,7 @@
 		</s:fill>
 	</s:Rect>	
 	
-	<s:Label text="Version 4.0.{Utils.revision}" right="0" color="{ColorUtil.adjustBrightness2(Courseware.instance.color, 50)}" top="4" textAlign="right" fontSize="12" paddingRight="4" includeIn="default" />
+	<s:Label text="Version 4.0.{TranswarpVersion.revision}" right="0" color="{ColorUtil.adjustBrightness2(Courseware.instance.color, 50)}" top="4" textAlign="right" fontSize="12" paddingRight="4" includeIn="default" />
 	
 	<s:VGroup horizontalAlign="right" left="29" verticalCenter="-25" includeIn="default">
 		<assets:AssetImageControl assetID="logoBig" />

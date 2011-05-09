@@ -1,10 +1,10 @@
 package com.apexinnovations.transwarp.events {
 	import com.apexinnovations.transwarp.TranswarpSystemManager;
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
 	import flash.events.Event;
 
-	Utils.revision = "$Rev$";	
+	TranswarpVersion.revision = "$Rev$";	
 	
 	public class SuspendFrameEvent extends Event {
 		public static const FRAME_SUSPENDED:String = "frameSuspended";

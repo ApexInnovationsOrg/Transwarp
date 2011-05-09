@@ -5,7 +5,7 @@
 */   
 package com.apexinnovations.transwarp.webservices
 {   
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	import com.hurlant.crypto.symmetric.AESKey;
 	import com.hurlant.crypto.symmetric.CBCMode;
 	import com.hurlant.crypto.symmetric.ECBMode;
@@ -19,7 +19,7 @@ package com.apexinnovations.transwarp.webservices
 	import flash.events.Event;
 	import flash.utils.ByteArray;
 	
-	Utils.revision = "$Rev$";
+	TranswarpVersion.revision = "$Rev$";
 	
 	public class AES {
 		private var _key:AESKey;

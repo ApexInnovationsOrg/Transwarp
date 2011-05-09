@@ -2,7 +2,7 @@ package com.apexinnovations.transwarp.data
 {
 	import com.apexinnovations.transwarp.events.PageSelectionEvent;
 	import com.apexinnovations.transwarp.ui.tree.CourseList;
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	import com.apexinnovations.transwarp.webservices.*;
 	
 	import flash.errors.*;
@@ -10,7 +10,7 @@ package com.apexinnovations.transwarp.data
 	import flash.events.EventDispatcher;
 	import flash.utils.*;
 	
-	Utils.revision = "$Rev$";
+	TranswarpVersion.revision = "$Rev$";
 	
 	// This represents the user taking the class and the product being taken
 	public class Courseware extends EventDispatcher {

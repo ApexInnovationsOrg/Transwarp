@@ -9,12 +9,12 @@
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Course;
 			import com.apexinnovations.transwarp.data.Courseware;
-			import com.apexinnovations.transwarp.utils.Utils;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import mx.binding.utils.BindingUtils;
 			import mx.utils.ColorUtil;
 			
-			Utils.revision = "$Rev$";
+			TranswarpVersion.revision = "$Rev$";
 			
 			[Bindable] protected var levelRoman:String;
 			[Bindable] protected var levelName:String;

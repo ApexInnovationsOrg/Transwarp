@@ -15,7 +15,7 @@
 			import com.apexinnovations.transwarp.data.Folder;
 			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.events.TranswarpEvent;
-			import com.apexinnovations.transwarp.utils.Utils;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import mx.collections.IList;
 			import mx.events.CollectionEvent;
@@ -23,7 +23,7 @@
 			
 			import spark.events.IndexChangeEvent;
 			
-			Utils.revision = "$Rev$";			
+			TranswarpVersion.revision = "$Rev$";			
 			
 			protected var dataProviderChanged:Boolean = false;
 			

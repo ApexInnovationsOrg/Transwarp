@@ -4,12 +4,12 @@ package com.apexinnovations.transwarp.ui.tree {
 	import com.apexinnovations.transwarp.data.Folder;
 	import com.apexinnovations.transwarp.data.Page;
 	import com.apexinnovations.transwarp.events.TranswarpEvent;
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
 	import mx.collections.ArrayList;
 	import mx.events.PropertyChangeEvent;
 	
-	Utils.revision = "$Rev$";
+	TranswarpVersion.revision = "$Rev$";
 	
 	public class CourseList extends ArrayList {
 		
