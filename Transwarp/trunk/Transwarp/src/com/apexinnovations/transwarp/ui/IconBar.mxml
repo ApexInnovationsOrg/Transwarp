@@ -13,7 +13,8 @@
 			import com.apexinnovations.transwarp.utils.Utils;
 			
 			import flash.printing.*;
-			
+
+			import mx.managers.PopUpManager;
 			import mx.core.IVisualElement;
 			import mx.utils.ColorUtil;
 			
@@ -45,6 +46,12 @@
 				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);
 			}
 
+			protected function commentOnPage(evt:MouseEvent):void {
+				var dlg:CommentDialog = CommentDialog(PopUpManager.createPopUp(this, CommentDialog , true));
+				
+				dlg.title = 'Feedback/Suggestions for this Page';
+			}
+			
 			protected function printStage(evt:MouseEvent):void {
 				var printJob:PrintJob = new PrintJob();
 				var options:PrintJobOptions = new PrintJobOptions();
@@ -104,7 +111,7 @@
 		<ui:IconButton artClass="{SupportingTextIcon}" enabled="false"/>
 		<ui:IconButton artClass="{HistoryIcon}"/>		
 		<ui:IconButton artClass="{LinksIcon}" />
-		<ui:IconButton artClass="{CommentIcon}" />
+		<ui:IconButton artClass="{CommentIcon}" click="commentOnPage(event);"/>
 		<ui:IconButton artClass="{FavoritesIcon}" />
 		<ui:IconButton artClass="{PaintbrushIcon}" />
 		<ui:IconButton artClass="{AudioIcon}" />
