@@ -48,6 +48,10 @@ package com.apexinnovations.transwarp.data
 		
 		// Searches the product for pages with the keywords, returns an ordered list of pages, by weight
 		public static function search(keywords:String):Vector.<Page> {
+			keywords = keywords.replace(/^\s+|\s+$/gs, '');	// trim
+			
+			if (!keywords) return null;
+			
 			var pages:Vector.<Page> = new Vector.<Page>();
 			
 			// LMS users aren't allowed to search
