@@ -25,7 +25,7 @@
 				var cur:Object = page.parent;
 				var crumbs:String = "";
 				while(cur is Folder) {
-					crumbs += Folder(cur).name + " » ";
+					crumbs = Folder(cur).name + " » " + crumbs;
 					cur = cur.parent;
 				}
 				breadcrumbs.text = crumbs;
