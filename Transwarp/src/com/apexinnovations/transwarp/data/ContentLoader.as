@@ -25,7 +25,7 @@ package com.apexinnovations.transwarp.data {
 			for each(var c:Course in product.courses)
 				pages = pages.concat(c.pages);	
 				
-			loader = new BulkLoader("ContentLoader");	
+			loader = new BulkLoader("ContentLoader", 12, BulkLoader.LOG_SILENT);	
 			
 			for each(var p:Page in pages)
 				addPage(p);
