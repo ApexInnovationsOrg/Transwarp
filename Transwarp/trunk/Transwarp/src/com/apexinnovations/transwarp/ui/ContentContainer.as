@@ -83,13 +83,12 @@ package com.apexinnovations.transwarp.ui {
 		
 		override protected function updateDisplayList(width:Number, height:Number):void {
 			super.updateDisplayList(width, height);
-			//trace("update display list");
 			if(_content) {	
-				scaleContent();		
+				scaleContent(width, height);		
 			}			
 		}
 		
-		protected function scaleContent():void {
+		protected function scaleContent(width:Number, height:Number):void {
 			unscaleContent(); //prevent previous scaling from interfering
 			
 			var w:Number = _content.width;

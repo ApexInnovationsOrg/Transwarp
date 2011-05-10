@@ -119,36 +119,32 @@
 	<!--Setting this group's width to "100%" resulted in it being 10,000 px wide instead of what was expected.-->
 	<s:VGroup width="{width}" height="100%" gap.default="-53" gap.maximized="-35">
 		<ui:TopBar id="topBar"/>
-		<ui:LeftBar id="leftBar" color="{themeColor}"/>
+		<ui:LeftBar id="leftBar" color="{themeColor}"/>		
 	</s:VGroup>
 	
-	<!--Bounds on the size of this save space on AS3 slides for instructions at the bottom (60px) and space for the title at the top (40px)-->
-	<ui:ContentContainer id="container" mask="{contentMask}"  
-						 left.default="263" left.maximized="52" 
-						 top="{178 + (container.isAS2Content ? 40-40*container.contentScaleY : 40 )}" top.maximized="{35 + (container.isAS2Content ? 40-40*container.contentScaleY : 40)}"
-						 right="0" bottom="{container.isAS2Content ? 0 : 60}"/>
-
-	<ui:PageTitle top="200" top.maximized="55" left="290" left.maximized="80" right="0" textAlign="center"/>
-	<s:Group width="{container.contentWidth}" height="{container.contentHeight}" scaleX="{container.contentScaleX}" scaleY="{container.contentScaleY}" x="{container.x + container.contentX}" y="{container.y + container.contentY}">
-		<s:Group id="contentMask" width="100%" height="100%">
-			<s:Rect width="100%" height="100%">
-				<s:fill>
-					<s:SolidColor color="0x00ccff" alpha="0.4" />
-				</s:fill>		
-			</s:Rect>
+	<!--The weird size constraints on this group are another case of having to force the layout code to behave as expected-->
+	<s:Group id="contentArea" left="{leftBar.width}"
+			  top="178" top.maximized="35"
+			  width="{width-contentArea.x}" height="{height-contentArea.y}">
+		
+		<!--Bounds on the size of this save space on AS3 slides for instructions (60px at the bottom) and for the title (40px at the top)-->
+		<!--   On AS2 slides, we take into account the 40 px of saved space built into the slide and adjust that for the current scale of the slide -->
+		<ui:ContentContainer id="container" mask="{contentMask}" width="100%" top="{container.isAS2Content ? Math.max(0, 40-40*container.contentScaleY) : 40}" bottom="{container.isAS2Content ? 0 : 60}"/>
+		
+		<ui:PageTitle top="0" width="100%"/>
+		
+		<s:Group width="{container.contentWidth}" height="{container.contentHeight}" scaleX="{container.contentScaleX}" scaleY="{container.contentScaleY}" x="{container.x + container.contentX}" y="{container.y + container.contentY}">
+			<s:Group id="contentMask" width="100%" height="100%">
+				<s:Rect width="100%" height="100%">
+					<s:fill>
+						<s:SolidColor color="0x00ccff" alpha="0.4" />
+					</s:fill>		
+				</s:Rect>
+			</s:Group>
 		</s:Group>
-<!--	<s:Rect width="100%" height="100%">
-			<s:stroke>
-				<s:SolidColorStroke color="0x333333" />
-			</s:stroke>
-		</s:Rect>
-		<s:Rect top="0" left="0" bottom="0" right="0">
-			<s:fill>
-				<s:SolidColor />
-			</s:fill>
-			<s:filters>
-				<s:BevelFilter angle="225" distance="3" blurX="4" blurY="4" strength="0.8" knockout="true" highlightColor="0xaaaaaa" />
-			</s:filters>
-		</s:Rect>-->
+		
+		<s:Panel id="progressPanel" title="Loading..." width="30%" height="78" horizontalCenter="0" verticalCenter="0" visible="false" backgroundColor="0xFFFFFF">
+			<mx:ProgressBar id="progressBar" labelPlacement="bottom" minimum="0" maximum="100" label="0%" direction="right" mode="manual" top="10" bottom="10" left="10" right="10"/>
+		</s:Panel>
 	</s:Group>
 </transwarp:TranswarpBase>
