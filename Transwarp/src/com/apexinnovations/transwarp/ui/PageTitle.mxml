@@ -41,9 +41,15 @@
 
 		]]>
 	</fx:Script>
+
+	<!--<s:Rect width="100%" height="100%">
+		<s:fill>
+			<s:SolidColor color="0xffcc00" alpha="0.4" />
+		</s:fill>
+	</s:Rect>-->
 	
 	
-	<s:HGroup fontFamily="Arial" fontSize="20" fontWeight="bold">
+	<s:HGroup fontFamily="Arial" fontSize="20" fontWeight="bold" width="100%" horizontalAlign="center" paddingTop="10" paddingBottom="10">
 		<s:Label id="breadcrumbs"/>
 		<s:Label id="title" />
 	</s:HGroup>

@@ -60,7 +60,7 @@ package com.apexinnovations.transwarp.preloader {
 		public function get combinedBytesLoaded():Number { return rslBytesLoaded + appBytesLoaded; }
 		
 		protected function onSuspend(e:SuspendFrameEvent):void {
-			trace("on suspend");
+			//trace("on suspend");
 			(e.target as IEventDispatcher).removeEventListener(SuspendFrameEvent.FRAME_SUSPENDED, onSuspend);
 			_manager = e.manager;
 			if(_xml)
@@ -71,7 +71,7 @@ package com.apexinnovations.transwarp.preloader {
 		}
 		
 		protected function loadXML():void {
-			trace("load xml");
+			//trace("load xml");
 			var paramObj:Object = LoaderInfo(root.loaderInfo).parameters;
 			var requestVars:URLVariables = new URLVariables();
 			
@@ -104,7 +104,7 @@ package com.apexinnovations.transwarp.preloader {
 		}
 		
 		protected function loadAssets(e:Event):void {
-			trace("xml loaded");
+			//trace("xml loaded");
 			var loader:URLLoader = URLLoader(e.target);
 			var xml:XML = new XML(loader.data);
 			var log:LogService = new LogService();
