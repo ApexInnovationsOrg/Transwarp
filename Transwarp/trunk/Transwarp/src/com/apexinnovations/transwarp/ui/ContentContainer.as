@@ -1,22 +1,64 @@
 package com.apexinnovations.transwarp.ui {
+	import br.com.stimuli.loading.loadingtypes.LoadingItem;
+	
+	import com.apexinnovations.transwarp.data.Courseware;
+	import com.apexinnovations.transwarp.events.PageSelectionEvent;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
+	import flash.display.AVM1Movie;
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
+	import flash.events.Event;
+	import flash.events.FullScreenEvent;
+	import flash.events.ProgressEvent;
+	import flash.geom.Rectangle;
 	
 	import mx.core.UIComponent;
 	
 	TranswarpVersion.revision = "$Rev$";
 	
+	[Event(name="open", type="flash.events.Event")]
+	[Event(name="progress", type="flash.events.ProgressEvent")]
+	[Event(name="complete", type="flash.events.Event")]
+	
+	
 	public class ContentContainer extends UIComponent {
 		
 		protected var _content:DisplayObject;
 		protected var _maintainAspectRatio:Boolean = true;
+				
+		protected var _contentWidth:Number;
+		protected var _contentHeight:Number;
 		
+		protected var _isAS2Content:Boolean;
+		
+		protected var item:LoadingItem;
 		
 		public function ContentContainer() {
 			super();
+			addEventListener(Event.ADDED_TO_STAGE, addedToStage);
+		}
+		
+		protected function addedToStage(event:Event):void {
+			Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
+			
+			//stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);
+			
+			pageChanged(new PageSelectionEvent(Courseware.instance.currentPage));
+		}
+		
+		protected function pageChanged(event:PageSelectionEvent):void {
+			item = Courseware.instance.contentLoader.getItem(event.page.id);
+			if(item.isLoaded) {
+				_isAS2Content = item.content is AVM1Movie;
+				content = item.content.parent;
+			} else {
+				dispatchEvent(new Event(Event.OPEN));
+				item.addEventListener(Event.COMPLETE, contentLoaded);
+				//item.addEventListener(Event.INIT, contentLoaded);
+				item.addEventListener(ProgressEvent.PROGRESS, contentProgress);
+			}
 		}
 		
 		public function get maintainAspectRatio():Boolean{ return _maintainAspectRatio; }
@@ -36,10 +78,12 @@ package com.apexinnovations.transwarp.ui {
 				invalidateSize();
 				invalidateDisplayList();
 			}
+			dispatchEvent(new Event("contentChanged"));
 		}
 		
 		override protected function updateDisplayList(width:Number, height:Number):void {
 			super.updateDisplayList(width, height);
+			//trace("update display list");
 			if(_content) {	
 				scaleContent();		
 			}			
@@ -59,6 +103,9 @@ package com.apexinnovations.transwarp.ui {
 				}
 			}
 			
+			_contentWidth = w;
+			_contentHeight = h;
+			
 			//There is a bug that causes a loaded swf to report its size as 0 for a short time
 			var newXScale:Number = w == 0 ? 1 : width / w;
 			var newYScale:Number = h == 0 ? 1 : height / h;
@@ -72,12 +119,12 @@ package com.apexinnovations.transwarp.ui {
 					scale = newXScale;
 					_content.y = Math.floor((height - h*scale)/2); // Center vertically
 				}
-				//trace(scale);
 				_content.scaleX = _content.scaleY = scale;					
 			} else {
 				_content.scaleX = newXScale;
 				_content.scaleY = newYScale;
 			}
+			dispatchEvent(new Event("contentSizeChanged"));
 		}
 		
 		protected function unscaleContent():void {
@@ -85,6 +132,27 @@ package com.apexinnovations.transwarp.ui {
 			_content.scaleX = _content.scaleY = 1;
 		}
 		
+		protected function contentProgress(event:ProgressEvent):void {
+			dispatchEvent(event);
+		}
 		
+		protected function contentLoaded(event:Event):void {
+			dispatchEvent(new Event(Event.COMPLETE));
+			_isAS2Content = item.content is AVM1Movie;
+			content = item.content.parent;						
+			
+			item.removeEventListener(Event.COMPLETE, contentLoaded);
+			item.removeEventListener(ProgressEvent.PROGRESS, contentProgress);
+			invalidateDisplayList();
+		}
+
+		[Bindable("contentChanged")] public function get isAS2Content():Boolean { return _isAS2Content; }
+		
+		[Bindable("contentSizeChanged")] public function get contentScaleX():Number { return _content ? _content.scaleX : 1; }
+		[Bindable("contentSizeChanged")] public function get contentScaleY():Number { return _content ? _content.scaleY : 1 }
+		[Bindable("contentSizeChanged")] public function get contentWidth():Number { return _contentWidth; }
+		[Bindable("contentSizeChanged")] public function get contentHeight():Number { return _contentHeight; }
+		[Bindable("contentSizeChanged")] public function get contentX():Number { return _content ? _content.x : 0; }
+		[Bindable("contentSizeChanged")] public function get contentY():Number { return _content ? _content.y : 0; }
 	}
 }

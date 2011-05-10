@@ -50,7 +50,7 @@
 			}
 
 			protected function commentOnPage(evt:MouseEvent):void {
-				var dlg:CommentDialog = CommentDialog(PopUpManager.createPopUp(this.parent.parent, CommentDialog , true, PopUpManagerChildList.POPUP));
+				var dlg:CommentDialog = CommentDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), CommentDialog , true, PopUpManagerChildList.POPUP));
 				
 				dlg.title = 'Feedback/Suggestions for this Page';
 				
@@ -60,7 +60,8 @@
 			protected function showRelatedLinks(evt:MouseEvent):void {
 				var links:Vector.<Link> = Courseware.instance.currentPage.links;
 				if (links.length > 0) {
-					var dlg:LinksDialog = LinksDialog(PopUpManager.createPopUp(this.parent.parent, LinksDialog , true, PopUpManagerChildList.POPUP));
+					//var dlg:LinksDialog = LinksDialog(PopUpManager.createPopUp(this.parent.parent, LinksDialog , true, PopUpManagerChildList.POPUP));
+					var dlg:LinksDialog = LinksDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), LinksDialog , true, PopUpManagerChildList.POPUP));
 					
 					dlg.title = 'Related Links';
 					dlg.links = links;

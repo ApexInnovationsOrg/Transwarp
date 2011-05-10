@@ -1,6 +1,7 @@
 package com.apexinnovations.transwarp.data
 {
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
+	import com.apexinnovations.transwarp.utils.Utils;
 	import com.apexinnovations.transwarp.webservices.*;
 	
 	import flash.errors.*;
@@ -55,6 +56,10 @@ package com.apexinnovations.transwarp.data
 				_parent = parent;
 				_supportText = (xml.supportText == undefined ? null : TextConverter.importToFlow(xml.supportText.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
 				_swf = xml.@swf;
+				if(!_swf || _swf == '')
+					_swf = 'PAGE_' + Utils.zeroPad(_id, 6) + '.swf';
+				
+				
 				_timeline = xml.@timeline;
 				_visited = xml.@visited == 'true';
 			} catch ( e:Error ) {
@@ -150,7 +155,7 @@ package com.apexinnovations.transwarp.data
 					if (u.textFlow)	_weight += this.find(word, this.TFtoStr(u.textFlow)) * 1;
 				}
 			}
-			//trace('   Page: ' + _id + ' (' + _name  + '): search weight = ' + _weight);
+
 			return _weight;
 		}
 		

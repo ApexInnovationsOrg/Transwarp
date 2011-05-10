@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 addedToStage="addedToStage(event)">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.Folder;
+			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.events.PageSelectionEvent;
+			
+			
+			
+			protected function pageChanged(event:PageSelectionEvent):void {
+				var page:Page = event.page;
+				if(!page) {
+					breadcrumbs.text = "";
+					title.text = "";
+					return;
+				}
+				var cur:Object = page.parent;
+				var crumbs:String = "";
+				while(cur is Folder) {
+					crumbs += Folder(cur).name + " » ";
+					cur = cur.parent;
+				}
+				breadcrumbs.text = crumbs;
+				breadcrumbs.setStyle("color", Courseware.instance.color);
+				title.text = page.name;
+			}
+
+
+			protected function addedToStage(event:Event):void {
+				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
+				pageChanged(new PageSelectionEvent(Courseware.instance.currentPage));
+			}
+
+		]]>
+	</fx:Script>
+	
+	
+	<s:HGroup fontFamily="Arial" fontSize="20" fontWeight="bold">
+		<s:Label id="breadcrumbs"/>
+		<s:Label id="title" />
+	</s:HGroup>
+</s:Group>
