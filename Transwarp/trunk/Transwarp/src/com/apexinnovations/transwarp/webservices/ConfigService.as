@@ -29,7 +29,7 @@ package com.apexinnovations.transwarp.webservices
 				arr['courseID'] = courseware.currentCourse.id;
 				arr['pageID'] = courseware.currentPage.id;
 			}
-			arr['config'] = varName + '=' + value;
+			arr['config'] = varName + ':' + value;
 			
 			// Package up the URLRequest
 			var req:URLRequest = super.createRequest('config', super.encrypt(arr));
