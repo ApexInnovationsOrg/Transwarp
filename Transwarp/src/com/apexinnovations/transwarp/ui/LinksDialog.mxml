@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			  xmlns:s="library://ns.adobe.com/flex/spark" 
+			  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="com.apexinnovations.transwarp.ui.*" width="400" height="300" >
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Link;
+			
+			import mx.controls.LinkButton;
+			import flashx.textLayout.elements.TextFlow;
+			import spark.components.TextArea;
+			
+			protected var _links:Vector.<Link>;
+			
+			public function set links(value:Vector.<Link>):void {
+				_links = value;
+				
+				if(linkList)
+					initLinkList();
+			}
+			
+			protected function initLinkList():void {
+				var i:int = 0;
+				for each(var l:Link in _links) {
+					var t:TextArea;
+					
+//					b = new LinkButton();
+//					linkList.addElement(b);
+					t = new TextArea();
+					t.textFlow = l.textFlow;
+					t.editable = false;
+					t.width = linkList.width - 20;
+					t.x = 20;
+					t.height = 20;
+					linkList.addElement(t);
+					
+					i++;
+				}					
+			}
+		]]>
+	</fx:Script>
+	
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" >
+		<s:Label text="Click on a Link to Open in Your Browser:" />
+		<s:VGroup id="linkList" width="380" height="100%" paddingBottom="10" >
+		</s:VGroup>
+	</s:VGroup>
+</ui:DialogBox>

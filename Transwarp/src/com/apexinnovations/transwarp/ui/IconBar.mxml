@@ -9,13 +9,16 @@
 
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.Link;
 			import com.apexinnovations.transwarp.graphics.*;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import flash.printing.*;
-
-			import mx.managers.PopUpManager;
+			
 			import mx.core.IVisualElement;
+			import mx.managers.PopUpManager;
+			import mx.managers.PopUpManagerChildList;
 			import mx.utils.ColorUtil;
 			
 			TranswarpVersion.revision = "$Rev$";
@@ -47,9 +50,23 @@
 			}
 
 			protected function commentOnPage(evt:MouseEvent):void {
-				var dlg:CommentDialog = CommentDialog(PopUpManager.createPopUp(this, CommentDialog , true));
+				var dlg:CommentDialog = CommentDialog(PopUpManager.createPopUp(this.parent.parent, CommentDialog , true, PopUpManagerChildList.POPUP));
 				
 				dlg.title = 'Feedback/Suggestions for this Page';
+				
+				PopUpManager.centerPopUp(dlg);
+			}
+			
+			protected function showRelatedLinks(evt:MouseEvent):void {
+				var links:Vector.<Link> = Courseware.instance.currentPage.links;
+				if (links.length > 0) {
+					var dlg:LinksDialog = LinksDialog(PopUpManager.createPopUp(this.parent.parent, LinksDialog , true, PopUpManagerChildList.POPUP));
+					
+					dlg.title = 'Related Links';
+					dlg.links = links;
+					
+					PopUpManager.centerPopUp(dlg);
+				}
 			}
 			
 			protected function printStage(evt:MouseEvent):void {
@@ -110,7 +127,7 @@
 		<ui:IconButton artClass="{KeyQuestionIcon}" />
 		<ui:IconButton artClass="{SupportingTextIcon}" enabled="false"/>
 		<ui:IconButton artClass="{HistoryIcon}"/>		
-		<ui:IconButton artClass="{LinksIcon}" />
+		<ui:IconButton artClass="{LinksIcon}" click="showRelatedLinks(event);" />
 		<ui:IconButton artClass="{CommentIcon}" click="commentOnPage(event);"/>
 		<ui:IconButton artClass="{FavoritesIcon}" />
 		<ui:IconButton artClass="{PaintbrushIcon}" />

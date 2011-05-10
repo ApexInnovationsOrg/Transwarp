@@ -11,11 +11,14 @@
 			
 			// Event handler for the OK button.
 			override protected function okHandler(event:Event):void {
-				var comment:CommentService = new CommentService();
-				
-				comment.dispatch(commentText.text);
-				
-				super.okHandler(event);
+				// Trim text, forward any comments on
+				if (commentText.text.replace(/^\s+|\s+$/gs, '') != '') {
+					var comment:CommentService = new CommentService();
+					
+					comment.dispatch(commentText.text);
+					
+					super.okHandler(event);
+				}
 			}
 		]]>
 	</fx:Script>
@@ -24,7 +27,7 @@
 		<s:Label text="Please Type Your Comment:" />
 		<s:TextArea id="commentText" width="380" height="190" />
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
-			<s:Button label="OK" click="okHandler(event);"/>
+			<s:Button label="Submit" click="okHandler(event);"/>
 			<s:Button label="Cancel" click="super.cancelHandler(event);"/>
 		</s:HGroup>
 	</s:VGroup>
