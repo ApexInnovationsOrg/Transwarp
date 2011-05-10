@@ -35,7 +35,7 @@ package com.apexinnovations.transwarp.data
 		
 		
 		// Return the singleton instance of this class
-		public static function get instance():Courseware {
+		[Bindable("coursewareInitialized")] public static function get instance():Courseware {
 			return _instance;
 		}		
 
@@ -81,7 +81,7 @@ package com.apexinnovations.transwarp.data
 			_instance = this;
 			
 			try {
-				_color = uint("0x" + String(xml.@color).substr(1,6));	// @color like '#FF00FF'
+				color = uint("0x" + String(xml.@color).substr(1,6));	// @color like '#FF00FF'
 				_copyright = xml.@copyright;
 				_debug = xml.@debug == 'true';
 				_owner = xml.@owner;
@@ -100,6 +100,7 @@ package com.apexinnovations.transwarp.data
 			currentPage = _currentCourse.pages[0];
 			
 			_contentLoader = new ContentLoader(_product);
+			dispatchEvent(new Event("coursewareInitialized"));
 		}
 		
 		

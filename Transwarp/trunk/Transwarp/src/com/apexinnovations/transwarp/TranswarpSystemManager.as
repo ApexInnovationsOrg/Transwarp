@@ -1,7 +1,9 @@
 package com.apexinnovations.transwarp {
 	
+	import com.apexinnovations.transwarp.data.Courseware;
 	import com.apexinnovations.transwarp.events.SuspendFrameEvent;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
+	import com.apexinnovations.transwarp.webservices.LogService;
 	
 	import flash.events.Event;
 	
@@ -49,6 +51,14 @@ package com.apexinnovations.transwarp {
 		public function get xml():XML { return _xml;}
 		public function set xml(value:XML):void {
 			_xml = value;
+			try {		
+				new Courseware(_xml);
+				
+			} catch(e:Error) {
+				var log:LogService = new LogService();
+				
+				log.dispatch('XML Load Failure: ' + e.toString() + '\n' + e.getStackTrace());
+			}
 		}
 		
 		protected function assetsLoaded(e:Event):void {
