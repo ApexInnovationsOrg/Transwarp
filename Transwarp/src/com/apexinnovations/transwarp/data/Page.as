@@ -133,7 +133,7 @@ package com.apexinnovations.transwarp.data
 			var keywords:Array = s.split(' ');
 			_weight = 0;	// Initialized on each search
 			for each (var word:String in keywords) {
-				_weight += this.find(word, _name) * 5;
+				_weight += this.find(word, qualifiedName) * 5;
 				_weight += this.find(word, _keywords) * 2;
 							
 				if (_supportText)	_weight += this.find(word, this.TFtoStr(_supportText)) * 3;
