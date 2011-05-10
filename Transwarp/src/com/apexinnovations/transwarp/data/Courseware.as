@@ -12,6 +12,9 @@ package com.apexinnovations.transwarp.data
 	
 	TranswarpVersion.revision = "$Rev$";
 	
+	
+	[Event(name="pageSelectionChanged", type="com.apexinnovations.transwarp.events.PageSelectionEvent")]
+	
 	// This represents the user taking the class and the product being taken
 	public class Courseware extends EventDispatcher {
 		private static var _instance:Courseware;	// Make this class a singleton
@@ -28,7 +31,9 @@ package com.apexinnovations.transwarp.data
 		private var _timeout:int = 0;				// The timeout value of inactivity, in seconds
 		private var _user:User = null;				// The user that's accessing the courseware
 		private var _website:String = '';			// The base URL of the website this engine is being run from
-
+		private var _contentLoader:ContentLoader;
+		
+		
 		// Return the singleton instance of this class
 		public static function get instance():Courseware {
 			return _instance;
@@ -89,6 +94,8 @@ package com.apexinnovations.transwarp.data
 			_currentCourseList = new CourseList();
 			currentCourse = _product.getCourseByID(_user.startCourseID);
 			currentPage = _currentCourse.pages[0];
+			
+			_contentLoader = new ContentLoader(_product);
 		}
 		
 		
@@ -121,11 +128,12 @@ package com.apexinnovations.transwarp.data
 		public function get debug():Boolean { return _debug; }
 		public function get owner():String { return _owner; }
 		public function get product():Product { return _product; }
-		public function get rootFolder():String { return '/Classroom/engine/' + _rootFolder; }
+		public function get rootFolder():String { return _rootFolder; }
 		public function get timeout():int { return _timeout; }
 		public function get user():User { return _user; }
 		public function get website():String { return _website; }
 		
+		public function get contentLoader():ContentLoader { return _contentLoader; }
 		
 		public function getCourseByID(courseID:uint):Course {
 			for each(var c:Course in product.courses)
@@ -198,7 +206,6 @@ package com.apexinnovations.transwarp.data
 				}						
 				
 			}
-		}
-		
+		}		
 	}	
 }

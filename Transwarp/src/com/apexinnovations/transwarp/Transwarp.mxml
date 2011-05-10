@@ -107,12 +107,10 @@
 					// a non-Error, non-ErrorEvent type was thrown and uncaught
 				}
 			}
-			
-			private function clickHandler(event:MouseEvent):void {
-				throw new Error("CRASH!");
-			}
+		
 		]]>
 	</fx:Script>
+	
 	<transwarp:states>
 		<s:State name="default" />
 		<s:State name="maximized" />
@@ -122,9 +120,35 @@
 	<s:VGroup width="{width}" height="100%" gap.default="-53" gap.maximized="-35">
 		<ui:TopBar id="topBar"/>
 		<ui:LeftBar id="leftBar" color="{themeColor}"/>
-	</s:VGroup> 
-	<!--<s:Button label="Cause Error" click="clickHandler(event);"/>-->
+	</s:VGroup>
 	
-	
+	<!--Bounds on the size of this save space on AS3 slides for instructions at the bottom (60px) and space for the title at the top (40px)-->
+	<ui:ContentContainer id="container" mask="{contentMask}"  
+						 left.default="263" left.maximized="52" 
+						 top="{178 + (container.isAS2Content ? 40-40*container.contentScaleY : 40 )}" top.maximized="{35 + (container.isAS2Content ? 40-40*container.contentScaleY : 40)}"
+						 right="0" bottom="{container.isAS2Content ? 0 : 60}"/>
 
+	<ui:PageTitle top="200" top.maximized="55" left="290" left.maximized="80" right="0" textAlign="center"/>
+	<s:Group width="{container.contentWidth}" height="{container.contentHeight}" scaleX="{container.contentScaleX}" scaleY="{container.contentScaleY}" x="{container.x + container.contentX}" y="{container.y + container.contentY}">
+		<s:Group id="contentMask" width="100%" height="100%">
+			<s:Rect width="100%" height="100%">
+				<s:fill>
+					<s:SolidColor color="0x00ccff" alpha="0.4" />
+				</s:fill>		
+			</s:Rect>
+		</s:Group>
+<!--	<s:Rect width="100%" height="100%">
+			<s:stroke>
+				<s:SolidColorStroke color="0x333333" />
+			</s:stroke>
+		</s:Rect>
+		<s:Rect top="0" left="0" bottom="0" right="0">
+			<s:fill>
+				<s:SolidColor />
+			</s:fill>
+			<s:filters>
+				<s:BevelFilter angle="225" distance="3" blurX="4" blurY="4" strength="0.8" knockout="true" highlightColor="0xaaaaaa" />
+			</s:filters>
+		</s:Rect>-->
+	</s:Group>
 </transwarp:TranswarpBase>
