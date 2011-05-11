@@ -9,30 +9,20 @@
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.webservices.CommentService;
-			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			import com.apexinnovations.transwarp.utils.*;
 			
 			TranswarpVersion.revision = "$Rev$";
 						
 			// Event handler for the OK button.
 			override protected function okHandler(event:Event):void {
 				// Trim text, forward any comments on
-				if ((commentText.text = trim(commentText.text)) != '') {
+				if ((commentText.text = Utils.trim(commentText.text)) != '') {
 					var comment:CommentService = new CommentService();
 					
-					comment.dispatch(encodeJSON(commentText.text));
+					comment.dispatch(Utils.encodeJSONValue(commentText.text));
 					
 					super.okHandler(event);
 				}
-			}
-			
-			// encodes special characters for JSON - \n, \t, \r, \, ", and /
-			private function encodeJSON(s:String):String {
-				return s.replace(/\n/g, '\\n').replace(/\t/g, '\\t').replace(/\r/g, '\\r').replace(/\\/g, '\\').replace(/"/g, '\"').replace(/\\/g, '\\');
-			}
-			
-			// trim
-			private function trim(s:String):String {
-				return s.replace(/^\s+|\s+$/gs, '');
 			}
 		]]>
 	</fx:Script>

@@ -23,13 +23,7 @@
 					title.text = "";
 					return;
 				}
-				var cur:Object = page.parent;
-				var crumbs:String = "";
-				while(cur is Folder) {
-					crumbs = Folder(cur).name + " » " + crumbs;
-					cur = cur.parent;
-				}
-				breadcrumbs.text = crumbs;
+				breadcrumbs.text = page.parentFolders;
 				breadcrumbs.setStyle("color", Courseware.instance.color);
 				title.text = page.name;
 			}
