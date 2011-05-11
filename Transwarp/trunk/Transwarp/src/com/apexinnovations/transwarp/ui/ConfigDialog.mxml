@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ui:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
-			  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="com.apexinnovations.transwarp.ui.*" width="400" height="300">
+			  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="com.apexinnovations.transwarp.ui.*" width="400" height="315">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.webservices.ConfigService;
@@ -27,16 +27,28 @@
 					Courseware.instance.user.closedCaptioning = closedCaptioning.selected;
 				}
 				
+				if (Courseware.instance.user.printSlideOnly != printSlideOnly.selected) {
+					config.dispatch("printSlideOnly", printSlideOnly.selected.toString());
+					Courseware.instance.user.printSlideOnly = printSlideOnly.selected;
+				}
+				
 				super.okHandler(event);
 			}
 		]]>
 	</fx:Script>
 	
-	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" >
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" width="100%" >
 		<s:Label text="Configuration for {Courseware.instance.user.name}:" />
-		<s:CheckBox id="autoCloseMenu" label="Auto Close Menus" selected="{Courseware.instance.user.autoCloseMenu}" />
-		<s:CheckBox id="animatePageTransitions" label="Animate Page Transitions" selected="{Courseware.instance.user.animatePageTransitions}" />
-		<s:CheckBox id="closedCaptioning" label="Closed Captioning" selected="{Courseware.instance.user.closedCaptioning}" />
+		<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" width="100%" >
+			<s:CheckBox id="autoCloseMenu" label="Auto Close Menus" selected="{Courseware.instance.user.autoCloseMenu}" />
+			<s:Label paddingLeft="18" text="Automatically close open folders in the menu when you click to open a new folder" width="350" fontSize="10" fontStyle="italic" color="0x0000FF" />
+			<s:CheckBox id="animatePageTransitions" label="Animate Page Transitions" selected="{Courseware.instance.user.animatePageTransitions}" />
+			<s:Label paddingLeft="18" text="When moving from page to page, animate the transition between pages with a random effect" width="350" fontSize="10" fontStyle="italic" color="0x0000FF" />
+			<s:CheckBox id="closedCaptioning" label="Closed Captioning" selected="{Courseware.instance.user.closedCaptioning}" />
+			<s:Label paddingLeft="18" text="Add closed captioning [CC] to the slides (for audio-impaired individuals)" width="350" fontSize="10" fontStyle="italic" color="0x0000FF" />
+			<s:CheckBox id="printSlideOnly" label="Print Slides Only" selected="{Courseware.instance.user.printSlideOnly}" />
+			<s:Label paddingLeft="18" text="When printing slides with the snapshot feature, print only the slide area, as opposed to printing the slide plus menus" width="350" fontSize="10" fontStyle="italic" color="0x0000FF" />
+		</s:VGroup>
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
 			<s:Button label="Submit" click="okHandler(event);"/>
 			<s:Button label="Cancel" click="super.cancelHandler(event);"/>
