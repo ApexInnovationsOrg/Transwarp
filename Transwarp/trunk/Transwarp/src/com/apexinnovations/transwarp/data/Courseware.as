@@ -33,12 +33,11 @@ package com.apexinnovations.transwarp.data
 		private var _website:String = '';			// The base URL of the website this engine is being run from
 		private var _contentLoader:ContentLoader;
 		
-		
 		// Return the singleton instance of this class
-		[Bindable("coursewareInitialized")] public static function get instance():Courseware {
+		public static function get instance():Courseware {
 			return _instance;
-		}		
-
+		}
+		
 		// Logs whatever the user wants to log
 		public static function log(event:String, obj:Object = null):void {
 			var log:LogService = new LogService();
@@ -100,12 +99,15 @@ package com.apexinnovations.transwarp.data
 			currentPage = _currentCourse.pages[0];
 			
 			_contentLoader = new ContentLoader(_product);
-			dispatchEvent(new Event("coursewareInitialized"));
 		}
 		
 		
-		[Bindable] public function get color():uint { return _color; }
-		public function set color(value:uint):void { _color = value; }
+		[Bindable("colorChanged")] public function get color():uint { return _color; }
+		public function set color(value:uint):void { 
+			_color = value;
+			trace("color changed");
+			dispatchEvent(new Event("colorChanged"));
+		}
 		
 		public function get copyright():String { return _copyright; }
 		

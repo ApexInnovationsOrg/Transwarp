@@ -24,6 +24,8 @@
 			import flash.events.*;
 			import flash.system.fscommand;
 			
+			import mx.charts.CategoryAxis;
+			import mx.managers.ISystemManager;
 			import mx.managers.PopUpManager;
 			
 			TranswarpVersion.revision = "$Rev$";
@@ -36,22 +38,37 @@
 			protected var maximized:Boolean = false;
 			protected var currentlyIdle:Boolean = false;
 			
+			protected var xmlLoadError:Error;
+			
+			override public function set systemManager(value:ISystemManager):void {
+				super.systemManager = value;
+				
+				manager = value as TranswarpSystemManager;
+				
+				try {
+					courseware = new Courseware(manager.xml);
+				} catch(e:Error) {
+					xmlLoadError = e;
+				}
+				
+			}
+			
 			override protected function createChildren():void {
 				super.createChildren();
 				
-				manager = systemManager as TranswarpSystemManager;
-				
-				try {
-					//courseware = new Courseware(manager.xml);
-					courseware = Courseware.instance;
+				if(!xmlLoadError) {
 					themeColor = courseware.color;
 					
 					topBar.searchPrompt = "Search " + courseware.product.name;
 					topBar.hasSearch = !User.instance.lms;
 					
 					topBar.courses = courseware.product.courses;
+				} else {
+					var e:Error = xmlLoadError;
+					var log:LogService = new LogService();
 					
-				} catch ( e:Error ) {					
+					log.dispatch('XML Load Failure: ' + e.toString() + '\n' + e.getStackTrace());
+					
 					themeColor = 0xa8a8a8;
 					popupErrorDialog('There was an error loading data from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
 				}
