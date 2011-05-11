@@ -24,6 +24,7 @@ package com.apexinnovations.transwarp.data
 		private var _locale:String = '';					// User's locale (e.g. 'en-US')
 		private var _name:String = '';						// First and last name of user
 		private var _parent:Courseware = null;				// A link back to the courseware
+		private var _printSlideOnly:Boolean = true;			// When printing, print the slide only, or the whole stage?
 		private var _startCourseID:int = 0;					// CourseID to start with
 		
 		public static function get instance():User {
@@ -47,6 +48,7 @@ package com.apexinnovations.transwarp.data
 				_locale = xml.@locale;
 				_name = xml.@name;
 				_parent = parent;
+				_printSlideOnly = xml.@printSlideOnly == 'true';
 				_startCourseID = xml.@startCourse;
 				
 			} catch ( e:Error ) {
@@ -82,6 +84,9 @@ package com.apexinnovations.transwarp.data
 		
 		public function get parent():Courseware { return _parent; }
 		
+		[Bindable] public function get printSlideOnly():Boolean { return _printSlideOnly; }
+		public function set printSlideOnly(val:Boolean):void { _printSlideOnly = val; }
+
 		public function get startCourseID():int { return _startCourseID; }
 	}
 }
