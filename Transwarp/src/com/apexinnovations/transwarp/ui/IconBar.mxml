@@ -9,6 +9,7 @@
 
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.Transwarp;
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.Link;
 			import com.apexinnovations.transwarp.graphics.*;
@@ -88,9 +89,10 @@
 					var bitmapData:BitmapData;
 					
 					if (Courseware.instance.user.printSlideOnly) {
-						// Matt, can't figure out how to get ahold of content to create bitmap from it... so for now, just print everything
-						bitmapData = new BitmapData(stage.stageWidth,stage.stageHeight);
-						bitmapData.draw(stage);
+						var contents:ContentArea = (this.parentApplication as Transwarp).contentArea;
+
+						bitmapData = new BitmapData(contents.width, contents.height);
+						bitmapData.draw(contents);
 					} else {
 						bitmapData = new BitmapData(stage.stageWidth,stage.stageHeight);
 						bitmapData.draw(stage);
