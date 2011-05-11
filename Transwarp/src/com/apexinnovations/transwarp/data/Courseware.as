@@ -2,7 +2,7 @@ package com.apexinnovations.transwarp.data
 {
 	import com.apexinnovations.transwarp.events.PageSelectionEvent;
 	import com.apexinnovations.transwarp.ui.tree.CourseList;
-	import com.apexinnovations.transwarp.utils.TranswarpVersion;
+	import com.apexinnovations.transwarp.utils.*;
 	import com.apexinnovations.transwarp.webservices.*;
 	
 	import flash.errors.*;
@@ -47,7 +47,7 @@ package com.apexinnovations.transwarp.data
 		
 		// Searches the product for pages with the keywords, returns an ordered list of pages, by weight
 		public static function search(keywords:String):Vector.<Page> {
-			keywords = keywords.replace(/^\s+|\s+$/gs, '');	// trim
+			keywords = Utils.trim(keywords);
 			
 			if (!keywords) return null;
 			

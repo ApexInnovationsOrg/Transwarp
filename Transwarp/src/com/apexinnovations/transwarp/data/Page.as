@@ -7,11 +7,9 @@ package com.apexinnovations.transwarp.data
 	import flash.errors.*;
 	import flash.events.EventDispatcher;
 	import flash.utils.*;
-	
-	import flashx.textLayout.conversion.ConversionType;
-	import flashx.textLayout.conversion.TextConverter;
 	import flashx.textLayout.elements.TextFlow;
-	
+	import flashx.textLayout.conversion.TextConverter;
+		
 	import mx.events.PropertyChangeEvent;
 	import mx.events.PropertyChangeEventKind;
 	import mx.formatters.DateFormatter;
@@ -94,10 +92,13 @@ package com.apexinnovations.transwarp.data
 		public function get links():Vector.<Link> { return _links; }
 		public function get name():String { return _name; }
 		public function get parent():Object { return _parent; }
-		public function get qualifiedName():String {
-			var p:* = this, qName:String = _name;
-			while (!((p = p.parent) is Course)) { qName = p.name + ' : ' + qName; }
+		public function get parentFolders():String {
+			var p:* = this, qName:String = '';
+			while ((p = p.parent) is Folder) { qName = p.name + ' » ' + qName; }
 			return qName;
+		}
+		public function get qualifiedName():String {
+			return parentFolders + _name;
 		}
 		public function get questions():Vector.<Question> { return _questions; }
 		public function get supportText():TextFlow { return _supportText; }
@@ -138,21 +139,21 @@ package com.apexinnovations.transwarp.data
 			var keywords:Array = s.split(' ');
 			_weight = 0;	// Initialized on each search
 			for each (var word:String in keywords) {
-				_weight += this.find(word, qualifiedName) * 5;
-				_weight += this.find(word, _keywords) * 2;
+				_weight += find(word, qualifiedName) * 5;
+				_weight += find(word, _keywords) * 2;
 							
-				if (_supportText)	_weight += this.find(word, this.TFtoStr(_supportText)) * 3;
-				if (_instructions)	_weight += this.find(word, this.TFtoStr(_instructions)) * 1;
+				if (_supportText)	_weight += find(word, Utils.textFlowToString(_supportText)) * 3;
+				if (_instructions)	_weight += find(word, Utils.textFlowToString(_instructions)) * 1;
 
 				for each (var l:Link in _links) {
-					if (l.textFlow)		_weight += this.find(word, this.TFtoStr(l.textFlow)) * 2;
+					if (l.textFlow)		_weight += find(word, Utils.textFlowToString(l.textFlow)) * 2;
 				}
 				for each (var q:Question in _questions) {
-					if (q.qTextFlow)	_weight += this.find(word, this.TFtoStr(q.qTextFlow)) * 1;
-					if (q.aTextFlow)	_weight += this.find(word, this.TFtoStr(q.aTextFlow)) * 2;
+					if (q.qTextFlow)	_weight += find(word, Utils.textFlowToString(q.qTextFlow)) * 1;
+					if (q.aTextFlow)	_weight += find(word, Utils.textFlowToString(q.aTextFlow)) * 2;
 				}
 				for each (var u:Update in _updates) {
-					if (u.textFlow)	_weight += this.find(word, this.TFtoStr(u.textFlow)) * 1;
+					if (u.textFlow)	_weight += find(word, Utils.textFlowToString(u.textFlow)) * 1;
 				}
 			}
 
@@ -173,19 +174,5 @@ package com.apexinnovations.transwarp.data
 			} while(i != -1);
 			return c;
 		}
-
-		
-		// Converts a TextFlow into a String
-		private function TFtoStr(tf:TextFlow):String {
-			if (tf == null) return '';
-			var tfx:XML = XML(TextConverter.export(tf, TextConverter.TEXT_LAYOUT_FORMAT, ConversionType.XML_TYPE));
-			var s:String = '';
-			for each (var x:XML in tfx..*.text()) {
-				s += x + ' ';
-			}
-
-			return s.substr(0, s.length - 1).replace(/  /g, ' '); // remove double spaces and trailing space
-		}
-		
 	}
 }
