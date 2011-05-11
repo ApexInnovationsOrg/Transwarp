@@ -7,25 +7,40 @@
 	</ui:layout>
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.webservices.CommentService;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
+			TranswarpVersion.revision = "$Rev$";
+						
 			// Event handler for the OK button.
 			override protected function okHandler(event:Event):void {
 				// Trim text, forward any comments on
-				if (commentText.text.replace(/^\s+|\s+$/gs, '') != '') {
+				if ((commentText.text = trim(commentText.text)) != '') {
 					var comment:CommentService = new CommentService();
 					
-					comment.dispatch(commentText.text);
+					comment.dispatch(encodeJSON(commentText.text));
 					
 					super.okHandler(event);
 				}
+			}
+			
+			// encodes special characters for JSON - \n, \t, \r, \, ", and /
+			private function encodeJSON(s:String):String {
+				return s.replace(/\n/g, '\\n').replace(/\t/g, '\\t').replace(/\r/g, '\\r').replace(/\\/g, '\\').replace(/"/g, '\"').replace(/\\/g, '\\');
+			}
+			
+			// trim
+			private function trim(s:String):String {
+				return s.replace(/^\s+|\s+$/gs, '');
 			}
 		]]>
 	</fx:Script>
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" >
-		<s:Label text="Please Type Your Comment:" />
-		<s:TextArea id="commentText" width="380" height="190" />
+		<s:Label text="Please Type Your Comment:" fontWeight="bold" color="0x990000" />
+		<s:TextArea id="commentText" width="380" height="170" prompt="Comments on {Courseware.instance.currentPage.qualifiedName}"/>
+		<s:Label text="We appreciate your feedback!" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" />
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
 			<s:Button label="Submit" click="okHandler(event);"/>
 			<s:Button label="Cancel" click="super.cancelHandler(event);"/>

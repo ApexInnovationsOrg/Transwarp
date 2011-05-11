@@ -5,11 +5,14 @@
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Link;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import mx.controls.LinkButton;
 			import flashx.textLayout.elements.TextFlow;
 			import spark.components.TextArea;
 			
+			TranswarpVersion.revision = "$Rev$";
+
 			protected var _links:Vector.<Link>;
 			
 			public function set links(value:Vector.<Link>):void {

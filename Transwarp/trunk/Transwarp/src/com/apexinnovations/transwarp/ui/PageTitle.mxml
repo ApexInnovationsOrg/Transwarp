@@ -12,8 +12,9 @@
 			import com.apexinnovations.transwarp.data.Folder;
 			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.events.PageSelectionEvent;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
-			
+			TranswarpVersion.revision = "$Rev$";
 			
 			protected function pageChanged(event:PageSelectionEvent):void {
 				var page:Page = event.page;

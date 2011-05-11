@@ -10,6 +10,9 @@
 	<fx:Script>
 		<![CDATA[
 			import mx.managers.PopUpManager;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			TranswarpVersion.revision = "$Rev$";
 			
 			// Event handler for the OK button.
 			protected function okHandler(event:Event):void {
