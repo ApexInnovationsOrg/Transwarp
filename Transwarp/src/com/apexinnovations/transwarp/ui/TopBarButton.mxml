@@ -51,7 +51,7 @@
 	
 	<s:filters>
 		<s:DropShadowFilter alpha="0.5" blurX="2.3" blurY="2.3" distance="3" />
-		<s:GlowFilter color="0xffffff" alpha="{hovered ? 0.6 : 0}" blurX="5" blurY="5" />
+		<s:GlowFilter color="0x000000" alpha="{hovered ? 0.5 : 0}" blurX="7" blurY="7" />
 	</s:filters>
 	
 	<s:Rect top="-2" bottom="-2" left="-2" right="-2">

@@ -115,7 +115,7 @@ package com.apexinnovations.transwarp.ui {
 		}
 		
 		protected static function initHighlightFilter():BitmapFilter  {
-			return new GlowFilter(0xffffff, .5, 5, 5);		
+			return new GlowFilter(0x000000, .5, 7, 7);		
 		}
 		
 		protected static function initDropShadowFilter():DropShadowFilter {
@@ -141,8 +141,8 @@ package com.apexinnovations.transwarp.ui {
 			if(!_art)
 				return;
 			
-			_art.x = (width > 0 ? width/2 - _art.width/2 : 0) + (down ? 2 : 0);
-			_art.y = height > 0 ? height/2 - _art.height/2 : 0 + (down? 2 : 0);
+			_art.x = (width > 0 ? width/2 - _art.width/2 : 0) + (down ? 1 : 0);
+			_art.y = height > 0 ? height/2 - _art.height/2 : 0 + (down? 1 : 0);
 		}
 		
 		protected function initializeHitArea():void {
@@ -173,14 +173,14 @@ package com.apexinnovations.transwarp.ui {
 
 		protected function mouseUp(e:Event):void {
 			if (down && _art)
-				_art.x -= 2, _art.y -= 2;
+				_art.x -= 1, _art.y -= 1;
 			down = false;
 		}
 
 		protected function mouseDown(e:Event):void {
 			down = true;
 			if(_art)
-				_art.x += 2, _art.y += 2;
+				_art.x += 1, _art.y += 1;
 		}
 
 	}
