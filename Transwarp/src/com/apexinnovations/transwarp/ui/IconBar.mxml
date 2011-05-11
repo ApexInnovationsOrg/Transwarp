@@ -57,6 +57,14 @@
 				PopUpManager.centerPopUp(dlg);
 			}
 			
+			protected function configureOptions(evt:MouseEvent):void {
+				var dlg:ConfigDialog = ConfigDialog(PopUpManager.createPopUp(this.parent.parent, ConfigDialog , true, PopUpManagerChildList.POPUP));
+				
+				dlg.title = 'Configuration Options';
+				
+				PopUpManager.centerPopUp(dlg);
+			}
+			
 			protected function showRelatedLinks(evt:MouseEvent):void {
 				var links:Vector.<Link> = Courseware.instance.currentPage.links;
 				if (links.length > 0) {
@@ -133,7 +141,7 @@
 		<ui:IconButton artClass="{FavoritesIcon}" />
 		<ui:IconButton artClass="{PaintbrushIcon}" />
 		<ui:IconButton artClass="{AudioIcon}" />
-		<ui:IconButton artClass="{ConfigurationIcon}" />
+		<ui:IconButton artClass="{ConfigurationIcon}" click="configureOptions(event);" />
 		<ui:IconButton artClass="{SnapshotIcon}" click="printStage(event);" />
 		<ui:IconButton artClass="{HelpIcon}" />
 	</s:VGroup>

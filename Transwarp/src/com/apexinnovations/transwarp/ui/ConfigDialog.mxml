@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			  xmlns:s="library://ns.adobe.com/flex/spark" 
+			  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="com.apexinnovations.transwarp.ui.*" width="400" height="300">
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.webservices.ConfigService;
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			// Event handler for the OK button.
+			override protected function okHandler(event:Event):void {
+				var config:ConfigService = new ConfigService();
+				
+				if (Courseware.instance.user.autoCloseMenu != autoCloseMenu.selected) {
+					config.dispatch("autoCloseMenu", autoCloseMenu.selected.toString());
+					Courseware.instance.user.autoCloseMenu = autoCloseMenu.selected;
+				}
+				if (Courseware.instance.user.animatePageTransitions != animatePageTransitions.selected) {
+					config.dispatch("animatePageTransitions", animatePageTransitions.selected.toString());
+					Courseware.instance.user.animatePageTransitions = animatePageTransitions.selected;
+				}
+				if (Courseware.instance.user.closedCaptioning != closedCaptioning.selected) {
+					config.dispatch("closedCaptioning", closedCaptioning.selected.toString());
+					Courseware.instance.user.closedCaptioning = closedCaptioning.selected;
+				}
+				
+				super.okHandler(event);
+			}
+		]]>
+	</fx:Script>
+	
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" >
+		<s:Label text="Configuration for {Courseware.instance.user.name}:" />
+		<s:CheckBox id="autoCloseMenu" label="Auto Close Menus" selected="{Courseware.instance.user.autoCloseMenu}" />
+		<s:CheckBox id="animatePageTransitions" label="Animate Page Transitions" selected="{Courseware.instance.user.animatePageTransitions}" />
+		<s:CheckBox id="closedCaptioning" label="Closed Captioning" selected="{Courseware.instance.user.closedCaptioning}" />
+		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
+			<s:Button label="Submit" click="okHandler(event);"/>
+			<s:Button label="Cancel" click="super.cancelHandler(event);"/>
+		</s:HGroup>
+	</s:VGroup>
+</ui:DialogBox>
