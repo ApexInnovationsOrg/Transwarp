@@ -85,9 +85,16 @@
 				
 				if (printJob.start()) {
 					var printSprite:Sprite = new Sprite();
+					var bitmapData:BitmapData;
 					
-					var bitmapData:BitmapData = new BitmapData(stage.stageWidth,stage.stageHeight);
-					bitmapData.draw(stage);
+					if (Courseware.instance.user.printSlideOnly) {
+						// Matt, can't figure out how to get ahold of content to create bitmap from it... so for now, just print everything
+						bitmapData = new BitmapData(stage.stageWidth,stage.stageHeight);
+						bitmapData.draw(stage);
+					} else {
+						bitmapData = new BitmapData(stage.stageWidth,stage.stageHeight);
+						bitmapData.draw(stage);
+					}
 					var screenShot:Bitmap = new Bitmap(bitmapData);
 										
 					//scale it to fill the page (portrait orientation):
