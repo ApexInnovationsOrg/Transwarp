@@ -106,6 +106,7 @@ package com.apexinnovations.transwarp.preloader {
 		protected function loadAssets(e:Event):void {
 			//trace("xml loaded");
 			var loader:URLLoader = URLLoader(e.target);
+			XML.ignoreWhitespace = false;
 			var xml:XML = new XML(loader.data);
 			var log:LogService = new LogService();
 			
