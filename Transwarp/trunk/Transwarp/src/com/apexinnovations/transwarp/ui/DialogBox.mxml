@@ -2,7 +2,8 @@
 <s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
-			   skinClass="com.apexinnovations.transwarp.skins.DialogSkin" close="closeHandler(event);"  >
+			   skinClass="com.apexinnovations.transwarp.skins.DialogSkin"
+			   close="closeHandler(event);"  >
 	<s:layout>
 		<s:VerticalLayout />
 	</s:layout>
@@ -24,7 +25,7 @@
 				closeHandler(event);
 			}
 			
-			// Event handler for the OK button.
+			// Event handler for the close button.
 			protected function closeHandler(event:Event):void {
 				this.removeEventListener("close", closeHandler);
 				PopUpManager.removePopUp(this);

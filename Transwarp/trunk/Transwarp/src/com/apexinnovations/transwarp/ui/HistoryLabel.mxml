@@ -2,16 +2,16 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		  xmlns:s="library://ns.adobe.com/flex/spark" 
 		  xmlns:mx="library://ns.adobe.com/flex/mx"
-		  buttonMode="true" useHandCursor="true" mouseChildren="false"
-		  rollOver="rollOverOut(event)" rollOut="rollOverOut(event)" mouseDown="mouseDownUp(event)" addedToStage="onAdded(event)" click="click(event)">
-	
+		  buttonMode="true" useHandCursor="false" mouseChildren="false"
+		  rollOver="rollOverOut(event)" rollOut="rollOverOut(event)" mouseDown="mouseDownUp(event)" addedToStage="onAdded(event)">
+	<fx:Declarations>
+		<s:DateTimeFormatter id="dateTimeFormatter"/>
+	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
-			import com.apexinnovations.transwarp.data.Link;
+			import com.apexinnovations.transwarp.data.Update;
 			
-			import flash.net.URLRequest;
-			
-			protected var _link:Link = null;
+			protected var _update:Update = null;
 			protected var _selected:Boolean;
 			
 			[Bindable]
@@ -22,8 +22,8 @@
 				super.createChildren();
 			}
 			
-			[Bindable] public function get link():Link { return _link; }
-			public function set link(l:Link):void { _link = l; }
+			[Bindable] public function get update():Update { return _update; }
+			public function set update(l:Update):void { _update = l; }
 			
 			public function get selected():Boolean { return _selected; }
 			public function set selected(value:Boolean):void {
@@ -42,11 +42,8 @@
 			
 			protected function onAdded(event:Event):void {
 				stage.addEventListener(MouseEvent.MOUSE_UP, mouseDownUp);
-			}
-			
-			protected function click(event:MouseEvent):void {
-				var url:String = (_link.url.substr(0, 4) == 'http' ? '' : 'http://') + _link.url;
-				navigateToURL(new URLRequest(url));
+				dateTimeFormatter.dateStyle = "short";
+				dateTimeFormatter.timeStyle = "none";
 			}
 			
 		]]>
@@ -60,15 +57,13 @@
 
 	<s:Group width="345" >		
 		<s:Rect width="100%" height="100%" radiusX="7">
-			<s:stroke>
-				<s:SolidColorStroke color="0xffffff" color.hovered="0x0000FF" weight="0" weight.hovered="1"/>
-			</s:stroke>
 			<s:fill>
-				<s:SolidColor color="0xdddddd" color.selected="0xffffff" color.hovered="0xe8e8e8"/>
+				<s:SolidColor color="0xffffff" color.selected="0xffffff" color.hovered="0xe8e8e8"/>
 			</s:fill>
 		</s:Rect>
-		<s:HGroup gap="8" verticalAlign="middle" paddingTop="7" paddingBottom="7" paddingLeft="7" paddingRight="7" >
-			<s:RichEditableText width="330" height="100%" editable="false" textFlow="{link.textFlow}" selectable="false" alpha="0.7" alpha.selected="1" alpha.hovered="1" >
+		<s:HGroup gap="8" verticalAlign="top" paddingTop="7" paddingBottom="7" paddingLeft="7" paddingRight="7" >
+			<s:Label text="{dateTimeFormatter.format(update.time)}" width="65" fontSize="12" color="0x0000FF" textAlign="right" /> 
+			<s:RichEditableText width="265" height="100%" editable="false" textFlow="{update.textFlow}" selectable="false" alpha="0.7" alpha.selected="1" alpha.hovered="1" >
 				
 			</s:RichEditableText>
 		</s:HGroup>		
