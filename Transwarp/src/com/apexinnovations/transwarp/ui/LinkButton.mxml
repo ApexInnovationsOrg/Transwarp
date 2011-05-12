@@ -10,6 +10,9 @@
 			import com.apexinnovations.transwarp.data.Link;
 			
 			import flash.net.URLRequest;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			TranswarpVersion.revision = "$Rev$";
 			
 			protected var _link:Link = null;
 			protected var _selected:Boolean;

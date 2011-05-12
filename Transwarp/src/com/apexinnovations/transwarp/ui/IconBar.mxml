@@ -52,11 +52,15 @@
 			}
 
 			protected function commentOnPage(evt:MouseEvent):void {
-				var dlg:CommentDialog = CommentDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), CommentDialog , true, PopUpManagerChildList.POPUP));
-				
-				dlg.title = 'Feedback/Suggestions for this Page';
-				
-				PopUpManager.centerPopUp(dlg);
+				var page:Page = Courseware.instance.currentPage;
+				if (true) {
+					var dlg:CommentDialog = CommentDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), CommentDialog , true, PopUpManagerChildList.POPUP));
+					
+					dlg.title = 'Feedback/Suggestions for this Page';
+					dlg.page = page;
+					
+					PopUpManager.centerPopUp(dlg);
+				}
 			}
 			
 			protected function configureOptions(evt:MouseEvent):void {
@@ -67,12 +71,12 @@
 				PopUpManager.centerPopUp(dlg);
 			}
 			
-			protected function showRelatedLinks(evt:MouseEvent):void {
+			protected function showKeyQuestions(evt:MouseEvent):void {
 				var page:Page = Courseware.instance.currentPage;
-				if (page.links.length > 0) {
-					var dlg:LinksDialog = LinksDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), LinksDialog , true, PopUpManagerChildList.POPUP));
+				if (page.questions.length > 0) {
+					var dlg:KeyQuestionsDialog = KeyQuestionsDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), KeyQuestionsDialog , true, PopUpManagerChildList.POPUP));
 					
-					dlg.title = 'Related Links';
+					dlg.title = 'Key Questions on this Page';
 					dlg.page = page;
 					
 					PopUpManager.centerPopUp(dlg);
@@ -84,7 +88,19 @@
 				if (page.updates.length > 0) {
 					var dlg:HistoryDialog = HistoryDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), HistoryDialog , true, PopUpManagerChildList.POPUP));
 					
-					dlg.title = 'History of Page Updates';
+					dlg.title = 'History of Updates to this Page';
+					dlg.page = page;
+					
+					PopUpManager.centerPopUp(dlg);
+				}
+			}
+			
+			protected function showRelatedLinks(evt:MouseEvent):void {
+				var page:Page = Courseware.instance.currentPage;
+				if (page.links.length > 0) {
+					var dlg:LinksDialog = LinksDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), LinksDialog , true, PopUpManagerChildList.POPUP));
+					
+					dlg.title = 'Links Related to this Page';
 					dlg.page = page;
 					
 					PopUpManager.centerPopUp(dlg);
@@ -96,7 +112,7 @@
 				if (page.supportText) {
 					var dlg:SupportTextDialog = SupportTextDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), SupportTextDialog , true, PopUpManagerChildList.POPUP));
 					
-					dlg.title = 'Supporting Text';
+					dlg.title = 'Supporting Text for this Page';
 					dlg.page = page;
 					
 					PopUpManager.centerPopUp(dlg);
@@ -166,7 +182,7 @@
 	</s:Rect>
 	
 	<s:VGroup id="buttonGroup" top="15" width="100%" horizontalAlign="center" gap="10">
-		<ui:IconButton artClass="{KeyQuestionIcon}" />
+		<ui:IconButton artClass="{KeyQuestionIcon}" click="showKeyQuestions(event);"/>
 		<ui:IconButton artClass="{SupportingTextIcon}" click="showSupportText(event);"/>
 		<ui:IconButton artClass="{HistoryIcon}" click="showPageUpdates(event);"/>		
 		<ui:IconButton artClass="{LinksIcon}" click="showRelatedLinks(event);" />

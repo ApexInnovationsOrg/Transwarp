@@ -40,7 +40,7 @@
 	</fx:Script>
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" width="100%" >
-		<s:Label text="Configuration for {Courseware.instance.user.name}:" />
+		<s:Label text="Configuration for {Courseware.instance.user.name}:" fontWeight="bold" />
 		<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" width="100%" >
 			<s:CheckBox id="autoCloseMenu" label="Auto Close Menus" selected="{Courseware.instance.user.autoCloseMenu}" />
 			<s:Label paddingLeft="18" text="Automatically close open folders in the menu when you click to open a new folder" width="350" fontSize="10" fontStyle="italic" color="0x0000FF" />
