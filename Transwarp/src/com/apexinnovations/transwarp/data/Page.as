@@ -7,15 +7,16 @@ package com.apexinnovations.transwarp.data
 	import flash.errors.*;
 	import flash.events.EventDispatcher;
 	import flash.utils.*;
-	import flashx.textLayout.elements.TextFlow;
+	
 	import flashx.textLayout.conversion.TextConverter;
-		
+	import flashx.textLayout.elements.TextFlow;
+	
 	import mx.events.PropertyChangeEvent;
 	import mx.events.PropertyChangeEventKind;
 	import mx.formatters.DateFormatter;
 	
 	TranswarpVersion.revision = "$Rev$";
-		
+	
 	// This represents a page in the course
 	public class Page extends EventDispatcher {
 		private var _allow:String = '';										// Space separated list of types of user allowed to view this page (e.g. 'LMS Doctor Beta'). '' means all
@@ -118,7 +119,11 @@ package com.apexinnovations.transwarp.data
 		public function get updates():Vector.<Update> { return _updates; }
 		public function get weight():uint { return _weight; }
 
-		
+		[Bindable("pageDataChanged")] public function get hasQuestions():Boolean { return _questions.length > 0; }
+		[Bindable("pageDataChanged")] public function get hasSupportText():Boolean { return _supportText !== null; }
+		[Bindable("pageDataChanged")] public function get hasLinks():Boolean { return _links.length > 0; }
+		[Bindable("pageDataChanged")] public function get hasUpdates():Boolean { return _updates.length > 0; }
+				
 		// Does everything associated with bookmarking this page 
 		public function bookmark():void {
 			this._bookmarked = true;

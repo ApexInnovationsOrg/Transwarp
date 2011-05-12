@@ -1,4 +1,5 @@
 package com.apexinnovations.transwarp.ui {
+	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.loadingtypes.LoadingItem;
 	
 	import com.apexinnovations.transwarp.data.Courseware;
@@ -9,6 +10,7 @@ package com.apexinnovations.transwarp.ui {
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
+	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.FullScreenEvent;
 	import flash.events.ProgressEvent;
@@ -22,7 +24,7 @@ package com.apexinnovations.transwarp.ui {
 	[Event(name="open", type="flash.events.Event")]
 	[Event(name="progress", type="flash.events.ProgressEvent")]
 	[Event(name="complete", type="flash.events.Event")]
-	
+	[Event(name="error", type="flash.events.ErrorEvent")]
 	
 	public class ContentContainer extends UIComponent {
 		
@@ -55,10 +57,13 @@ package com.apexinnovations.transwarp.ui {
 				_isAS2Content = item.content is AVM1Movie;
 				content = item.content.parent;
 			} else {
-				dispatchEvent(new Event(Event.OPEN));
-				item.addEventListener(Event.COMPLETE, contentLoaded);
-				//item.addEventListener(Event.INIT, contentLoaded);
-				item.addEventListener(ProgressEvent.PROGRESS, contentProgress);
+				content = null;
+				if(item.status != LoadingItem.STATUS_ERROR) {
+					dispatchEvent(new Event(Event.OPEN));
+					item.addEventListener(Event.COMPLETE, contentLoaded);
+					item.addEventListener(ProgressEvent.PROGRESS, contentProgress);
+				} else
+					dispatchEvent(new ErrorEvent(BulkLoader.ERROR, true, true, item.errorEvent.text));
 			}
 		}
 		
@@ -72,8 +77,10 @@ package com.apexinnovations.transwarp.ui {
 		public function set content(value:DisplayObject):void {
 			if(_content != null) 
 				removeChild(_content);
+			
 			SoundMixer.stopAll();
 			_content = value;
+			
 			if(_content != null) {
 				addChild(_content);
 				invalidateSize();
