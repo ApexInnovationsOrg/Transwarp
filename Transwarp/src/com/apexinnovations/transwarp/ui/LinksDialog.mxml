@@ -6,21 +6,22 @@
 			  width="400" minHeight="300" >
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.data.Link;
 			import com.apexinnovations.transwarp.ui.LinkButton;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			TranswarpVersion.revision = "$Rev$";
 
-			protected var _links:Vector.<Link>;
+			[Bindable] protected var _page:Page = null;
 			
-			public function set links(value:Vector.<Link>):void {
-				_links = value;
+			public function set page(p:Page):void {
+				_page = p;
 				if(linkList) initLinkList();
 			}
 			
 			protected function initLinkList():void {
-				for each(var l:Link in _links) {
+				for each(var l:Link in _page.links) {
 					var b:LinkButton;
 					
 					b = new LinkButton();
@@ -32,7 +33,10 @@
 	</fx:Script>
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
-		<s:Label text="Click on a Link to Open in Your Browser:" />
+		<s:HGroup gap="2">
+			<s:Label text="{_page.parentFolders}" fontWeight="bold" color="0x0000FF" />			
+			<s:Label text="{_page.name}" fontWeight="bold" color="0x000000" />			
+		</s:HGroup>
 		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" >
 			<s:VGroup id="linkList" width="360" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
 			</s:VGroup>
