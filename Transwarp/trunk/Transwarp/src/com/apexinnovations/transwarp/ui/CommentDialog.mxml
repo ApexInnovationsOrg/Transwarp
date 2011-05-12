@@ -6,12 +6,18 @@
 			  width="400" height="300">
 	<fx:Script>
 		<![CDATA[
-			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.webservices.CommentService;
 			import com.apexinnovations.transwarp.utils.*;
 			
 			TranswarpVersion.revision = "$Rev$";
 						
+			[Bindable] protected var _page:Page = null;
+			
+			public function set page(p:Page):void {
+				_page = p;
+			}
+
 			// Event handler for the OK button.
 			override protected function okHandler(event:Event):void {
 				// Trim text, forward any comments on
@@ -27,8 +33,8 @@
 	</fx:Script>
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" >
-		<s:Label text="Please Type Your Comment:" fontWeight="bold" color="0x990000" />
-		<s:TextArea id="commentText" width="380" height="170" prompt="Comments on {Courseware.instance.currentPage.qualifiedName}"/>
+		<s:Label text="Please type your comments in the space below:" fontWeight="bold" />
+		<s:TextArea id="commentText" width="380" height="170" prompt="Comments on {_page.qualifiedName}"/>
 		<s:Label text="We appreciate your feedback!" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" />
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
 			<s:Button label="Submit" click="okHandler(event);"/>
