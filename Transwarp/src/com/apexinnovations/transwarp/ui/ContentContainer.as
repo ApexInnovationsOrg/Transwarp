@@ -13,6 +13,7 @@ package com.apexinnovations.transwarp.ui {
 	import flash.events.FullScreenEvent;
 	import flash.events.ProgressEvent;
 	import flash.geom.Rectangle;
+	import flash.media.SoundMixer;
 	
 	import mx.core.UIComponent;
 	
@@ -71,7 +72,7 @@ package com.apexinnovations.transwarp.ui {
 		public function set content(value:DisplayObject):void {
 			if(_content != null) 
 				removeChild(_content);
-			
+			SoundMixer.stopAll();
 			_content = value;
 			if(_content != null) {
 				addChild(_content);
