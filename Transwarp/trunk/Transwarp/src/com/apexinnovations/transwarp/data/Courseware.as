@@ -1,5 +1,6 @@
 package com.apexinnovations.transwarp.data
 {
+	import com.apexinnovations.transwarp.events.FolderOpenEvent;
 	import com.apexinnovations.transwarp.events.PageSelectionEvent;
 	import com.apexinnovations.transwarp.ui.tree.CourseList;
 	import com.apexinnovations.transwarp.utils.*;
@@ -95,6 +96,7 @@ package com.apexinnovations.transwarp.data
 			_user = new User(xml.user[0], this);
 			
 			_currentCourseList = new CourseList();
+			_currentCourseList.addEventListener(FolderOpenEvent.FOLDER_OPEN, folderOpenHandler);
 			currentCourse = _product.getCourseByID(_user.startCourseID);
 			currentPage = _currentCourse.pages[0];
 			
@@ -197,22 +199,41 @@ package com.apexinnovations.transwarp.data
 				if(page.parent is Folder && !Folder(page.parent).open)
 					(page.parent as Folder).open = true;
 				
-			}
-			else { //newPage is Folder
+			} else { //newPage is Folder
 				var folder:Folder = newPage as Folder;
 				if(up) {
 					if(folder.open) {
 						moveSelection(newIndex - 1, up);
 					} else {
 						folder.open = true
+						newIndex = list.getItemIndex(folder); //Opening the folder may change its index due to an auto-close of another folder
 						moveSelection(folder.contents.length + newIndex, up);
 					}
 				} else {
 					folder.open = true;
+					newIndex = list.getItemIndex(folder); //Opening the folder may change its index due to an auto-close of another folder
 					moveSelection(newIndex + 1, up);
 				}						
 				
 			}
-		}		
+		}
+		
+		
+		protected function folderOpenHandler(event:FolderOpenEvent):void {
+			if(!_user.autoCloseMenu)
+				return;
+			closeUnrelatedFolder(_currentCourse.contents, event.folder);			
+		}
+		
+		//Used for auto-closing folders when opening another.
+		protected function closeUnrelatedFolder(contents:Array, target:Folder):void {
+			for each (var content:Object in contents) {
+				var folder:Folder = content as Folder;
+				if(folder && folder !== target) {
+					folder.open = folder.contents.indexOf(target) != -1;
+					closeUnrelatedFolder(folder.contents, target);
+				}
+			}
+		}
 	}	
 }
