@@ -22,6 +22,7 @@
 			import mx.events.CollectionEventKind;
 			
 			import spark.events.IndexChangeEvent;
+			import spark.layouts.HorizontalLayout;
 			
 			TranswarpVersion.revision = "$Rev$";			
 			
@@ -29,7 +30,6 @@
 			
 			override protected function createChildren():void {
 				super.createChildren();
-				
 				scroller.setStyle("horizontalScrollPolicy", false);
 			}
 			

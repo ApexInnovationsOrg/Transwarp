@@ -3,6 +3,7 @@ package com.apexinnovations.transwarp.ui.tree {
 	import com.apexinnovations.transwarp.data.Courseware;
 	import com.apexinnovations.transwarp.data.Folder;
 	import com.apexinnovations.transwarp.data.Page;
+	import com.apexinnovations.transwarp.events.FolderOpenEvent;
 	import com.apexinnovations.transwarp.events.TranswarpEvent;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
@@ -41,6 +42,7 @@ package com.apexinnovations.transwarp.ui.tree {
 				var index:int = getItemIndex(folder);
 				var contents:Array = folder.viewableContents;
 				var open:Boolean = folder.open;
+							
 				for each(var child:* in contents) {
 					if(open) {
 						addItemAt(child, ++index);
@@ -48,6 +50,11 @@ package com.apexinnovations.transwarp.ui.tree {
 						removeItemAt(index+1);
 					}
 				}
+				
+				//FolderOpenEvent used only for the "auto close folders" option.
+				if(event.newValue == true)
+					dispatchEvent(new FolderOpenEvent(folder));
+				
 				dispatchEvent(new TranswarpEvent(TranswarpEvent.FOLDER_OPEN_CLOSE));
 			}
 		}

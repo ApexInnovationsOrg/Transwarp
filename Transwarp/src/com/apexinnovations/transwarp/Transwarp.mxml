@@ -117,6 +117,13 @@
 				}
 			}
 		
+
+			protected function pageLoadErrorHandler(event:ErrorEvent):void {
+				event.stopPropagation();
+				//popupErrorDialog("We are sorry, but there has been an error loading this page.  Please contact Apex Technical Support at 1-866-294-4599 x111. \n\n" + event.text, "Error Loading Page");
+				Courseware.log("PAGE LOAD ERROR: " + event.type + ": " + event.text);
+			}
+
 		]]>
 	</fx:Script>
 	
@@ -134,5 +141,6 @@
 	<!--The weird size constraints on this group are another case of having to force the layout code to behave as expected-->
 	<ui:ContentArea id="contentArea" left="{leftBar.width}"
 			  top="178" top.maximized="35"
-			  width="{width-contentArea.x}" height="{height-contentArea.y}" />
+			  width="{width-contentArea.x}" height="{height-contentArea.y}" 
+			  error="pageLoadErrorHandler(event)"/>
 </transwarp:TranswarpBase>

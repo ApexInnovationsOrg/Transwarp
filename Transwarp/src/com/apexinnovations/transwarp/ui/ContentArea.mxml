@@ -4,6 +4,10 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 xmlns:ui="com.apexinnovations.transwarp.ui.*">
 	
+	<fx:Metadata>
+		[Event(name="error", type="flash.events.ErrorEvent")]
+	</fx:Metadata>
+	
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
@@ -15,9 +19,6 @@
 				progressBar.setProgress(event.bytesLoaded, event.bytesTotal);
 			}
 			
-			protected function loadError(event:ErrorEvent):void {
-				//TODO: display a load error message?
-			}
 
 		]]>
 	</fx:Script>
@@ -26,7 +27,7 @@
 	<!--Bounds on the size of this save space on AS3 slides for instructions (60px at the bottom) and for the title (40px at the top)-->
 	<!--   On AS2 slides, we take into account the 40 px of saved space built into the slide and adjust that for the current scale of the slide -->
 	<ui:ContentContainer id="container" mask="{contentMask}" width="100%" top="{container.isAS2Content ? Math.max(0, 40-40*container.contentScaleY) : 40}" bottom="{container.isAS2Content ? 0 : 60}"
-						 open="progressPanel.visible = true" complete="progressPanel.visible = false" progress="loadProgress(event)" error="loadError(event)"/>
+						 open="progressPanel.visible = true" complete="progressPanel.visible = false" progress="loadProgress(event)"/>
 	
 	<ui:PageTitle top="0" width="100%"/>
 	

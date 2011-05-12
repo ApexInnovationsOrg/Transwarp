@@ -63,7 +63,7 @@ package com.apexinnovations.transwarp.ui {
 					item.addEventListener(Event.COMPLETE, contentLoaded);
 					item.addEventListener(ProgressEvent.PROGRESS, contentProgress);
 				} else
-					dispatchEvent(new ErrorEvent(BulkLoader.ERROR, true, true, item.errorEvent.text));
+					dispatchEvent(new ErrorEvent(BulkLoader.ERROR, true, false, item.errorEvent.text));
 			}
 		}
 		
