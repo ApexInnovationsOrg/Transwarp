@@ -3,13 +3,13 @@
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
-			  width="400" minHeight="300">
+			  width="400" minHeight="300" maxHeight="500">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Page;
-			import com.apexinnovations.transwarp.data.Update;
-			import com.apexinnovations.transwarp.ui.HistoryLabel;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			import flashx.textLayout.elements.TextFlow;
 			
 			TranswarpVersion.revision = "$Rev$";
 			
@@ -17,17 +17,7 @@
 			
 			public function set page(p:Page):void {
 				_page = p;
-				if(updateList) initUpdateList();
-			}
-			
-			protected function initUpdateList():void {
-				for each(var l:Update in _page.updates) {
-					var b:HistoryLabel;
-					
-					b = new HistoryLabel();
-					updateList.addElement(b);
-					b.update = l;
-				}
+				if(theText) theText.textFlow = p.supportText;
 			}
 		]]>
 	</fx:Script>
@@ -37,9 +27,7 @@
 			<s:Label text="{_page.parentFolders}" fontWeight="bold" color="0x0000FF" />			
 			<s:Label text="{_page.name}" fontWeight="bold" color="0x000000" />			
 		</s:HGroup>
-		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" >
-			<s:VGroup id="updateList" width="360" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
-			</s:VGroup>
-		</s:Scroller>
+		<s:TextArea id="theText" width="380" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" editable="false" horizontalScrollPolicy="off" minHeight="250" maxHeight="450" >
+		</s:TextArea>
 	</s:VGroup>
 </ui:DialogBox>

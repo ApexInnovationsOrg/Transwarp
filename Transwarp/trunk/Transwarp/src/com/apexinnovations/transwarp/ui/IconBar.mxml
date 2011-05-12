@@ -14,6 +14,8 @@
 			import com.apexinnovations.transwarp.graphics.*;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
+			import flashx.textLayout.elements.TextFlow;
+
 			import flash.printing.*;
 			
 			import mx.core.IVisualElement;
@@ -66,24 +68,36 @@
 			}
 			
 			protected function showRelatedLinks(evt:MouseEvent):void {
-				var links:Vector.<Link> = Courseware.instance.currentPage.links;
-				if (links.length > 0) {
+				var page:Page = Courseware.instance.currentPage;
+				if (page.links.length > 0) {
 					var dlg:LinksDialog = LinksDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), LinksDialog , true, PopUpManagerChildList.POPUP));
 					
 					dlg.title = 'Related Links';
-					dlg.links = links;
+					dlg.page = page;
 					
 					PopUpManager.centerPopUp(dlg);
 				}
 			}
 			
 			protected function showPageUpdates(evt:MouseEvent):void {
-				var updates:Vector.<Update> = Courseware.instance.currentPage.updates;
-				if (updates.length > 0) {
+				var page:Page = Courseware.instance.currentPage;
+				if (page.updates.length > 0) {
 					var dlg:HistoryDialog = HistoryDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), HistoryDialog , true, PopUpManagerChildList.POPUP));
 					
 					dlg.title = 'History of Page Updates';
-					dlg.updates = updates;
+					dlg.page = page;
+					
+					PopUpManager.centerPopUp(dlg);
+				}
+			}
+			
+			protected function showSupportText(evt:MouseEvent):void {
+				var page:Page = Courseware.instance.currentPage;
+				if (page.supportText) {
+					var dlg:SupportTextDialog = SupportTextDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), SupportTextDialog , true, PopUpManagerChildList.POPUP));
+					
+					dlg.title = 'Supporting Text';
+					dlg.page = page;
 					
 					PopUpManager.centerPopUp(dlg);
 				}
@@ -153,7 +167,7 @@
 	
 	<s:VGroup id="buttonGroup" top="15" width="100%" horizontalAlign="center" gap="10">
 		<ui:IconButton artClass="{KeyQuestionIcon}" />
-		<ui:IconButton artClass="{SupportingTextIcon}" enabled="false"/>
+		<ui:IconButton artClass="{SupportingTextIcon}" click="showSupportText(event);"/>
 		<ui:IconButton artClass="{HistoryIcon}" click="showPageUpdates(event);"/>		
 		<ui:IconButton artClass="{LinksIcon}" click="showRelatedLinks(event);" />
 		<ui:IconButton artClass="{CommentIcon}" click="commentOnPage(event);"/>
