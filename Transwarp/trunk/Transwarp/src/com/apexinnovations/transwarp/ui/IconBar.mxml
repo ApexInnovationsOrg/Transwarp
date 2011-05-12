@@ -189,10 +189,10 @@
 	</s:Rect>
 	
 	<s:VGroup id="buttonGroup" top="15" width="100%" horizontalAlign="center" gap="10">
-		<ui:IconButton artClass="{KeyQuestionIcon}" click="showKeyQuestions(event);" enabled="{currentPage.questions.length > 0}"/>
-		<ui:IconButton artClass="{SupportingTextIcon}" click="showSupportText(event);" enabled="{currentPage.supportText !== null}"/>
-		<ui:IconButton artClass="{HistoryIcon}" click="showPageUpdates(event);" enabled="{currentPage.updates.length > 0}"/>		
-		<ui:IconButton artClass="{LinksIcon}" click="showRelatedLinks(event);" enabled="{currentPage.links.length > 0}"/>
+		<ui:IconButton artClass="{KeyQuestionIcon}" click="showKeyQuestions(event);" enabled="{currentPage.hasQuestions}"/>
+		<ui:IconButton artClass="{SupportingTextIcon}" click="showSupportText(event);" enabled="{currentPage.hasSupportText}"/>
+		<ui:IconButton artClass="{HistoryIcon}" click="showPageUpdates(event);" enabled="{currentPage.hasUpdates}"/>		
+		<ui:IconButton artClass="{LinksIcon}" click="showRelatedLinks(event);" enabled="{currentPage.hasLinks}"/>
 		<ui:IconButton artClass="{CommentIcon}" click="commentOnPage(event);"/>
 		<ui:IconButton artClass="{FavoritesIcon}" />
 		<ui:IconButton artClass="{PaintbrushIcon}" />
