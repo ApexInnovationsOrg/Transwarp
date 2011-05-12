@@ -2,6 +2,7 @@ package com.apexinnovations.transwarp.data
 {
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
+	import flash.events.EventDispatcher;
 	import flash.errors.*;
 	import flash.utils.*;
 	
@@ -14,7 +15,7 @@ package com.apexinnovations.transwarp.data
 	TranswarpVersion.revision = "$Rev$";
 	
 	// This represents an update to a page
-	public class Update {
+	public class Update extends EventDispatcher {
 		private var _parent:Page = null;		// A link back to the page
 		private var _time:Date = null;			// The date/time of this update, in XML format: YYYY-MM-DDTHH:MM:SS
 		private var _textFlow:TextFlow = null;	// The description of this update, as a TextFlow
