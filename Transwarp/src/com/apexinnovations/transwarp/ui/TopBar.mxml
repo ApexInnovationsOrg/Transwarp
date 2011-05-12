@@ -16,7 +16,10 @@
 			import com.apexinnovations.transwarp.graphics.ReplayIcon;
 			import com.apexinnovations.transwarp.graphics.SearchIcon;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			import com.apexinnovations.transwarp.ui.SearchDialog;
 			
+			import mx.managers.PopUpManager;
+			import mx.managers.PopUpManagerChildList;
 			import mx.binding.utils.BindingUtils;
 			import mx.utils.ColorUtil;
 			
@@ -77,11 +80,21 @@
 			}
 			
 			protected function submitSearch():void {
+				if (true) {
+					var dlg:SearchDialog = SearchDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), SearchDialog , false, PopUpManagerChildList.POPUP));
+					
+					dlg.title = 'Search Results' ;
+					dlg.keywords = searchInput.text;
+					
+					PopUpManager.centerPopUp(dlg);
+				}
+/*
 				var results:Vector.<Page> = Courseware.search(searchInput.text);
 				trace("=============================\nSearch Results:");
 				for each(var page:Page in results)
 					trace("      * " + page.qualifiedName + ' (' + page.weight + ')');
 				trace("=============================");
+*/
 			}
 
 		]]>

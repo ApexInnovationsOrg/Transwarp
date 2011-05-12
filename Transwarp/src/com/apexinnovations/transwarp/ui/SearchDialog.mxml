@@ -4,7 +4,45 @@
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			  width="300" height="600">
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.ui.SearchResultButton;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			[Bindable] protected var _keywords:String = '';
+			protected var _results:Vector.<Page> = null;
+			
+			public function set keywords(words:String):void {
+				_keywords = words;
+				if(resultList) initResultList();
+			}
+			
+			protected function initResultList():void {
+				_results = Courseware.search(_keywords);
+				for each(var p:Page in _results) {
+					var b:SearchResultButton;
+					
+					b = new SearchResultButton();
+					resultList.addElement(b);
+					b.page = p;
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
+		<s:HGroup gap="2">
+			<s:Label text="Keyword(s): " fontWeight="bold" color="{Courseware.instance.color}" />			
+			<s:Label text="{_keywords}" fontWeight="bold" color="0x000000" />			
+		</s:HGroup>
+		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" >
+			<s:VGroup id="resultList" width="360" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
+			</s:VGroup>
+		</s:Scroller>
+		<s:Label text="Click on result(s) above to view in browser" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" />
+	</s:VGroup>
 </ui:DialogBox>
