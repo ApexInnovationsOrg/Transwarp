@@ -3,7 +3,7 @@
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
-			  width="400" height="300">
+			  width="400" minHeight="300">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
@@ -44,5 +44,6 @@
 			<s:VGroup id="questionList" width="360" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
 			</s:VGroup>
 		</s:Scroller>
+		<s:Label text="Click on a question to see its answer" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" />
 	</s:VGroup>
 </ui:DialogBox>
