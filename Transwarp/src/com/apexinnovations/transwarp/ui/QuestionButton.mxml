@@ -60,7 +60,7 @@
 	<s:Group width="345" >		
 		<s:Rect width="100%" height="100%" radiusX="7">
 			<s:stroke>
-				<s:SolidColorStroke color="0xffffff" color.selected="0xbbbbbb" color.hovered="0x0000FF" weight="0" weight.hovered="1"/>
+				<s:SolidColorStroke color="0xffffff" color.selected="0xbbbbbb" color.hovered="0x0000FF" weight="0" weight.hovered="1" pixelHinting="true"/>
 			</s:stroke>
 			<s:fill>
 				<s:SolidColor color="0xdddddd" color.selected="0xdddddd" color.hovered="0xe8e8e8"/>
