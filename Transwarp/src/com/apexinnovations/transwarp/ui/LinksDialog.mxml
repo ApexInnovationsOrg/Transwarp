@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ui:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
-			  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="com.apexinnovations.transwarp.ui.*" width="400" minHeight="300" >
+			  xmlns:mx="library://ns.adobe.com/flex/mx"
+			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			  width="400" minHeight="300" >
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Link;
 			import com.apexinnovations.transwarp.ui.LinkButton;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
-			
-			import flashx.textLayout.elements.TextFlow;
-			
-			import mx.controls.LinkButton;
-			
-			import spark.components.RichEditableText;
-			import spark.components.TextArea;
-			import spark.primitives.Rect;
 			
 			TranswarpVersion.revision = "$Rev$";
 
@@ -22,21 +16,16 @@
 			
 			public function set links(value:Vector.<Link>):void {
 				_links = value;
-				
-				if(linkList)
-					initLinkList();
+				if(linkList) initLinkList();
 			}
 			
 			protected function initLinkList():void {
-				var i:int = 0;
 				for each(var l:Link in _links) {
-					var b:com.apexinnovations.transwarp.ui.LinkButton;
+					var b:LinkButton;
 					
-					b = new com.apexinnovations.transwarp.ui.LinkButton();
+					b = new LinkButton();
 					linkList.addElement(b);
 					b.link = l;
-					
-					i++;
 				}
 			}
 		]]>

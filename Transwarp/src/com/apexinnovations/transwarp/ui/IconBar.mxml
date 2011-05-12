@@ -10,8 +10,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.Transwarp;
-			import com.apexinnovations.transwarp.data.Courseware;
-			import com.apexinnovations.transwarp.data.Link;
+			import com.apexinnovations.transwarp.data.*;
 			import com.apexinnovations.transwarp.graphics.*;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
@@ -59,7 +58,7 @@
 			}
 			
 			protected function configureOptions(evt:MouseEvent):void {
-				var dlg:ConfigDialog = ConfigDialog(PopUpManager.createPopUp(this.parent.parent, ConfigDialog , true, PopUpManagerChildList.POPUP));
+				var dlg:ConfigDialog = ConfigDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), ConfigDialog , true, PopUpManagerChildList.POPUP));
 				
 				dlg.title = 'Configuration Options';
 				
@@ -69,11 +68,22 @@
 			protected function showRelatedLinks(evt:MouseEvent):void {
 				var links:Vector.<Link> = Courseware.instance.currentPage.links;
 				if (links.length > 0) {
-					//var dlg:LinksDialog = LinksDialog(PopUpManager.createPopUp(this.parent.parent, LinksDialog , true, PopUpManagerChildList.POPUP));
 					var dlg:LinksDialog = LinksDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), LinksDialog , true, PopUpManagerChildList.POPUP));
 					
 					dlg.title = 'Related Links';
 					dlg.links = links;
+					
+					PopUpManager.centerPopUp(dlg);
+				}
+			}
+			
+			protected function showPageUpdates(evt:MouseEvent):void {
+				var updates:Vector.<Update> = Courseware.instance.currentPage.updates;
+				if (updates.length > 0) {
+					var dlg:HistoryDialog = HistoryDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), HistoryDialog , true, PopUpManagerChildList.POPUP));
+					
+					dlg.title = 'History of Page Updates';
+					dlg.updates = updates;
 					
 					PopUpManager.centerPopUp(dlg);
 				}
@@ -144,7 +154,7 @@
 	<s:VGroup id="buttonGroup" top="15" width="100%" horizontalAlign="center" gap="10">
 		<ui:IconButton artClass="{KeyQuestionIcon}" />
 		<ui:IconButton artClass="{SupportingTextIcon}" enabled="false"/>
-		<ui:IconButton artClass="{HistoryIcon}"/>		
+		<ui:IconButton artClass="{HistoryIcon}" click="showPageUpdates(event);"/>		
 		<ui:IconButton artClass="{LinksIcon}" click="showRelatedLinks(event);" />
 		<ui:IconButton artClass="{CommentIcon}" click="commentOnPage(event);"/>
 		<ui:IconButton artClass="{FavoritesIcon}" />

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			  xmlns:s="library://ns.adobe.com/flex/spark" 
+			  xmlns:mx="library://ns.adobe.com/flex/mx"
+			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			  width="400" minHeight="300">
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Update;
+			import com.apexinnovations.transwarp.ui.HistoryLabel;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			protected var _updates:Vector.<Update>;
+			
+			public function set updates(value:Vector.<Update>):void {
+				_updates = value;
+				if(updateList) initUpdateList();
+			}
+			
+			protected function initUpdateList():void {
+				for each(var l:Update in _updates) {
+					var b:HistoryLabel;
+					
+					b = new HistoryLabel();
+					updateList.addElement(b);
+					b.update = l;
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
+		<s:Label text="Here is a list of updates to this page over time:" />
+		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" >
+			<s:VGroup id="updateList" width="360" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
+			</s:VGroup>
+		</s:Scroller>
+	</s:VGroup>
+</ui:DialogBox>
