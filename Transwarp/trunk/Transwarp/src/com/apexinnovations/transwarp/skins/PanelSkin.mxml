@@ -33,7 +33,14 @@ in accordance with the terms of the license agreement accompanying it.
         ]]>
     </fx:Metadata> 
     
-    <fx:Script fb:purpose="styling">
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			TranswarpVersion.revision = "$Rev$";
+		]]>
+	</fx:Script>
+	
+	<fx:Script fb:purpose="styling">
         <![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
 			
