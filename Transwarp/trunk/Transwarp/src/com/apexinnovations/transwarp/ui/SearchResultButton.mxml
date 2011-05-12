@@ -63,14 +63,18 @@
 	<s:Group width="345" >		
 		<s:Rect width="100%" height="100%" radiusX="7">
 			<s:stroke>
-				<s:SolidColorStroke color="0xffffff" color.hovered="0x0000FF" weight="0" weight.hovered="1"/>
+				<s:SolidColorStroke color="0xffffff" color.hovered="0x0000FF" weight="0" weight.hovered="1" pixelHinting="true"/>
 			</s:stroke>
 			<s:fill>
 				<s:SolidColor color="0xdddddd" color.selected="0xffffff" color.hovered="0xe8e8e8"/>
 			</s:fill>
+			<s:filters>
+				<s:DropShadowFilter includeIn="hovered" alpha=".2"/>
+				<s:DropShadowFilter includeIn="hovered" blurX="6" blurY="6" angle="225" inner="true" alpha=".25" />
+			</s:filters>
 		</s:Rect>
-		<s:HGroup gap="8" verticalAlign="top" paddingTop="7" paddingBottom="7" paddingLeft="7" paddingRight="7" >
-			<s:Label text="{page.qualifiedName}" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" />
+		<s:HGroup gap="8" verticalAlign="top" paddingTop="7" paddingBottom="7" paddingLeft="7" paddingRight="7" width="100%" height="100%">
+			<s:Label text="{page.qualifiedName}" fontStyle="italic" textAlign="right" color="0x0000FF" />
 		</s:HGroup>		
 	</s:Group>
 

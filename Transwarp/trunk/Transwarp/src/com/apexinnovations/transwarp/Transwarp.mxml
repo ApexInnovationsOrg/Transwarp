@@ -16,15 +16,12 @@
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
-			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.data.User;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			import com.apexinnovations.transwarp.webservices.*;
 			
 			import flash.events.*;
-			import flash.system.fscommand;
 			
-			import mx.charts.CategoryAxis;
 			import mx.managers.ISystemManager;
 			import mx.managers.PopUpManager;
 			
@@ -99,6 +96,8 @@
 			}
 			
 			private function uncaughtErrorHandler(event:UncaughtErrorEvent):void {
+				event.stopPropagation();
+				
 				var log:LogService = new LogService();
 				
 				if (event.error is Error) {
@@ -109,9 +108,9 @@
 					//popupErrorDialog('We are sorry, but there has been a problem and the application must be closed.\n\n' + error.message + '\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
 				} else if (event.error is ErrorEvent) {
 					var errorEvent:ErrorEvent = event.error as ErrorEvent;
-					
-					log.dispatch('UNHANDLED EVENT: ' + errorEvent.type);
-					
+					errorEvent.stopPropagation();
+					log.dispatch('UNHANDLED EVENT: ' + errorEvent.type + ': ' + errorEvent.text);
+									
 					//popupErrorDialog('We are sorry, but there has been a problem and the application must be closed.\n\n' + errorEvent.type + '\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
 				} else {
 					// a non-Error, non-ErrorEvent type was thrown and uncaught

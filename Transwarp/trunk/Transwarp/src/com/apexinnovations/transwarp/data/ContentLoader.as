@@ -8,7 +8,9 @@ package com.apexinnovations.transwarp.data {
 	import flash.display.AVM1Movie;
 	import flash.display.Loader;
 	import flash.display.MovieClip;
+	import flash.events.ErrorEvent;
 	import flash.events.Event;
+	import flash.sampler.stopSampling;
 
 	TranswarpVersion.revision = "$Rev$";
 	
@@ -64,6 +66,7 @@ package com.apexinnovations.transwarp.data {
 			var item:LoadingItem = loader.add(getURL(page), {id: page.id});
 			item.addEventListener(Event.INIT, preloadInit);
 			item.addEventListener(Event.COMPLETE, preloadInit);
+			item.addEventListener(BulkLoader.ERROR, onItemError);
 			return item;
 		}
 		
@@ -76,6 +79,7 @@ package com.apexinnovations.transwarp.data {
 			
 			if(item != lockedItem) {
 				if(content is AVM1Movie) {
+					trace("removing item at init: " + item.id);
 					loader.remove(item);
 					loader.start();
 				} else if (content is MovieClip)
@@ -115,6 +119,12 @@ package com.apexinnovations.transwarp.data {
 				return '?' + Utils.jenkinsHash(page.updates[0].time.toUTCString()).toString();
 			return '';
 		}
+		
+		protected function onItemError(event:ErrorEvent):void {
+			event.stopPropagation();
+			trace(event.text);
+		}
+		
 		
 	}
 }
