@@ -14,10 +14,11 @@
 			import com.apexinnovations.transwarp.graphics.*;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
-			import flashx.textLayout.elements.TextFlow;
-
 			import flash.printing.*;
 			
+			import flashx.textLayout.elements.TextFlow;
+			
+			import mx.binding.utils.BindingUtils;
 			import mx.core.IVisualElement;
 			import mx.managers.PopUpManager;
 			import mx.managers.PopUpManagerChildList;
@@ -27,10 +28,16 @@
 			
 			[Bindable] public var color:uint; 
 						
+			//Convenience variable for enabling buttons without needing to write a novel for each one
+			[Bindable] protected var currentPage:Page;
+			protected function setPage(value:Page):void { currentPage = value; }
+			
 			override protected function createChildren():void {
 				super.createChildren();
 				
-				for(var i:int=0; i<buttonGroup.numElements;++i){
+				BindingUtils.bindSetter(setPage, Courseware.instance, "currentPage");
+				
+				for(var i:int=0; i<buttonGroup.numElements; ++i){
 					var e:IVisualElement = buttonGroup.getElementAt(i);
 					if(e is IconButton) {
 						e.width = 30;
@@ -182,10 +189,10 @@
 	</s:Rect>
 	
 	<s:VGroup id="buttonGroup" top="15" width="100%" horizontalAlign="center" gap="10">
-		<ui:IconButton artClass="{KeyQuestionIcon}" click="showKeyQuestions(event);"/>
-		<ui:IconButton artClass="{SupportingTextIcon}" click="showSupportText(event);"/>
-		<ui:IconButton artClass="{HistoryIcon}" click="showPageUpdates(event);"/>		
-		<ui:IconButton artClass="{LinksIcon}" click="showRelatedLinks(event);" />
+		<ui:IconButton artClass="{KeyQuestionIcon}" click="showKeyQuestions(event);" enabled="{currentPage.questions.length > 0}"/>
+		<ui:IconButton artClass="{SupportingTextIcon}" click="showSupportText(event);" enabled="{currentPage.supportText !== null}"/>
+		<ui:IconButton artClass="{HistoryIcon}" click="showPageUpdates(event);" enabled="{currentPage.updates.length > 0}"/>		
+		<ui:IconButton artClass="{LinksIcon}" click="showRelatedLinks(event);" enabled="{currentPage.links.length > 0}"/>
 		<ui:IconButton artClass="{CommentIcon}" click="commentOnPage(event);"/>
 		<ui:IconButton artClass="{FavoritesIcon}" />
 		<ui:IconButton artClass="{PaintbrushIcon}" />
