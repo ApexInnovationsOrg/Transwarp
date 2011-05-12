@@ -3,6 +3,7 @@ package com.apexinnovations.transwarp.data
 	import com.apexinnovations.transwarp.data.Courseware;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
+	import flash.events.EventDispatcher;
 	import flash.errors.*;
 	import flash.utils.*;
 	
@@ -12,7 +13,7 @@ package com.apexinnovations.transwarp.data
 	TranswarpVersion.revision = "$Rev$";
 	
 	// This represents and outside link related to a page
-	public class Link {
+	public class Link extends EventDispatcher {
 		private var _parent:Page = null;		// A link back to the page
 		private var _textFlow:TextFlow = null;	// The text description of this link, as a TextFlow
 		private var _url:String = '';			// The URL of this link

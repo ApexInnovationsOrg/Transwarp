@@ -2,6 +2,7 @@ package com.apexinnovations.transwarp.data
 {
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
+	import flash.events.EventDispatcher;
 	import flash.errors.*;
 	import flash.utils.*;
 	
@@ -11,7 +12,7 @@ package com.apexinnovations.transwarp.data
 	TranswarpVersion.revision = "$Rev$";
 	
 	// This represents the user taking the class
-	public class User {
+	public class User extends EventDispatcher {
 		private static var _instance:User;		// Make this class a singleton
 		
 		private var _autoCloseMenu:Boolean = false;			// Automatically close previous folders when opening new one at same level?
