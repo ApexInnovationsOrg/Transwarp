@@ -40,6 +40,7 @@
 			}
 			
 			override protected function closeHandler(event:Event):void {
+				stage.removeEventListener(Event.RESIZE, resizeListener); 
 				PopUpManager.removePopUp(this);
 			}
 		]]>
