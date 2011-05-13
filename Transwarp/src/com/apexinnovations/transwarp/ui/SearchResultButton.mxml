@@ -83,7 +83,7 @@
 				<s:Label text="{page.parentFolders}" fontWeight="bold" color="{Courseware.instance.color}" />			
 				<s:Label text="{page.name}" fontWeight="bold" color="0x000000" />			
 			</s:HGroup>
-			<s:Label text="{page.searchSnippet}" color="0x444444" width="100%" />
+			<s:Label text="{page.description}" color="0x444444" width="100%" />
 		</s:VGroup>		
 	</s:Group>
 

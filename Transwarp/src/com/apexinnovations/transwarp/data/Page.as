@@ -1,7 +1,7 @@
 package com.apexinnovations.transwarp.data
 {
-	import com.apexinnovations.transwarp.utils.*;
 	import com.apexinnovations.transwarp.data.Course;
+	import com.apexinnovations.transwarp.utils.*;
 	import com.apexinnovations.transwarp.webservices.*;
 	
 	import flash.errors.*;
@@ -26,6 +26,7 @@ package com.apexinnovations.transwarp.data
 		private var _created:Date;											// XML format: YYYY-MM-DDTHH:MM:SS
 		private var _demo:Boolean = false;									// Is this page viewable on the demo?
 		private var _deny:String = '';										// Space separated list of types of user prevented from viewing this page (e.g. 'LMS Doctor Beta'). '' means none
+		private var _description:String = '';								// A brief description of this page, used in search results
 		private var _id:uint = 0;											// Unique PageID from repository/database
 		private var _instructions:TextFlow = null;							// Instruction text, as a TextFlow
 		private var _keywords:String = '';									// Space separated list of keywords for this page
@@ -34,7 +35,6 @@ package com.apexinnovations.transwarp.data
 		private var _parent:Object = null;									// A link back to the parent (folder or course)
 		private var _parentFolders:String = '';								// A listing of the parent folders of this page (e.g. "Folder 1 » Folder 2 » Folder 3 »" 
 		private var _questions:Vector.<Question> = new Vector.<Question>();	// Vector (array) of related Questions
-		private var _searchSnippet:String = '';								// A snippet of text describing that last search's results
 		private var _supportText:TextFlow = null;							// Any supporting text, as a TextFlow
 		private var _swf:String = '';										// URL of SWF file to load
 		private var _timeline:Boolean = false;								// Does this page have a timeline across the bottom to show progress?
@@ -51,6 +51,7 @@ package com.apexinnovations.transwarp.data
 				_configuration = xml.@configuration;
 				_created = DateFormatter.parseDateString(xml.@created);
 				_deny = xml.@deny;
+				_deny = xml.@description;
 				_id = xml.@id;
 				_instructions = (xml.instructions == undefined ? null : TextConverter.importToFlow(xml.instructions.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
 				_keywords = xml.@keywords;
@@ -96,6 +97,7 @@ package com.apexinnovations.transwarp.data
 		public function get demo():Boolean { return _demo; }
 		public function get depth():int { return _depth; }
 		public function set depth(value:int):void { _depth = value;	}
+		public function get description():String { return _description; }
 		public function get id():uint { return _id; }
 		public function get instructions():TextFlow { return _instructions; }
 		public function get keywords():String { return _keywords; }
@@ -105,7 +107,6 @@ package com.apexinnovations.transwarp.data
 		public function get parentFolders():String { return _parentFolders; }
 		public function get qualifiedName():String { return parentFolders + _name; }
 		public function get questions():Vector.<Question> { return _questions; }
-		public function get searchSnippet():String { return _searchSnippet; }
 		public function get supportText():TextFlow { return _supportText; }
 		public function get swf():String { return _swf; }
 		public function get timeline():Boolean { return _timeline; }
@@ -148,8 +149,6 @@ package com.apexinnovations.transwarp.data
 			var keywords:Array = s.split(' ');
 			
 			// Initialized on each search
-			_searchSnippet = qualifiedName + ' ' + _keywords + ' ' + (_supportText ? Utils.textFlowToString(_supportText) : '');
-			_searchSnippet = '...' + _searchSnippet.substring(25, 225) + '...';
 			_weight = 0;
 			
 			for each (var word:String in keywords) {
