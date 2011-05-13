@@ -28,7 +28,8 @@
 				currentState = _page.supportText ? "default" : "no_results";
 			}
 			
-			protected function addedToStage(event:Event):void {
+			override protected function addedToStage(event:Event):void {
+				super.addedToStage(event);
 				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
 				pageChanged(new PageSelectionEvent(Courseware.instance.currentPage));
 			}
