@@ -2,7 +2,7 @@
 <ui:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
-			  xmlns:ui="com.apexinnovations.transwarp.ui.*" >
+			  xmlns:ui="com.apexinnovations.transwarp.ui.*">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
@@ -22,6 +22,9 @@
 			
 			protected function initResultList():void {
 				_results = Courseware.search(_keywords);
+				
+				resultList.removeAllElements();
+				
 				for each(var p:Page in _results) {
 					var b:SearchResultButton;
 					
@@ -30,18 +33,23 @@
 					b.page = p;
 				}
 			}
+			
+			override protected function closeHandler(event:Event):void {
+				this.x = 0; this.y = 0;	// reset position so next opening is in default position
+				super.closeHandler(event);
+			}
 		]]>
 	</fx:Script>
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" left="5" right="5">
-		<s:HGroup gap="2">
-			<s:Label text="Keyword(s): " fontWeight="bold" color="{Courseware.instance.color}" />			
+		<s:HGroup gap="5">
+			<s:Label text="Keyword(s):" fontWeight="bold" color="{Courseware.instance.color}" />			
 			<s:Label text="{_keywords}" fontWeight="bold" color="0x000000" />			
 		</s:HGroup>
-		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" >
+		<s:Scroller id="scroller" horizontalScrollPolicy="off" maxHeight="{maxHeight - 60 - scroller.y}" >
 			<s:VGroup id="resultList"  width="100%" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
 			</s:VGroup>
 		</s:Scroller>
-		<s:Label text="Click on result(s) above to view in browser" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" />
+		<s:Label text="Click on a result to go to that page" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" />
 	</s:VGroup>
 </ui:DialogBox>

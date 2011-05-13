@@ -69,6 +69,10 @@
 			<s:fill>
 				<s:SolidColor color="0xdddddd" color.selected="0xffffff" color.hovered="0xe8e8e8"/>
 			</s:fill>
+			<s:filters>
+				<s:DropShadowFilter includeIn="hovered" alpha=".2"/>
+				<s:DropShadowFilter includeIn="hovered" blurX="6" blurY="6" angle="225" inner="true" alpha=".25" />
+			</s:filters>
 		</s:Rect>
 		<s:HGroup gap="8" verticalAlign="top" paddingTop="7" paddingBottom="7" paddingLeft="7" paddingRight="7" >
 			<s:Ellipse width="6" height="6" y="2">
