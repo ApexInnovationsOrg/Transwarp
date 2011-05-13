@@ -1,7 +1,7 @@
 package com.apexinnovations.transwarp.data
 {
-	import com.apexinnovations.transwarp.utils.TranswarpVersion;
-	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.*;
+	import com.apexinnovations.transwarp.data.Course;
 	import com.apexinnovations.transwarp.webservices.*;
 	
 	import flash.errors.*;
@@ -22,14 +22,13 @@ package com.apexinnovations.transwarp.data
 		private var _allow:String = '';										// Space separated list of types of user allowed to view this page (e.g. 'LMS Doctor Beta'). '' means all
 		private var _bookmarked:Boolean = false;							// Has this page been bookmarked by the user?
 		private var _configuration:String = '';								// URL of XML file to be loaded by SWF as configuration
+		private var _course:Course = null;									// Which course is this page a part of?
 		private var _created:Date;											// XML format: YYYY-MM-DDTHH:MM:SS
 		private var _demo:Boolean = false;									// Is this page viewable on the demo?
 		private var _deny:String = '';										// Space separated list of types of user prevented from viewing this page (e.g. 'LMS Doctor Beta'). '' means none
 		private var _id:uint = 0;											// Unique PageID from repository/database
 		private var _instructions:TextFlow = null;							// Instruction text, as a TextFlow
 		private var _keywords:String = '';									// Space separated list of keywords for this page
-		private var _level:int = 1;											// Level of the course this page is under
-		private var _levelRoman:String = '';								// Level of the course this page is under, as a roman numeral
 		private var _links:Vector.<Link> = new Vector.<Link>();				// Vector (array) of related Links
 		private var _name:String = '';										// Display name of this page
 		private var _parent:Object = null;									// A link back to the parent (folder or course)
@@ -72,8 +71,7 @@ package com.apexinnovations.transwarp.data
 			while (!((p = p.parent) is Course)) {
 				if (p is Folder) _parentFolders = p.name + ' » ' + _parentFolders;
 			}
-			_level = (p as Course).level;
-			_levelRoman = (p as Course).levelRoman;
+			_course = (p as Course);
 
 			for each (var l:XML in xml.links.link) {
 				_links.push(new Link(l, this));
@@ -93,6 +91,7 @@ package com.apexinnovations.transwarp.data
 		public function get allowNurse():Boolean { return ((_allow == '' || _allow.indexOf('Nurse') != -1) && !(_deny.indexOf('Nurse') != -1)); }
 		public function get bookmarked():Boolean { return _bookmarked; }
 		public function get configuration():String { return _configuration; }
+		public function get course():Course { return _course; }
 		public function get created():Date { return _created; }
 		public function get demo():Boolean { return _demo; }
 		public function get depth():int { return _depth; }
@@ -100,8 +99,6 @@ package com.apexinnovations.transwarp.data
 		public function get id():uint { return _id; }
 		public function get instructions():TextFlow { return _instructions; }
 		public function get keywords():String { return _keywords; }
-		public function get level():int { return _level; }
-		public function get levelRoman():String { return _levelRoman; }
 		public function get links():Vector.<Link> { return _links; }
 		public function get name():String { return _name; }
 		public function get parent():Object { return _parent; }
