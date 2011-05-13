@@ -83,7 +83,7 @@
 				<s:Label text="{page.parentFolders}" fontWeight="bold" color="{Courseware.instance.color}" />			
 				<s:Label text="{page.name}" fontWeight="bold" color="0x000000" />			
 			</s:HGroup>
-			<s:RichEditableText width="346" height="100%" editable="false" textFlow="{page.description}" selectable="false" alpha="0.7" alpha.selected="1" alpha.hovered="1" >
+			<s:RichEditableText width="346" height="100%" editable="false" textFlow="{page.description}" selectable="false" paddingLeft="10" paddingRight="0" alpha="0.7" alpha.selected="1" alpha.hovered="1" >
 				
 			</s:RichEditableText>
 		</s:VGroup>		
