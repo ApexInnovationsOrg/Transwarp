@@ -15,13 +15,17 @@
 			import com.apexinnovations.transwarp.graphics.ArrowPreviousIcon;
 			import com.apexinnovations.transwarp.graphics.ReplayIcon;
 			import com.apexinnovations.transwarp.graphics.SearchIcon;
-			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			import com.apexinnovations.transwarp.ui.SearchDialog;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			import com.apexinnovations.transwarp.utils.Utils;
 			
+			import mx.binding.utils.BindingUtils;
 			import mx.managers.PopUpManager;
 			import mx.managers.PopUpManagerChildList;
-			import mx.binding.utils.BindingUtils;
 			import mx.utils.ColorUtil;
+			
+			import spark.components.TitleWindow;
+			import spark.events.TitleWindowBoundsEvent;
 			
 			TranswarpVersion.revision = "$Rev$";
 			
@@ -31,6 +35,7 @@
 			[Bindable] public var searchPrompt:String = "Search";			
 			
 			protected var _courses:Vector.<Course>;
+			protected var searchDialog:SearchDialog = null;
 			
 			override protected function createChildren():void {
 				super.createChildren();
@@ -80,21 +85,39 @@
 			}
 			
 			protected function submitSearch():void {
-				if (true) {
-					var dlg:SearchDialog = SearchDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), SearchDialog , false, PopUpManagerChildList.POPUP));
+				if (Utils.trim(searchInput.text) != '') {
+					var x:int = 0, y:int = 0;
 					
-					dlg.title = 'Search Results' ;
-					dlg.keywords = searchInput.text;
+					if (searchDialog) {
+						// Delete the old one
+						x = searchDialog.x;
+						y = searchDialog.y;
+						PopUpManager.removePopUp(searchDialog);
+						searchDialog = null;
+					}
+					searchDialog = SearchDialog(PopUpManager.createPopUp(DisplayObjectContainer(this), SearchDialog , false, PopUpManagerChildList.POPUP));
+					searchDialog.title = 'Search Results';
+					if (x == 0 && y == 0) {
+						// First opening (since being closed or started) - default position
+						searchDialog.x = this.width - searchDialog.width;
+						searchDialog.y = this.height;
+					} else {
+						// Window already open - leave in current position
+						searchDialog.x = x;
+						searchDialog.y = y;
+					}
+					searchDialog.maxHeight = stage.stageHeight - searchDialog.y;
+					//addEventListener(TitleWindowBoundsEvent.WINDOW_MOVING, searchMoving, true);
 					
-					PopUpManager.centerPopUp(dlg);
+					searchDialog.keywords = searchInput.text;
 				}
-/*
-				var results:Vector.<Page> = Courseware.search(searchInput.text);
-				trace("=============================\nSearch Results:");
-				for each(var page:Page in results)
-					trace("      * " + page.qualifiedName + ' (' + page.weight + ')');
-				trace("=============================");
-*/
+			}
+			
+			protected function searchMoving(event:TitleWindowBoundsEvent):void {
+trace('Moving!!!!!!!!');
+				var win:TitleWindow = (event.target as TitleWindow);
+				if (win.x < 0) win.x = 0;
+				if (win.y < 0) win.y = 0;
 			}
 
 		]]>

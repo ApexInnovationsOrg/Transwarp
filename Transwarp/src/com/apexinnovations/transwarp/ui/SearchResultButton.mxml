@@ -14,7 +14,7 @@
 			
 			TranswarpVersion.revision = "$Rev$";
 			
-			protected var _page:Page = null;
+			[Bindable] protected var _page:Page = null;
 			protected var _selected:Boolean;
 			
 			[Bindable]
@@ -50,7 +50,6 @@
 			protected function click(event:MouseEvent):void {
 				Courseware.instance.currentPage = _page;
 			}
-			
 		]]>
 	</fx:Script>
 	
@@ -73,9 +72,14 @@
 				<s:DropShadowFilter includeIn="hovered" blurX="6" blurY="6" angle="225" inner="true" alpha=".25" />
 			</s:filters>
 		</s:Rect>
-		<s:HGroup gap="8" verticalAlign="top" paddingTop="7" paddingBottom="7" paddingLeft="7" paddingRight="7" width="100%" height="100%">
-			<s:Label text="{page.qualifiedName}" fontStyle="italic" textAlign="right" color="0x0000FF" />
-		</s:HGroup>		
+		<s:VGroup gap="8" verticalAlign="top" paddingTop="7" paddingBottom="7" paddingLeft="7" paddingRight="7" width="100%" height="100%">
+			<s:HGroup gap="2" width="100%">
+				<s:Label text="{_page.levelRoman}." fontWeight="bold" color="0x888888" paddingRight="3" />			
+				<s:Label text="{_page.parentFolders}" fontWeight="bold" color="{Courseware.instance.color}" />			
+				<s:Label text="{_page.name}" fontWeight="bold" color="0x000000" />			
+			</s:HGroup>
+			<s:Label text="{_page.searchSnippet}" color="0x444444" width="100%" />
+		</s:VGroup>		
 	</s:Group>
 
 </s:Group>

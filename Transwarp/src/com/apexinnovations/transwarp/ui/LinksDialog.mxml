@@ -18,16 +18,13 @@
 			
 			public function set page(p:Page):void {
 				_page = p;
-				if(linkList) initLinkList();
-			}
-			
-			protected function initLinkList():void {
+
+				elementList.removeAllElements();
+				
 				for each(var l:Link in _page.links) {
-					var b:LinkButton;
-					
-					b = new LinkButton();
-					linkList.addElement(b);
-					b.link = l;
+					var btn:LinkButton = new LinkButton();
+					elementList.addElement(btn);
+					btn.link = l;
 				}
 			}
 		]]>
@@ -39,7 +36,7 @@
 			<s:Label text="{_page.name}" fontWeight="bold" color="0x000000" />			
 		</s:HGroup>
 		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" >
-			<s:VGroup id="linkList" width="360" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
+			<s:VGroup id="elementList" width="360" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
 			</s:VGroup>
 		</s:Scroller>
 		<s:Label text="Click on link(s) above to view in browser" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" />

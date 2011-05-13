@@ -12,24 +12,19 @@
 			import com.apexinnovations.transwarp.ui.QuestionButton;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
-			import flashx.textLayout.elements.TextFlow;
-			
 			TranswarpVersion.revision = "$Rev$";
 			
 			[Bindable] protected var _page:Page = null;
 			
 			public function set page(p:Page):void {
 				_page = p;
-				if(questionList) initQuestionList();
-			}
-			
-			protected function initQuestionList():void {
-				for each(var l:Question in _page.questions) {
-					var b:QuestionButton;
-					
-					b = new QuestionButton();
-					questionList.addElement(b);
-					b.question = l;
+
+				elementList.removeAllElements();
+				
+				for each(var q:Question in _page.questions) {
+					var btn:QuestionButton = new QuestionButton();
+					elementList.addElement(btn);
+					btn.question = q;
 				}
 			}
 		]]>
@@ -41,7 +36,7 @@
 			<s:Label text="{_page.name}" fontWeight="bold" color="0x000000" />			
 		</s:HGroup>
 		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" >
-			<s:VGroup id="questionList" width="360" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
+			<s:VGroup id="elementList" width="360" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
 			</s:VGroup>
 		</s:Scroller>
 		<s:Label text="Click on a question to see its answer" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" />
