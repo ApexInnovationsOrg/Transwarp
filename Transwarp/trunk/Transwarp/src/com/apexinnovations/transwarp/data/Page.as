@@ -153,9 +153,10 @@ package com.apexinnovations.transwarp.data
 			
 			for each (var word:String in keywords) {
 				_weight += find(word, qualifiedName) * 5;
-				_weight += find(word, _keywords) * 2;
+				_weight += find(word, _keywords) * 3;
 							
-				if (_supportText)	_weight += find(word, Utils.textFlowToString(_supportText)) * 3;
+				if (_description)	_weight += find(word, Utils.textFlowToString(_description)) * 4;
+				if (_supportText)	_weight += find(word, Utils.textFlowToString(_supportText)) * 2;
 				if (_instructions)	_weight += find(word, Utils.textFlowToString(_instructions)) * 1;
 
 				for each (var l:Link in _links) {
