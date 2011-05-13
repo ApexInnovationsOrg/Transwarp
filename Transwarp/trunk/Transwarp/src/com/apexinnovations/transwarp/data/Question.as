@@ -4,6 +4,7 @@ package com.apexinnovations.transwarp.data
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
 	import flash.errors.*;
+	import flash.events.EventDispatcher;
 	import flash.utils.*;
 	
 	import flashx.textLayout.conversion.TextConverter;
@@ -13,7 +14,7 @@ package com.apexinnovations.transwarp.data
 	TranswarpVersion.revision = "$Rev$";
 	
 	// This represents a question and answer related to a page
-	public class Question {
+	public class Question extends EventDispatcher {
 		private var _aTextFlow:TextFlow = null;	// The answer text, as a TextFlow
 		private var _parent:Page = null;		// A link back to the page
 		private var _qTextFlow:TextFlow = null;	// The question text, as a TextFlow

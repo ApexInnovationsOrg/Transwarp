@@ -28,10 +28,14 @@ package com.apexinnovations.transwarp.data
 		private var _id:uint = 0;											// Unique PageID from repository/database
 		private var _instructions:TextFlow = null;							// Instruction text, as a TextFlow
 		private var _keywords:String = '';									// Space separated list of keywords for this page
+		private var _level:int = 1;											// Level of the course this page is under
+		private var _levelRoman:String = '';								// Level of the course this page is under, as a roman numeral
 		private var _links:Vector.<Link> = new Vector.<Link>();				// Vector (array) of related Links
 		private var _name:String = '';										// Display name of this page
 		private var _parent:Object = null;									// A link back to the parent (folder or course)
+		private var _parentFolders:String = '';								// A listing of the parent folders of this page (e.g. "Folder 1 » Folder 2 » Folder 3 »" 
 		private var _questions:Vector.<Question> = new Vector.<Question>();	// Vector (array) of related Questions
+		private var _searchSnippet:String = '';								// A snippet of text describing that last search's results
 		private var _supportText:TextFlow = null;							// Any supporting text, as a TextFlow
 		private var _swf:String = '';										// URL of SWF file to load
 		private var _timeline:Boolean = false;								// Does this page have a timeline across the bottom to show progress?
@@ -64,6 +68,12 @@ package com.apexinnovations.transwarp.data
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
 			}
+			var p:* = this;
+			while (!((p = p.parent) is Course)) {
+				if (p is Folder) _parentFolders = p.name + ' » ' + _parentFolders;
+			}
+			_level = (p as Course).level;
+			_levelRoman = (p as Course).levelRoman;
 
 			for each (var l:XML in xml.links.link) {
 				_links.push(new Link(l, this));
@@ -90,18 +100,15 @@ package com.apexinnovations.transwarp.data
 		public function get id():uint { return _id; }
 		public function get instructions():TextFlow { return _instructions; }
 		public function get keywords():String { return _keywords; }
+		public function get level():int { return _level; }
+		public function get levelRoman():String { return _levelRoman; }
 		public function get links():Vector.<Link> { return _links; }
 		public function get name():String { return _name; }
 		public function get parent():Object { return _parent; }
-		public function get parentFolders():String {
-			var p:* = this, qName:String = '';
-			while ((p = p.parent) is Folder) { qName = p.name + ' » ' + qName; }
-			return qName;
-		}
-		public function get qualifiedName():String {
-			return parentFolders + _name;
-		}
+		public function get parentFolders():String { return _parentFolders; }
+		public function get qualifiedName():String { return parentFolders + _name; }
 		public function get questions():Vector.<Question> { return _questions; }
+		public function get searchSnippet():String { return _searchSnippet; }
 		public function get supportText():TextFlow { return _supportText; }
 		public function get swf():String { return _swf; }
 		public function get timeline():Boolean { return _timeline; }
@@ -142,7 +149,12 @@ package com.apexinnovations.transwarp.data
 		// Searches the page for keywords, stores and returns a weight
 		public function search(s:String):uint {
 			var keywords:Array = s.split(' ');
-			_weight = 0;	// Initialized on each search
+			
+			// Initialized on each search
+			_searchSnippet = qualifiedName + ' ' + _keywords + ' ' + (_supportText ? Utils.textFlowToString(_supportText) : '');
+			_searchSnippet = '...' + _searchSnippet.substring(25, 225) + '...';
+			_weight = 0;
+			
 			for each (var word:String in keywords) {
 				_weight += find(word, qualifiedName) * 5;
 				_weight += find(word, _keywords) * 2;
