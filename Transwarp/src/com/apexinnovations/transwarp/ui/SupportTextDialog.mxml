@@ -3,9 +3,10 @@
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
-			  width="400" minHeight="300" maxHeight="500">
+			  width="400" addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);">
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
@@ -14,21 +15,46 @@
 			
 			TranswarpVersion.revision = "$Rev$";
 			
-			[Bindable] protected var _page:Page = null;
+			protected var _page:Page = null;
 			
+			[Bindable] public function get page():Page { return _page; }
 			public function set page(p:Page):void {
 				_page = p;
-				if(theText) theText.textFlow = p.supportText;
+				updateElementList();
+			}
+			
+			protected function updateElementList():void {
+				if(theText) theText.textFlow = _page.supportText;
+				currentState = _page.supportText ? "default" : "no_results";
+			}
+			
+			protected function addedToStage(event:Event):void {
+				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
+				pageChanged(new PageSelectionEvent(Courseware.instance.currentPage));
+			}
+			
+			protected function contentCreationComplete(event:Event):void {
+				updateElementList();
+			}
+			
+			protected function pageChanged(event:PageSelectionEvent):void {
+				page = Courseware.instance.currentPage;
 			}
 		]]>
 	</fx:Script>
+
+	<ui:states>
+		<s:State name="default" />
+		<s:State name="no_results" />
+	</ui:states>
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
 		<s:HGroup gap="2">
-			<s:Label text="{_page.parentFolders}" fontWeight="bold" color="{Courseware.instance.color}" />			
-			<s:Label text="{_page.name}" fontWeight="bold" color="0x000000" />			
+			<s:Label text="{page.parentFolders}" fontWeight="bold" color="{Courseware.instance.color}" />			
+			<s:Label text="{page.name}" fontWeight="bold" color="0x000000" />			
 		</s:HGroup>
-		<s:TextArea id="theText" width="380" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" editable="false" horizontalScrollPolicy="off" minHeight="250" maxHeight="450" >
+		<s:Label text="This page does not have any supporting text" width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10" visible.default="false" height.default="0" width.default="0" />
+		<s:TextArea id="theText" width="380" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" editable="false" horizontalScrollPolicy="off" minHeight="250" maxHeight="450" visible.no_results="false" height.no_results="0" minHeight.no_results="0" >
 		</s:TextArea>
 	</s:VGroup>
 </ui:DialogBox>

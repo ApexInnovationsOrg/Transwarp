@@ -14,7 +14,7 @@
 			
 			TranswarpVersion.revision = "$Rev$";
 			
-			[Bindable] protected var _page:Page = null;
+			protected var _page:Page = null;
 			protected var _selected:Boolean;
 			
 			[Bindable]
@@ -59,7 +59,7 @@
 		<s:State name="selected" />
 	</s:states>
 	
-	<s:Group width="345" >		
+	<s:Group width="360" >		
 		<s:Rect width="100%" height="100%" radiusX="7">
 			<s:stroke>
 				<s:SolidColorStroke color="0xffffff" color.hovered="0x0000FF" weight="0" weight.hovered="1" pixelHinting="true"/>
@@ -74,11 +74,11 @@
 		</s:Rect>
 		<s:VGroup gap="8" verticalAlign="top" paddingTop="7" paddingBottom="7" paddingLeft="7" paddingRight="7" width="100%" height="100%">
 			<s:HGroup gap="2" width="100%">
-				<s:Label text="{_page.levelRoman}." fontWeight="bold" color="0x888888" paddingRight="3" />			
-				<s:Label text="{_page.parentFolders}" fontWeight="bold" color="{Courseware.instance.color}" />			
-				<s:Label text="{_page.name}" fontWeight="bold" color="0x000000" />			
+				<s:Label text="{page.levelRoman}." fontWeight="bold" color="0x888888" paddingRight="3" />			
+				<s:Label text="{page.parentFolders}" fontWeight="bold" color="{Courseware.instance.color}" />			
+				<s:Label text="{page.name}" fontWeight="bold" color="0x000000" />			
 			</s:HGroup>
-			<s:Label text="{_page.searchSnippet}" color="0x444444" width="100%" />
+			<s:Label text="{page.searchSnippet}" color="0x444444" width="100%" />
 		</s:VGroup>		
 	</s:Group>
 

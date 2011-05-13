@@ -3,9 +3,10 @@
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
-			  width="400" minHeight="300" >
+			  addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);">
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.data.Link;
@@ -14,31 +15,57 @@
 			
 			TranswarpVersion.revision = "$Rev$";
 
-			[Bindable] protected var _page:Page = null;
+			protected var _page:Page = null;
 			
+			[Bindable] public function get page():Page { return _page; }
 			public function set page(p:Page):void {
 				_page = p;
-
-				elementList.removeAllElements();
-				
-				for each(var l:Link in _page.links) {
-					var btn:LinkButton = new LinkButton();
-					elementList.addElement(btn);
-					btn.link = l;
+				updateElementList();
+			}
+			
+			protected function updateElementList():void {
+				if (elementList) {
+					elementList.removeAllElements();
+					
+					for each(var l:Link in _page.links) {
+						var btn:LinkButton = new LinkButton();
+						elementList.addElement(btn);
+						btn.link = l;
+					}
 				}
+				currentState = (elementList && elementList.numElements) ? "default" : "no_results";
+			}
+			
+			protected function addedToStage(event:Event):void {
+				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
+				pageChanged(new PageSelectionEvent(Courseware.instance.currentPage));
+			}
+			
+			protected function contentCreationComplete(event:Event):void {
+				updateElementList();
+			}
+			
+			protected function pageChanged(event:PageSelectionEvent):void {
+				page = Courseware.instance.currentPage;
 			}
 		]]>
 	</fx:Script>
 	
+	<ui:states>
+		<s:State name="default" />
+		<s:State name="no_results" />
+	</ui:states>
+	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
 		<s:HGroup gap="2">
-			<s:Label text="{_page.parentFolders}" fontWeight="bold" color="{Courseware.instance.color}" />			
-			<s:Label text="{_page.name}" fontWeight="bold" color="0x000000" />			
+			<s:Label text="{page.parentFolders}" fontWeight="bold" color="{Courseware.instance.color}" />			
+			<s:Label text="{page.name}" fontWeight="bold" color="0x000000" />			
 		</s:HGroup>
-		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" >
-			<s:VGroup id="elementList" width="360" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
+		<s:Label text="This page does not have any related links" width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10" visible.default="false" height.default="0" width.default="0" />
+		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" visible.no_results="false" height.no_results="0" >
+			<s:VGroup id="elementList" width="360" paddingTop="5" paddingBottom="5" paddingRight="5" >
 			</s:VGroup>
 		</s:Scroller>
-		<s:Label text="Click on link(s) above to view in browser" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" />
+		<s:Label text="Click on link(s) above to view in browser" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" visible.no_results="false" height.no_results="0" />
 	</s:VGroup>
 </ui:DialogBox>

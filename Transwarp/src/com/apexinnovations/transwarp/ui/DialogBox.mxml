@@ -3,16 +3,20 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   skinClass="com.apexinnovations.transwarp.skins.DialogSkin"
-			   close="closeHandler(event);"  >
+			   close="closeHandler(event);" windowMoveStart="windowMoveStart(event);" windowMoveEnd="windowMoveEnd(event);">
 	<s:layout>
 		<s:VerticalLayout />
 	</s:layout>
 	<fx:Script>
 		<![CDATA[
-			import mx.managers.PopUpManager;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
+			import mx.managers.PopUpManager;
+			
 			TranswarpVersion.revision = "$Rev$";
+			
+			protected var _initStageWidth:int;
+			protected var _initStageHeight:int;
 			
 			// Event handler for the OK button.
 			protected function okHandler(event:Event):void {
@@ -27,8 +31,20 @@
 			
 			// Event handler for the close button.
 			protected function closeHandler(event:Event):void {
-				this.removeEventListener("close", closeHandler);
-				PopUpManager.removePopUp(this);
+				visible = false;
+			}
+			
+			protected function windowMoveStart(event:Event):void {
+				// stage's width and height change if we're dragging past its borders!
+				_initStageWidth = stage.width;
+				_initStageHeight = stage.height;
+			}
+			
+			protected function windowMoveEnd(event:Event):void {
+				if (x < 0) x = 0;
+				if (y < 0) y = 0;
+				if (x > _initStageWidth - width) x = _initStageWidth - width;
+				if (y > _initStageHeight - height) y = _initStageHeight - height;
 			}
 		]]>
 	</fx:Script>
