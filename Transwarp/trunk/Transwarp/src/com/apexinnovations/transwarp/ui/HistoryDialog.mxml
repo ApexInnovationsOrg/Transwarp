@@ -3,9 +3,10 @@
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
-			  width="400" minHeight="300">
+			  width="400" addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);">
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.data.Update;
@@ -14,28 +15,54 @@
 			
 			TranswarpVersion.revision = "$Rev$";
 			
-			[Bindable] protected var _page:Page = null;
+			protected var _page:Page = null;
 			
+			[Bindable] public function get page():Page { return _page; }
 			public function set page(p:Page):void {
 				_page = p;
+				updateElementList();
+			}
 
-				elementList.removeAllElements();
-				
-				for each(var u:Update in _page.updates) {
-					var btn:HistoryLabel = new HistoryLabel();
-					elementList.addElement(btn);
-					btn.update = u;
+			protected function updateElementList():void {
+				if (elementList) {
+					elementList.removeAllElements();
+					
+					for each(var u:Update in _page.updates) {
+						var btn:HistoryLabel = new HistoryLabel();
+						elementList.addElement(btn);
+						btn.update = u;
+					}
 				}
+				currentState = (elementList && elementList.numElements) ? "default" : "no_results";
+			}
+			
+			protected function addedToStage(event:Event):void {
+				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
+				pageChanged(new PageSelectionEvent(Courseware.instance.currentPage));
+			}
+			
+			protected function contentCreationComplete(event:Event):void {
+				updateElementList();
+			}
+			
+			protected function pageChanged(event:PageSelectionEvent):void {
+				page = Courseware.instance.currentPage;
 			}
 		]]>
 	</fx:Script>
 	
+	<ui:states>
+		<s:State name="default" />
+		<s:State name="no_results" />
+	</ui:states>
+	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
 		<s:HGroup gap="2">
-			<s:Label text="{_page.parentFolders}" fontWeight="bold" color="{Courseware.instance.color}" />			
-			<s:Label text="{_page.name}" fontWeight="bold" color="0x000000" />			
+			<s:Label text="{page.parentFolders}" fontWeight="bold" color="{Courseware.instance.color}" />			
+			<s:Label text="{page.name}" fontWeight="bold" color="0x000000" />			
 		</s:HGroup>
-		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" >
+		<s:Label text="This page does not have any updates" width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10" visible.default="false" height.default="0" width.default="0" />
+		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" visible.default="true" visible.no_results="false" height.no_results="0" >
 			<s:VGroup id="elementList" width="360" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
 			</s:VGroup>
 		</s:Scroller>
