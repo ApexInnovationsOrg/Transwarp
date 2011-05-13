@@ -38,7 +38,7 @@ package com.apexinnovations.transwarp.utils {
 				s += x + ' ';
 			}
 			
-			return s.substr(0, s.length - 1).replace(/  /g, ' '); // remove double spaces and trailing space
+			return s.substr(0, s.length - 1).replace(/\\[nrt]/g, ' ').replace(/  /g, ' '); // remove double spaces and trailing space
 		}
 		
 		public static function trim(s:String):String {
