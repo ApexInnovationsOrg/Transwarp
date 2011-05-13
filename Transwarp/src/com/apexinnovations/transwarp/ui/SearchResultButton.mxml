@@ -8,6 +8,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.Folder;
 			import com.apexinnovations.transwarp.data.Page;
 			
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
@@ -49,6 +50,10 @@
 			
 			protected function click(event:MouseEvent):void {
 				Courseware.instance.currentPage = _page;
+				var p:* = _page;
+				while ((p = p.parent) is Folder) {
+					p.open = true;
+				}
 			}
 		]]>
 	</fx:Script>
@@ -74,7 +79,7 @@
 		</s:Rect>
 		<s:VGroup gap="8" verticalAlign="top" paddingTop="7" paddingBottom="7" paddingLeft="7" paddingRight="7" width="100%" height="100%">
 			<s:HGroup gap="2" width="100%">
-				<s:Label text="{page.levelRoman}." fontWeight="bold" color="0x888888" paddingRight="3" />			
+				<s:Label text="{page.course.levelRoman}." fontWeight="bold" color="0x888888" paddingRight="3" />			
 				<s:Label text="{page.parentFolders}" fontWeight="bold" color="{Courseware.instance.color}" />			
 				<s:Label text="{page.name}" fontWeight="bold" color="0x000000" />			
 			</s:HGroup>

@@ -3,12 +3,13 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   skinClass="com.apexinnovations.transwarp.skins.DialogSkin"
-			   close="closeHandler(event);" windowMoveStart="windowMoveStart(event);" windowMoveEnd="windowMoveEnd(event);">
+			   addedToStage="addedToStage(event);" close="closeHandler(event);" mouseDown="mouseDown(event);" windowMoveEnd="resizeListener(event);">
 	<s:layout>
 		<s:VerticalLayout />
 	</s:layout>
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.Transwarp;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import mx.managers.PopUpManager;
@@ -34,17 +35,21 @@
 				visible = false;
 			}
 			
-			protected function windowMoveStart(event:Event):void {
-				// stage's width and height change if we're dragging past its borders!
-				_initStageWidth = stage.width;
-				_initStageHeight = stage.height;
+			protected function addedToStage(event:Event):void {
+				// Try to put the dialog back into viewable stage if window changes size
+				stage.addEventListener(Event.RESIZE, resizeListener); 
 			}
 			
-			protected function windowMoveEnd(event:Event):void {
+			protected function mouseDown(event:Event):void {
+				PopUpManager.bringToFront(this);
+				setFocus();
+			}
+			
+			protected function resizeListener(event:Event):void {
 				if (x < 0) x = 0;
 				if (y < 0) y = 0;
-				if (x > _initStageWidth - width) x = _initStageWidth - width;
-				if (y > _initStageHeight - height) y = _initStageHeight - height;
+				if (x > stage.stageWidth - width) x = stage.stageWidth - width;
+				if (y > stage.stageHeight - height) y = stage.stageHeight - height;
 			}
 		]]>
 	</fx:Script>

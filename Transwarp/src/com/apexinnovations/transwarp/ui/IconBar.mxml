@@ -80,14 +80,10 @@
 			}
 			
 			protected function configureOptions(evt:MouseEvent):void {
-				if (!configDialog) {
-					configDialog = ConfigDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), ConfigDialog, true, PopUpManagerChildList.POPUP));
-					configDialog.title = 'Configuration Options';
-					PopUpManager.centerPopUp(configDialog);
-				} else if (!configDialog.visible) {
-					configDialog.visible = true;
-					PopUpManager.centerPopUp(configDialog);
-				}
+				// Since this is modal, we'll handle it differently - actually close rather than hide dialog when closing it - breaks focus on other hide-type dialogs otherwise
+				configDialog = ConfigDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), ConfigDialog, true, PopUpManagerChildList.POPUP));
+				configDialog.title = 'Configuration Options';
+				PopUpManager.centerPopUp(configDialog);
 				PopUpManager.bringToFront(configDialog);
 				configDialog.setFocus();
 			}
