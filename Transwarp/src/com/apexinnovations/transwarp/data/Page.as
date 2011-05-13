@@ -26,7 +26,7 @@ package com.apexinnovations.transwarp.data
 		private var _created:Date;											// XML format: YYYY-MM-DDTHH:MM:SS
 		private var _demo:Boolean = false;									// Is this page viewable on the demo?
 		private var _deny:String = '';										// Space separated list of types of user prevented from viewing this page (e.g. 'LMS Doctor Beta'). '' means none
-		private var _description:String = '';								// A brief description of this page, used in search results
+		private var _description:TextFlow = null;							// A brief description of this page, used in search results
 		private var _id:uint = 0;											// Unique PageID from repository/database
 		private var _instructions:TextFlow = null;							// Instruction text, as a TextFlow
 		private var _keywords:String = '';									// Space separated list of keywords for this page
@@ -51,7 +51,7 @@ package com.apexinnovations.transwarp.data
 				_configuration = xml.@configuration;
 				_created = DateFormatter.parseDateString(xml.@created);
 				_deny = xml.@deny;
-				_deny = xml.@description;
+				_description = (xml.description == undefined ? null : TextConverter.importToFlow(xml.description.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
 				_id = xml.@id;
 				_instructions = (xml.instructions == undefined ? null : TextConverter.importToFlow(xml.instructions.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
 				_keywords = xml.@keywords;
@@ -97,7 +97,7 @@ package com.apexinnovations.transwarp.data
 		public function get demo():Boolean { return _demo; }
 		public function get depth():int { return _depth; }
 		public function set depth(value:int):void { _depth = value;	}
-		public function get description():String { return _description; }
+		public function get description():TextFlow { return _description; }
 		public function get id():uint { return _id; }
 		public function get instructions():TextFlow { return _instructions; }
 		public function get keywords():String { return _keywords; }
