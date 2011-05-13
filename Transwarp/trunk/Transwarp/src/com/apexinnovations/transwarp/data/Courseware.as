@@ -115,6 +115,8 @@ package com.apexinnovations.transwarp.data
 		
 		[Bindable] public function get currentCourse():Course { return _currentCourse; }
 		public function set currentCourse(course:Course):void { 
+			if(_currentCourse == course || course == null)
+				return;
 			_currentCourse = course;
 			_currentCourseList.course = course;
 			dispatchEvent(new Event("courseChanged"));		
@@ -129,6 +131,7 @@ package com.apexinnovations.transwarp.data
 			if(_currentPage == page || page == null)
 				return;
 			_currentPage = page;
+			currentCourse = page.course;			// Might be sent to a page via search - need to change courses
 			page.visited = true;
 			
 			dispatchEvent(new PageSelectionEvent(page));		
