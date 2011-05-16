@@ -41,7 +41,8 @@ package com.apexinnovations.transwarp.data
 		private var _updates:Vector.<Update> = new Vector.<Update>();		// Vector (array) of related Updates
 		private var _visited:Boolean = false;								// Has this page been visited by the user?
 		private var _weight:uint = 0;										// The 'weight' of the page in a search ranking
-		private var _depth:int;
+		private var _depth:int;												// The depth of this page in the course/folder/page hierarch
+		private var _searchFields:Vector.<String> = new Vector.<String>();	// These are the fields that will be searched - composited and converted to strings
 		
 		public function Page(xml:XML, parent:Object, depth:int) {
 			try {
@@ -82,6 +83,27 @@ package com.apexinnovations.transwarp.data
 			}
 			for each (var u:XML in xml.updates.update) {
 				_updates.push(new Update(u, this));
+			}
+			
+			// Initialize text search fields for faster searching later
+			_searchFields[0] = qualifiedName;
+			_searchFields[1] = _keywords;
+			_searchFields[2] = Utils.textFlowToString(_description);
+			_searchFields[3] = Utils.textFlowToString(_supportText);
+			_searchFields[4] = Utils.textFlowToString(_instructions);
+			_searchFields[5] = '';
+			for each (var lnk:Link in _links) {
+				if (lnk.textFlow)	_searchFields[5] += Utils.textFlowToString(lnk.textFlow);
+			}
+			_searchFields[6] = '';
+			_searchFields[7] = '';
+			for each (var qstn:Question in _questions) {
+				if (qstn.qTextFlow)	_searchFields[6] += Utils.textFlowToString(qstn.qTextFlow);
+				if (qstn.aTextFlow)	_searchFields[7] += Utils.textFlowToString(qstn.aTextFlow);
+			}
+			_searchFields[8] = '';
+			for each (var upd:Update in _updates) {
+				if (upd.textFlow)		_searchFields[8] += Utils.textFlowToString(upd.textFlow);
 			}
 		}
 		
@@ -145,48 +167,93 @@ package com.apexinnovations.transwarp.data
 		}
 		
 		// Searches the page for keywords, stores and returns a weight
-		public function search(s:String):uint {
-			var keywords:Array = s.split(' ');
+		public function search(terms:Array, exclude:Array, require:Array):uint {
+			var i:int, j:int;
+			var found:Boolean = false;
 			
 			// Initialized on each search
 			_weight = 0;
 			
-			for each (var word:String in keywords) {
-				_weight += find(word, qualifiedName) * 5;
-				_weight += find(word, _keywords) * 3;
-							
-				if (_description)	_weight += find(word, Utils.textFlowToString(_description)) * 4;
-				if (_supportText)	_weight += find(word, Utils.textFlowToString(_supportText)) * 2;
-				if (_instructions)	_weight += find(word, Utils.textFlowToString(_instructions)) * 1;
-
-				for each (var l:Link in _links) {
-					if (l.textFlow)		_weight += find(word, Utils.textFlowToString(l.textFlow)) * 2;
+			// First, see if we have all required terms
+			for (i = 0; i < require.length; i++) {
+				found = false;
+				for (j = 0; j < 9; j++) {
+					if (find(require[i], _searchFields[j])) {
+						found = true;
+						break;
+					}
 				}
-				for each (var q:Question in _questions) {
-					if (q.qTextFlow)	_weight += find(word, Utils.textFlowToString(q.qTextFlow)) * 1;
-					if (q.aTextFlow)	_weight += find(word, Utils.textFlowToString(q.aTextFlow)) * 2;
+				if (!found) break;
+			}
+			if (require.length && !found) return 0;
+			
+			// Next make sure we don't have any excluded terms
+			for (i = 0; i < exclude.length; i++) {
+				found = false;
+				for (j = 0; j < 9; j++) {
+					if (find(exclude[i], _searchFields[j])) {
+						found = true;
+						break;
+					}
 				}
-				for each (var u:Update in _updates) {
-					if (u.textFlow)	_weight += find(word, Utils.textFlowToString(u.textFlow)) * 1;
+				if (found) break;
+			}
+			if (exclude.length) {
+				if (found) {
+					return 0;
+				} else {
+					_weight += 1;	// Just in case all we have is an exclude list
 				}
 			}
-
+			
+			// Now weight the page
+			for each (var term:String in terms) {
+				_weight += find(term, _searchFields[0]) * 5;	// qualifiedName
+				_weight += find(term, _searchFields[1]) * 3;	// keywords
+				_weight += find(term, _searchFields[2]) * 4;	// description
+				_weight += find(term, _searchFields[3]) * 2;	// support text
+				_weight += find(term, _searchFields[4]) * 1;	// instructions
+				_weight += find(term, _searchFields[5]) * 2;	// links
+				_weight += find(term, _searchFields[6]) * 1;	// questions
+				_weight += find(term, _searchFields[7]) * 2;	// answers
+				_weight += find(term, _searchFields[8]) * 1;	// updates
+			}
+			for each (term in require) {
+				_weight += find(term, _searchFields[0]) * 5;	// qualifiedName
+				_weight += find(term, _searchFields[1]) * 3;	// keywords
+				_weight += find(term, _searchFields[2]) * 4;	// description
+				_weight += find(term, _searchFields[3]) * 2;	// support text
+				_weight += find(term, _searchFields[4]) * 1;	// instructions
+				_weight += find(term, _searchFields[5]) * 2;	// links
+				_weight += find(term, _searchFields[6]) * 1;	// questions
+				_weight += find(term, _searchFields[7]) * 2;	// answers
+				_weight += find(term, _searchFields[8]) * 1;	// updates
+			}
+			
 			return _weight;
 		}
 		
 		
 		// Counts the number of occurrences of needle in haystack
 		private function find(needle:String, haystack:String, caseInsensitive:Boolean = true):uint {
-			var i:int = -1, c:uint = 0;
+/*			var i:int = -1, c:uint = 0;
 			if ( caseInsensitive ) {
 				needle = needle.toLowerCase();
 				haystack = haystack.toLowerCase();
 			}
 			do {
+//				haystack.search(new RegExp
 				i = haystack.indexOf(needle, i + 1);
 				if (i != -1) c++;
 			} while(i != -1);
-			return c;
+			return c;*/
+			var count:uint = 0;
+			var regEx:RegExp = new RegExp(needle.replace('*', '.*').replace('?', '.?'), (caseInsensitive ? 'i' : '') + 'g');
+			var match:Object;
+			while((match = regEx.exec(haystack)) != null) {
+				count++;				
+			}
+			return count;
 		}
 	}
 }

@@ -46,10 +46,10 @@
 			}
 			
 			protected function resizeListener(event:Event):void {
-				if (x < 0) x = 0;
-				if (y < 0) y = 0;
 				if (x > stage.stageWidth - width) x = stage.stageWidth - width;
 				if (y > stage.stageHeight - height) y = stage.stageHeight - height;
+				if (x < 0) x = 0;
+				if (y < 0) y = 0;
 			}
 		]]>
 	</fx:Script>
