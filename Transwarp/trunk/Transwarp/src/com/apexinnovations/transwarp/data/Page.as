@@ -170,6 +170,7 @@ package com.apexinnovations.transwarp.data
 		public function search(terms:Array, exclude:Array, require:Array):uint {
 			var i:int, j:int;
 			var found:Boolean = false;
+			var needle:RegExp;
 			
 			// Initialized on each search
 			_weight = 0;
@@ -178,7 +179,7 @@ package com.apexinnovations.transwarp.data
 			for (i = 0; i < require.length; i++) {
 				found = false;
 				for (j = 0; j < 9; j++) {
-					if (find(require[i], _searchFields[j])) {
+					if (find(matchWildcards(require[i]), _searchFields[j])) {
 						found = true;
 						break;
 					}
@@ -191,7 +192,7 @@ package com.apexinnovations.transwarp.data
 			for (i = 0; i < exclude.length; i++) {
 				found = false;
 				for (j = 0; j < 9; j++) {
-					if (find(exclude[i], _searchFields[j])) {
+					if (find(matchWildcards(exclude[i]), _searchFields[j])) {
 						found = true;
 						break;
 					}
@@ -208,26 +209,28 @@ package com.apexinnovations.transwarp.data
 			
 			// Now weight the page
 			for each (var term:String in terms) {
-				_weight += find(term, _searchFields[0]) * 5;	// qualifiedName
-				_weight += find(term, _searchFields[1]) * 3;	// keywords
-				_weight += find(term, _searchFields[2]) * 4;	// description
-				_weight += find(term, _searchFields[3]) * 2;	// support text
-				_weight += find(term, _searchFields[4]) * 1;	// instructions
-				_weight += find(term, _searchFields[5]) * 2;	// links
-				_weight += find(term, _searchFields[6]) * 1;	// questions
-				_weight += find(term, _searchFields[7]) * 2;	// answers
-				_weight += find(term, _searchFields[8]) * 1;	// updates
+				needle = matchWildcards(term);
+				_weight += find(needle, _searchFields[0]) * 5;	// qualifiedName
+				_weight += find(needle, _searchFields[1]) * 3;	// keywords
+				_weight += find(needle, _searchFields[2]) * 4;	// description
+				_weight += find(needle, _searchFields[3]) * 2;	// support text
+				_weight += find(needle, _searchFields[4]) * 1;	// instructions
+				_weight += find(needle, _searchFields[5]) * 2;	// links
+				_weight += find(needle, _searchFields[6]) * 1;	// questions
+				_weight += find(needle, _searchFields[7]) * 2;	// answers
+				_weight += find(needle, _searchFields[8]) * 1;	// updates
 			}
 			for each (term in require) {
-				_weight += find(term, _searchFields[0]) * 5;	// qualifiedName
-				_weight += find(term, _searchFields[1]) * 3;	// keywords
-				_weight += find(term, _searchFields[2]) * 4;	// description
-				_weight += find(term, _searchFields[3]) * 2;	// support text
-				_weight += find(term, _searchFields[4]) * 1;	// instructions
-				_weight += find(term, _searchFields[5]) * 2;	// links
-				_weight += find(term, _searchFields[6]) * 1;	// questions
-				_weight += find(term, _searchFields[7]) * 2;	// answers
-				_weight += find(term, _searchFields[8]) * 1;	// updates
+				needle = matchWildcards(term);
+				_weight += find(needle, _searchFields[0]) * 5;	// qualifiedName
+				_weight += find(needle, _searchFields[1]) * 3;	// keywords
+				_weight += find(needle, _searchFields[2]) * 4;	// description
+				_weight += find(needle, _searchFields[3]) * 2;	// support text
+				_weight += find(needle, _searchFields[4]) * 1;	// instructions
+				_weight += find(needle, _searchFields[5]) * 2;	// links
+				_weight += find(needle, _searchFields[6]) * 1;	// questions
+				_weight += find(needle, _searchFields[7]) * 2;	// answers
+				_weight += find(needle, _searchFields[8]) * 1;	// updates
 			}
 			
 			return _weight;
@@ -235,14 +238,18 @@ package com.apexinnovations.transwarp.data
 		
 		
 		// Counts the number of occurrences of needle in haystack
-		private function find(needle:String, haystack:String, caseInsensitive:Boolean = true):uint {
+		private function find(needle:RegExp, haystack:String, caseInsensitive:Boolean = true):uint {
 			var count:uint = 0;
-			var regEx:RegExp = new RegExp(needle, (caseInsensitive ? 'i' : '') + 'g');
 			var match:Object;
-			while((match = regEx.exec(haystack)) != null) {
+			while((match = needle.exec(haystack)) != null) {
 				count++;				
 			}
 			return count;
+		}
+		
+		// Create a regular expression for matching wildcards
+		private function matchWildcards(term:String):RegExp {
+			return new RegExp(term.replace('/([{}\(\)\^$&.\/\+\|\[\\\\]|\]|\-)/g', '').replace(/([\?\*])/g, '.$1'), 'ig');
 		}
 	}
 }
