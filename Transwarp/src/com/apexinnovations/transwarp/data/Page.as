@@ -236,19 +236,8 @@ package com.apexinnovations.transwarp.data
 		
 		// Counts the number of occurrences of needle in haystack
 		private function find(needle:String, haystack:String, caseInsensitive:Boolean = true):uint {
-/*			var i:int = -1, c:uint = 0;
-			if ( caseInsensitive ) {
-				needle = needle.toLowerCase();
-				haystack = haystack.toLowerCase();
-			}
-			do {
-//				haystack.search(new RegExp
-				i = haystack.indexOf(needle, i + 1);
-				if (i != -1) c++;
-			} while(i != -1);
-			return c;*/
 			var count:uint = 0;
-			var regEx:RegExp = new RegExp(needle.replace('*', '.*').replace('?', '.?'), (caseInsensitive ? 'i' : '') + 'g');
+			var regEx:RegExp = new RegExp(needle, (caseInsensitive ? 'i' : '') + 'g');
 			var match:Object;
 			while((match = regEx.exec(haystack)) != null) {
 				count++;				
