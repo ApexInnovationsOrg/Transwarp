@@ -56,10 +56,33 @@ package com.apexinnovations.transwarp.data
 			
 			// LMS users aren't allowed to search
 			if (_instance.user.lms) return pages;
+						
+			// Get list of excluded terms
+			var i:int;
+			var tmp:String = keywords;
+			var exclude:Array = tmp.match(/-("[^"]*"|\S+)/g);
+			tmp = tmp.replace(/-("[^"]*"|\S+)/g, '');		// ... and remove them from original keywords
+			for (i = 0; i < exclude.length; i ++) {
+				exclude[i] = exclude[i].replace(/[\-"]/g, '');		// remove + and " chars
+			}
+			exclude = removeDuplicates(exclude);
 			
+			// Get list of required terms
+			var require:Array = tmp.match(/\+("[^"]*"|\S+)/g);
+			tmp = tmp.replace(/\+("[^"]*"|\S+)/g, '');	// ... and remove them from original keywords
+			for (i = 0; i < require.length; i ++) {
+				require[i] = require[i].replace(/[\+"]/g, '');		// remove - and " chars
+			}
+			require = removeDuplicates(require);
+
+			// Get list of remaining search terms
+			var terms:Array = tmp.match(/("[^"]*"|\S+)/g);
+			terms = removeDuplicates(terms);
+			
+trace('Search: require('+require+') exclude('+exclude+') terms('+terms+')');
 			for each (var course:Course in _instance.product.courses) {
 				for each (var item:Page in course.pages) {
-					if (item.search(keywords)) {
+					if (item.search(terms, exclude, require)) {
 						pages.push(item);
 					}
 				}
@@ -73,6 +96,15 @@ package com.apexinnovations.transwarp.data
 			return pages.sort(_instance.pageWeightCompare);
 		}
 		
+		private static function removeDuplicates(array:Array):Array {
+			array.sort();
+			
+			for (var i:int = array.length-1; i>0; --i) {
+				if (array[i]===array[i-1])
+					array.splice(i,1);
+			}
+			return array;
+		}
 			
 		public function Courseware(xml:XML) {
 			if(_instance)
