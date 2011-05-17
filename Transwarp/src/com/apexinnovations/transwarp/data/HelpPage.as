@@ -4,12 +4,14 @@ package com.apexinnovations.transwarp.data
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
 	import flash.errors.*;
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.utils.*;
 	
 	TranswarpVersion.revision = "$Rev$";
 	
 	// This represents a help page to display
-	public class HelpPage {
+	public class HelpPage extends EventDispatcher {
 		private var _icon:String = '';		// The URL to an icon to load for this help page
 		private var _name:String = '';		// The name of this help page
 		private var _parent:Product = null;	// A link back to the product

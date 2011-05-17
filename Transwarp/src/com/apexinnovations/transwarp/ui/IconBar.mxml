@@ -31,6 +31,7 @@
 
 			protected var commentDialog:CommentDialog = null;
 			protected var configDialog:ConfigDialog = null;
+			protected var helpDialog:HelpDialog = null;
 			protected var keyQuestionsDialog:KeyQuestionsDialog = null;
 			protected var supportTextDialog:SupportTextDialog = null;
 			protected var historyDialog:HistoryDialog = null;
@@ -78,6 +79,13 @@
 				configDialog = ConfigDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), ConfigDialog, true, PopUpManagerChildList.POPUP));
 				
 				configDialog.display();
+			}
+			
+			protected function showHelpPages(evt:MouseEvent):void {
+				if (!helpDialog)
+					helpDialog = HelpDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), HelpDialog, false, PopUpManagerChildList.POPUP));
+				
+				helpDialog.display();
 			}
 			
 			protected function showKeyQuestions(evt:MouseEvent):void {
@@ -181,7 +189,7 @@
 		<ui:IconButton artClass="{AudioIcon}" />
 		<ui:IconButton artClass="{ConfigurationIcon}" click="configureOptions(event);" />
 		<ui:IconButton artClass="{SnapshotIcon}" click="printStage(event);" />
-		<ui:IconButton artClass="{HelpIcon}" />
+		<ui:IconButton artClass="{HelpIcon}"  click="showHelpPages(event);"/>
 	</s:VGroup>
 	
 	<s:VGroup width="100%" horizontalAlign="center" gap="10" bottom="10">
