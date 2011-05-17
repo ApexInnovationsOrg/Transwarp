@@ -59,10 +59,7 @@
 	</ui:states>
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
-		<s:HGroup gap="2">
-			<s:Label text="{page.parentFolders}" fontWeight="bold" color="{Courseware.instance.color}" />			
-			<s:Label text="{page.name}" fontWeight="bold" color="0x000000" />			
-		</s:HGroup>
+		<ui:PageTitle fontSize="11" />
 		<s:Label text="This page does not have any updates" width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10" visible.default="false" height.default="0" width.default="0" />
 		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" visible.default="true" visible.no_results="false" height.no_results="0" >
 			<s:VGroup id="elementList" width="360" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >

@@ -122,7 +122,7 @@ package com.apexinnovations.transwarp.data {
 		
 		protected function onItemError(event:ErrorEvent):void {
 			event.stopPropagation();
-			//trace(event.text);
+			Courseware.log("PAGE LOAD ERROR: " + event.type + ": " + event.text);
 		}
 		
 		
