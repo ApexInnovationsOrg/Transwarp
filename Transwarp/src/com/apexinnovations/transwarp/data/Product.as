@@ -47,7 +47,7 @@ package com.apexinnovations.transwarp.data
 			for each (var c:XML in xml.courses.course) {
 				_courses.push(new Course(c, this));
 			}
-			for each (var h:XML in xml.courses.helpPages) {
+			for each (var h:XML in xml.helpPages.helpPage) {
 				_helpPages.push(new HelpPage(h, this));
 			}
 		}
