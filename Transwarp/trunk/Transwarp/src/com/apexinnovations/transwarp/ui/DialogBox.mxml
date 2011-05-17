@@ -3,6 +3,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   skinClass="com.apexinnovations.transwarp.skins.DialogSkin"
+			   title="Generic Dialog Box" visible="false"
 			   addedToStage="addedToStage(event);" close="closeHandler(event);" mouseDown="mouseDown(event);" windowMoveEnd="resizeListener(event);">
 	<s:layout>
 		<s:VerticalLayout />
@@ -16,28 +17,30 @@
 			
 			TranswarpVersion.revision = "$Rev$";
 			
-			protected var _initStageWidth:int;
-			protected var _initStageHeight:int;
+			protected var modal:Boolean = false;
+			protected var resizable:Boolean = false;
 			
-			// Event handler for the OK button.
-			protected function okHandler(event:Event):void {
-				// Do other stuff
-				closeHandler(event);
-			}
-			
-			// Event handler for the Cancel button.
-			protected function cancelHandler(event:Event):void {
-				closeHandler(event);
-			}
-			
-			// Event handler for the close button.
 			protected function closeHandler(event:Event):void {
-				visible = false;
+				if (modal) {
+					// Can't just set visibility since hidden modal dialogs screw up focus for all dialogs
+					stage.removeEventListener(Event.RESIZE, resizeListener); 
+					PopUpManager.removePopUp(this);
+				} else {
+					visible = false;
+				}
 			}
 			
 			protected function addedToStage(event:Event):void {
-				// Try to put the dialog back into viewable stage if window changes size
-				stage.addEventListener(Event.RESIZE, resizeListener); 
+				stage.addEventListener(Event.RESIZE, resizeListener);
+			}
+			
+			public function display():void {
+				if (modal || !visible) {
+					PopUpManager.centerPopUp(this);
+				}
+				visible = true;
+				PopUpManager.bringToFront(this);
+				setFocus();
 			}
 			
 			protected function mouseDown(event:Event):void {
@@ -45,6 +48,7 @@
 				setFocus();
 			}
 			
+			// Try to put the dialog back into viewable stage if window changes size
 			protected function resizeListener(event:Event):void {
 				if (x > stage.stageWidth - width) x = stage.stageWidth - width;
 				if (y > stage.stageHeight - height) y = stage.stageHeight - height;
@@ -56,8 +60,4 @@
 	<s:Group height="100%">
 		
 	</s:Group>
-	<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
-		<s:Button label="OK" click="okHandler(event);"/>
-		<s:Button label="Cancel" click="cancelHandler(event);"/>
-	</s:HGroup>
 </s:TitleWindow>

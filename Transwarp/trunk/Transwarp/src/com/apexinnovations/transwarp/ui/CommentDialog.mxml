@@ -3,43 +3,65 @@
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
-			  width="400" height="300">
+			  title="Feedback/Suggestions for this Page"
+			  width="400" height="300" addedToStage="addedToStage(event);">
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.Page;
-			import com.apexinnovations.transwarp.webservices.CommentService;
 			import com.apexinnovations.transwarp.utils.*;
-			
+			import com.apexinnovations.transwarp.webservices.CommentService;
+
+			import mx.managers.PopUpManager;
+
 			TranswarpVersion.revision = "$Rev$";
 						
-			[Bindable] protected var _page:Page = null;
+			protected var _page:Page = null;
 			
+			[Bindable] public function get page():Page { return _page; }
 			public function set page(p:Page):void {
 				_page = p;
 			}
 
-			// Event handler for the OK button.
-			override protected function okHandler(event:Event):void {
+			override protected function addedToStage(event:Event):void {
+				super.addedToStage(event);
+				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
+				pageChanged(new PageSelectionEvent(Courseware.instance.currentPage));
+			}
+			
+			protected function pageChanged(event:PageSelectionEvent):void {
+				page = Courseware.instance.currentPage;
+			}
+			
+			override protected function mouseDown(event:Event):void {
+				PopUpManager.bringToFront(this);
+				commentText.setFocus();
+			}
+
+			protected function okHandler(event:Event):void {
 				// Trim text, forward any comments on
 				if ((commentText.text = Utils.trim(commentText.text)) != '') {
 					var comment:CommentService = new CommentService();
 					
 					comment.dispatch(Utils.encodeJSONValue(commentText.text));
 					
-					super.okHandler(event);
+					closeHandler(event);
 				}
 			}
 		]]>
 	</fx:Script>
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" >
-		<s:Label text="Please type your comments in the space below:" fontWeight="bold" />
-		<s:TextArea id="commentText" width="380" height="170" prompt="Comments on {Courseware.instance.currentPage.qualifiedName}"/>
+		<s:HGroup gap="2">
+			<s:Label text="{page.parentFolders}" fontWeight="bold" color="{Courseware.instance.color}" />			
+			<s:Label text="{page.name}" fontWeight="bold" color="0x000000" />			
+		</s:HGroup>
+		<s:TextArea id="commentText" width="380" height="170" prompt="Type your comments here"/>
 		<s:Label text="We appreciate your feedback!" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" />
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
 			<s:Button label="Submit" click="okHandler(event);"/>
-			<s:Button label="Cancel" click="super.cancelHandler(event);"/>
+			<s:Button label="Cancel" click="closeHandler(event);"/>
 		</s:HGroup>
 	</s:VGroup>
 </ui:DialogBox>

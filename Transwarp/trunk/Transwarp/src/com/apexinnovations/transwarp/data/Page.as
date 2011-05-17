@@ -249,6 +249,7 @@ package com.apexinnovations.transwarp.data
 		
 		// Create a regular expression for matching wildcards
 		private function matchWildcards(term:String):RegExp {
+			// First, remove RegExp special characters, then replace ? and * with .? and .*
 			return new RegExp(term.replace('/([{}\(\)\^$&.\/\+\|\[\\\\]|\]|\-)/g', '').replace(/([\?\*])/g, '.$1'), 'ig');
 		}
 	}

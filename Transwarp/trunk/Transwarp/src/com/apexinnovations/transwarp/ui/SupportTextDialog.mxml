@@ -3,6 +3,7 @@
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			  title="Supporting Text for this Page"
 			  width="400" addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);">
 	<fx:Script>
 		<![CDATA[
@@ -23,11 +24,6 @@
 				updateElementList();
 			}
 			
-			protected function updateElementList():void {
-				if(theText) theText.textFlow = _page.supportText;
-				currentState = _page.supportText ? "default" : "no_results";
-			}
-			
 			override protected function addedToStage(event:Event):void {
 				super.addedToStage(event);
 				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
@@ -40,6 +36,11 @@
 			
 			protected function pageChanged(event:PageSelectionEvent):void {
 				page = Courseware.instance.currentPage;
+			}
+			
+			protected function updateElementList():void {
+				if(theText) theText.textFlow = _page.supportText;
+				currentState = _page.supportText ? "default" : "no_results";
 			}
 		]]>
 	</fx:Script>

@@ -3,7 +3,8 @@
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
-			  width="400" height="315">
+			  title="Configuration Options"
+			  modal="true" width="400" height="315">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
@@ -14,8 +15,7 @@
 
 			TranswarpVersion.revision = "$Rev$";
 			
-			// Event handler for the OK button.
-			override protected function okHandler(event:Event):void {
+			protected function okHandler(event:Event):void {
 				var config:ConfigService = new ConfigService();
 				
 				if (Courseware.instance.user.autoCloseMenu != autoCloseMenu.selected) {
@@ -36,12 +36,7 @@
 					Courseware.instance.user.printSlideOnly = printSlideOnly.selected;
 				}
 				
-				super.okHandler(event);
-			}
-			
-			override protected function closeHandler(event:Event):void {
-				stage.removeEventListener(Event.RESIZE, resizeListener); 
-				PopUpManager.removePopUp(this);
+				closeHandler(event);
 			}
 		]]>
 	</fx:Script>
@@ -60,7 +55,7 @@
 		</s:VGroup>
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
 			<s:Button label="Submit" click="okHandler(event);"/>
-			<s:Button label="Cancel" click="super.cancelHandler(event);"/>
+			<s:Button label="Cancel" click="closeHandler(event);"/>
 		</s:HGroup>
 	</s:VGroup>
 </ui:DialogBox>

@@ -67,77 +67,45 @@
 			}
 
 			protected function commentOnPage(evt:MouseEvent):void {
-				if (!commentDialog) {
+				if (!commentDialog)
 					commentDialog = CommentDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), CommentDialog, false, PopUpManagerChildList.POPUP));
-					commentDialog.title = 'Feedback/Suggestions for this Page';
-					PopUpManager.centerPopUp(commentDialog);
-				} else if (!commentDialog.visible) {
-					commentDialog.visible = true;
-					PopUpManager.centerPopUp(commentDialog);
-				}
-				PopUpManager.bringToFront(commentDialog);
-				commentDialog.setFocus();
+
+				commentDialog.display();
 			}
 			
 			protected function configureOptions(evt:MouseEvent):void {
-				// Since this is modal, we'll handle it differently - actually close rather than hide dialog when closing it - breaks focus on other hide-type dialogs otherwise
+				// Modal, so must be created every time or we get setFocus() issues
 				configDialog = ConfigDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), ConfigDialog, true, PopUpManagerChildList.POPUP));
-				configDialog.title = 'Configuration Options';
-				PopUpManager.centerPopUp(configDialog);
-				PopUpManager.bringToFront(configDialog);
-				configDialog.setFocus();
+				
+				configDialog.display();
 			}
 			
 			protected function showKeyQuestions(evt:MouseEvent):void {
-				if (!keyQuestionsDialog) {
+				if (!keyQuestionsDialog)
 					keyQuestionsDialog = KeyQuestionsDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), KeyQuestionsDialog, false, PopUpManagerChildList.POPUP));
-					keyQuestionsDialog.title = 'Key Questions on this Page';
-					PopUpManager.centerPopUp(keyQuestionsDialog);
-				} else if (!keyQuestionsDialog.visible) {
-					keyQuestionsDialog.visible = true;
-					PopUpManager.centerPopUp(keyQuestionsDialog);
-				}
-				PopUpManager.bringToFront(keyQuestionsDialog);
-				keyQuestionsDialog.setFocus();
+
+				keyQuestionsDialog.display();
 			}
 			
 			protected function showPageUpdates(evt:MouseEvent):void {
-				if (!historyDialog) {
+				if (!historyDialog)
 					historyDialog = HistoryDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), HistoryDialog, false, PopUpManagerChildList.POPUP));
-					historyDialog.title = 'History of Updates to this Page';
-					PopUpManager.centerPopUp(historyDialog);
-				} else if (!historyDialog.visible) {
-					historyDialog.visible = true;
-					PopUpManager.centerPopUp(historyDialog);
-				}
-				PopUpManager.bringToFront(historyDialog);
-				historyDialog.setFocus();
+
+				historyDialog.display();
 			}
 			
 			protected function showRelatedLinks(evt:MouseEvent):void {
-				if (!linksDialog) {
+				if (!linksDialog)
 					linksDialog = LinksDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), LinksDialog, false, PopUpManagerChildList.POPUP));
-					linksDialog.title = 'Links Related to this Page';
-					PopUpManager.centerPopUp(linksDialog);
-				} else if (!linksDialog.visible) {
-					linksDialog.visible = true;
-					PopUpManager.centerPopUp(linksDialog);
-				}
-				PopUpManager.bringToFront(linksDialog);
-				linksDialog.setFocus();
+				
+				linksDialog.display();
 			}
 			
 			protected function showSupportText(evt:MouseEvent):void {
-				if (!supportTextDialog) {
+				if (!supportTextDialog)
 					supportTextDialog = SupportTextDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), SupportTextDialog, false, PopUpManagerChildList.POPUP));
-					supportTextDialog.title = 'Supporting Text for this Page';
-					PopUpManager.centerPopUp(supportTextDialog);
-				} else if (!supportTextDialog.visible) {
-					supportTextDialog.visible = true;
-					PopUpManager.centerPopUp(supportTextDialog);
-				}
-				PopUpManager.bringToFront(supportTextDialog);
-				supportTextDialog.setFocus();
+				
+				supportTextDialog.display();
 			}
 			
 			protected function printStage(evt:MouseEvent):void {
