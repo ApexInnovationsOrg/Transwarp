@@ -4,7 +4,7 @@
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			  title="Feedback/Suggestions for this Page"
-			  width="400" height="300" addedToStage="addedToStage(event);">
+			  width="400" height="300">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.events.PageSelectionEvent;
@@ -17,23 +17,6 @@
 
 			TranswarpVersion.revision = "$Rev$";
 						
-			protected var _page:Page = null;
-			
-			[Bindable] public function get page():Page { return _page; }
-			public function set page(p:Page):void {
-				_page = p;
-			}
-
-			override protected function addedToStage(event:Event):void {
-				super.addedToStage(event);
-				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
-				pageChanged(new PageSelectionEvent(Courseware.instance.currentPage));
-			}
-			
-			protected function pageChanged(event:PageSelectionEvent):void {
-				page = Courseware.instance.currentPage;
-			}
-			
 			override protected function mouseDown(event:Event):void {
 				PopUpManager.bringToFront(this);
 				commentText.setFocus();
@@ -53,10 +36,7 @@
 	</fx:Script>
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" >
-		<s:HGroup gap="2">
-			<s:Label text="{page.parentFolders}" fontWeight="bold" color="{Courseware.instance.color}" />			
-			<s:Label text="{page.name}" fontWeight="bold" color="0x000000" />			
-		</s:HGroup>
+		<ui:PageTitle fontSize="11" horizontalAlign="left" />
 		<s:TextArea id="commentText" width="380" height="170" prompt="Type your comments here"/>
 		<s:Label text="We appreciate your feedback!" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" />
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">

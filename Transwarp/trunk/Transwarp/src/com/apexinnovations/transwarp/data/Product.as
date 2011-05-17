@@ -20,14 +20,13 @@ package com.apexinnovations.transwarp.data
 		private var _logoBig:String = '';									// URL to a large representation of this product's logo
 		private var _logoSmall:String = '';									// URL to a small representation of this product's logo
 		private var _name:String = '';										// The name of this product
-		private var _parent:Courseware = null;								// A link back to the courseware
 		private var _released:Date;											// XML format: YYYY-MM-DDTHH:MM:SS
 		
 		public static function get instance():Product {
 			return _instance;
 		}		
 		
-		public function Product(xml:XML, parent:Courseware) {
+		public function Product(xml:XML) {
 			if(_instance)
 				throw new IllegalOperationError(getQualifiedClassName(this) + " is a singleton");
 			
@@ -38,7 +37,6 @@ package com.apexinnovations.transwarp.data
 				_logoBig = xml.@logoBig;
 				_logoSmall = xml.@logoSmall;
 				_name = xml.@name;
-				_parent = parent;
 				_released = DateFormatter.parseDateString(xml.@released);
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
@@ -65,7 +63,6 @@ package com.apexinnovations.transwarp.data
 		public function get logoBig():String { return _logoBig; }
 		public function get logoSmall():String { return _logoSmall; }
 		public function get name():String { return _name; }
-		public function get parent():Courseware { return _parent; }
 		public function get released():Date { return _released; }
 	}
 }

@@ -106,7 +106,7 @@ trace('Search: require('+require+') exclude('+exclude+') terms('+terms+')');
 			return array;
 		}
 			
-		public function Courseware(xml:XML) {
+		public function Courseware(xml:XML, loadContent:Boolean = true) {
 			if(_instance)
 				throw new IllegalOperationError(getQualifiedClassName(this) + " is a singleton");
 			
@@ -124,22 +124,21 @@ trace('Search: require('+require+') exclude('+exclude+') terms('+terms+')');
 				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
 			}
 			
-			_product = new Product(xml.product[0], this);
+			_product = new Product(xml.product[0]);
 			_user = new User(xml.user[0], this);
 			
 			_currentCourseList = new CourseList();
 			_currentCourseList.addEventListener(FolderOpenEvent.FOLDER_OPEN, folderOpenHandler);
 			currentCourse = _product.getCourseByID(_user.startCourseID);
 			currentPage = _currentCourse.pages[0];
-			
-			_contentLoader = new ContentLoader(_product);
+			if(loadContent)
+				_contentLoader = new ContentLoader(_product);
 		}
 		
 		
 		[Bindable("colorChanged")] public function get color():uint { return _color; }
 		public function set color(value:uint):void { 
 			_color = value;
-			trace("color changed");
 			dispatchEvent(new Event("colorChanged"));
 		}
 		

@@ -31,7 +31,7 @@
 		<s:State name="maximized" />
 	</s:states>
 	
-	<ui:LevelMenu bottom="5" top="14" left="35" color="{color}" includeIn="default"/>
-	<ui:IconBar left="0" bottom="1" top="2" color="{color}"/>
+	<ui:LevelMenu bottom="5" top="14" left="35" includeIn="default"/>
+	<ui:IconBar left="0" bottom="1" top="2" />
 	
 </s:Group>

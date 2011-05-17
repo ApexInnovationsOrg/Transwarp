@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
-		 addedToStage="addedToStage(event)">
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
+		 xmlns:data="com.apexinnovations.transwarp.data.*"
+		 addedToStage="addedToStage(event)"
+		 fontFamily="Arial" fontSize="20" fontWeight="bold">
+	
+	
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
@@ -14,38 +15,36 @@
 			import com.apexinnovations.transwarp.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
+			import mx.events.PropertyChangeEvent;
+			
 			TranswarpVersion.revision = "$Rev$";
 			
-			protected function pageChanged(event:PageSelectionEvent):void {
-				var page:Page = event.page;
-				if(!page) {
-					breadcrumbs.text = "";
-					title.text = "";
-					return;
-				}
-				breadcrumbs.text = page.parentFolders;
-				breadcrumbs.setStyle("color", Courseware.instance.color);
-				title.text = page.name;
+			public var _page:Page;
+
+			public function get page():Page { return _page;}
+			public function set page(value:Page):void {
+				_page = value;
+				pageChanged();
 			}
-
-
+			
+			protected function pageChanged(event:PageSelectionEvent = null):void {
+				var p:Page = page ? page : Courseware.instance.currentPage;
+				
+				breadcrumbs.text = p.parentFolders;
+				breadcrumbs.includeInLayout = breadcrumbs.text !== '';
+				
+				title.text = p.name;
+			}
+			
+			
 			protected function addedToStage(event:Event):void {
 				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
-				pageChanged(new PageSelectionEvent(Courseware.instance.currentPage));
-			}
-
+				pageChanged();
+			} 
+			
 		]]>
 	</fx:Script>
 
-	<!--<s:Rect width="100%" height="100%">
-		<s:fill>
-			<s:SolidColor color="0xffcc00" alpha="0.4" />
-		</s:fill>
-	</s:Rect>-->
-	
-	
-	<s:HGroup fontFamily="Arial" fontSize="20" fontWeight="bold" width="100%" horizontalAlign="center" paddingTop="10" paddingBottom="10">
-		<s:Label id="breadcrumbs"/>
-		<s:Label id="title" />
-	</s:HGroup>
-</s:Group>
+	<s:Label id="breadcrumbs" color="{Courseware.instance.color}"/>
+	<s:Label id="title" />
+</s:HGroup>

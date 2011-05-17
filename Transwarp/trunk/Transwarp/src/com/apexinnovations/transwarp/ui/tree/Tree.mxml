@@ -35,8 +35,7 @@
 			
  			override public function set dataProvider(value:IList):void {
 				if(dataProvider) {
-					dataProvider.removeEventListener(TranswarpEvent.FOLDER_OPEN_CLOSE, folderOpenClose);
-					
+					dataProvider.removeEventListener(TranswarpEvent.FOLDER_OPEN_CLOSE, folderOpenClose);	
 				}
 				
 				super.dataProvider = value;
@@ -60,7 +59,7 @@
 			
 			override protected function commitProperties():void {
 				super.commitProperties();
-/* 				if(dataProviderChanged) {
+				/* 				if(dataProviderChanged) {
 					dataProviderChanged = false;
 					selectedIndex = dataProvider.getItemIndex(Courseware.instance.currentPage);
 				} */
