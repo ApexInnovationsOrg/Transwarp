@@ -88,18 +88,11 @@
 				if (Utils.trim(searchInput.text) != '') {
 					if (!searchDialog) {
 						searchDialog = SearchDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), SearchDialog, false, PopUpManagerChildList.POPUP));
-						searchDialog.title = 'Search Results';
-						searchDialog.x = this.width - searchDialog.width;
-						searchDialog.y = this.height;
-					} else if (!searchDialog.visible) {
-						searchDialog.visible = true;
-						searchDialog.x = this.width - searchDialog.width;
-						searchDialog.y = this.height;
+						searchDialog.anchor = this;
 					}
-					searchDialog.maxHeight = stage.stageHeight - searchDialog.y;
+					
 					searchDialog.keywords = searchInput.text;
-					PopUpManager.bringToFront(searchDialog);
-					searchDialog.setFocus();
+					searchDialog.display();
 				}
 			}
 		]]>

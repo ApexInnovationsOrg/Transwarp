@@ -3,6 +3,7 @@
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			  title="Key Questions on this Page"
 			  width="400" addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);">
 	<fx:Script>
 		<![CDATA[
@@ -22,19 +23,6 @@
 				_page = p;
 				updateElementList();
 			}
-			
-			protected function updateElementList():void {
-				if (elementList) {
-					elementList.removeAllElements();
-					
-					for each(var q:Question in _page.questions) {
-						var btn:QuestionButton = new QuestionButton();
-						elementList.addElement(btn);
-						btn.question = q;
-					}
-				}
-				currentState = (elementList && elementList.numElements) ? "default" : "no_results";
-			}
 		
 			override protected function addedToStage(event:Event):void {
 				super.addedToStage(event);
@@ -48,6 +36,19 @@
 			
 			protected function pageChanged(event:PageSelectionEvent):void {
 				page = Courseware.instance.currentPage;
+			}
+			
+			protected function updateElementList():void {
+				if (elementList) {
+					elementList.removeAllElements();
+					
+					for each(var q:Question in _page.questions) {
+						var btn:QuestionButton = new QuestionButton();
+						elementList.addElement(btn);
+						btn.question = q;
+					}
+				}
+				currentState = (elementList && elementList.numElements) ? "default" : "no_results";
 			}
 		]]>
 	</fx:Script>

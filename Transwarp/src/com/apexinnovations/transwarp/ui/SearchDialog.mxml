@@ -2,7 +2,8 @@
 <ui:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
-			  xmlns:ui="com.apexinnovations.transwarp.ui.*">
+			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			  title="Search Results">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
@@ -10,15 +11,30 @@
 			import com.apexinnovations.transwarp.ui.SearchResultButton;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
+			import mx.managers.PopUpManager;
+
 			TranswarpVersion.revision = "$Rev$";
 			
 			protected var _keywords:String = '';
 			protected var _results:Vector.<Page> = null;
 			
+			public var anchor:DisplayObject = null;
+			
 			[Bindable] public function get keywords():String { return _keywords; }
 			public function set keywords(words:String):void {
 				_keywords = words;
 				if(resultList) initResultList();
+			}
+			
+			override public function display():void {
+				if (!visible && anchor) {
+					x = stage.stageWidth - width;
+					y = anchor.height;
+				}
+				maxHeight = stage.stageHeight - y;
+				visible = true;
+				PopUpManager.bringToFront(this);
+				setFocus();
 			}
 			
 			protected function initResultList():void {
