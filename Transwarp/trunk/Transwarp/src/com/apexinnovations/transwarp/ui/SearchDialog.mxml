@@ -66,7 +66,7 @@
 		<s:Label text="{numResults} page(s) found, displayed in order of relevance." fontStyle="italic" width="380" textAlign="center" visible.default="true" visible.no_results="false" height.no_results="0" width.no_results="0" />
 		<s:Label text="There are no results matching the keyword(s) you entered" width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10" visible.default="false" height.default="0" width.default="0" />
 		<s:Scroller id="scroller" horizontalScrollPolicy="off" maxHeight="{maxHeight - 60 - scroller.y}" visible.default="true" visible.no_results="false" height.no_results="0" >
-			<s:VGroup id="resultList" width="100%" paddingTop="5" paddingBottom="5" paddingRight="5" visible.default="true" visible.no_results="false" >
+			<s:VGroup id="resultList" width="100%" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" visible.default="true" visible.no_results="false" >
 			</s:VGroup>
 		</s:Scroller>
 		<s:Label text="Click on a result to go to that page" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" visible.default="true" visible.no_results="false" height.no_results="0" />
