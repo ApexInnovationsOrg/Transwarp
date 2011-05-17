@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			  xmlns:s="library://ns.adobe.com/flex/spark" 
+			  xmlns:mx="library://ns.adobe.com/flex/mx"
+			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			  title="Help"
+			  width="400" contentCreationComplete="contentCreationComplete(event);">
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.HelpPage;
+			import com.apexinnovations.transwarp.ui.HelpButton;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			protected function contentCreationComplete(event:Event):void {
+				updateElementList();
+			}
+			
+			protected function updateElementList():void {
+				if (elementList) {
+					elementList.removeAllElements();
+				
+					for each(var h:HelpPage in Courseware.instance.product.helpPages) {
+						var btn:HelpButton = new HelpButton();
+						elementList.addElement(btn);
+						btn.help = h;
+					}
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
+		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" >
+			<s:VGroup id="elementList" width="360" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
+			</s:VGroup>
+		</s:Scroller>
+	</s:VGroup>	
+</ui:DialogBox>
