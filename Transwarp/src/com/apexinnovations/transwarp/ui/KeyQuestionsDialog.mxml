@@ -4,7 +4,7 @@
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			  title="Key Questions on this Page"
-			  width="400" addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);">
+			  addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.events.PageSelectionEvent;
@@ -65,7 +65,7 @@
 		</s:HGroup>
 		<s:Label text="This page does not have any key questions" width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10" visible.default="false" height.default="0" width.default="0" />
 		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" visible.no_results="false" height.no_results="0" >
-			<s:VGroup id="elementList" width="360" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
+			<s:VGroup id="elementList" width="100%" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="5" >
 			</s:VGroup>
 		</s:Scroller>
 		<s:Label text="Click on a question to see its answer" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" visible.no_results="false" height.no_results="0" />

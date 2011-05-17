@@ -62,7 +62,7 @@
 		<ui:PageTitle fontSize="11" />
 		<s:Label text="This page does not have any related links" width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10" visible.default="false" height.default="0" width.default="0" />
 		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" visible.no_results="false" height.no_results="0" >
-			<s:VGroup id="elementList" width="360" paddingTop="5" paddingBottom="5" paddingRight="5" >
+			<s:VGroup id="elementList" width="100%" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" >
 			</s:VGroup>
 		</s:Scroller>
 		<s:Label text="Click on link(s) above to view in browser" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" visible.no_results="false" height.no_results="0" />

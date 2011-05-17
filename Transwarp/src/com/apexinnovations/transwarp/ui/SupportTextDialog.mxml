@@ -4,7 +4,7 @@
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			  title="Supporting Text for this Page"
-			  width="400" addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);">
+			  addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.events.PageSelectionEvent;

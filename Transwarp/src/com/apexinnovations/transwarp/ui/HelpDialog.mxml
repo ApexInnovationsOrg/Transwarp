@@ -4,15 +4,28 @@
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			  title="Help"
-			  width="400" contentCreationComplete="contentCreationComplete(event);">
+			  contentCreationComplete="contentCreationComplete(event);">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.HelpPage;
+			import com.apexinnovations.transwarp.events.HelpSelectionEvent;
 			import com.apexinnovations.transwarp.ui.HelpButton;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
-			
+
+			import mx.managers.PopUpManager;
+
 			TranswarpVersion.revision = "$Rev$";
+			
+			override protected function addedToStage(event:Event):void {
+				super.addedToStage(event);
+				addEventListener(HelpSelectionEvent.HELP_SELECTION_CHANGED, helpSelected);
+			}
+			
+			override protected function closeHandler(event:Event):void {
+				currentState = "default";
+				super.closeHandler(event);
+			}
 			
 			protected function contentCreationComplete(event:Event):void {
 				updateElementList();
@@ -29,13 +42,52 @@
 					}
 				}
 			}
+			
+			protected function helpSelected(event:HelpSelectionEvent):void {
+				var help:HelpPage = event.help;
+
+				helpTitle.text = help.name;
+				movieClipLoader.source = help.url;
+				currentState = "showing_help";
+
+				PopUpManager.centerPopUp(this);
+			}
+			
+			protected function backHandler(event:Event):void {
+				helpTitle.text = "Click a help topic below for more help on the subject:";
+				currentState = "default";
+
+				PopUpManager.centerPopUp(this);
+			}
 		]]>
 	</fx:Script>
+		
+	<ui:states>
+		<s:State name="default" />
+		<s:State name="showing_help" />
+	</ui:states>
+
+<!--
+	<ui:transitions>
+		<s:Transition fromState="showing_help" toState="default">
+			<s:Parallel>
+				<s:Fade target="{this}" />
+				<s:Resize target="{this}" />
+				<s:Move target="{this}" autoCenterTransform="true" />
+			</s:Parallel>
+		</s:Transition>
+	</ui:transitions>
+-->
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
-		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" >
-			<s:VGroup id="elementList" width="360" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
+		<s:Label id="helpTitle" text="Click a help topic below for more help on the subject:" fontWeight="bold" fontSize.showing_help="18" />
+		<s:Scroller id="scroller" horizontalScrollPolicy="off" maxHeight="300" visible.showing_help="false" width.showing_help="0" height.showing_help="0" >
+			<s:VGroup id="elementList" width="100%" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
 			</s:VGroup>
 		</s:Scroller>
+		<s:SWFLoader id="movieClipLoader" visible.default="false" width.default="0" height.default="0" showBusyCursor="true" />
+		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10" visible.default="false" width.default="0" height.default="0" >
+			<s:Button label="Back" click="backHandler(event);" visible.default="false" width.default="0" height.default="0" />
+		</s:HGroup>
 	</s:VGroup>	
 </ui:DialogBox>
