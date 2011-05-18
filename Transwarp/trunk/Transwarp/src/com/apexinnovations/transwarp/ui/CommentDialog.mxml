@@ -3,8 +3,7 @@
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
-			  title="Feedback/Suggestions for this Page"
-			  width="400" height="300">
+			  title="Feedback/Suggestions for this Page">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.events.PageSelectionEvent;
