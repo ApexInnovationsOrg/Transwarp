@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dialogs:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			  xmlns:s="library://ns.adobe.com/flex/spark" 
+			  xmlns:mx="library://ns.adobe.com/flex/mx"
+			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
+			  title="Bookmarks" >
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Course;
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.events.PageSelectionEvent;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			import mx.managers.PopUpManager;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			protected var _page:Page = null;
+			[Bindable] protected var _bookmarkedPages:Array = new Array;
+			
+			override protected function addedToStage(event:Event):void {
+				super.addedToStage(event);
+				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
+				pageChanged(new PageSelectionEvent(Courseware.instance.currentPage));
+				var c:Course, p:Page;
+				for each (c in Courseware.instance.product.courses) {
+					for each (p in c.pages) {
+						if (p.bookmarked) {
+							_bookmarkedPages.push(p);
+						}
+					}
+				}
+			}
+			
+			protected function bookmarkPage(val:Boolean):void {
+				_page.bookmarked = val;
+				if (val) {
+					_bookmarkedPages.push(_page);
+				} else {
+					_bookmarkedPages.splice(_bookmarkedPages.indexOf(_page), 1);
+				}
+				dg.invalidateList();
+				currentState = val ? "bookmarked" : "default";
+			}
+			
+			protected function deleteBookmark(val:Page):void {
+				_bookmarkedPages.splice(_bookmarkedPages.indexOf(val), 1);
+				dg.invalidateList();
+				if (val == _page) currentState = "default";
+			}
+			
+			protected function pageChanged(event:PageSelectionEvent):void {
+				_page = Courseware.instance.currentPage;
+				currentState = _page.bookmarked ? "bookmarked" : "default";
+			}
+		]]>
+	</fx:Script>
+	
+	<dialogs:states>
+		<s:State name="default" />
+		<s:State name="bookmarked" />
+	</dialogs:states>
+	
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
+		<ui:PageTitle />
+		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
+			<s:Button label.default="Bookmark this Page" label.bookmarked="Delete this Bookmark" click.default="bookmarkPage(true);" click.bookmarked="bookmarkPage(false);" />
+		</s:HGroup>
+		<s:Label text="Current Bookmarks:" width="380" fontWeight="bold" paddingTop="10" />
+		<s:HGroup verticalAlign="middle" width="100%">
+			<mx:DataGrid id="dg" width="300" height="100%" rowCount="5" dataProvider="{_bookmarkedPages}">
+				<mx:columns>
+					<mx:DataGridColumn dataField="course.levelRoman" headerText="Level" width="45" textAlign="center" />
+					<mx:DataGridColumn dataField="qualifiedName" headerText="Page Name"/>
+				</mx:columns>
+			</mx:DataGrid>
+			<s:VGroup horizontalAlign="left">
+				<s:Button label="Go To" enabled="{dg.selectedItem}" click="Courseware.instance.currentPage=(dg.selectedItem as Page);" />
+				<s:Button label="Delete" enabled="{dg.selectedItem}" click="deleteBookmark(dg.selectedItem as Page);" />
+			</s:VGroup>
+		</s:HGroup>
+	</s:VGroup>	
+</dialogs:DialogBox>

@@ -34,7 +34,7 @@
 	<ui:ContentContainer id="container" mask="{contentMask}" width="100%" top="{container.isAS2Content ? Math.max(0, 40-40*container.contentScaleY) : 40}" bottom="{container.isAS2Content ? 0 : 60}"
 						 open="progressPanel.visible = true" complete="progressPanel.visible = false" progress="loadProgress(event)"/>
 	
-	<ui:PageTitle top="10" horizontalCenter="0"/>
+	<ui:PageTitle top="10" horizontalCenter="0" fontSize="20"/>
 	
 	<s:Group width="{container.contentWidth}" height="{container.contentHeight}" scaleX="{container.contentScaleX}" scaleY="{container.contentScaleY}" x="{container.x + container.contentX}" y="{container.y + container.contentY}">
 		<s:Group id="contentMask" width="100%" height="100%">
