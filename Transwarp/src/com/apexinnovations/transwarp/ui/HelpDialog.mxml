@@ -24,6 +24,7 @@
 			
 			override protected function closeHandler(event:Event):void {
 				currentState = "default";
+				movieClipLoader.source = '';
 				super.closeHandler(event);
 			}
 			
