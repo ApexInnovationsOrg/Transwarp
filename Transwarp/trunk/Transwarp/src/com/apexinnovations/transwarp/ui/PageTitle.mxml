@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:data="com.apexinnovations.transwarp.data.*"
 		 addedToStage="addedToStage(event)"
-		 fontFamily="Arial" fontSize="20" fontWeight="bold">
+		 fontFamily="Arial" fontSize="12" fontWeight="bold">
 	
 	
 	<fx:Script>
@@ -30,6 +30,7 @@
 			protected function pageChanged(event:PageSelectionEvent = null):void {
 				var p:Page = page ? page : Courseware.instance.currentPage;
 				
+				level.text = p.course.levelRoman + '.';
 				breadcrumbs.text = p.parentFolders;
 				breadcrumbs.includeInLayout = breadcrumbs.text !== '';
 				
@@ -45,6 +46,7 @@
 		]]>
 	</fx:Script>
 
+	<s:Label id="level" color="0x888888" />
 	<s:Label id="breadcrumbs" color="{Courseware.instance.color}"/>
 	<s:Label id="title" />
 </s:HGroup>

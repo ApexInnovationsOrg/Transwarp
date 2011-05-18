@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ui:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<dialogs:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
 			  title="Search Results">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.Page;
-			import com.apexinnovations.transwarp.ui.SearchResultButton;
+			import com.apexinnovations.transwarp.ui.dialogs.SearchResultButton;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import mx.managers.PopUpManager;
@@ -53,10 +54,10 @@
 		]]>
 	</fx:Script>
 
-	<ui:states>
+	<dialogs:states>
 		<s:State name="default" />
 		<s:State name="no_results" />
-	</ui:states>
+	</dialogs:states>
 
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" left="5" right="5">
 		<s:HGroup gap="5">
@@ -71,4 +72,4 @@
 		</s:Scroller>
 		<s:Label text="Click on a result to go to that page" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" visible.default="true" visible.no_results="false" height.no_results="0" />
 	</s:VGroup>
-</ui:DialogBox>
+</dialogs:DialogBox>

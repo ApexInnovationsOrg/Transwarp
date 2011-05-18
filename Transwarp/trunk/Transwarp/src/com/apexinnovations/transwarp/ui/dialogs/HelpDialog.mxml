@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ui:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<dialogs:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
 			  title="Help"
 			  contentCreationComplete="contentCreationComplete(event);">
 	<fx:Script>
@@ -10,7 +11,7 @@
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.HelpPage;
 			import com.apexinnovations.transwarp.events.HelpSelectionEvent;
-			import com.apexinnovations.transwarp.ui.HelpButton;
+			import com.apexinnovations.transwarp.ui.dialogs.HelpButton;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import mx.managers.PopUpManager;
@@ -70,14 +71,14 @@
 		]]>
 	</fx:Script>
 		
-	<ui:states>
+	<dialogs:states>
 		<s:State name="default" />
 		<s:State name="showing_help" />
 		<s:State name="error" />
-	</ui:states>
+	</dialogs:states>
 
 <!--
-	<ui:transitions>
+	<dialogs:transitions>
 		<s:Transition fromState="showing_help" toState="default">
 			<s:Parallel>
 				<s:Fade target="{this}" />
@@ -85,7 +86,7 @@
 				<s:Move target="{this}" autoCenterTransform="true" />
 			</s:Parallel>
 		</s:Transition>
-	</ui:transitions>
+	</dialogs:transitions>
 -->
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
@@ -99,4 +100,4 @@
 			<s:Button label="Back" click="backHandler(event);" visible.default="false" width.default="0" height.default="0" />
 		</s:HGroup>
 	</s:VGroup>	
-</ui:DialogBox>
+</dialogs:DialogBox>

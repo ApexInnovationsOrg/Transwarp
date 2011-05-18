@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ui:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<dialogs:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			  title="History of Updates to this Page"
+			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
 			  addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);">
 	<fx:Script>
 		<![CDATA[
@@ -11,7 +12,7 @@
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.data.Update;
-			import com.apexinnovations.transwarp.ui.HistoryLabel;
+			import com.apexinnovations.transwarp.ui.dialogs.HistoryLabel;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			TranswarpVersion.revision = "$Rev$";
@@ -53,17 +54,17 @@
 		]]>
 	</fx:Script>
 	
-	<ui:states>
+	<dialogs:states>
 		<s:State name="default" />
 		<s:State name="no_results" />
-	</ui:states>
+	</dialogs:states>
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
-		<ui:PageTitle fontSize="11" />
+		<ui:PageTitle />
 		<s:Label text="This page does not have any updates" width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10" visible.default="false" height.default="0" width.default="0" />
 		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" visible.default="true" visible.no_results="false" height.no_results="0" >
 			<s:VGroup id="elementList" width="100%" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="5" >
 			</s:VGroup>
 		</s:Scroller>
 	</s:VGroup>
-</ui:DialogBox>
+</dialogs:DialogBox>

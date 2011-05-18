@@ -113,6 +113,14 @@ package com.apexinnovations.transwarp.data
 		public function get allowLMS():Boolean { return ((_allow == '' || _allow.indexOf('LMS') != -1) && !(_deny.indexOf('LMS') != -1)); }
 		public function get allowNurse():Boolean { return ((_allow == '' || _allow.indexOf('Nurse') != -1) && !(_deny.indexOf('Nurse') != -1)); }
 		public function get bookmarked():Boolean { return _bookmarked; }
+		public function set bookmarked(value:Boolean):void {
+			_bookmarked = value;
+			
+			var bookmark:BookmarkService = new BookmarkService();
+			
+			bookmark.dispatch(!value);
+		}
+		
 		public function get configuration():String { return _configuration; }
 		public function get course():Course { return _course; }
 		public function get created():Date { return _created; }
@@ -151,15 +159,6 @@ package com.apexinnovations.transwarp.data
 		[Bindable("pageDataChanged")] public function get hasLinks():Boolean { return _links.length > 0; }
 		[Bindable("pageDataChanged")] public function get hasUpdates():Boolean { return _updates.length > 0; }
 				
-		// Does everything associated with bookmarking this page 
-		public function bookmark():void {
-			this._bookmarked = true;
-			
-			var bookmark:BookmarkService = new BookmarkService();
-			
-			bookmark.dispatch();
-		}
-		
 		// Does everything associated with commenting on this page 
 		public function comment(s:String):void {
 			var comment:CommentService = new CommentService();

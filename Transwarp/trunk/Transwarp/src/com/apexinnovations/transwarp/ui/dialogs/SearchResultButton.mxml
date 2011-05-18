@@ -78,9 +78,8 @@
 			</s:filters>
 		</s:Rect>
 		<s:VGroup gap="8" verticalAlign="top" paddingTop="7" paddingBottom="7" paddingLeft="7" paddingRight="7" width="100%" height="100%">
-			<s:HGroup gap="2" width="100%">
-				<s:Label text="{page.course.levelRoman}." fontWeight="bold" color="0x888888" paddingRight="3" />			
-				<ui:PageTitle fontSize="11" page="{page}" />		
+			<s:HGroup gap="2" width="100%">			
+				<ui:PageTitle page="{page}" />		
 			</s:HGroup>
 			<s:RichEditableText width="346" height="100%" editable="false" textFlow="{page.description}" selectable="false" paddingLeft="10" paddingRight="0" alpha="0.7" alpha.selected="1" alpha.hovered="1" >
 				

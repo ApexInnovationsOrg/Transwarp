@@ -6,6 +6,7 @@
 		 addedToStage="onAdded()" xmlns:graphics="com.apexinnovations.transwarp.graphics.*" xmlns:ui="com.apexinnovations.transwarp.ui.*">
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.ui.dialogs.SearchDialog;
 			import com.apexinnovations.transwarp.data.Course;
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.Page;
@@ -15,7 +16,7 @@
 			import com.apexinnovations.transwarp.graphics.ArrowPreviousIcon;
 			import com.apexinnovations.transwarp.graphics.ReplayIcon;
 			import com.apexinnovations.transwarp.graphics.SearchIcon;
-			import com.apexinnovations.transwarp.ui.SearchDialog;
+			import com.apexinnovations.transwarp.ui.dialogs.SearchDialog;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			import com.apexinnovations.transwarp.utils.Utils;
 			

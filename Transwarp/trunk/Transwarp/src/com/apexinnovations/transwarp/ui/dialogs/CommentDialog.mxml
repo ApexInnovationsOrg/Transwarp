@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ui:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<dialogs:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
 			  title="Feedback/Suggestions for this Page">
 	<fx:Script>
 		<![CDATA[
@@ -35,7 +36,7 @@
 	</fx:Script>
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" >
-		<ui:PageTitle fontSize="11" horizontalAlign="left" />
+		<ui:PageTitle />
 		<s:TextArea id="commentText" width="380" height="170" prompt="Type your comments here"/>
 		<s:Label text="We appreciate your feedback!" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" />
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
@@ -43,4 +44,4 @@
 			<s:Button label="Cancel" click="closeHandler(event);"/>
 		</s:HGroup>
 	</s:VGroup>
-</ui:DialogBox>
+</dialogs:DialogBox>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ui:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<dialogs:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			  xmlns:s="library://ns.adobe.com/flex/spark" 
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
 			  title="Supporting Text for this Page"
 			  addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);">
 	<fx:Script>
@@ -45,15 +46,15 @@
 		]]>
 	</fx:Script>
 
-	<ui:states>
+	<dialogs:states>
 		<s:State name="default" />
 		<s:State name="no_results" />
-	</ui:states>
+	</dialogs:states>
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
-		<ui:PageTitle fontSize="11" />
+		<ui:PageTitle />
 		<s:Label text="This page does not have any supporting text" width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10" visible.default="false" height.default="0" width.default="0" />
 		<s:TextArea id="theText" width="380" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" editable="false" horizontalScrollPolicy="off" minHeight="250" maxHeight="450" visible.no_results="false" height.no_results="0" minHeight.no_results="0" >
 		</s:TextArea>
 	</s:VGroup>
-</ui:DialogBox>
+</dialogs:DialogBox>

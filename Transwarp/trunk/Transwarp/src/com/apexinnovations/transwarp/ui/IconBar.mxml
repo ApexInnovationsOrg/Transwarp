@@ -9,6 +9,14 @@
 
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.ui.dialogs.BookmarksDialog;
+			import com.apexinnovations.transwarp.ui.dialogs.CommentDialog;
+			import com.apexinnovations.transwarp.ui.dialogs.ConfigDialog;
+			import com.apexinnovations.transwarp.ui.dialogs.HelpDialog;
+			import com.apexinnovations.transwarp.ui.dialogs.HistoryDialog;
+			import com.apexinnovations.transwarp.ui.dialogs.KeyQuestionsDialog;
+			import com.apexinnovations.transwarp.ui.dialogs.LinksDialog;
+			import com.apexinnovations.transwarp.ui.dialogs.SupportTextDialog;
 			import com.apexinnovations.transwarp.Transwarp;
 			import com.apexinnovations.transwarp.data.*;
 			import com.apexinnovations.transwarp.graphics.*;
@@ -27,6 +35,7 @@
 			
 			TranswarpVersion.revision = "$Rev$";
 
+			protected var bookmarkDialog:BookmarksDialog = null;
 			protected var commentDialog:CommentDialog = null;
 			protected var configDialog:ConfigDialog = null;
 			protected var helpDialog:HelpDialog = null;
@@ -77,6 +86,13 @@
 				configDialog = ConfigDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), ConfigDialog, true, PopUpManagerChildList.POPUP));
 				
 				configDialog.display();
+			}
+			
+			protected function showBookmarks(evt:MouseEvent):void {
+				if (!bookmarkDialog)
+					bookmarkDialog = BookmarksDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), BookmarksDialog, false, PopUpManagerChildList.POPUP));
+				
+				bookmarkDialog.display();
 			}
 			
 			protected function showHelpPages(evt:MouseEvent):void {
@@ -182,7 +198,7 @@
 		<ui:IconButton artClass="{HistoryIcon}" click="showPageUpdates(event);" enabled="{currentPage.hasUpdates}"/>		
 		<ui:IconButton artClass="{LinksIcon}" click="showRelatedLinks(event);" enabled="{currentPage.hasLinks}"/>
 		<ui:IconButton artClass="{CommentIcon}" click="commentOnPage(event);"/>
-		<ui:IconButton artClass="{FavoritesIcon}" />
+		<ui:IconButton artClass="{FavoritesIcon}" click="showBookmarks(event);" />
 		<ui:IconButton artClass="{PaintbrushIcon}" />
 		<ui:IconButton artClass="{AudioIcon}" />
 		<ui:IconButton artClass="{ConfigurationIcon}" click="configureOptions(event);" />
