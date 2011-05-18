@@ -42,18 +42,26 @@
 					_bookmarkedPages.splice(_bookmarkedPages.indexOf(_page), 1);
 				}
 				dg.invalidateList();
+				dg.invalidateDisplayList();
 				currentState = val ? "bookmarked" : "default";
 			}
 			
 			protected function deleteBookmark(val:Page):void {
+				val.bookmarked = false;
 				_bookmarkedPages.splice(_bookmarkedPages.indexOf(val), 1);
 				dg.invalidateList();
+				dg.invalidateDisplayList();
 				if (val == _page) currentState = "default";
 			}
 			
 			protected function pageChanged(event:PageSelectionEvent):void {
 				_page = Courseware.instance.currentPage;
 				currentState = _page.bookmarked ? "bookmarked" : "default";
+			}
+			
+			protected function sortByLevel(obj1:Object, obj2:Object):int {
+				var idx1:uint = (obj1 as Page).sortToken, idx2:uint = (obj2 as Page).sortToken;
+				return (idx1 < idx2 ? -1 : (idx1 == idx2 ? 0 : 1));
 			}
 		]]>
 	</fx:Script>
@@ -68,11 +76,11 @@
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
 			<s:Button label.default="Bookmark this Page" label.bookmarked="Delete this Bookmark" click.default="bookmarkPage(true);" click.bookmarked="bookmarkPage(false);" />
 		</s:HGroup>
-		<s:Label text="Current Bookmarks:" width="380" fontWeight="bold" paddingTop="10" />
+		<s:Label text="Current Bookmarks:" width="400" fontWeight="bold" paddingTop="10" />
 		<s:HGroup verticalAlign="middle" width="100%">
 			<mx:DataGrid id="dg" width="300" height="100%" rowCount="5" dataProvider="{_bookmarkedPages}">
 				<mx:columns>
-					<mx:DataGridColumn dataField="course.levelRoman" headerText="Level" width="45" textAlign="center" />
+					<mx:DataGridColumn dataField="course.levelRoman" headerText="Level" width="48" textAlign="center" sortCompareFunction="sortByLevel" />
 					<mx:DataGridColumn dataField="qualifiedName" headerText="Page Name"/>
 				</mx:columns>
 			</mx:DataGrid>

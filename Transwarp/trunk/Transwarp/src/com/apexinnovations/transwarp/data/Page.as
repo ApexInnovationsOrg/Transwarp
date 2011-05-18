@@ -35,6 +35,7 @@ package com.apexinnovations.transwarp.data
 		private var _parent:Object = null;									// A link back to the parent (folder or course)
 		private var _parentFolders:String = '';								// A listing of the parent folders of this page (e.g. "Folder 1 » Folder 2 » Folder 3 »" 
 		private var _questions:Vector.<Question> = new Vector.<Question>();	// Vector (array) of related Questions
+		private var _sortToken:uint = 0;									// This allows for quick sorting of pages relative to their order in the courseware
 		private var _supportText:TextFlow = null;							// Any supporting text, as a TextFlow
 		private var _swf:String = '';										// URL of SWF file to load
 		private var _timeline:Boolean = false;								// Does this page have a timeline across the bottom to show progress?
@@ -137,6 +138,8 @@ package com.apexinnovations.transwarp.data
 		public function get parentFolders():String { return _parentFolders; }
 		public function get qualifiedName():String { return parentFolders + _name; }
 		public function get questions():Vector.<Question> { return _questions; }
+		public function get sortToken():uint { return _sortToken; }
+		public function set sortToken(value:uint):void { _sortToken = value;	}
 		public function get supportText():TextFlow { return _supportText; }
 		public function get swf():String { return _swf; }
 		public function get timeline():Boolean { return _timeline; }

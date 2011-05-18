@@ -31,17 +31,19 @@ package com.apexinnovations.transwarp.data
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
 			}
-
+			
 			for each (var child:XML in xml.children()) {
 				if (child.localName() == "page") {
 					var p:Page = new Page(child, this, 0);
 					_contents.push(p);
 					_pages.push(p);
+					p.sortToken = _level * 1000 + _pages.length;
 				} else {
 					var f:Folder = new Folder(child, this, 0);
 					_contents.push(f);
 					for each (var q:Page in f.pages) {
 						_pages.push(q);
+						q.sortToken = _level * 1000 + _pages.length;
 					}
 					//_pages.concat(f.pages);	NOT WORKING???
 				}
