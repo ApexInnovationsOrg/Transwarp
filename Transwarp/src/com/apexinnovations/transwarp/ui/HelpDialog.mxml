@@ -12,7 +12,7 @@
 			import com.apexinnovations.transwarp.events.HelpSelectionEvent;
 			import com.apexinnovations.transwarp.ui.HelpButton;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
-
+			
 			import mx.managers.PopUpManager;
 
 			TranswarpVersion.revision = "$Rev$";
@@ -48,14 +48,21 @@
 
 				helpTitle.text = help.name;
 				movieClipLoader.source = help.url;
+			}
+			
+			protected function helpLoaded(event:Event):void {
 				currentState = "showing_help";
-
-				PopUpManager.centerPopUp(this);
+			}
+			
+			protected function helpLoadingError(event:Event):void {
+				currentState = "error";
+				helpTitle.text='ERROR LOADING HELP';
 			}
 			
 			protected function backHandler(event:Event):void {
 				helpTitle.text = "Click a help topic below for more help on the subject:";
 				currentState = "default";
+				movieClipLoader.source = '';
 
 				PopUpManager.centerPopUp(this);
 			}
@@ -65,6 +72,7 @@
 	<ui:states>
 		<s:State name="default" />
 		<s:State name="showing_help" />
+		<s:State name="error" />
 	</ui:states>
 
 <!--
@@ -80,13 +88,13 @@
 -->
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
-		<s:Label id="helpTitle" text="Click a help topic below for more help on the subject:" fontWeight="bold" fontSize.showing_help="18" />
+		<s:Label id="helpTitle" text="Click a help topic below for more help on the subject:" fontWeight="bold" fontSize.showing_help="18" color.error="0xFF0000" />
 		<s:Scroller id="scroller" horizontalScrollPolicy="off" maxHeight="300" visible.showing_help="false" width.showing_help="0" height.showing_help="0" >
 			<s:VGroup id="elementList" width="100%" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
 			</s:VGroup>
 		</s:Scroller>
-		<s:SWFLoader id="movieClipLoader" visible.default="false" width.default="0" height.default="0" showBusyCursor="true" />
-		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10" visible.default="false" width.default="0" height.default="0" >
+		<s:SWFLoader id="movieClipLoader" autoLoad="true" complete="helpLoaded(event);" ioError="helpLoadingError(event)" securityError="helpLoadingError(event);" updateComplete="PopUpManager.centerPopUp(this);" visible.default="false" visible.error="false" width.default="0" height.default="0" width.error="0" height.error="0" showBusyCursor="true" />
+		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10" visible.default="false" visible.error="false" width.default="0" height.default="0" width.error="0" height.error="0" >
 			<s:Button label="Back" click="backHandler(event);" visible.default="false" width.default="0" height.default="0" />
 		</s:HGroup>
 	</s:VGroup>	
