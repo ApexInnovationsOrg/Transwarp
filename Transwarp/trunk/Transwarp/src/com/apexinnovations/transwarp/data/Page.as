@@ -113,7 +113,7 @@ package com.apexinnovations.transwarp.data
 		public function get allowEMT():Boolean { return ((_allow == '' || _allow.indexOf('EMT') != -1) && !(_deny.indexOf('EMT') != -1)); }
 		public function get allowLMS():Boolean { return ((_allow == '' || _allow.indexOf('LMS') != -1) && !(_deny.indexOf('LMS') != -1)); }
 		public function get allowNurse():Boolean { return ((_allow == '' || _allow.indexOf('Nurse') != -1) && !(_deny.indexOf('Nurse') != -1)); }
-		public function get bookmarked():Boolean { return _bookmarked; }
+		[Bindable] public function get bookmarked():Boolean { return _bookmarked; }
 		public function set bookmarked(value:Boolean):void {
 			_bookmarked = value;
 			
