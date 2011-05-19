@@ -4,7 +4,7 @@
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
-			  title="Bookmarks" >
+			  title="Bookmarks" contentCreationComplete="contentCreationComplete(event);">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Course;
@@ -42,17 +42,17 @@
 					_bookmarkedPages.splice(_bookmarkedPages.indexOf(_page), 1);
 				}
 				dg.dataProvider.refresh();
-//				dg.invalidateList();
-//				dg.invalidateDisplayList();
 				currentState = val ? "bookmarked" : "default";
+			}
+			
+			protected function contentCreationComplete(event:Event):void {
+				dg.sortByColumn(0);
 			}
 			
 			protected function deleteBookmark(val:Page):void {
 				val.bookmarked = false;
 				_bookmarkedPages.splice(_bookmarkedPages.indexOf(val), 1);
 				dg.dataProvider.refresh();
-//				dg.invalidateList();
-//				dg.invalidateDisplayList();
 				if (val == _page) currentState = "default";
 			}
 			
