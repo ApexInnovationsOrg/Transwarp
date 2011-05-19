@@ -34,6 +34,7 @@
 			
 			protected function currentCourseChange(value:Course):void {
 				selected = _course == value;
+				if (selected) Courseware.instance.currentPage = value.pages[0];		// Go to first page in selected course
 			}
 			
 			public function get selected():Boolean { return _selected; }
