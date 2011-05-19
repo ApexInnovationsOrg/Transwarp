@@ -83,7 +83,7 @@
 						<s:SolidColorStroke color="0x000000" weight="1" pixelHinting="true"/>
 					</s:stroke>
 					<s:fill>
-						<s:SolidColor color.default="#FFFFFF" color.bookmarked="#FFFF00"/>
+						<s:SolidColor color.default="#FFFFFF" color.bookmarked="{Courseware.instance.highlightColor}"/>
 					</s:fill>
 				</s:Path>
 			</s:Graphic>
