@@ -10,6 +10,7 @@ package com.apexinnovations.transwarp.data
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.*;
+	import flash.media.*;
 	
 	TranswarpVersion.revision = "$Rev$";
 	
@@ -121,6 +122,7 @@ trace('Search: require('+require+') exclude('+exclude+') terms('+terms+')');
 				_owner = xml.@owner;
 				_rootFolder = xml.@rootFolder;
 				_timeout = xml.@timeout;
+				volume = uint(xml.@volume);
 				_website = xml.@website;
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
@@ -182,6 +184,11 @@ trace('Search: require('+require+') exclude('+exclude+') terms('+terms+')');
 		public function get rootFolder():String { return _rootFolder; }
 		public function get timeout():int { return _timeout; }
 		public function get user():User { return _user; }
+		[Bindable] public function get volume():uint { return SoundMixer.soundTransform.volume; }
+		public function set volume(val:uint):void {
+			SoundMixer.soundTransform = new SoundTransform(val/100);
+		}
+		
 		public function get website():String { return _website; }
 		
 		public function get contentLoader():ContentLoader { return _contentLoader; }

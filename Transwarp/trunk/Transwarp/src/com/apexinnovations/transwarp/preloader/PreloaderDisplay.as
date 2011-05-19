@@ -151,6 +151,7 @@ package com.apexinnovations.transwarp.preloader {
 				xml.@timeout = xml.user.@coursewareTimeout;
 				xml.@color = xml.product.@color;
 				xml.@highlightColor = xml.product.@highlightColor;
+				xml.@volume = uint(xml.user.@audioVolume);
 				
 				// ...Mark restricted courses
 				var restrictedCourses:Array = (xml.user.restrictedCourses.text() != undefined ? xml.user.restrictedCourses.text().split(' ') : []);
