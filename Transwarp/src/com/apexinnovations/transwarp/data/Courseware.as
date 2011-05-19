@@ -26,6 +26,7 @@ package com.apexinnovations.transwarp.data
 		private var _currentPage:Page = null;		// Current page the user is viewing
 		private var _currentCourseList:CourseList;
 		private var _debug:Boolean = false;			// Are we in debug mode?
+		private var _highlightColor:uint = 0x000000;// The highlight color to use for this product in the engine's UI
 		private var _owner:String = '';				// The owner of this engine - Apex Innovations, e.g.
 		private var _product:Product = null;		// The product that we're working with
 		private var _rootFolder:String = '';		// The folder from which all page content is accessed
@@ -116,6 +117,7 @@ trace('Search: require('+require+') exclude('+exclude+') terms('+terms+')');
 				color = uint("0x" + String(xml.@color).substr(1,6));	// @color like '#FF00FF'
 				_copyright = xml.@copyright;
 				_debug = xml.@debug == 'true';
+				highlightColor = uint("0x" + String(xml.@highlightColor).substr(1,6));	// @color like '#FF00FF'
 				_owner = xml.@owner;
 				_rootFolder = xml.@rootFolder;
 				_timeout = xml.@timeout;
@@ -139,6 +141,12 @@ trace('Search: require('+require+') exclude('+exclude+') terms('+terms+')');
 		[Bindable("colorChanged")] public function get color():uint { return _color; }
 		public function set color(value:uint):void { 
 			_color = value;
+			dispatchEvent(new Event("colorChanged"));
+		}
+		
+		[Bindable("colorChanged")] public function get highlightColor():uint { return _highlightColor; }
+		public function set highlightColor(value:uint):void { 
+			_highlightColor = value;
 			dispatchEvent(new Event("colorChanged"));
 		}
 		
