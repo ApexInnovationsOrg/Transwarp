@@ -2,8 +2,8 @@ package com.apexinnovations.transwarp.data
 {
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
-	import flash.events.EventDispatcher;
 	import flash.errors.*;
+	import flash.events.EventDispatcher;
 	import flash.utils.*;
 	
 	import mx.formatters.DateFormatter;
@@ -16,7 +16,6 @@ package com.apexinnovations.transwarp.data
 		private static var _instance:User;		// Make this class a singleton
 		
 		private var _autoCloseMenu:Boolean = false;			// Automatically close previous folders when opening new one at same level?
-		private var _audioVolume:uint = 50;					// Default audio volume (0-100)
 		private var _animatePageTransitions:Boolean = true;	// Animate page transitions?
 		private var _classes:String = '';					// Space separated list of classes this user falls into (e.g. 'LMS Doctor Beta')
 		private var _closedCaptioning:Boolean = false;		// Turn on closed captioning?
@@ -40,7 +39,6 @@ package com.apexinnovations.transwarp.data
 
 			try {
 				_autoCloseMenu = xml.@autoCloseMenu == 'true';
-				_audioVolume = uint(xml.@audioVolume);
 				_animatePageTransitions = xml.@animatePageTransitions == 'true';
 				_classes = xml.@classes;
 				_closedCaptioning = xml.@closedCaptioning == 'true';
@@ -59,9 +57,6 @@ package com.apexinnovations.transwarp.data
 
 		[Bindable] public function get autoCloseMenu():Boolean { return _autoCloseMenu; }
 		public function set autoCloseMenu(val:Boolean):void { _autoCloseMenu = val; }
-		
-		[Bindable] public function get audioVolume():uint { return _audioVolume; }
-		public function set audioVolume(val:uint):void { _audioVolume = val; }
 		
 		[Bindable] public function get animatePageTransitions():Boolean { return _animatePageTransitions; }
 		public function set animatePageTransitions(val:Boolean):void { _animatePageTransitions = val; }
