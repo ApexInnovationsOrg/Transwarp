@@ -41,16 +41,18 @@
 				} else {
 					_bookmarkedPages.splice(_bookmarkedPages.indexOf(_page), 1);
 				}
-				dg.invalidateList();
-				dg.invalidateDisplayList();
+				dg.dataProvider.refresh();
+//				dg.invalidateList();
+//				dg.invalidateDisplayList();
 				currentState = val ? "bookmarked" : "default";
 			}
 			
 			protected function deleteBookmark(val:Page):void {
 				val.bookmarked = false;
 				_bookmarkedPages.splice(_bookmarkedPages.indexOf(val), 1);
-				dg.invalidateList();
-				dg.invalidateDisplayList();
+				dg.dataProvider.refresh();
+//				dg.invalidateList();
+//				dg.invalidateDisplayList();
 				if (val == _page) currentState = "default";
 			}
 			
@@ -74,16 +76,27 @@
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
 		<ui:PageTitle />
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
-			<s:Button label.default="Bookmark this Page" label.bookmarked="Delete this Bookmark" click.default="bookmarkPage(true);" click.bookmarked="bookmarkPage(false);" />
+			<!-- Show star graphic -->
+			<s:Graphic>
+				<s:Path data="M9.5 7.2 13.05 0 16.6 7.2 24.55 8.3 18.85 13.95 20.2 21.85 13.1 18.1 6 21.9 7.35 13.95 1.6 8.4 9.5 7.2">
+					<s:stroke>
+						<s:SolidColorStroke color="0x000000" weight="1" pixelHinting="true"/>
+					</s:stroke>
+					<s:fill>
+						<s:SolidColor color.default="#FFFFFF" color.bookmarked="#FFFF00"/>
+					</s:fill>
+				</s:Path>
+			</s:Graphic>
+			<s:Button label.default="Bookmark this Page" width="140" label.bookmarked="Delete this Bookmark" click.default="bookmarkPage(true);" click.bookmarked="bookmarkPage(false);" />
 		</s:HGroup>
 		<s:Label text="Current Bookmarks:" width="400" fontWeight="bold" paddingTop="10" />
 		<s:HGroup verticalAlign="middle" width="100%">
-			<mx:DataGrid id="dg" width="300" height="100%" rowCount="5" dataProvider="{_bookmarkedPages}">
-				<mx:columns>
-					<mx:DataGridColumn dataField="course.levelRoman" headerText="Level" width="48" textAlign="center" sortCompareFunction="sortByLevel" />
+			<ui:DataGridSortable id="dg" width="400" height="100%" rowCount="5" dataProvider="{_bookmarkedPages}">
+				<ui:columns>
+					<mx:DataGridColumn dataField="course.levelRoman" headerText="Level" width="55" textAlign="center" sortCompareFunction="sortByLevel" />
 					<mx:DataGridColumn dataField="qualifiedName" headerText="Page Name"/>
-				</mx:columns>
-			</mx:DataGrid>
+				</ui:columns>
+			</ui:DataGridSortable>
 			<s:VGroup horizontalAlign="left">
 				<s:Button label="Go To" enabled="{dg.selectedItem}" click="Courseware.instance.currentPage=(dg.selectedItem as Page);" />
 				<s:Button label="Delete" enabled="{dg.selectedItem}" click="deleteBookmark(dg.selectedItem as Page);" />
