@@ -27,7 +27,7 @@
 				
 				var config:ConfigService = new ConfigService();
 				
-				config.dispatch("audioVolume ", slider.value.toString());
+				config.dispatch("audioVolume", slider.value.toString());
 			}
 		]]>
 	</fx:Script>
