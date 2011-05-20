@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		  xmlns:s="library://ns.adobe.com/flex/spark" 
 		  xmlns:mx="library://ns.adobe.com/flex/mx"
-		  visible.closed="false" verticalAlign="middle"
+		  visible.closed="false"
 		  mouseOver="mouseOver(event);" mouseOut="mouseOut(event);">
 
 	<fx:Script>
@@ -59,9 +59,24 @@
 		</s:Transition>
 	</s:transitions>
 
-	<s:Rect alpha="0" width="32" height="{height}" /> <!-- This is there so mouse starts over the control so we don't have to worry about initial mouseOut() -->
-	<mx:ApplicationControlBar id="control" dock="false" fillAlphas="[0.9, 0.9]" fillColors="[0xffffff, 0xcccccc]" paddingBottom="15" paddingLeft="15" paddingRight="15" paddingTop="17">
-		<s:Label text="volume:" fontWeight="bold" color="0x000000" />
-		<s:HSlider id="slider" minimum="0" maximum="100" value="{Courseware.instance.volume}" snapInterval="1" liveDragging="false" change="changeVolume();" width="150"/>
-	</mx:ApplicationControlBar>
-</s:HGroup>
+	<s:HGroup>
+		<s:Rect alpha="0" width="32" /> <!-- This is there so mouse starts over the control so we don't have to worry about initial mouseOut() -->
+		<s:Group>
+			<s:Rect width="100%" height="100%" top="0" radiusX="5" radiusY="5" alpha="0.9">
+				<s:fill>
+					<s:LinearGradient rotation="90">
+						<s:GradientEntry ratio="0" color="#ffffff"/>
+						<s:GradientEntry ratio="1" color="#cccccc"/>		
+					</s:LinearGradient>
+				</s:fill>
+				<s:filters>
+					<s:DropShadowFilter blurX="7" blurY="7" distance="7" alpha=".4" />
+				</s:filters>
+			</s:Rect>
+			<s:HGroup verticalAlign="middle" paddingBottom="15" paddingLeft="15" paddingRight="15" paddingTop="17">
+				<s:Label text="volume:" fontWeight="bold" color="0x000000" />
+				<s:HSlider id="slider" minimum="0" maximum="100" value="{Courseware.instance.volume}" snapInterval="1" liveDragging="false" change="changeVolume();" width="150"/>
+			</s:HGroup>
+		</s:Group>
+	</s:HGroup>
+</s:Group>
