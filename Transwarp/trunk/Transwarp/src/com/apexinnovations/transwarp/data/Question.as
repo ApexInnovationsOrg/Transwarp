@@ -30,8 +30,8 @@ package com.apexinnovations.transwarp.data
 			}
 		}
 		
-		public function get aTextFlow():TextFlow { return _aTextFlow; }
+		[Bindable("pageSelectionChanged")] public function get aTextFlow():TextFlow { return _aTextFlow; }
 		public function get parent():Page { return _parent; }
-		public function get qTextFlow():TextFlow { return _qTextFlow; }
+		[Bindable("pageSelectionChanged")] public function get qTextFlow():TextFlow { return _qTextFlow; }
 	}
 }
