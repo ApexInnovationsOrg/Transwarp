@@ -62,8 +62,10 @@ package com.apexinnovations.transwarp.ui {
 					dispatchEvent(new Event(Event.OPEN));
 					item.addEventListener(Event.COMPLETE, contentLoaded);
 					item.addEventListener(ProgressEvent.PROGRESS, contentProgress);
-				} else
-					dispatchEvent(new ErrorEvent(BulkLoader.ERROR, true, false, item.errorEvent.text));
+				}
+				// This needs to fire some other event, which will then be picked up by Transwarp and displayed onscreen to user
+				//else
+				//	dispatchEvent(new ErrorEvent(BulkLoader.ERROR, true, false, item.errorEvent.text));
 			}
 		}
 		
