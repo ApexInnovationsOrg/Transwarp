@@ -6,7 +6,6 @@
 		 addedToStage="onAdded()" xmlns:graphics="com.apexinnovations.transwarp.graphics.*" xmlns:ui="com.apexinnovations.transwarp.ui.*">
 	<fx:Script>
 		<![CDATA[
-			import com.apexinnovations.transwarp.ui.dialogs.SearchDialog;
 			import com.apexinnovations.transwarp.data.Course;
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.Page;
@@ -131,8 +130,8 @@
 	</s:Rect>
 	
 	<!--"Flair" graphic at the top of the gray gradient-->
-	<s:Graphic left="270" top="0" includeIn="default">
-		<s:Path data="M 0 0 19 19 {width} 19 {width} 0 Z">
+	<s:Graphic id="flair" left="270" top="0" includeIn="default">
+		<s:Path data="M 0 0 19 19 {width-flair.x} 19 {width-flair.x} 0 Z">
 			<s:fill>
 				<s:LinearGradient scaleX="-11.625" rotation="270">
 					<s:GradientEntry color="{Courseware.instance.color}" ratio="0.08"/>
@@ -185,17 +184,17 @@
 	
 	<s:TileGroup id="levelNav" left="285" right="40" top="32" requestedRowCount="3" orientation="columns" verticalGap="10" horizontalGap="10" height.maximized="0" visible.maximized="false"/>
 	
-	<s:HGroup id="navButtons" verticalAlign="middle" gap="12" bottom="1" height="32" horizontalCenter="66" horizontalCenter.maximized="30">
-		<ui:TopBarButton icon="{ArrowPreviousIcon}" label="PREV" click="prevClick()"/>
+	<s:HGroup verticalAlign="middle" gap="12" bottom="0" height="34" horizontalCenter="66"
+			  color="0xffffff" fontFamily="Arial" fontWeight="bold">
+		<ui:IconButton icon="{ArrowPreviousIcon}" label="PREV" click="prevClick()" />
 		<ui:VerticalSeparator />
-		<ui:TopBarButton icon="{ArrowNextIcon}" label="NEXT" iconOnRight="true" click="nextClick()"/>
+		<ui:IconButton icon="{ArrowNextIcon}" iconPlacement="right" label="NEXT" click="nextClick()" />
 		<ui:VerticalSeparator />
-		<ui:TopBarButton icon="{ReplayIcon}" label="REPLAY" />
+		<ui:IconButton icon="{ReplayIcon}" label="REPLAY" />
 	</s:HGroup>
-	
 	
 	<s:HGroup id="searchGroup" height="32" verticalAlign="middle" visible="{hasSearch}" bottom="1" right="10">
 		<s:TextInput id="searchInput" prompt="{searchPrompt}" width="183" enter="submitSearch()"/>
-		<ui:IconButton artClass="{SearchIcon}" click="submitSearch()" width="30" height="25"/>
+		<ui:IconButton icon="{SearchIcon}" click="submitSearch()" width="30" height="25"/>
 	</s:HGroup>
 </s:Group>
