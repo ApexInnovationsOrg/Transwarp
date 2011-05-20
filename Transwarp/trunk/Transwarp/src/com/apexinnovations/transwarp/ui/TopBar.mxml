@@ -84,6 +84,10 @@
 				Courseware.instance.nextPage();
 			}
 			
+			protected function replayClick():void {
+				SoundMixer.stopAll();	// stops all audio
+			}
+			
 			protected function submitSearch():void {
 				if (Utils.trim(searchInput.text) != '') {
 					if (!searchDialog) {
@@ -190,7 +194,7 @@
 		<ui:VerticalSeparator />
 		<ui:IconButton icon="{ArrowNextIcon}" iconPlacement="right" label="NEXT" click="nextClick()" />
 		<ui:VerticalSeparator />
-		<ui:IconButton icon="{ReplayIcon}" label="REPLAY" />
+		<ui:IconButton icon="{ReplayIcon}" label="REPLAY" click="replayClick()" />
 	</s:HGroup>
 	
 	<s:HGroup id="searchGroup" height="32" verticalAlign="middle" visible="{hasSearch}" bottom="1" right="10">
