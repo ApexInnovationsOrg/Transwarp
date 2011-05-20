@@ -9,7 +9,9 @@
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			import com.apexinnovations.transwarp.webservices.ConfigService;
-			
+
+			import mx.managers.PopUpManager;
+
 			TranswarpVersion.revision = "$Rev$";
 
 			public var anchor:DisplayObject = null;
@@ -20,6 +22,9 @@
 				var location:Point = new Point(anchor.x, anchor.y);
 				location = anchor.localToGlobal(location);
 				y = location.y - height/2;
+				
+				PopUpManager.bringToFront(this);
+				setFocus();
 			}
 			
 			protected function changeVolume():void {

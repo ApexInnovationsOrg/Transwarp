@@ -33,6 +33,7 @@
 			protected var bookmarkDialog:BookmarksDialog = null;
 			protected var commentDialog:CommentDialog = null;
 			protected var configDialog:ConfigDialog = null;
+			protected var drawingTools:DrawingTools = null;
 			protected var helpDialog:HelpDialog = null;
 			protected var keyQuestionsDialog:KeyQuestionsDialog = null;
 			protected var supportTextDialog:SupportTextDialog = null;
@@ -105,6 +106,15 @@
 					bookmarkDialog = BookmarksDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), BookmarksDialog, false, PopUpManagerChildList.POPUP));
 				
 				bookmarkDialog.display();
+			}
+			
+			protected function showDrawingTools(evt:MouseEvent):void {
+				if (!drawingTools) {
+					drawingTools = DrawingTools(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), DrawingTools, false, PopUpManagerChildList.POPUP))
+				}
+				
+				drawingTools.anchor = DisplayObject(evt.target);
+				drawingTools.display();
 			}
 			
 			protected function showHelpPages(evt:MouseEvent):void {
@@ -211,7 +221,7 @@
 		<ui:IconButton icon="{LinksIcon}" click="showRelatedLinks(event);" enabled="{currentPage.hasLinks}"/>
 		<ui:IconButton icon="{CommentIcon}" click="commentOnPage(event);"/>
 		<ui:IconButton icon="{FavoritesIcon}" click="showBookmarks(event);" />
-		<ui:IconButton icon="{PaintbrushIcon}" />
+		<ui:IconButton icon="{PaintbrushIcon}"  click="showDrawingTools(event);"/>
 		<ui:IconButton id="audio" icon="{AudioIcon}" click="showAudioVolume(event);"/>
 		<ui:IconButton icon="{ConfigurationIcon}" click="configureOptions(event);" />
 		<ui:IconButton icon="{SnapshotIcon}" click="printStage(event);" />
