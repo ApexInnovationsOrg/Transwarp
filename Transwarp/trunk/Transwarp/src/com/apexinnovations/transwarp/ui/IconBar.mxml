@@ -9,6 +9,10 @@
 
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.Transwarp;
+			import com.apexinnovations.transwarp.data.*;
+			import com.apexinnovations.transwarp.graphics.*;
+			import com.apexinnovations.transwarp.ui.*;
 			import com.apexinnovations.transwarp.ui.dialogs.BookmarksDialog;
 			import com.apexinnovations.transwarp.ui.dialogs.CommentDialog;
 			import com.apexinnovations.transwarp.ui.dialogs.ConfigDialog;
@@ -17,10 +21,6 @@
 			import com.apexinnovations.transwarp.ui.dialogs.KeyQuestionsDialog;
 			import com.apexinnovations.transwarp.ui.dialogs.LinksDialog;
 			import com.apexinnovations.transwarp.ui.dialogs.SupportTextDialog;
-			import com.apexinnovations.transwarp.Transwarp;
-			import com.apexinnovations.transwarp.data.*;
-			import com.apexinnovations.transwarp.graphics.*;
-			import com.apexinnovations.transwarp.ui.*;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import flash.printing.*;
@@ -29,6 +29,7 @@
 			
 			import mx.binding.utils.BindingUtils;
 			import mx.core.IVisualElement;
+			import mx.core.UIComponent;
 			import mx.managers.PopUpManager;
 			import mx.managers.PopUpManagerChildList;
 			import mx.utils.ColorUtil;
@@ -55,11 +56,12 @@
 				
 				for(var i:int=0; i<buttonGroup.numElements; ++i){
 					var e:IVisualElement = buttonGroup.getElementAt(i);
-					if(e is IconButton) {
+					/* if(e is IconButton) {
 						e.width = 30;
 						e.height = 30;
-						if(i+1 < buttonGroup.numElements)
-							buttonGroup.addElementAt(new HorizontalSeparator(), i+1);
+					}	 */
+					if(e is IconButton && i+1 < buttonGroup.numElements) {
+						buttonGroup.addElementAt(new HorizontalSeparator(), i+1);
 					}
 				}
 				
@@ -170,7 +172,7 @@
 					printSprite = null;
 				}
 			}
-
+			
 		]]>
 	</fx:Script>
 	
@@ -192,24 +194,24 @@
 		</s:filters>
 	</s:Rect>
 	
-	<s:VGroup id="buttonGroup" top="15" width="100%" horizontalAlign="center" gap="10">
-		<ui:IconButton artClass="{KeyQuestionIcon}" click="showKeyQuestions(event);" enabled="{currentPage.hasQuestions}"/>
-		<ui:IconButton artClass="{SupportingTextIcon}" click="showSupportText(event);" enabled="{currentPage.hasSupportText}"/>
-		<ui:IconButton artClass="{HistoryIcon}" click="showPageUpdates(event);" enabled="{currentPage.hasUpdates}"/>		
-		<ui:IconButton artClass="{LinksIcon}" click="showRelatedLinks(event);" enabled="{currentPage.hasLinks}"/>
-		<ui:IconButton artClass="{CommentIcon}" click="commentOnPage(event);"/>
-		<ui:IconButton artClass="{FavoritesIcon}" click="showBookmarks(event);" />
-		<ui:IconButton artClass="{PaintbrushIcon}" />
-		<ui:IconButton artClass="{AudioIcon}" />
-		<ui:IconButton artClass="{ConfigurationIcon}" click="configureOptions(event);" />
-		<ui:IconButton artClass="{SnapshotIcon}" click="printStage(event);" />
-		<ui:IconButton artClass="{HelpIcon}"  click="showHelpPages(event);"/>
+	<s:VGroup id="buttonGroup" top="15" width="100%" horizontalAlign="center" gap="12">
+		<ui:IconButton icon="{KeyQuestionIcon}" click="showKeyQuestions(event);" enabled="{currentPage.hasQuestions}"/>
+		<ui:IconButton icon="{SupportingTextIcon}" click="showSupportText(event);" enabled="{currentPage.hasSupportText}"/>
+		<ui:IconButton icon="{HistoryIcon}" click="showPageUpdates(event);" enabled="{currentPage.hasUpdates}"/>		
+		<ui:IconButton icon="{LinksIcon}" click="showRelatedLinks(event);" enabled="{currentPage.hasLinks}"/>
+		<ui:IconButton icon="{CommentIcon}" click="commentOnPage(event);"/>
+		<ui:IconButton icon="{FavoritesIcon}" click="showBookmarks(event);" />
+		<ui:IconButton icon="{PaintbrushIcon}" />
+		<ui:IconButton icon="{AudioIcon}" />
+		<ui:IconButton icon="{ConfigurationIcon}" click="configureOptions(event);" />
+		<ui:IconButton icon="{SnapshotIcon}" click="printStage(event);" />
+		<ui:IconButton icon="{HelpIcon}"  click="showHelpPages(event);"/>
 	</s:VGroup>
 	
 	<s:VGroup width="100%" horizontalAlign="center" gap="10" bottom="10">
 		<ui:HorizontalSeparator visible="{height == minHeight}"/>
-		<ui:IconButton artClass="{MaximizeIcon}" width="30" height="30" click="stage.displayState=StageDisplayState.FULL_SCREEN" includeIn="default" />
-		<ui:IconButton artClass="{MinimizeIcon}" width="30" height="30" click="stage.displayState=StageDisplayState.NORMAL" includeIn="maximized"/>
+		<ui:IconButton icon="{MaximizeIcon}" width="30" height="30" click="stage.displayState=StageDisplayState.FULL_SCREEN" includeIn="default" />
+		<ui:IconButton icon="{MinimizeIcon}" width="30" height="30" click="stage.displayState=StageDisplayState.NORMAL" includeIn="maximized"/>
 	</s:VGroup>
 	
 	

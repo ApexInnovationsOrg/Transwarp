@@ -14,6 +14,6 @@ package com.apexinnovations.transwarp {
 		
 		public function TranswarpBase() {
 			super();
-		}		
+		}
 	}
 }

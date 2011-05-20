@@ -7,11 +7,10 @@ package com.apexinnovations.transwarp {
 	import com.apexinnovations.transwarp.webservices.LogService;
 	
 	import flash.events.Event;
-	
-	import flashx.textLayout.container.TextContainerManager;
-	
+
 	import mx.core.mx_internal;
 	import mx.managers.SystemManager;
+
 	
 	use namespace mx_internal;
 	
@@ -24,7 +23,6 @@ package com.apexinnovations.transwarp {
 		protected var _xml:XML;
 				
 		public function TranswarpSystemManager()	{
-			var c:Class = TextContainerManager;
 			super();
 		}
 		
@@ -59,3 +57,8 @@ package com.apexinnovations.transwarp {
 		}
 	}
 }
+
+// Force loading of special classes into frame 1:
+
+import flashx.textLayout.container.TextContainerManager;
+TextContainerManager;
