@@ -6,7 +6,7 @@
 		 xmlns:ui="com.apexinnovations.transwarp.ui.*"
 		 width="50" minHeight="{buttonGroup.height + 70}"
 		 addedToStage="onAdded()">
-
+	
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.Transwarp;
@@ -56,13 +56,20 @@
 				
 				for(var i:int=0; i<buttonGroup.numElements; ++i){
 					var e:IVisualElement = buttonGroup.getElementAt(i);
-					/* if(e is IconButton) {
-						e.width = 30;
-						e.height = 30;
-					}	 */
-					if(e is IconButton && i+1 < buttonGroup.numElements) {
-						buttonGroup.addElementAt(new HorizontalSeparator(), i+1);
+					if(e is IconButton) {
+						var g:Group = new Group();
+						g.height = 50;
+						e.horizontalCenter = 0;
+						e.verticalCenter = 0;
+						g.addElement(e);
+						if(i < buttonGroup.numElements) {	
+							var s:HorizontalSeparator = new HorizontalSeparator();
+							s.bottom = 0;
+							g.addElement(s);
+						}
+						buttonGroup.addElementAt(g, i);
 					}
+					
 				}
 				
 			}
@@ -194,7 +201,7 @@
 		</s:filters>
 	</s:Rect>
 	
-	<s:VGroup id="buttonGroup" top="15" width="100%" horizontalAlign="center" gap="12">
+	<s:VGroup id="buttonGroup" top="15" width="100%" horizontalAlign="center" gap="0">
 		<ui:IconButton icon="{KeyQuestionIcon}" click="showKeyQuestions(event);" enabled="{currentPage.hasQuestions}"/>
 		<ui:IconButton icon="{SupportingTextIcon}" click="showSupportText(event);" enabled="{currentPage.hasSupportText}"/>
 		<ui:IconButton icon="{HistoryIcon}" click="showPageUpdates(event);" enabled="{currentPage.hasUpdates}"/>		
@@ -208,7 +215,7 @@
 		<ui:IconButton icon="{HelpIcon}"  click="showHelpPages(event);"/>
 	</s:VGroup>
 	
-	<s:VGroup width="100%" horizontalAlign="center" gap="10" bottom="10">
+	<s:VGroup width="100%" horizontalAlign="center" gap="15" bottom="10">
 		<ui:HorizontalSeparator visible="{height == minHeight}"/>
 		<ui:IconButton icon="{MaximizeIcon}" width="30" height="30" click="stage.displayState=StageDisplayState.FULL_SCREEN" includeIn="default" />
 		<ui:IconButton icon="{MinimizeIcon}" width="30" height="30" click="stage.displayState=StageDisplayState.NORMAL" includeIn="maximized"/>
