@@ -2,14 +2,14 @@
 <s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		  xmlns:s="library://ns.adobe.com/flex/spark" 
 		  xmlns:mx="library://ns.adobe.com/flex/mx"
-		  visible.closed="false" visible.color_picked="false" mouseOver="currentState='default';" mouseOut="currentState='closed';">
+		  visible.closed="false" visible.childInteractionComplete="false" mouseOver="mouseOver(event);" mouseOut="mouseOut(event);" mouseOver.childInteracting="no_op(event);" mouseOut.childInteracting="no_op(event);">
 	
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			import com.apexinnovations.transwarp.webservices.ConfigService;
-
+			
 			import mx.managers.PopUpManager;
 
 			TranswarpVersion.revision = "$Rev$";
@@ -26,28 +26,38 @@
 				PopUpManager.bringToFront(this);
 				setFocus();
 			}
+			
+			protected function mouseOut(event:MouseEvent):void {
+				currentState = 'closed';
+			}
+			
+			protected function mouseOver(event:MouseEvent):void {
+				currentState = 'default';
+			}
+			
+			protected function no_op(event:MouseEvent):void {
+				// Do nothing
+			}
 		]]>
 	</fx:Script>
 	
 	<s:states>
 		<s:State name="default" />
-		<s:State name="color_picked" />
+		<s:State name="childInteractionComplete" />
+		<s:State name="childInteracting" />
 		<s:State name="closed" />
 	</s:states>
 	
 	<s:transitions>
-		<s:Transition fromState="default" toState="closed">
+		<s:Transition fromState="*" toState="closed">
 			<s:Sequence >
 				<s:Fade target="{this}" duration="1000" />
 			</s:Sequence>
 		</s:Transition>
-		<s:Transition fromState="default" toState="color_picked">
+		<s:Transition fromState="*" toState="childInteractionComplete">
 			<s:Sequence >
 				<s:Fade target="{this}" duration="2000" /> <!-- Just fade more slowly after choosing a color -->
 			</s:Sequence>
-		</s:Transition>
-		<s:Transition fromState="*" toState="default">
-			<s:Fade target="{this}" duration="0" />
 		</s:Transition>
 	</s:transitions>
 	
@@ -55,11 +65,11 @@
 	<mx:ApplicationControlBar id="control" dock="false" fillAlphas="[0.9, 0.9]" fillColors="[0xffffff, 0xcccccc]" >
 		<mx:Form styleName="plain">
 			<s:HGroup verticalAlign="middle">
+				<mx:FormItem label="color:">
+					<mx:ColorPicker id="cp" showTextField="false" selectedColor="0xFF0000" itemRollOver="currentState='childInteracting'" open="currentState='childInteracting'" close="currentState='childInteractionComplete'" change="currentState='childInteractionComplete';" toolTip="Choose a brush color"/>
+				</mx:FormItem>
 				<mx:FormItem id="size" label="size:">
 					<mx:NumericStepper id="ns" minimum="2" maximum="20" stepSize="2" value="10" width="40" toolTip="Choose a brush size"/>
-				</mx:FormItem>
-				<mx:FormItem label="color:">
-					<mx:ColorPicker id="cp" showTextField="false" selectedColor="0xFF0000" itemRollOver="currentState='default'" change="currentState='color_picked';" toolTip="Choose a brush color"/>
 				</mx:FormItem>
 				<mx:FormItem paddingTop="3">
 					<s:Group width="20" height="20">

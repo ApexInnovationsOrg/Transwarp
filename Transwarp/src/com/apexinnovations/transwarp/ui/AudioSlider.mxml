@@ -2,14 +2,14 @@
 <s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		  xmlns:s="library://ns.adobe.com/flex/spark" 
 		  xmlns:mx="library://ns.adobe.com/flex/mx"
-		  visible.closed="false" mouseOver="currentState='default';" mouseOut="currentState='closed';">
+		  visible.closed="false" mouseOver="mouseOver(event);" mouseOut="mouseOut(event);">
 
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			import com.apexinnovations.transwarp.webservices.ConfigService;
-
+			
 			import mx.managers.PopUpManager;
 
 			TranswarpVersion.revision = "$Rev$";
@@ -34,6 +34,14 @@
 				
 				config.dispatch("audioVolume", slider.value.toString());
 			}
+			
+			protected function mouseOut(event:MouseEvent):void {
+				currentState = 'closed';
+			}
+			
+			protected function mouseOver(event:MouseEvent):void {
+				currentState = 'default';
+			}
 		]]>
 	</fx:Script>
 	
@@ -47,9 +55,6 @@
 			<s:Sequence >
 				<s:Fade target="{this}" duration="1000" />
 			</s:Sequence>
-		</s:Transition>
-		<s:Transition fromState="closed" toState="default">
-			<s:Fade target="{this}" duration="0" />
 		</s:Transition>
 	</s:transitions>
 
