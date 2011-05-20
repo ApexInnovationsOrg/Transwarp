@@ -6,6 +6,7 @@
 		 addedToStage="onAdded()" xmlns:graphics="com.apexinnovations.transwarp.graphics.*" xmlns:ui="com.apexinnovations.transwarp.ui.*">
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.Transwarp;
 			import com.apexinnovations.transwarp.data.Course;
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.Page;
@@ -85,7 +86,9 @@
 			}
 			
 			protected function replayClick():void {
-				SoundMixer.stopAll();	// stops all audio
+				var contents:ContentArea = (this.parentApplication as Transwarp).contentArea;
+				
+				contents.container.content = contents.container.content;	// what a hack!
 			}
 			
 			protected function submitSearch():void {
