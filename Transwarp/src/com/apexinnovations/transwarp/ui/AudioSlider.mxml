@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  visible.closed="false" mouseOver="currentState='default';" mouseOut="currentState='closed';">
+
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			import com.apexinnovations.transwarp.webservices.ConfigService;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			public function display():void { visible = true; }
+			
+			protected function changeVolume():void {
+				Courseware.instance.volume = slider.value;
+				
+				var config:ConfigService = new ConfigService();
+				
+				config.dispatch("audioVolume ", slider.value.toString());
+			}
+		]]>
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="default" />
+		<s:State name="closed" />
+	</s:states>
+
+	<s:transitions>
+		<s:Transition fromState="default" toState="closed">
+			<s:Sequence >
+				<s:Fade target="{this}" duration="1000" />
+			</s:Sequence>
+		</s:Transition>
+		<s:Transition fromState="closed" toState="default">
+			<s:Fade target="{this}" duration="0" />
+		</s:Transition>
+	</s:transitions>
+
+	<s:Rect alpha="0" width="32" height="{height}" />
+	<mx:ApplicationControlBar id="control" dock="false" fillAlphas="[0.9, 0.9]" fillColors="[0xffffff, 0xcccccc]">
+		<mx:Form styleName="plain">
+			<mx:FormItem label="volume:">
+				<mx:HSlider id="slider" minimum="0" maximum="100" value="{Courseware.instance.volume}" snapInterval="1" tickInterval="10" liveDragging="false" change="changeVolume();" />
+			</mx:FormItem>
+		</mx:Form>
+	</mx:ApplicationControlBar>
+</s:HGroup>
