@@ -32,7 +32,7 @@ package com.apexinnovations.transwarp.data
 		}
 		
 		public function get parent():Page { return _parent; }
-		public function get time():Date { return _time; }
-		public function get textFlow():TextFlow { return _textFlow; }
+		[Bindable("pageSelectionChanged")] public function get time():Date { return _time; }
+		[Bindable("pageSelectionChanged")] public function get textFlow():TextFlow { return _textFlow; }
 	}
 }

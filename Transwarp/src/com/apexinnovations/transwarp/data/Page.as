@@ -130,7 +130,7 @@ package com.apexinnovations.transwarp.data
 		public function set depth(value:int):void { _depth = value;	}
 		public function get description():TextFlow { return _description; }
 		public function get id():uint { return _id; }
-		public function get instructions():TextFlow { return _instructions; }
+		[Bindable("pageDataChanged")] public function get instructions():TextFlow { return _instructions; }
 		public function get keywords():String { return _keywords; }
 		public function get links():Vector.<Link> { return _links; }
 		public function get name():String { return _name; }
