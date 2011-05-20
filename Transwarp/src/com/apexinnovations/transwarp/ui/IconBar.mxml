@@ -94,13 +94,10 @@
 			protected function showAudioVolume(evt:MouseEvent):void {
 				if (!audioControl) {
 					audioControl = AudioSlider(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), AudioSlider, false, PopUpManagerChildList.POPUP))
-					audioControl.x = 0;
-					audioControl.y = this.y + 480;
 				}
 						
+				audioControl.anchor = DisplayObject(evt.target);
 				audioControl.display();
-				//Courseware.instance.volume = Courseware.instance.volume + 10;
-				//if (Courseware.instance.volume > 100) Courseware.instance.volume = 0;
 			}
 			
 			protected function showBookmarks(evt:MouseEvent):void {

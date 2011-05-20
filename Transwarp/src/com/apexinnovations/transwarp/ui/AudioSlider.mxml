@@ -11,8 +11,16 @@
 			import com.apexinnovations.transwarp.webservices.ConfigService;
 			
 			TranswarpVersion.revision = "$Rev$";
-			
-			public function display():void { visible = true; }
+
+			public var anchor:DisplayObject = null;
+
+			public function display():void {
+				visible = true;
+
+				var location:Point = new Point(anchor.x, anchor.y);
+				location = anchor.localToGlobal(location);
+				y = location.y - height/2;
+			}
 			
 			protected function changeVolume():void {
 				Courseware.instance.volume = slider.value;
