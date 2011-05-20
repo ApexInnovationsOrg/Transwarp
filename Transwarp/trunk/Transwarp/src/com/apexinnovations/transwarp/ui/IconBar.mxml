@@ -97,6 +97,11 @@
 				configDialog.display();
 			}
 			
+			protected function showAudioVolume(evt:MouseEvent):void {
+				Courseware.instance.volume = Courseware.instance.volume + 10;
+				if (Courseware.instance.volume > 100) Courseware.instance.volume = 0;
+			}
+			
 			protected function showBookmarks(evt:MouseEvent):void {
 				if (!bookmarkDialog)
 					bookmarkDialog = BookmarksDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), BookmarksDialog, false, PopUpManagerChildList.POPUP));
@@ -209,7 +214,7 @@
 		<ui:IconButton icon="{CommentIcon}" click="commentOnPage(event);"/>
 		<ui:IconButton icon="{FavoritesIcon}" click="showBookmarks(event);" />
 		<ui:IconButton icon="{PaintbrushIcon}" />
-		<ui:IconButton icon="{AudioIcon}" />
+		<ui:IconButton icon="{AudioIcon}" click="showAudioVolume(event);"/>
 		<ui:IconButton icon="{ConfigurationIcon}" click="configureOptions(event);" />
 		<ui:IconButton icon="{SnapshotIcon}" click="printStage(event);" />
 		<ui:IconButton icon="{HelpIcon}"  click="showHelpPages(event);"/>
