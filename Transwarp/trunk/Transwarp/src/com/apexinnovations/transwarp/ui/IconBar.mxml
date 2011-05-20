@@ -13,14 +13,7 @@
 			import com.apexinnovations.transwarp.data.*;
 			import com.apexinnovations.transwarp.graphics.*;
 			import com.apexinnovations.transwarp.ui.*;
-			import com.apexinnovations.transwarp.ui.dialogs.BookmarksDialog;
-			import com.apexinnovations.transwarp.ui.dialogs.CommentDialog;
-			import com.apexinnovations.transwarp.ui.dialogs.ConfigDialog;
-			import com.apexinnovations.transwarp.ui.dialogs.HelpDialog;
-			import com.apexinnovations.transwarp.ui.dialogs.HistoryDialog;
-			import com.apexinnovations.transwarp.ui.dialogs.KeyQuestionsDialog;
-			import com.apexinnovations.transwarp.ui.dialogs.LinksDialog;
-			import com.apexinnovations.transwarp.ui.dialogs.SupportTextDialog;
+			import com.apexinnovations.transwarp.ui.dialogs.*;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import flash.printing.*;
@@ -36,6 +29,7 @@
 			
 			TranswarpVersion.revision = "$Rev$";
 
+			protected var audioControl:AudioSlider = null;
 			protected var bookmarkDialog:BookmarksDialog = null;
 			protected var commentDialog:CommentDialog = null;
 			protected var configDialog:ConfigDialog = null;
@@ -98,8 +92,15 @@
 			}
 			
 			protected function showAudioVolume(evt:MouseEvent):void {
-				Courseware.instance.volume = Courseware.instance.volume + 10;
-				if (Courseware.instance.volume > 100) Courseware.instance.volume = 0;
+				if (!audioControl) {
+					audioControl = AudioSlider(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), AudioSlider, false, PopUpManagerChildList.POPUP))
+					audioControl.x = 0;
+					audioControl.y = this.y + 480;
+				}
+						
+				audioControl.display();
+				//Courseware.instance.volume = Courseware.instance.volume + 10;
+				//if (Courseware.instance.volume > 100) Courseware.instance.volume = 0;
 			}
 			
 			protected function showBookmarks(evt:MouseEvent):void {
@@ -206,7 +207,7 @@
 		</s:filters>
 	</s:Rect>
 	
-	<s:VGroup id="buttonGroup" top="15" width="100%" horizontalAlign="center" gap="0">
+	<s:VGroup id="buttonGroup" top="15" width="100%" horizontalAlign="center" gap="0" >
 		<ui:IconButton icon="{KeyQuestionIcon}" click="showKeyQuestions(event);" enabled="{currentPage.hasQuestions}"/>
 		<ui:IconButton icon="{SupportingTextIcon}" click="showSupportText(event);" enabled="{currentPage.hasSupportText}"/>
 		<ui:IconButton icon="{HistoryIcon}" click="showPageUpdates(event);" enabled="{currentPage.hasUpdates}"/>		
@@ -214,7 +215,7 @@
 		<ui:IconButton icon="{CommentIcon}" click="commentOnPage(event);"/>
 		<ui:IconButton icon="{FavoritesIcon}" click="showBookmarks(event);" />
 		<ui:IconButton icon="{PaintbrushIcon}" />
-		<ui:IconButton icon="{AudioIcon}" click="showAudioVolume(event);"/>
+		<ui:IconButton id="audio" icon="{AudioIcon}" click="showAudioVolume(event);"/>
 		<ui:IconButton icon="{ConfigurationIcon}" click="configureOptions(event);" />
 		<ui:IconButton icon="{SnapshotIcon}" click="printStage(event);" />
 		<ui:IconButton icon="{HelpIcon}"  click="showHelpPages(event);"/>
