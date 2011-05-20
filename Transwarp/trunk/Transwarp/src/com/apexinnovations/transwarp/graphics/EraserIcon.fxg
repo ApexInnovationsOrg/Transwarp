@@ -3,23 +3,37 @@
   <Library/>
   <Group ai:seqID="1" d:layerType="page" d:pageHeight="792" d:pageWidth="612" d:type="layer" d:userLabel="Artboard 1">
     <Group ai:seqID="2" d:type="layer" d:userLabel="Layer 1">
-      <Group x="1.37744" y="10.2554" ai:seqID="3">
+      <Group x="2.49512" y="13.1782" ai:seqID="3">
         <Group ai:seqID="4" d:userLabel="Icon">
-          <Path ai:seqID="5" data="M3.56543 3.04346 2.26709 4.55225 0 2.67676 1.26416 1.18848 3.56543 3.04346ZM4.50342 1.91016 3.96191 2.53125 1.65967 0.67627 2.21582 0 4.50342 1.91016Z">
+          <Path ai:seqID="5" data="M4.27588 2.86279 3.46143 3.79395 0 1.01416 0.836426 0 4.27588 2.86279Z">
             <fill>
-              <SolidColor color="#FFFFFF"/>
+              <SolidColor/>
             </fill>
           </Path>
         </Group>
       </Group>
-      <Path x="4.01709" y="1.46045" winding="nonZero" ai:seqID="6" data="M6.17432 0.849121 9.00049 0 8.46875 2.73193 2.29443 10.1719 0 8.28955 6.17432 0.849121 6.17432 0.849121Z">
+      <Path x="3.96875" winding="nonZero" ai:seqID="6" data="M9.28271 1.27246 13.5313 0 12.7319 4.09277 3.44873 15.2412 0 12.4214 9.28271 1.27246 9.28271 1.27246Z">
         <fill>
-          <SolidColor color="#FFFFFF"/>
+          <SolidColor color="#FFCC00"/>
         </fill>
       </Path>
-      <Path ai:seqID="7" data="M16 16 0 16 0 0 16 0 16 16ZM15.5 0.5 0.5 0.5 0.5 15.5 15.5 15.5 15.5 0.5Z">
+      <Group y="14.96" ai:seqID="7">
+        <Group ai:seqID="8" d:userLabel="Icon">
+          <Path ai:seqID="9" data="M5.36035 2.77881 3.4082 5.04004 0 2.22949 1.90088 0 5.36035 2.77881Z">
+            <fill>
+              <SolidColor color="#CC33A6"/>
+            </fill>
+          </Path>
+        </Group>
+      </Group>
+      <Path x="13.2139" winding="nonZero" ai:seqID="10" data="M0.0375977 1.27246 4.28613 0 3.48682 4.09277 2.05713 4.51953 1.75391 2.97217 0 2.97217 0.0375977 1.27246 0.0375977 1.27246Z">
         <fill>
-          <SolidColor color="#FFFFFF"/>
+          <SolidColor color="#E6D6AD"/>
+        </fill>
+      </Path>
+      <Path x="16.1455" winding="nonZero" ai:seqID="11" data="M0 0.417969 1.35449 0 1.00391 1.85791">
+        <fill>
+          <SolidColor/>
         </fill>
       </Path>
     </Group>
