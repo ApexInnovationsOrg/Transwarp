@@ -183,7 +183,7 @@ trace('Search: require('+require+') exclude('+exclude+') terms('+terms+')');
 		public function get product():Product { return _product; }
 		public function get rootFolder():String { return _rootFolder; }
 		public function get timeout():int { return _timeout; }
-		public function get user():User { return _user; }
+		[Bindable("colorChanged")] public function get user():User { return _user; }
 		[Bindable] public function get volume():uint { return 100 * SoundMixer.soundTransform.volume; }
 		public function set volume(val:uint):void {
 			SoundMixer.soundTransform = new SoundTransform(val/100);

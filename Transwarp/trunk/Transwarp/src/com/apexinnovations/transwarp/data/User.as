@@ -76,7 +76,7 @@ package com.apexinnovations.transwarp.data
 		
 		public function get locale():String { return _locale; }
 		
-		public function get name():String { return _name; }
+		[Bindable("colorChanged")] public function get name():String { return _name; }
 		
 		public function get parent():Courseware { return _parent; }
 		
