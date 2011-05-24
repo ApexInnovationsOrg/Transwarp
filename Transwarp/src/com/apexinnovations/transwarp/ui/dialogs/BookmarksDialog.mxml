@@ -102,8 +102,8 @@
 				</ui:columns>
 			</ui:DataGridSortable>
 			<s:VGroup horizontalAlign="left">
-				<s:Button label="Go To" enabled="{dg.selectedItem}" click="Courseware.instance.currentPage=(dg.selectedItem as Page);" />
-				<s:Button label="Delete" enabled="{dg.selectedItem}" click="deleteBookmark(dg.selectedItem as Page);" />
+				<s:Button label="{resourceManager.getString('Dialogs','GOTO')}" enabled="{dg.selectedItem}" click="Courseware.instance.currentPage=(dg.selectedItem as Page);" />
+				<s:Button label="{resourceManager.getString('Dialogs','DELETE')}" enabled="{dg.selectedItem}" click="deleteBookmark(dg.selectedItem as Page);" />
 			</s:VGroup>
 		</s:HGroup>
 	</s:VGroup>	
