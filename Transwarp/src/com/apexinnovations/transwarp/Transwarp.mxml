@@ -155,4 +155,7 @@
 			  width="{width-contentArea.x}" height="{height-contentArea.y}" 
 			  error="pageLoadErrorHandler(event)"/>
 	
+	<!-- Drawing canvas -->
+	<s:SpriteVisualElement id="canvas" left="0" top="0" right="0" bottom="0" cacheAsBitmap="true"/>	
+	
 </transwarp:TranswarpBase>
