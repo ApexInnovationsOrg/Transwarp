@@ -15,6 +15,12 @@
 		</s:TitleWindow>
 	</fx:Declarations>
 	
+	<fx:Metadata>
+		[ResourceBundle("Tooltips")]
+		[ResourceBundle("Buttons")]
+	</fx:Metadata>
+	
+	
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
@@ -26,6 +32,7 @@
 			
 			import mx.managers.ISystemManager;
 			import mx.managers.PopUpManager;
+			import mx.resources.ResourceManager;
 			
 			TranswarpVersion.revision = "$Rev$";
 			
@@ -38,21 +45,23 @@
 			protected var currentlyIdle:Boolean = false;
 			
 			protected var xmlLoadError:Error;
-			
+						
 			override public function set systemManager(value:ISystemManager):void {
 				super.systemManager = value;
 				
 				manager = value as TranswarpSystemManager;
-				
+			
 				try {
 					courseware = new Courseware(manager.xml);
 				} catch(e:Error) {
 					xmlLoadError = e;
 				}
-				
 			}
 			
 			override protected function createChildren():void {
+				
+				resourceManager.localeChain = ["en_US", "es_ES"]; //TODO: pull locale from the xml.
+				
 				super.createChildren();
 				
 				if(!xmlLoadError) {
@@ -145,4 +154,5 @@
 			  top="178" top.maximized="35"
 			  width="{width-contentArea.x}" height="{height-contentArea.y}" 
 			  error="pageLoadErrorHandler(event)"/>
+	
 </transwarp:TranswarpBase>

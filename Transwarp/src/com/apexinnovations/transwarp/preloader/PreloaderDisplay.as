@@ -2,6 +2,7 @@ package com.apexinnovations.transwarp.preloader {
 	import com.apexinnovations.transwarp.TranswarpSystemManager;
 	import com.apexinnovations.transwarp.assets.AssetLoader;
 	import com.apexinnovations.transwarp.events.SuspendFrameEvent;
+	import com.apexinnovations.transwarp.ui.tooltip.TranswarpTooltipManager;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	import com.apexinnovations.transwarp.webservices.ApexWebService;
 	import com.apexinnovations.transwarp.webservices.LogService;
@@ -16,7 +17,7 @@ package com.apexinnovations.transwarp.preloader {
 	
 	import mx.events.RSLEvent;
 	import mx.preloaders.SparkDownloadProgressBar;
-
+	
 	TranswarpVersion.revision = "$Rev$";
 	
 	public class PreloaderDisplay extends SparkDownloadProgressBar {
@@ -60,7 +61,6 @@ package com.apexinnovations.transwarp.preloader {
 		public function get combinedBytesLoaded():Number { return rslBytesLoaded + appBytesLoaded; }
 		
 		protected function onSuspend(e:SuspendFrameEvent):void {
-			//trace("on suspend");
 			(e.target as IEventDispatcher).removeEventListener(SuspendFrameEvent.FRAME_SUSPENDED, onSuspend);
 			_manager = e.manager;
 			if(_xml)
@@ -71,7 +71,6 @@ package com.apexinnovations.transwarp.preloader {
 		}
 		
 		protected function loadXML():void {
-			//trace("load xml");
 			var paramObj:Object = LoaderInfo(root.loaderInfo).parameters;
 			var requestVars:URLVariables = new URLVariables();
 			
@@ -104,7 +103,6 @@ package com.apexinnovations.transwarp.preloader {
 		}
 		
 		protected function loadAssets(e:Event):void {
-			//trace("xml loaded");
 			var loader:URLLoader = URLLoader(e.target);
 			XML.ignoreWhitespace = false;
 			var xml:XML = new XML(loader.data);
@@ -195,14 +193,12 @@ package com.apexinnovations.transwarp.preloader {
 			}
 			_currentRSLBytesLoaded = event.bytesLoaded;
 			updateProgress();
-			//trace("rslProgress: " + rslBytesLoaded / rslBytesTotal);
 		}
 		
 		override protected function rslCompleteHandler(event:RSLEvent):void {
 			_rslBytesLoaded += event.bytesLoaded;
 			_currentRSLBytesLoaded = 0;
 			if(event.rslIndex == event.rslTotal - 1) {
-				trace("rsls done");
 				_rslDone = true;
 				advanceFrame();
 			}				
