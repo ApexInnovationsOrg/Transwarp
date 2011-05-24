@@ -16,7 +16,7 @@
 			TranswarpVersion.revision = "$Rev$";
 
 			public var anchor:DisplayObject = null;
-			[Bindable] public var fadeDuration:uint = 1000;
+			[Bindable] public var fadeDuration:uint = 1500;
 
 			public function display():void {
 				currentState = 'default';
