@@ -117,18 +117,20 @@
 				
 				<s:Label text="{resourceManager.getString('Chrome','TOOL')}" fontWeight="bold" color="0x000000" />
 				
-				<ui:ToolButton id="brush" icon="{SmallPaintbrushIcon}" selected="true" visible.closed="false" toolTip="Paintbrush" x="2" y="2" click="toolSelected('brush');"/>
-				<ui:ToolButton id="eraser" icon="{EraserIcon}" selected="false" visible.closed="false" toolTip="Eraser" x="2" y="2"  click="toolSelected('eraser');" />
-				<ui:ToolButton id="clear" icon="{ClearScreenIcon}" selected="false" visible.closed="false" toolTip="Clear Screen" x="2" y="2" click="toolSelected('clear');" />
+				<ui:ToolButton id="brush" icon="{SmallPaintbrushIcon}" selected="true" visible.closed="false" toolTip="PAINTBRUSH" x="2" y="2" click="toolSelected('brush');"/>
+				<ui:ToolButton id="eraser" icon="{EraserIcon}" selected="false" visible.closed="false" toolTip="ERASER" x="2" y="2"  click="toolSelected('eraser');" />
+				<ui:ToolButton id="clear" icon="{ClearScreenIcon}" selected="false" visible.closed="false" toolTip="CLEAR_SCREEN" x="2" y="2" click="toolSelected('clear');" />
 				
 				<s:Label fontWeight="bold" color="{clear.selected ? 0x888888 : 0x000000}"
 						 text="{resourceManager.getString('Chrome','SIZE')}"/>
-				<s:NumericStepper id="ns" minimum="2" maximum="20" stepSize="2" value="10" toolTip="Choose a brush size" change="size=ns.value" enabled="{!clear.selected}" />
+				<s:NumericStepper id="ns" minimum="2" maximum="20" stepSize="2" value="10" toolTip="BRUSH_SIZE" change="size=ns.value" enabled="{!clear.selected}" />
 				
 				<s:Label fontWeight="bold" color="{brush.selected ? 0x000000 : 0x888888}"
 						 text="{resourceManager.getString('Chrome','COLOR')}"/>
 				
-				<mx:ColorPicker id="cp" showTextField="false" selectedColor="0xFF0000" itemRollOver="currentState='childInteracting'" open="currentState='childInteracting'" close="currentState='childInteractionComplete'" change="currentState='childInteractionComplete'; color=cp.selectedColor;" enabled="{brush.selected}" toolTip="Choose a brush color"/>
+				<mx:ColorPicker id="cp" showTextField="false" selectedColor="0xFF0000" enabled="{brush.selected}" toolTip="BRUSH_COLOR" 
+								itemRollOver="currentState='childInteracting'" open="currentState='childInteracting'" close="currentState='childInteractionComplete'" 
+								change="currentState='childInteractionComplete'; color=cp.selectedColor;"/>
 				
 				<s:Group enabled="{!clear.selected}">
 					<s:Ellipse x="{10 - ns.value/2}" y="{10 - ns.value/2}" width="{ns.value}" height="{ns.value}">
