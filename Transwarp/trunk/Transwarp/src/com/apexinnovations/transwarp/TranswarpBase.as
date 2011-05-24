@@ -1,10 +1,6 @@
 package com.apexinnovations.transwarp {	
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
-	import flashx.textLayout.TextLayoutVersion;
-	import flashx.textLayout.container.TextContainerManager;
-	import flashx.textLayout.conversion.TextConverter;
-	
 	import spark.components.Application;
 	
 	TranswarpVersion.revision = "$Rev$";
@@ -17,3 +13,8 @@ package com.apexinnovations.transwarp {
 		}
 	}
 }
+
+//Force loading of class into frame 2.
+import com.apexinnovations.transwarp.ui.tooltip.TranswarpTooltipManager;
+
+TranswarpTooltipManager;

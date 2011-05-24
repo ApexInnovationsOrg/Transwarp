@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		xmlns:mx="library://ns.adobe.com/flex/mx">
+	
+	<fx:Metadata>
+		[HostComponent("com.apexinnovations.transwarp.ui.tooltip.TranswarpTooltip")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+				
+				var placement:String = getStyle("toolTipPlacement");
+				
+				if(!placement)
+					return;
+				
+				if(placement == "top" || placement == "topLeft" || placement == "topRight") {
+					arrowColor.color = 0xd6d6d6;
+					toolTipGroup.bottom = 10;
+					arrow.bottom = 0;
+					move(0, -10);
+				} else if(placement == "bottom" || placement == "bottomLeft" || placement == "bottomRight") {
+					arrowColor.color = 0xffffff;
+					toolTipGroup.top = 10;
+					arrow.top = 0;					
+				} else if(placement == "left") {
+					arrowColor.color = 0xd6d6d6; //FIXME
+					toolTipGroup.right = 10;
+					arrow.verticalCenter = 0;
+				} else if(placement == "right") {
+					arrowColor.color = 0xd6d6d6; //FIXME
+					toolTipGroup.left = 10;
+					arrow.verticalCenter = 0;
+					move(10, 0);
+				}				
+				
+				switch(placement) {
+					case "top":
+						arrow.data = "M 0 0 L -5 -10 5 -10 Z";
+						arrow.horizontalCenter = 0
+						break;
+					case "topRight": 
+						arrow.data = "M 0 0 L 2 -10 12 -10 Z";
+						arrow.left = 5;
+						break;
+					case "topLeft":
+						arrow.data = "M 0 -10 L 10 -10 12 0 Z";
+						arrow.right = 5;
+						break;
+					case "bottom":
+						arrow.data = "M 0 0 L -5 10 5 10 Z";
+						arrow.horizontalCenter = 0;
+						break;
+					case "bottomRight":
+						arrow.data = "M 0 0 L 2 10 12 10 Z";
+						arrow.left = 5;
+						break;
+					case "bottomLeft":
+						arrow.data = "M 0 0 L 10 0 12 -10 Z";
+						arrow.right = 5;
+						break;
+					case "right":
+						arrow.data = "M 0 0 L 10 5 10 -5 Z";
+						arrow.left = 0;
+						break;
+					case "left":
+						arrow.data = "M 0 0 L 10 5 0 10 Z";
+						arrow.right = 0;
+						break;
+				}
+				arrow.validateDisplayList();
+				
+				super.updateDisplayList(unscaledWidth, unscaledHeight);				
+			}
+		]]>
+	</fx:Script>
+	
+	
+	<s:filters>
+		<s:DropShadowFilter alpha="0.5" />
+	</s:filters>
+	
+	<s:Path id="arrow">
+		<s:fill><s:SolidColor color="0xffffff" id="arrowColor"/></s:fill>
+	</s:Path>
+	
+	<s:Group id="toolTipGroup">
+		<s:Rect width="100%" height="100%" radiusX="3" radiusY="3">
+			<s:fill>
+				<!--<s:SolidColor color="0xffffff" />-->
+				<s:LinearGradient rotation="270">
+					<s:GradientEntry color="0xd6d6d6" />
+					<s:GradientEntry color="0xffffff" />
+				</s:LinearGradient>
+			</s:fill>
+		</s:Rect>
+		<s:RichText id="textDisplay" paddingTop="7" paddingBottom="5" paddingLeft="7" paddingRight="7"/>
+	</s:Group>
+	
+</s:Skin>

@@ -24,7 +24,7 @@ package com.apexinnovations.transwarp.webservices
 			var arr:Array = new Array();
 
 			var courseware:Courseware = Courseware.instance;
-			if(courseware) {
+			if(courseware && courseware.user) {
 				arr['userID'] = courseware.user.id;
 				arr['courseID'] = courseware.currentCourse.id;
 				arr['pageID'] = courseware.currentPage.id;

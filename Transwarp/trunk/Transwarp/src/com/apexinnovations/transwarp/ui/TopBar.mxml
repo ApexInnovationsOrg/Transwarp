@@ -3,7 +3,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 width="100%" height.default="178" xmlns:assets="com.apexinnovations.transwarp.assets.*"
-		 addedToStage="onAdded()" xmlns:graphics="com.apexinnovations.transwarp.graphics.*" xmlns:ui="com.apexinnovations.transwarp.ui.*">
+		 addedToStage="onAdded()" xmlns:graphics="com.apexinnovations.transwarp.graphics.*" xmlns:ui="com.apexinnovations.transwarp.ui.*" xmlns:ext="com.apexinnovations.transwarp.ui.ext.*">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.Transwarp;
@@ -191,14 +191,18 @@
 	
 	<s:TileGroup id="levelNav" left="285" right="40" top="32" requestedRowCount="3" orientation="columns" verticalGap="10" horizontalGap="10" height.maximized="0" visible.maximized="false"/>
 	
-	<s:HGroup verticalAlign="middle" gap="12" bottom="0" height="34" horizontalCenter="66"
-			  color="0xffffff" fontFamily="Arial" fontWeight="bold">
-		<ui:IconButton icon="{ArrowPreviousIcon}" label="PREV" click="prevClick()" />
+	<ext:HGroup verticalAlign="middle" gap="12" bottom="0" height="34" horizontalCenter="66"
+			  color="0xffffff" fontFamily="Arial" fontWeight="bold"
+			  toolTipPlacement="bottomRight">
+		<ui:IconButton icon="{ArrowPreviousIcon}" click="prevClick()" toolTip="PREV" height="30"
+					   label="{resourceManager.getString('Buttons','PREV')}"/>
 		<ui:VerticalSeparator />
-		<ui:IconButton icon="{ArrowNextIcon}" iconPlacement="right" label="NEXT" click="nextClick()" />
+		<ui:IconButton icon="{ArrowNextIcon}" iconPlacement="right" click="nextClick()" toolTip="NEXT" height="30"
+					   label="{resourceManager.getString('Buttons','NEXT')}"/>
 		<ui:VerticalSeparator />
-		<ui:IconButton icon="{ReplayIcon}" label="REPLAY" click="replayClick()" />
-	</s:HGroup>
+		<ui:IconButton icon="{ReplayIcon}" click="replayClick()" height="30" toolTip="REPLAY"
+					   label="{resourceManager.getString('Buttons','REPLAY')}"/>
+	</ext:HGroup>
 	
 	<s:HGroup id="searchGroup" height="32" verticalAlign="middle" visible="{hasSearch}" bottom="1" right="10">
 		<s:TextInput id="searchInput" prompt="{searchPrompt}" width="183" enter="submitSearch()"/>
