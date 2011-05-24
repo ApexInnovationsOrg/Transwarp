@@ -9,11 +9,12 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.core.IToolTip;
 			
 			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
 				
 				var placement:String = getStyle("toolTipPlacement");
-				
+
 				if(!placement)
 					return;
 				
@@ -71,7 +72,6 @@
 						arrow.right = 0;
 						break;
 				}
-				arrow.validateDisplayList();
 				
 				super.updateDisplayList(unscaledWidth, unscaledHeight);				
 			}

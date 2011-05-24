@@ -14,6 +14,7 @@ package com.apexinnovations.transwarp.ui.tooltip {
 	import flash.display.DisplayObject;
 	import spark.primitives.Rect;
 	import mx.resources.IResourceBundle;
+	import mx.core.UIComponent;
 	
 	
 	public class TranswarpTooltipManager extends ToolTipManagerImpl implements IToolTipManager2 {
@@ -102,7 +103,9 @@ package com.apexinnovations.transwarp.ui.tooltip {
 					break;
 			}
 			IStyleClient(currentToolTip).setStyle("toolTipPlacement", placement);
-			currentToolTip.move(x, y);			
+			currentToolTip.move(x, y);
+			// Force redraw to fix tooltip moving.
+			UIComponent(currentToolTip).validateNow();
 		}
 		
 		private function getStyleWithDefault(client:IStyleClient, key:String, defaultValue:*):* {
