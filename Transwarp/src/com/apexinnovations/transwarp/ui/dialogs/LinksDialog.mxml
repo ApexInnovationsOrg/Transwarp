@@ -4,7 +4,7 @@
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
-			  title="Links Related to this Page"
+			  title="{resourceManager.getString('Dialogs','LINKS_TITLE')}"
 			  addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);">
 	<fx:Script>
 		<![CDATA[
@@ -61,11 +61,14 @@
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
 		<ui:PageTitle />
-		<s:Label text="This page does not have any related links" width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10" visible.default="false" height.default="0" width.default="0" />
+		<s:Label width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10" includeIn="no_results"
+				 text="{resourceManager.getString('Dialogs','NO_LINKS')}"/>
+		
 		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" visible.no_results="false" height.no_results="0" >
-			<s:VGroup id="elementList" width="100%" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" >
-			</s:VGroup>
+			<s:VGroup id="elementList" width="100%" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" />
 		</s:Scroller>
-		<s:Label text="Click on link(s) above to view in browser" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" visible.no_results="false" height.no_results="0" />
+		
+		<s:Label fontStyle="italic" width="380" textAlign="right" color="0x0000FF" includeIn="default"
+				 text="{resourceManager.getString('Dialogs','CLICK_LINKS_TO_VIEW')}"/>
 	</s:VGroup>
 </dialogs:DialogBox>

@@ -4,20 +4,20 @@
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
-			  title="Supporting Text for this Page"
+			  title="{resourceManager.getString('Dialogs','SUPPORT_TEXT_TITLE')}"
 			  addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);">
 	<fx:Script>
 		<![CDATA[
-			import com.apexinnovations.transwarp.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import flashx.textLayout.elements.TextFlow;
 			
 			TranswarpVersion.revision = "$Rev$";
 			
-			protected var _page:Page = null;
+			protected var _page:Page;
 			
 			[Bindable] public function get page():Page { return _page; }
 			public function set page(p:Page):void {
@@ -40,7 +40,6 @@
 			}
 			
 			protected function updateElementList():void {
-				if(theText) theText.textFlow = _page.supportText;
 				currentState = _page.supportText ? "default" : "no_results";
 			}
 		]]>
@@ -53,8 +52,10 @@
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
 		<ui:PageTitle />
-		<s:Label text="This page does not have any supporting text" width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10" visible.default="false" height.default="0" width.default="0" />
-		<s:TextArea id="theText" width="380" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" editable="false" horizontalScrollPolicy="off" minHeight="250" maxHeight="450" visible.no_results="false" height.no_results="0" minHeight.no_results="0" >
-		</s:TextArea>
+		<s:Label width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10"
+				 text="{resourceManager.getString('Dialogs','NO_SUPPORT_TEXT')}" includeIn="no_results"/>
+		<s:TextArea width="380" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" editable="false"
+					horizontalScrollPolicy="off" minHeight="250" maxHeight="450" 
+					textFlow="{page.supportText}" includeIn="default"/>
 	</s:VGroup>
 </dialogs:DialogBox>

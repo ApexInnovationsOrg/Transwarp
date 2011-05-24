@@ -4,7 +4,7 @@
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
-			  title="Feedback/Suggestions for this Page">
+			  title="{resourceManager.getString('Dialogs','COMMENTS_TITLE')}">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.events.PageSelectionEvent;
@@ -28,7 +28,6 @@
 					var comment:CommentService = new CommentService();
 					
 					comment.dispatch(Utils.encodeJSONValue(commentText.text));
-					
 					closeHandler(event);
 				}
 			}
@@ -37,11 +36,12 @@
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" >
 		<ui:PageTitle />
-		<s:TextArea id="commentText" width="380" height="170" prompt="Type your comments here"/>
-		<s:Label text="We appreciate your feedback!" fontStyle="italic" width="380" textAlign="right" color="0x0000FF" />
+		<s:TextArea id="commentText" width="380" height="170" prompt="{resourceManager.getString('Dialogs','COMMENT_HERE')}"/>
+		<s:Label  fontStyle="italic" width="380" textAlign="right" color="0x0000FF"
+				 text="{resourceManager.getString('Dialogs','APPRECIATE_FEEDBACK')}"/>
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
-			<s:Button label="Submit" click="okHandler(event);"/>
-			<s:Button label="Cancel" click="closeHandler(event);"/>
+			<s:Button label="{resourceManager.getString('Dialogs','SUBMIT')}" click="okHandler(event);"/>
+			<s:Button label="{resourceManager.getString('Dialogs','CANCEL')}" click="closeHandler(event);"/>
 		</s:HGroup>
 	</s:VGroup>
 </dialogs:DialogBox>

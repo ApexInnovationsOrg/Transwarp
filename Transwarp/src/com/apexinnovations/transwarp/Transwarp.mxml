@@ -11,14 +11,17 @@
 			   minHeight="738" minWidth="924">
 	<fx:Declarations>
 		<s:TitleWindow title="Title" id="errorDialog" close="PopUpManager.removePopUp(errorDialog); fscommand('quit');" width="400" height="300">
-			<s:TextArea id="infoText" height="100%" width="100%"/> 
+			<s:RichEditableText id="infoText" height="100%" width="100%" editable="false"/> 
 		</s:TitleWindow>
 	</fx:Declarations>
 	
 	<fx:Metadata>
 		[ResourceBundle("Tooltips")]
 		[ResourceBundle("Buttons")]
+		[ResourceBundle("Chrome")]
+		[ResourceBundle("Dialogs")]	
 	</fx:Metadata>
+	
 	
 	
 	<fx:Script>
@@ -50,7 +53,8 @@
 				super.systemManager = value;
 				
 				manager = value as TranswarpSystemManager;
-			
+				resourceManager.localeChain = ["en_US", "es_ES"]; //TODO: pull locale from the xml.
+				
 				try {
 					courseware = new Courseware(manager.xml);
 				} catch(e:Error) {
@@ -59,15 +63,12 @@
 			}
 			
 			override protected function createChildren():void {
-				
-				resourceManager.localeChain = ["en_US", "es_ES"]; //TODO: pull locale from the xml.
-				
 				super.createChildren();
 				
 				if(!xmlLoadError) {
 					themeColor = courseware.color;
 					
-					topBar.searchPrompt = "Search " + courseware.product.name;
+					topBar.searchPrompt = resourceManager.getString('Chrome','SEARCH') + ' ' + courseware.product.name;
 					topBar.hasSearch = !User.instance.lms;
 					
 					topBar.courses = courseware.product.courses;
@@ -78,7 +79,8 @@
 					log.dispatch('XML Load Failure: ' + e.toString() + '\n' + e.getStackTrace());
 					
 					themeColor = 0xa8a8a8;
-					popupErrorDialog('There was an error loading data from the server.\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
+					
+					popupErrorDialog(resourceManager.getString("Dialogs","LOADING_DATA_FROM_SERVER_ERROR"));
 				}
 				
 			}

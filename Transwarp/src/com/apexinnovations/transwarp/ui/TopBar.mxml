@@ -176,11 +176,11 @@
 		</s:fill>
 	</s:Rect>	
 	
-	<s:Label text="Version 4.0.{TranswarpVersion.revision}" right="0" color="{ColorUtil.adjustBrightness2(Courseware.instance.color, 50)}" top="4" textAlign="right" fontSize="12" paddingRight="4" includeIn="default" />
+	<s:Label text="v4.0.{TranswarpVersion.revision}" right="0" color="{ColorUtil.adjustBrightness2(Courseware.instance.color, 50)}" top="4" textAlign="right" fontSize="12" paddingRight="4" includeIn="default" />
 	
 	<s:VGroup horizontalAlign="right" left="29" verticalCenter="-25" includeIn="default">
 		<assets:AssetImageControl assetID="logoBig" />
-		<s:Label text="by Apex Innovations" fontStyle="italic" color="#5F6062"/>
+		<s:Label text="{resourceManager.getString('Chrome','BY_APEX')}" fontStyle="italic" color="#5F6062"/>
 	</s:VGroup>
 	
 	<assets:AssetImageControl id="logoSmall" assetID="logoSmall" includeIn="maximized" left="60" verticalCenter="0">

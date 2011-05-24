@@ -57,7 +57,4 @@
 			}
 		]]>
 	</fx:Script>
-	<s:Group height="100%">
-		
-	</s:Group>
 </s:TitleWindow>
