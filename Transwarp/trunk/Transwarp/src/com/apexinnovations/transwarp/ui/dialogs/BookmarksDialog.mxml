@@ -4,7 +4,8 @@
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
-			  title="Bookmarks" contentCreationComplete="contentCreationComplete(event);">
+			  contentCreationComplete="contentCreationComplete(event);"
+			  title="{resourceManager.getString('Dialogs','BOOKMARKS_TITLE')}">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Course;
@@ -77,24 +78,27 @@
 		<ui:PageTitle />
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
 			<!-- Show star graphic -->
-			<s:Graphic>
-				<s:Path data="M9.5 7.2 13.05 0 16.6 7.2 24.55 8.3 18.85 13.95 20.2 21.85 13.1 18.1 6 21.9 7.35 13.95 1.6 8.4 9.5 7.2">
-					<s:stroke>
-						<s:SolidColorStroke color="0x000000" weight="1" pixelHinting="true"/>
-					</s:stroke>
-					<s:fill>
-						<s:SolidColor color.default="#FFFFFF" color.bookmarked="{Courseware.instance.highlightColor}"/>
-					</s:fill>
-				</s:Path>
-			</s:Graphic>
-			<s:Button label.default="Bookmark this Page" width="140" label.bookmarked="Delete this Bookmark" click.default="bookmarkPage(true);" click.bookmarked="bookmarkPage(false);" />
+			<s:Path data="M9.5 7.2 13.05 0 16.6 7.2 24.55 8.3 18.85 13.95 20.2 21.85 13.1 18.1 6 21.9 7.35 13.95 1.6 8.4 9.5 7.2">
+				<s:stroke>
+					<s:SolidColorStroke color="0x000000" weight="1" pixelHinting="true"/>
+				</s:stroke>
+				<s:fill>
+					<s:SolidColor color.default="#FFFFFF" color.bookmarked="{Courseware.instance.highlightColor}"/>
+				</s:fill>
+			</s:Path>
+
+			<s:Button width="140" click.default="bookmarkPage(true);" click.bookmarked="bookmarkPage(false);"
+					  label.default="{resourceManager.getString('Dialogs','BOOKMARK_THIS_PAGE')}" 
+					  label.bookmarked="{resourceManager.getString('Dialogs','DELETE_BOOKMARK')}"/>
 		</s:HGroup>
 		<s:Label text="Current Bookmarks:" width="400" fontWeight="bold" paddingTop="10" />
 		<s:HGroup verticalAlign="middle" width="100%">
 			<ui:DataGridSortable id="dg" width="400" height="100%" rowCount="5" dataProvider="{_bookmarkedPages}">
 				<ui:columns>
-					<mx:DataGridColumn dataField="course.levelRoman" headerText="Level" width="55" textAlign="center" sortCompareFunction="sortByLevel" />
-					<mx:DataGridColumn dataField="qualifiedName" headerText="Page Name"/>
+					<mx:DataGridColumn dataField="course.levelRoman" width="55" textAlign="center" sortCompareFunction="sortByLevel"
+									   headerText="{resourceManager.getString('Dialogs','LEVEL')}"/>
+					<mx:DataGridColumn dataField="qualifiedName" 
+									   headerText="{resourceManager.getString('Dialogs','PAGE_NAME')}"/>
 				</ui:columns>
 			</ui:DataGridSortable>
 			<s:VGroup horizontalAlign="left">

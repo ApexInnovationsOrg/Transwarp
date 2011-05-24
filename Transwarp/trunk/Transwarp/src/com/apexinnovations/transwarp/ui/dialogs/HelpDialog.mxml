@@ -4,7 +4,7 @@
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
-			  title="Help"
+			  title="{resourceManager.getString('Dialogs','HELP_TITLE')}"
 			  contentCreationComplete="contentCreationComplete(event);">
 	<fx:Script>
 		<![CDATA[
@@ -17,6 +17,8 @@
 			import mx.managers.PopUpManager;
 
 			TranswarpVersion.revision = "$Rev$";
+			
+			[Bindable] protected var currentHelp:HelpPage;
 			
 			override protected function addedToStage(event:Event):void {
 				super.addedToStage(event);
@@ -47,27 +49,25 @@
 			
 			protected function helpSelected(event:HelpSelectionEvent):void {
 				var help:HelpPage = event.help;
-
-				helpTitle.text = help.name;
-				movieClipLoader.source = help.url;
+				currentHelp = help;
+				currentState = "showing_help";
 			}
 			
 			protected function helpLoaded(event:Event):void {
-				currentState = "showing_help";
+				//currentState = "showing_help";
 			}
 			
 			protected function helpLoadingError(event:Event):void {
 				currentState = "error";
-				helpTitle.text='ERROR LOADING HELP';
 			}
 			
 			protected function backHandler(event:Event):void {
-				helpTitle.text = "Click a help topic below for more help on the subject:";
 				currentState = "default";
-				movieClipLoader.source = '';
+				currentHelp = null;
 
 				PopUpManager.centerPopUp(this);
 			}
+			
 		]]>
 	</fx:Script>
 		
@@ -90,14 +90,20 @@
 -->
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
-		<s:Label id="helpTitle" text="Click a help topic below for more help on the subject:" fontWeight="bold" fontSize.showing_help="18" color.error="0xFF0000" />
+		<s:Label id="helpTitle" fontWeight="bold" fontSize.showing_help="18" color.error="0xFF0000"
+				 text.default="{resourceManager.getString('Dialogs','CLICK_HELP_TOPIC_FOR_HELP')}"
+				 text.error="{resourceManager.getString('Dialogs','ERROR_LOADING_HELP')}"
+				 text.showing_help="{currentHelp.name}"/>
+		
 		<s:Scroller id="scroller" horizontalScrollPolicy="off" maxHeight="300" visible.showing_help="false" width.showing_help="0" height.showing_help="0" >
-			<s:VGroup id="elementList" width="100%" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" >
-			</s:VGroup>
+			<s:VGroup id="elementList" width="100%" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" />
 		</s:Scroller>
-		<s:SWFLoader id="movieClipLoader" autoLoad="true" complete="helpLoaded(event);" ioError="helpLoadingError(event)" securityError="helpLoadingError(event);" updateComplete="PopUpManager.centerPopUp(this);" visible.default="false" visible.error="false" width.default="0" height.default="0" width.error="0" height.error="0" showBusyCursor="true" />
-		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10" visible.default="false" visible.error="false" width.default="0" height.default="0" width.error="0" height.error="0" >
-			<s:Button label="Back" click="backHandler(event);" visible.default="false" width.default="0" height.default="0" />
+		
+		<s:SWFLoader id="movieClipLoader" autoLoad="true" complete="helpLoaded(event);" ioError="helpLoadingError(event)" securityError="helpLoadingError(event);"
+					 updateComplete="PopUpManager.centerPopUp(this);" showBusyCursor="true" source="{currentHelp.url}" includeIn="showing_help" />
+		
+		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10" includeIn="showing_help">
+			<s:Button label="Back" click="backHandler(event);" />
 		</s:HGroup>
 	</s:VGroup>	
 </dialogs:DialogBox>

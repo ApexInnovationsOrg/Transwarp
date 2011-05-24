@@ -14,6 +14,7 @@ package com.apexinnovations.transwarp.data
 	import mx.events.PropertyChangeEvent;
 	import mx.events.PropertyChangeEventKind;
 	import mx.formatters.DateFormatter;
+	import mx.resources.ResourceManager;
 	
 	TranswarpVersion.revision = "$Rev$";
 	
@@ -70,9 +71,12 @@ package com.apexinnovations.transwarp.data
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
 			}
+			
+			var separator:String = ' ' + ResourceManager.getInstance().getString("Chrome", "FOLDER_SEPARATOR") + ' '; 
+			
 			var p:* = this;
 			while (!((p = p.parent) is Course)) {
-				if (p is Folder) _parentFolders = p.name + ' » ' + _parentFolders;
+				if (p is Folder) _parentFolders = p.name + separator + _parentFolders;
 			}
 			_course = (p as Course);
 
@@ -104,7 +108,7 @@ package com.apexinnovations.transwarp.data
 			}
 			_searchFields[8] = '';
 			for each (var upd:Update in _updates) {
-				if (upd.textFlow)		_searchFields[8] += Utils.textFlowToString(upd.textFlow);
+				if (upd.textFlow) _searchFields[8] += Utils.textFlowToString(upd.textFlow);
 			}
 		}
 		
@@ -140,7 +144,7 @@ package com.apexinnovations.transwarp.data
 		public function get questions():Vector.<Question> { return _questions; }
 		public function get sortToken():uint { return _sortToken; }
 		public function set sortToken(value:uint):void { _sortToken = value;	}
-		public function get supportText():TextFlow { return _supportText; }
+		[Bindable("pageDataChanged")] public function get supportText():TextFlow { return _supportText; }
 		public function get swf():String { return _swf; }
 		public function get timeline():Boolean { return _timeline; }
 		[Bindable] public function get visited():Boolean { return _visited; }

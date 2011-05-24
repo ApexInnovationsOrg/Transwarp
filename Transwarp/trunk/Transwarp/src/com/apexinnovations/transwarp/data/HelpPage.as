@@ -30,8 +30,8 @@ package com.apexinnovations.transwarp.data
 		}
 		
 		public function get icon():String { return _icon; }
-		public function get name():String { return _name; }
+		[Bindable("helpPageChanged")] public function get name():String { return _name; }
 		public function get parent():Product { return _parent; }
-		public function get url():String { return _url; }
+		[Bindable("helpPageChanged")] public function get url():String { return _url; }
 	}
 }

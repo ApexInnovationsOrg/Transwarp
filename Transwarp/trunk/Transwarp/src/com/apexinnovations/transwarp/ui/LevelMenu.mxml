@@ -49,7 +49,8 @@
 	</s:Rect>
 	 
 	<s:VGroup left="30" top="20" color="0xffffff" gap="5">
-		<s:Label text="LEVEL {Courseware.instance.currentCourse.level}" fontWeight="bold" fontSize="20" fontFamily="Arial"/>
+		<s:Label fontWeight="bold" fontSize="20" fontFamily="Arial"
+				 text="{resourceManager.getString('Chrome','LEVEL')} {Courseware.instance.currentCourse.level}"/>
 		<s:Label text="{Courseware.instance.currentCourse.name}" fontFamily="Arial" fontSize="15" />
 	</s:VGroup>
 	
@@ -65,6 +66,6 @@
 	<!--  Footer  -->
 	<s:VGroup width="100%" horizontalAlign="center" bottom="8" gap="-1">
 		<graphics:ApexLogo/>
-		<s:Label text="Copyright © 2011" color="0x888888" fontSize="8" />
+		<s:Label text="{resourceManager.getString('Chrome','COPYRIGHT')}" color="0x888888" fontSize="8" />
 	</s:VGroup>
 </s:Group>

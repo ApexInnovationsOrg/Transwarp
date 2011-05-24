@@ -76,7 +76,8 @@
 				</s:filters>
 			</s:Rect>
 			<s:HGroup verticalAlign="middle" paddingBottom="15" paddingLeft="15" paddingRight="15" paddingTop="17">
-				<s:Label text="volume:" fontWeight="bold" color="0x000000" />
+				<s:Label fontWeight="bold" color="0x000000"
+						 text="{resourceManager.getString('Chrome','VOLUME')}:"/>
 				<s:HSlider id="slider" minimum="0" maximum="100" value="{Courseware.instance.volume}" snapInterval="1" liveDragging="false" change="changeVolume();" width="150"/>
 			</s:HGroup>
 		</s:Group>
