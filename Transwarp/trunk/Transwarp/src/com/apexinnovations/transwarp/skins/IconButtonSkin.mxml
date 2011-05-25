@@ -2,7 +2,7 @@
 
 <s:SparkButtonSkin xmlns:fx="http://ns.adobe.com/mxml/2009" 
              xmlns:s="library://ns.adobe.com/flex/spark"
-             alpha.disabled="0.5"
+             alpha="0.7" alpha.disabled="0.5" alpha.downhighlight="1" alpha.overhighlight="1" alpha.uphighlight="1"
 			 iconGroupPaddingTop="0" iconGroupPaddingLeft="0" iconGroupPaddingRight="2" iconGroupPaddingBottom="2"
 			 iconGroupPaddingTop.down="2" iconGroupPaddingLeft.down="2" iconGroupPaddingBottom.down="0" iconGroupPaddingRight.down="0" 
 			 gap="7" useHandCursor="true" buttonMode="true">
@@ -24,27 +24,24 @@
 	
     <s:states>
         <s:State name="up" />
-		<s:State name="uphighlight" basedOn="up" />
+		<s:State name="uphighlight" />
         <s:State name="over" />
-		<s:State name="overhighlight" basedOn="over" />
+		<s:State name="overhighlight" basedOn="over"/>
         <s:State name="down" />
 		<s:State name="downhighlight" basedOn="down" />
         <s:State name="disabled" />
     </s:states>
     
 	<s:filters>
-		<s:DropShadowFilter alpha="0.5" blurX="2.3" blurY="2.3" distance="3" excludeFrom="disabled" />
+		<s:DropShadowFilter blurX="2.3" blurY="2.3" distance="3" alpha="0.5"
+							excludeFrom="disabled" />
 		<s:GlowFilter blurX="10" blurY="10" color="0" alpha="0.65" includeIn="over,down" />
-<!--		<s:ColorMatrixFilter includeIn="downhighlight,overhighlight,uphighlight">
-			<s:matrix>
-				<fx:Array>{Courseware.instance.highlightColor}</fx:Array>
-			</s:matrix>
-		</s:ColorMatrixFilter>-->
 	</s:filters>
 	
 	<s:Label id="labelDisplay" textAlign="center" maxDisplayedLines="1" horizontalCenter="0"
 			 verticalCenter="1" verticalAlign="middle" />
 	
+	<!-- Hit Area -->
 	<s:Rect width="100%" height="100%">
 		<s:fill>
 			<s:SolidColor alpha="0" />
