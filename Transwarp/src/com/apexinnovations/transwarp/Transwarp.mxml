@@ -22,8 +22,6 @@
 		[ResourceBundle("Dialogs")]	
 	</fx:Metadata>
 	
-	
-	
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;

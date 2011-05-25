@@ -204,8 +204,8 @@
 					   label="{resourceManager.getString('Buttons','REPLAY')}"/>
 	</ext:HGroup>
 	
-	<s:HGroup id="searchGroup" height="32" verticalAlign="middle" visible="{hasSearch}" bottom="1" right="10">
+	<ext:HGroup id="searchGroup" height="32" verticalAlign="middle" visible="{hasSearch}" bottom="1" right="10" toolTipPlacement="bottomLeft">
 		<s:TextInput id="searchInput" prompt="{searchPrompt}" width="183" enter="submitSearch()"/>
-		<ui:IconButton icon="{SearchIcon}" click="submitSearch()" width="30" height="25"/>
-	</s:HGroup>
+		<ui:IconButton icon="{SearchIcon}" click="submitSearch()" width="30" height="25" toolTip="SEARCH"/>
+	</ext:HGroup>
 </s:Group>

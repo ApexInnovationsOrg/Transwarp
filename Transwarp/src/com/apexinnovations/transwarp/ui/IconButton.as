@@ -12,7 +12,7 @@ package com.apexinnovations.transwarp.ui {
 	[SkinState("downhighlight")]
 	public class IconButton extends Button {
 		
-		protected var _highlight:Boolean;
+		protected var _highlight:Boolean = true;
 		
 		
 		public function IconButton() {
