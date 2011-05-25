@@ -223,8 +223,8 @@
 		<ui:IconButton icon="{SupportingTextIcon}" click="showSupportText(event);" enabled="{currentPage.hasSupportText}" toolTip="SUPPORT_TEXT"/>
 		<ui:IconButton icon="{HistoryIcon}" click="showPageUpdates(event);" enabled="{currentPage.hasUpdates}" highlight="{currentPage.hasUpdates}" toolTip="HISTORY"/>		
 		<ui:IconButton icon="{LinksIcon}" click="showRelatedLinks(event);" enabled="{currentPage.hasLinks}" toolTip="REL_LINKS"/>
-		<ui:IconButton icon="{CommentIcon}" click="commentOnPage(event);" toolTip="COMMENTS"/>
 		<ui:IconButton icon="{FavoritesIcon}" click="showBookmarks(event);" toolTip="FAVORITES"/>
+		<ui:IconButton icon="{CommentIcon}" click="commentOnPage(event);" toolTip="COMMENTS"/>
 		<ui:IconButton icon="{PaintbrushIcon}"  click="showDrawingTools(event);" toolTip="DRAWING"/>
 		<ui:IconButton id="audio" icon="{AudioIcon}" click="showAudioVolume(event);" toolTip="VOLUME"/>
 		<ui:IconButton icon="{ConfigurationIcon}" click="configureOptions(event);" toolTip="OPTIONS"/>
