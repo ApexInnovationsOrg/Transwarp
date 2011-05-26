@@ -2,7 +2,7 @@ package com.apexinnovations.transwarp.ui {
 	import com.apexinnovations.transwarp.skins.IconButtonSkin;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
-	import spark.components.Button;
+	import com.apexinnovations.transwarp.ui.ext.Button;
 	
 	TranswarpVersion.revision = "$Rev$";
 	
