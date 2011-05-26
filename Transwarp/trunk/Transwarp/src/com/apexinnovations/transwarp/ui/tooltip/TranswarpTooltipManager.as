@@ -15,7 +15,9 @@ package com.apexinnovations.transwarp.ui.tooltip {
 	import spark.primitives.Rect;
 	import mx.resources.IResourceBundle;
 	import mx.core.UIComponent;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
+	TranswarpVersion.revision = "$Rev$";
 	
 	public class TranswarpTooltipManager extends ToolTipManagerImpl implements IToolTipManager2 {
 		
@@ -36,8 +38,6 @@ package com.apexinnovations.transwarp.ui.tooltip {
 		
 		override mx_internal function initializeTip():void {
 			assignResources();				
-			
-			sizeTip(currentToolTip);
 		}
 		
 		protected function assignResources():void {
@@ -59,9 +59,67 @@ package com.apexinnovations.transwarp.ui.tooltip {
 				padY = getStyleWithDefault(client,"toolTipPaddingY", padY);
 			}		
 			
+			IStyleClient(currentToolTip).setStyle("toolTipPlacement", placement);
+			sizeTip(currentToolTip);
+			
 			var screen:Rectangle = currentToolTip.screen;
 			var target:Rectangle = getGlobalBounds(currentTarget, currentToolTip.parent); // currentToolTip.parent may need to be .root instead
 			
+			var p:Point = calculatePlacement(placement, target, padX, padY);
+			
+			var leftRight:int = 2;
+			var topBottom:int = 2;
+						
+			// Don't look too hard at what follows.  It's ugly and incomplete.  
+			
+			// Attempt to move tooltips if they don't fit on the screen.
+			//		tooltips on the corners can only move to the other corners, and
+			//		tooltis on the sides can only move to the other side.
+			
+			var hOverflow:Number = p.x + currentToolTip.width - screen.width;
+			var hUnderflow:Number = -1 * p.x;
+				
+			var vOverflow:Number = p.y + currentToolTip.height - screen.height;
+			var vUnderflow:Number = -1 * p.y;
+			
+			
+			if(hOverflow > 0 && (placement == "topRight" || placement == "bottomRight" || placement == "right")
+				&& hUnderflow + target.width + currentToolTip.width <= 0)
+				leftRight = -1;
+			else if(hUnderflow > 0 && (placement == "topLeft" || placement == "bottomLeft" || placement == "left")
+				&& hOverflow + target.width + currentToolTip.width <= 0)
+				leftRight = 1;
+			
+			if(vOverflow > 0 && (placement == "bottomRight" || placement == "bottomLeft" || placement == "bottom")
+				&& vUnderflow + target.height + currentToolTip.height <= 0)
+				topBottom = -1;
+			else if(vUnderflow > 0 && (placement == "topRight" || placement == "top" || placement == "topLeft")
+				&& vOverflow + target.height + currentToolTip.height <= 0)
+				topBottom = 1;
+			
+			
+			var newPlacement:String = "";
+			
+			if(topBottom != 2 || leftRight != 2) {
+				if(topBottom == 1 || (topBottom == 2 && (placement == "bottomRight" || placement == "bottomLeft" || placement == "bottom")))
+					newPlacement = "bottom";
+				else if(topBottom == -1 || (topBottom == 2 && (placement == "topRight" || placement == "topLeft" || placement == "top")))
+					newPlacement = "top";
+				
+				if(leftRight == -1 || (leftRight == 2 && (placement == "topLeft" || placement == "left" || placement == "bottomLeft")))
+					newPlacement += newPlacement == "" ? "left" : "Left";
+				else if(leftRight == 1 || (leftRight == 2 && (placement == "topRight" || placement == "right" || placement == "bottomRight")))
+					newPlacement += newPlacement == "" ? "right" : "Right";
+				
+			
+				IStyleClient(currentToolTip).setStyle("toolTipPlacement", newPlacement);
+				sizeTip(currentToolTip);
+				p = calculatePlacement(newPlacement, target, padX, padY);
+			}  
+			currentToolTip.move(p.x, p.y);	
+		}
+		
+		protected function calculatePlacement(placement:String, target:Rectangle, padX:Number, padY:Number):Point {
 			var x:Number;
 			var y:Number;
 			
@@ -102,11 +160,10 @@ package com.apexinnovations.transwarp.ui.tooltip {
 					y = target.y + (target.height - currentToolTip.height) / 2;
 					break;
 			}
-			IStyleClient(currentToolTip).setStyle("toolTipPlacement", placement);
-			currentToolTip.move(x, y);
-			// Force redraw to fix tooltip moving.
-			UIComponent(currentToolTip).validateNow();
+			
+			return new Point(x,y);
 		}
+		
 		
 		private function getStyleWithDefault(client:IStyleClient, key:String, defaultValue:*):* {
 			var value:* = client.getStyle(key);

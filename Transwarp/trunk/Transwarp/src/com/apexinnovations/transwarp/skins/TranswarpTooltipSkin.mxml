@@ -11,6 +11,8 @@
 		<![CDATA[
 			import mx.core.IToolTip;
 			
+			import spark.primitives.supportClasses.GraphicElement;
+			
 			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
 				
 				var placement:String = getStyle("toolTipPlacement");
@@ -18,24 +20,25 @@
 				if(!placement)
 					return;
 				
+				clearAnchors(arrow);
+				clearAnchors(toolTipGroup);
+				
 				if(placement == "top" || placement == "topLeft" || placement == "topRight") {
 					arrowColor.color = 0xd6d6d6;
 					toolTipGroup.bottom = 10;
 					arrow.bottom = 0;
-					move(0, -10);
 				} else if(placement == "bottom" || placement == "bottomLeft" || placement == "bottomRight") {
 					arrowColor.color = 0xffffff;
 					toolTipGroup.top = 10;
-					arrow.top = 0;					
+					arrow.top = 0;
 				} else if(placement == "left") {
-					arrowColor.color = 0xd6d6d6; //FIXME
+					arrowColor.color = 0xd6d6d6; //FIXME?
 					toolTipGroup.right = 10;
 					arrow.verticalCenter = 0;
 				} else if(placement == "right") {
-					arrowColor.color = 0xd6d6d6; //FIXME
+					arrowColor.color = 0xd6d6d6; //FIXME?
 					toolTipGroup.left = 10;
 					arrow.verticalCenter = 0;
-					move(10, 0);
 				}				
 				
 				switch(placement) {
@@ -74,6 +77,13 @@
 				}
 				
 				super.updateDisplayList(unscaledWidth, unscaledHeight);				
+			}
+			
+			protected function clearAnchors(obj:Object):void {
+				obj.top = NaN;
+				obj.bottom = NaN;
+				obj.left = NaN;
+				obj.right = NaN;
 			}
 		]]>
 	</fx:Script>
