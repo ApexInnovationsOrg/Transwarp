@@ -1,5 +1,6 @@
 package com.apexinnovations.transwarp.ui.tooltip {
 	import com.apexinnovations.transwarp.skins.TranswarpTooltipSkin;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
 	import flashx.textLayout.elements.TextFlow;
 	
@@ -12,6 +13,8 @@ package com.apexinnovations.transwarp.ui.tooltip {
 	import spark.components.RichText;
 	import spark.components.supportClasses.SkinnableComponent;
 	import spark.utils.TextFlowUtil;
+	
+	TranswarpVersion.revision = "$Rev$";
 	
 	public class TranswarpTooltip extends SkinnableComponent implements IToolTip {
 		
