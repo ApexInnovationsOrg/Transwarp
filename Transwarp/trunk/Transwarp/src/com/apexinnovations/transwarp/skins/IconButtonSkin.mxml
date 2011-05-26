@@ -12,11 +12,7 @@
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.ui.IconButton;
-		]]>
-	</fx:Script>
 
-	<fx:Script>
-		<![CDATA[
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			TranswarpVersion.revision = "$Rev$";
 		]]>

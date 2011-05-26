@@ -9,9 +9,13 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
 			import mx.core.IToolTip;
 			
 			import spark.primitives.supportClasses.GraphicElement;
+			
+			TranswarpVersion.revision = "$Rev$";
 			
 			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
 				
