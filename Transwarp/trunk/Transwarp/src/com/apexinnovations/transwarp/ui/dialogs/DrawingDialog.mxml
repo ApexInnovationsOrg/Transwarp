@@ -171,9 +171,9 @@
 		<s:HGroup verticalAlign="top" gap="5">
 			<s:VGroup horizontalAlign="center" gap="5" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5" width="40" >
 				<s:Label text="{resourceManager.getString('Chrome','TOOL')}" fontWeight="bold" color="0x000000" />
-				<ui:ToolButton id="brush" icon="{SmallPaintbrushIcon}" selected="true" toolTip="PAINTBRUSH" x="2" y="2" click="toolSelected('brush');"/>
-				<ui:ToolButton id="eraser" icon="{EraserIcon}" selected="false" toolTip="ERASER" x="2" y="2"  click="toolSelected('eraser');" visible="false" />
-				<ui:ToolButton id="stop" icon="{ClearScreenIcon}" selected="false" toolTip="STOP_DRAWING" x="2" y="2" click="toolSelected('stop');" />
+				<ui:ToolButton id="brush" icon="{SmallPaintbrushIcon}" selected="true" toolTip="PAINTBRUSH" click="toolSelected('brush');"/>
+				<ui:ToolButton id="stop" icon="{ClearScreenIcon}" selected="false" toolTip="STOP_DRAWING" click="toolSelected('stop');" />
+				<ui:ToolButton id="eraser" icon="{EraserIcon}" selected="false" toolTip="ERASER" click="toolSelected('eraser');" visible="false" />
 			</s:VGroup>
 			<ui:VerticalSeparator height="100%"/>
 			<s:VGroup horizontalAlign="center" gap="5" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5" width="40" >
