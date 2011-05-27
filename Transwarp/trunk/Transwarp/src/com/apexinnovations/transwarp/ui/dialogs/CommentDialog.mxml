@@ -17,7 +17,7 @@
 
 			TranswarpVersion.revision = "$Rev$";
 						
-			override protected function mouseDown(event:Event):void {
+			override protected function mouseDown(event:MouseEvent):void {
 				PopUpManager.bringToFront(this);
 				commentText.setFocus();
 			}
