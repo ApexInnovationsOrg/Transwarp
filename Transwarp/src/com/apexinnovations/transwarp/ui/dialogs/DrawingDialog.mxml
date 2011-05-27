@@ -28,7 +28,7 @@
 			protected var _canvas:SpriteVisualElement = null;
 
 			public function hide():void {
-				visible = false;
+				closeHandler(null);
 			}
 			
 			// Fake a define
