@@ -44,13 +44,13 @@
 				_graphics = _canvas.graphics;
 				_clickBlocker = tw.clickBlocker.graphics;
 				
-				stage.addEventListener(Event.RESIZE, preventClicks);
+				stage.addEventListener(Event.RESIZE, blockInteractivity);
 				stage.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 				stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
 				stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 				
 				super.addedToStage(event);
-				preventClicks();
+				blockInteractivity();
 			}
 			
 			override protected function closeHandler(event:Event):void {
@@ -137,10 +137,14 @@
 				}
 			}
 			
-			protected function preventClicks():void {
-				_clickBlocker.beginFill(0xffffff, 1);
-				_clickBlocker.drawRect(0, 0, _canvas.width, _canvas.height);
-				_clickBlocker.endFill();
+			protected function blockInteractivity(block:Boolean = true):void {
+				if (block) {
+					_clickBlocker.beginFill(0xffffff, 1);
+					_clickBlocker.drawRect(0, 0, _canvas.width, _canvas.height);
+					_clickBlocker.endFill();
+				} else {
+					_clickBlocker.clear();
+				}
 			}
 			
 			protected function specifyCursor():void {
@@ -157,11 +161,7 @@
 					case 'eraser':	eraser.selected = true; brush.selected = stop.selected = false;	break;
 					case 'stop':	stop.selected = true; brush.selected = eraser.selected = false;	break;
 				}
-				if (stop.selected) {
-					_clickBlocker.clear();
-				} else {
-					preventClicks();
-				}
+				blockInteractivity(!stop.selected);
 				specifyCursor();
 			}
 		]]>
