@@ -25,7 +25,7 @@
 				addEventListener(HelpSelectionEvent.HELP_SELECTION_CHANGED, helpSelected);
 			}
 			
-			override protected function closeHandler(event:Event):void {
+			override protected function closeHandler(event:Event=null):void {
 				currentState = "default";
 				movieClipLoader.source = '';
 				super.closeHandler(event);

@@ -53,7 +53,7 @@
 				blockInteractivity();
 			}
 			
-			override protected function closeHandler(event:Event):void {
+			override protected function closeHandler(event:Event = null):void {
 				toolSelected('stop');
 				Mouse.cursor = _currentCursor;
 

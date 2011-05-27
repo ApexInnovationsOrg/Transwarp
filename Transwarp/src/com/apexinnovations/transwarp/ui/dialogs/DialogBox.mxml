@@ -20,7 +20,7 @@
 			protected var modal:Boolean = false;
 			protected var resizable:Boolean = false;
 			
-			protected function closeHandler(event:Event):void {
+			protected function closeHandler(event:Event = null):void {
 				if (modal) {
 					// Can't just set visibility since hidden modal dialogs screw up focus for all dialogs
 					stage.removeEventListener(Event.RESIZE, resizeListener); 
