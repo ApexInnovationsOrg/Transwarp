@@ -10,12 +10,15 @@
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.Transwarp;
-			import mx.managers.PopUpManager;
 			import com.apexinnovations.transwarp.graphics.*;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
 			import flash.display.*;
 			import flash.geom.*;
 			import flash.ui.*;
+			
+			import mx.managers.PopUpManager;
+			
 			import spark.core.SpriteVisualElement;
 			
 			TranswarpVersion.revision = "$Rev$";
@@ -100,13 +103,15 @@
 			
 			override protected function mouseDown(event:MouseEvent):void {
 				super.mouseDown(event);
-				if (_currentCursor == DRAWING_CURSOR) {
+				// Check to make sure we're not trying to drag this dialog around
+				var mouseX:int = event.currentTarget.mouseX, mouseY:int = event.currentTarget.mouseY;
+				if (_currentCursor == DRAWING_CURSOR && !((mouseX >= x && mouseX <= x + width) && (mouseY >= y && mouseY <= y + height))) {
 					_drawing = true;
 					if (brush.selected) {
 						_graphics.lineStyle(ns.value, cp.selectedColor, 1);
-						_graphics.moveTo(event.currentTarget.mouseX, event.currentTarget.mouseY);
+						_graphics.moveTo(mouseX, mouseY);
 					}
-				}
+				} else _drawing = false;
 			}
 			
 			protected function mouseMove(event:MouseEvent):void {
