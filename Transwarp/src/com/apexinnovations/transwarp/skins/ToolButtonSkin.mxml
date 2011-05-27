@@ -30,7 +30,7 @@
     </s:states>
     
 	<s:filters>
-		<s:DropShadowFilter alpha="0.5" blurX="2.3" blurY="2.3" distance="3" excludeFrom="disabled, disabledAndSelected, downAndSelected, overAndSelected, upAndSelected" />
+		<s:DropShadowFilter alpha="0.3" blurX="3" blurY="3" distance="3" excludeFrom="disabled, disabledAndSelected" />
 		<s:GlowFilter blurX="7" blurY="7" color="0" alpha="0.5" includeIn="over, down" />
 	</s:filters>
 	
@@ -38,10 +38,10 @@
 	
 	<s:Rect width="100%" height="100%">
 		<s:fill>
-			<s:SolidColor alpha="0" />
+			<s:SolidColor alpha="0.1" color="0x000000" alpha.up="0" alpha.over="0" alpha.down="0" alpha.disabled="0" />
 		</s:fill>
 		<s:stroke>
-			<s:SolidColorStroke alpha="0" alpha.upAndSelected="1" alpha.overAndSelected="1" alpha.downAndSelected="1" alpha.disabledAndSelected="1" color="0xaaaaaa" color.upAndSelected="0x666666" color.overAndSelected="0x666666" color.downAndSelected="0x666666" weight="1" />
+			<s:SolidColorStroke alpha="1" alpha.up="0" alpha.over="0" alpha.down="0" alpha.disabled="0" color="0x666666" weight="1" />
 		</s:stroke>
 	</s:Rect>
 	
