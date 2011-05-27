@@ -43,7 +43,7 @@
 				setFocus();
 			}
 			
-			protected function mouseDown(event:Event):void {
+			protected function mouseDown(event:MouseEvent):void {
 				PopUpManager.bringToFront(this);
 				setFocus();
 			}
