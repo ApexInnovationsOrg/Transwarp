@@ -26,6 +26,7 @@
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.User;
+			import com.apexinnovations.transwarp.events.IdleEvent;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			import com.apexinnovations.transwarp.webservices.*;
 			
@@ -70,6 +71,15 @@
 					topBar.hasSearch = !User.instance.lms;
 					
 					topBar.courses = courseware.product.courses;
+					
+					var listener:VisitListener = new VisitListener(5000, 60000, Courseware.instance.timeout);
+					
+					listener.addEventListener(IdleEvent.IDLE, idleTimeout);
+					
+					manager.addEventListener(MouseEvent.MOUSE_DOWN, listener.resetTimeout);
+					manager.addEventListener(MouseEvent.MOUSE_MOVE, listener.resetTimeout);
+					manager.addEventListener(KeyboardEvent.KEY_DOWN, listener.resetTimeout);
+					
 				} else {
 					var e:Error = xmlLoadError;
 					var log:LogService = new LogService();
@@ -135,6 +145,12 @@
 				//Courseware.log("PAGE LOAD ERROR: " + event.type + ": " + event.text);
 			}
 
+
+			protected function idleTimeout(event:Event):void
+			{
+				// TODO Auto-generated method stub
+			}
+
 		]]>
 	</fx:Script>
 	
@@ -149,7 +165,7 @@
 		<ui:LeftBar id="leftBar"/>		
 	</s:VGroup>
 	
-	<!--The weird size constraints on this group are another case of having to force the layout code to behave as expected-->
+	<!--The weird size constraints on this group are another case of having to force flex's layout engine to behave as expected-->
 	<ui:ContentArea id="contentArea" left="{leftBar.width}"
 			  top="178" top.maximized="35"
 			  width="{width-contentArea.x}" height="{height-contentArea.y}" 

@@ -19,8 +19,8 @@ package com.apexinnovations.transwarp.webservices
 		public static const CONFIG_FAILURE:String = "ApexConfigServiceFailure";
 		public static const LOG_COMPLETE:String = "ApexLogServiceComplete";
 		public static const LOG_FAILURE:String = "ApexLogServiceFailure";
-		public static const PAGE_COMPLETE:String = "ApexPageServiceComplete";
-		public static const PAGE_FAILURE:String = "ApexPageServiceFailure";
+		public static const VISIT_COMPLETE:String = "ApexPageServiceComplete";
+		public static const VISIT_FAILURE:String = "ApexPageServiceFailure";
 		public static const SEARCH_COMPLETE:String = "ApexSearchServiceComplete";
 		public static const SEARCH_FAILURE:String = "ApexSearchServiceFailure";
 		public var command:String;

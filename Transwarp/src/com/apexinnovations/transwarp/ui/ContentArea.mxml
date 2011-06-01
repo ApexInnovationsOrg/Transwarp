@@ -67,4 +67,6 @@
 		<mx:ProgressBar id="progressBar" labelPlacement="bottom" minimum="0" maximum="100" label="0%" direction="right" mode="manual" top="10" bottom="10" left="10" right="10"/>
 	</s:Panel>
 	
+	<s:Label text="{Courseware.instance.currentPage.id}" color="0xaaaaaa" bottom="5" right="5" visible="{Courseware.instance.debug}" />
+	
 </s:Group>

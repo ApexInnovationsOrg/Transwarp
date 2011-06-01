@@ -79,7 +79,8 @@ package com.apexinnovations.transwarp.preloader {
 			
 			// If we're running locally, supply dummy data
 			if (requestVars.baseURL == 'undefined') {
-				requestVars.data = '8998d80e3ea4b7688fb3e724c80a9f8f595fdefe848dda2407dbe3c2a1f7a039e41a2f6dc36ac5ee02c3b1494a236afdcfd51e186a766ab5fa9c202deea38f40'; // userID = 56, courseID = 1, seatID = 1234, timestamp = 42
+				requestVars.data = "e312c92591e7067db6857b02130f7d8b3ce8016b9b28cc8de90efbcc81356dfb0619e755974be99c80a9d5f458deaa16720256f25b2f946b6b0a4befb9791c10";
+				//requestVars.data = '8998d80e3ea4b7688fb3e724c80a9f8f595fdefe848dda2407dbe3c2a1f7a039e41a2f6dc36ac5ee02c3b1494a236afdcfd51e186a766ab5fa9c202deea38f40'; // userID = 56, courseID = 1, seatID = 1234, timestamp = 42
 				requestVars.baseURL = 'http://www.apexsandbox.com';
 			}
 			

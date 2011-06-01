@@ -24,10 +24,10 @@ package com.apexinnovations.transwarp.webservices
 			var arr:Array = new Array();
 
 			var courseware:Courseware = Courseware.instance;
-			if(courseware && courseware.user) {
-				arr['userID'] = courseware.user.id;
-				arr['courseID'] = courseware.currentCourse.id;
-				arr['pageID'] = courseware.currentPage.id;
+			if(courseware) {
+				if(courseware.user) arr['userID'] = courseware.user.id;
+				if(courseware.currentCourse) arr['courseID'] = courseware.currentCourse.id;
+				if(courseware.currentPage) arr['pageID'] = courseware.currentPage.id;
 			}
 			arr['message'] = message;
 			
@@ -47,6 +47,7 @@ package com.apexinnovations.transwarp.webservices
 		
 		// Dispatch the COMPLETE event
 		protected function jsonLoaded(e:Event):void {
+			trace(URLLoader(e.target).data);
 			var myJSON:Object = JSON.decode(URLLoader(e.target).data);
 
 			trace(this.getClass() + ': JSON data received [success=' + myJSON.success + (myJSON.insertID ? ', insertID=' + myJSON.insertID : '') + (myJSON.debugInfo ? ', debugInfo=(' + myJSON.debugInfo + ')' : '') + ']'); 
