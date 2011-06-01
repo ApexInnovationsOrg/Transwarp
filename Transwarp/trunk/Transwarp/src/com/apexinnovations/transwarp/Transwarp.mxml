@@ -11,7 +11,7 @@
 			   minHeight="738" minWidth="924">
 	<fx:Declarations>
 		<s:TitleWindow title="Title" id="errorDialog" close="PopUpManager.removePopUp(errorDialog); fscommand('quit');" width="400" height="300">
-			<s:RichEditableText id="infoText" height="100%" width="100%" editable="false"/> 
+			<s:RichEditableText id="infoText" top="10" bottom="10" left="10" right="10" editable="false"/> 
 		</s:TitleWindow>
 	</fx:Declarations>
 	
@@ -84,7 +84,10 @@
 					var e:Error = xmlLoadError;
 					var log:LogService = new LogService();
 					
-					log.dispatch('XML Load Failure: ' + e.toString() + '\n' + e.getStackTrace());
+					//Temporarily removed stack track until we can resolve json control character issues.
+					//log.dispatch('XML Load Failure: ' + e.toString() + '\n' + e.getStackTrace());
+					//trace(e.getStackTrace());
+					log.dispatch('XML Load Failure: ' + e.toString());
 					
 					themeColor = 0xa8a8a8;
 					
@@ -146,8 +149,7 @@
 			}
 
 
-			protected function idleTimeout(event:Event):void
-			{
+			protected function idleTimeout(event:Event):void {
 				// TODO Auto-generated method stub
 			}
 

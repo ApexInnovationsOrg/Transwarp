@@ -30,6 +30,9 @@
 			protected function pageChanged(event:PageSelectionEvent = null):void {
 				var p:Page = page ? page : Courseware.instance.currentPage;
 				
+				if(!p)
+					return;
+				
 				level.text = p.course.levelRoman + '.';
 				breadcrumbs.text = p.parentFolders;
 				breadcrumbs.includeInLayout = breadcrumbs.text !== '';

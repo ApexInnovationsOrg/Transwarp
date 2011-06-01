@@ -39,7 +39,7 @@ package com.apexinnovations.transwarp.ui {
 		protected var item:LoadingItem;
 		
 		public function ContentContainer() {
-			super();
+			super();			
 			addEventListener(Event.ADDED_TO_STAGE, addedToStage);
 		}
 		
@@ -52,6 +52,9 @@ package com.apexinnovations.transwarp.ui {
 		}
 		
 		protected function pageChanged(event:PageSelectionEvent):void {
+			if(!Courseware.instance || !Courseware.instance.contentLoader) //Should only be true in xml load failure scenarios
+				return;
+			
 			item = Courseware.instance.contentLoader.getItem(event.page.id);
 			if(item.isLoaded) {
 				_isAS2Content = item.content is AVM1Movie;
