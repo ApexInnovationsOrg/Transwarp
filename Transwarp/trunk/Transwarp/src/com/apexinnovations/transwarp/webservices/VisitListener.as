@@ -28,16 +28,16 @@ package com.apexinnovations.transwarp.webservices {
 		protected var visit:VisitService = new VisitService();
 		
 		public function VisitListener(minDuration:Number, updateInterval:Number, timeout:Number) {
-			_minDuration = minDuration;
-			_timeout = timeout;
-			_updateInterval = updateInterval;
+			_minDuration = minDuration * 1000;
+			_timeout = timeout * 1000; //timeout is given in seconds
+			_updateInterval = updateInterval * 1000;
 			
 			Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
 			
-			idleTimer = new Timer(timeout);
+			idleTimer = new Timer(_timeout);
 			idleTimer.start();
 			
-			visitTimer = new Timer(minDuration);
+			visitTimer = new Timer(_minDuration);
 			visitTimer.start();
 			
 			visitTimer.addEventListener(TimerEvent.TIMER, visitTimerHandler);
@@ -81,7 +81,7 @@ package com.apexinnovations.transwarp.webservices {
 		
 		public function resetTimeout(event:Event = null):void {
 			if(_idle) {
-				visitTimerHandler(); //start new visit session
+				pageChanged(); //start new visit session
 				_idle = false;
 			}
 			
