@@ -80,21 +80,13 @@ package com.apexinnovations.transwarp.webservices {
 		}
 		
 		public function resetTimeout(event:Event = null):void {
-			if(_idle)
-				return;
+			if(_idle) {
+				visitTimerHandler(); //start new visit session
+				_idle = false;
+			}
 			
 			idleTimer.reset();
 			idleTimer.start();		
-		}
-		
-		public function resumeFromIdle():void {
-			if(!_idle)
-				return;
-			
-			_idle = false;
-			resetTimeout();
-			
-			visitTimerHandler(); //start new visit session			
 		}
 		
 		protected function idleTimeout(event:Event):void {
