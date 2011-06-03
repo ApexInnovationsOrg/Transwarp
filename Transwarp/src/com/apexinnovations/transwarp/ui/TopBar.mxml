@@ -127,7 +127,7 @@
 	</s:Rect>
 	
 	<!--Color gradient for products with only 1 level-->
-	<s:Rect height="144" width="40%" bottom="34" right="0" alpha="{hasRightGradient ? 1 : 0}" blendMode="multiply" excludeFrom="maximized">
+	<s:Rect height="144" width="40%" bottom="34" right="0" visible="{hasRightGradient}" blendMode="multiply" excludeFrom="maximized">
 		<s:fill>
 			<s:LinearGradient>
 				<s:GradientEntry color="0xffffff" alpha="0" />
@@ -189,7 +189,7 @@
 		</assets:filters>
 	</assets:AssetImageControl>
 	
-	<s:TileGroup id="levelNav" left="285" right="40" top="32" requestedRowCount="3" orientation="columns" verticalGap="10" horizontalGap="10" height.maximized="0" visible.maximized="false"/>
+	<s:TileGroup id="levelNav" left="285" right="40" top="32" requestedRowCount="3" orientation="columns" verticalGap="10" horizontalGap="10" height.maximized="0" visible.maximized="false" visible="{!hasRightGradient}"/>
 	
 	<ext:HGroup verticalAlign="middle" gap="12" bottom="0" height="34" horizontalCenter="66"
 			  color="0xffffff" fontFamily="Arial" fontWeight="bold"

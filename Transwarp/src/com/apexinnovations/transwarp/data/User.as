@@ -70,6 +70,8 @@ package com.apexinnovations.transwarp.data
 		public function get lms():Boolean { return (_classes.indexOf('LMS') != -1); }
 		public function get nurse():Boolean { return (_classes.indexOf('Nurse') != -1); }
 		
+		public function get classes():String { return _classes; }
+		
 		public function get id():uint { return _id; }
 		
 		public function get lastAccess():Date { return _lastAccess; }
