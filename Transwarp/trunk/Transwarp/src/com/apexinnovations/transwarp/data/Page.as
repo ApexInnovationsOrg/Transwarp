@@ -21,6 +21,7 @@ package com.apexinnovations.transwarp.data
 	// This represents a page in the course
 	public class Page extends EventDispatcher {
 		private var _allow:String = '';										// Space separated list of types of user allowed to view this page (e.g. 'LMS Doctor Beta'). '' means all
+		private var _audio:String = '';										// name of audio file to load with page, if not the default of 'PAGE_{id}.mp3', or 'false' if no audio
 		private var _bookmarked:Boolean = false;							// Has this page been bookmarked by the user?
 		private var _configuration:String = '';								// URL of XML file to be loaded by SWF as configuration
 		private var _course:Course = null;									// Which course is this page a part of?
@@ -64,6 +65,12 @@ package com.apexinnovations.transwarp.data
 				_swf = xml.@swf;
 				if(!_swf || _swf == '')
 					_swf = 'PAGE_' + Utils.zeroPad(_id, 6) + '.swf';
+				_audio = xml.@audio;
+				if(_audio == 'false') {
+					_audio = '';
+				} else if(!_audio) {
+					_audio = 'PAGE_' + Utils.zeroPad(_id, 6) + '.mp3';
+				}
 				
 				
 				_timeline = xml.@timeline;
@@ -126,6 +133,7 @@ package com.apexinnovations.transwarp.data
 			bookmark.dispatch(!value);
 		}
 		
+		public function get audio():String { return _audio; }
 		public function get configuration():String { return _configuration; }
 		public function get course():Course { return _course; }
 		public function get created():Date { return _created; }
