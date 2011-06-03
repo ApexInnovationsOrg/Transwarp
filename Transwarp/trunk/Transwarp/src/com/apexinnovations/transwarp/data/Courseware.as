@@ -9,8 +9,8 @@ package com.apexinnovations.transwarp.data
 	import flash.errors.*;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.utils.*;
 	import flash.media.*;
+	import flash.utils.*;
 	
 	TranswarpVersion.revision = "$Rev$";
 	
@@ -81,7 +81,6 @@ package com.apexinnovations.transwarp.data
 			var terms:Array = tmp.match(/("[^"]*"|\S+)/g);
 			terms = removeDuplicates(terms);
 			
-trace('Search: require('+require+') exclude('+exclude+') terms('+terms+')');
 			for each (var course:Course in _instance.product.courses) {
 				for each (var item:Page in course.pages) {
 					if (item.search(terms, exclude, require)) {
@@ -108,7 +107,7 @@ trace('Search: require('+require+') exclude('+exclude+') terms('+terms+')');
 			return array;
 		}
 			
-		public function Courseware(xml:XML, loadContent:Boolean = true) {
+		public function Courseware(xml:XML, loadContent:Boolean = true, obeyAllowDeny:Boolean = true) {
 			if(_instance)
 				throw new IllegalOperationError(getQualifiedClassName(this) + " is a singleton");
 			
@@ -130,6 +129,21 @@ trace('Search: require('+require+') exclude('+exclude+') terms('+terms+')');
 			
 			_product = new Product(xml.product[0]);
 			_user = new User(xml.user[0], this);
+			
+			if(obeyAllowDeny) {
+				for each(var course:Course in _product.courses) {
+					var i:int = 0;
+					var pages:Vector.<Page> = course.pages;
+					while(i < pages.length) {
+						var p:Page = pages[i];
+						if(!p.allowUser(_user)) {
+							pages.splice(i,1);
+							course.contents.splice(course.contents.indexOf(p), 1);
+						} else
+							i++;
+					}
+				}
+			}
 			
 			_currentCourseList = new CourseList();
 			_currentCourseList.addEventListener(FolderOpenEvent.FOLDER_OPEN, folderOpenHandler);

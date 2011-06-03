@@ -8,7 +8,7 @@
 			   xmlns:ext="com.apexinnovations.transwarp.ui.ext.*"
 			   addedToStage="onAdded()"
 			   applicationComplete="applicationCompleteHandler()"
-			   minHeight="738" minWidth="924">
+			   minWidth="924">
 	<fx:Declarations>
 		<s:TitleWindow title="Title" id="errorDialog" close="PopUpManager.removePopUp(errorDialog); fscommand('quit');" width="400" height="300">
 			<s:RichEditableText id="infoText" top="10" bottom="10" left="10" right="10" editable="false"/> 

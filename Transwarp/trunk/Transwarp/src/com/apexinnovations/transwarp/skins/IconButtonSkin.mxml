@@ -34,6 +34,7 @@
 		<s:GlowFilter blurX="10" blurY="10" color="0" alpha="0.65" includeIn="over,down" />
 	</s:filters>
 	
+	<s:BitmapImage id="iconDisplay" smoothingQuality="high" />
 	<s:Label id="labelDisplay" textAlign="center" maxDisplayedLines="1" horizontalCenter="0"
 			 verticalCenter="2" verticalAlign="middle" />
 	

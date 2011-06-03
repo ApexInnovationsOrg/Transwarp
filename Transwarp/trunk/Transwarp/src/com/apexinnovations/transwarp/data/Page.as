@@ -119,6 +119,27 @@ package com.apexinnovations.transwarp.data
 			}
 		}
 		
+		public function allowUser(user:User):Boolean {
+			var p:Boolean = true;
+			
+			var classes:Array = user.classes.split(' ');
+			
+			if(_allow != "")
+				p = hasIntersect(classes, _allow.split(' '));
+			
+			if(_deny != "")
+				p = p && hasIntersect(classes, _deny.split(' '));			
+			
+			return p;
+		}
+		
+		private function hasIntersect(a1:Array, a2:Array):Boolean {
+			for each(var e:String in a1)
+				if(a2.indexOf(e) != -1)
+					return true;
+			return false;
+		}
+		
 		public function get allowBeta():Boolean { return ((_allow == '' || _allow.indexOf('Beta') != -1) && !(_deny.indexOf('Beta') != -1)); }
 		public function get allowDoctor():Boolean { return ((_allow == '' || _allow.indexOf('Doctor') != -1) && !(_deny.indexOf('Doctor') != -1)); }
 		public function get allowEMT():Boolean { return ((_allow == '' || _allow.indexOf('EMT') != -1) && !(_deny.indexOf('EMT') != -1)); }
