@@ -63,8 +63,9 @@ package com.apexinnovations.transwarp.data
 				_parent = parent;
 				_supportText = (xml.supportText == undefined ? null : TextConverter.importToFlow(xml.supportText.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
 				_swf = xml.@swf;
+				var name:String = 'PAGE_' + Utils.zeroPad(_id, 6);
 				if(!_swf || _swf == '')
-					_swf = 'PAGE_' + Utils.zeroPad(_id, 6) + '.swf';
+					_swf = name + '/' + name + '.swf';
 				_audio = xml.@audio;
 				if(_audio == 'false') {
 					_audio = '';
@@ -255,6 +256,7 @@ package com.apexinnovations.transwarp.data
 				_weight += find(needle, _searchFields[7]) * 2;	// answers
 				_weight += find(needle, _searchFields[8]) * 1;	// updates
 			}
+			
 			for each (term in require) {
 				needle = matchWildcards(term);
 				_weight += find(needle, _searchFields[0]) * 5;	// qualifiedName
