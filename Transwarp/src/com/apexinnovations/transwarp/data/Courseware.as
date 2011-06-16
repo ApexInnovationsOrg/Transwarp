@@ -1,8 +1,8 @@
 package com.apexinnovations.transwarp.data
 {
+	import com.apexinnovations.transwarp.assets.ContentLoader;
 	import com.apexinnovations.transwarp.events.FolderOpenEvent;
 	import com.apexinnovations.transwarp.events.PageSelectionEvent;
-	import com.apexinnovations.transwarp.ui.tree.CourseList;
 	import com.apexinnovations.transwarp.utils.*;
 	import com.apexinnovations.transwarp.webservices.*;
 	
@@ -13,7 +13,6 @@ package com.apexinnovations.transwarp.data
 	import flash.utils.*;
 	
 	TranswarpVersion.revision = "$Rev$";
-	
 	
 	[Event(name="pageSelectionChanged", type="com.apexinnovations.transwarp.events.PageSelectionEvent")]
 	
@@ -34,7 +33,6 @@ package com.apexinnovations.transwarp.data
 		private var _timeout:int = 0;				// The timeout value of inactivity, in seconds
 		private var _user:User = null;				// The user that's accessing the courseware
 		private var _website:String = '';			// The base URL of the website this engine is being run from
-		private var _contentLoader:ContentLoader;
 		
 		// Return the singleton instance of this class
 		public static function get instance():Courseware {
@@ -149,8 +147,6 @@ package com.apexinnovations.transwarp.data
 			_currentCourseList.addEventListener(FolderOpenEvent.FOLDER_OPEN, folderOpenHandler);
 			currentCourse = _product.getCourseByID(_user.startCourseID);
 			currentPage = _currentCourse.pages[0];
-			if(loadContent)
-				_contentLoader = new ContentLoader(_product);
 		}
 		
 		
@@ -205,7 +201,6 @@ package com.apexinnovations.transwarp.data
 		
 		public function get website():String { return _website; }
 		
-		public function get contentLoader():ContentLoader { return _contentLoader; }
 		
 		public function getCourseByID(courseID:uint):Course {
 			for each(var c:Course in product.courses)
@@ -276,12 +271,10 @@ package com.apexinnovations.transwarp.data
 					folder.open = true;
 					newIndex = list.getItemIndex(folder); //Opening the folder may change its index due to an auto-close of another folder
 					moveSelection(newIndex + 1, up);
-				}						
-				
+				}
 			}
 		}
-		
-		
+				
 		protected function folderOpenHandler(event:FolderOpenEvent):void {
 			if(!_user.autoCloseMenu)
 				return;

@@ -8,7 +8,7 @@
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.graphics.*;
-			import com.apexinnovations.transwarp.ui.tree.CourseList;
+			import com.apexinnovations.transwarp.data.CourseList;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import mx.collections.ArrayList;

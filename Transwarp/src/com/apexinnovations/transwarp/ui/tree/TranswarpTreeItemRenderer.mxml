@@ -49,7 +49,11 @@
 					
 					indentation = f.depth * 12;
 					labelDisplay.text = f.name;
+				} else {
+					labelDisplay.text = "File Inclusion Error";
+					disclosure.visible = false;
 				}
+					
 			}
 			
 			protected function click():void {

@@ -1,4 +1,4 @@
-package com.apexinnovations.transwarp.data {
+package com.apexinnovations.transwarp.assets {
 	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.loadingtypes.LoadingItem;
 	
@@ -11,6 +11,10 @@ package com.apexinnovations.transwarp.data {
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.sampler.stopSampling;
+	import com.apexinnovations.transwarp.data.Course;
+	import com.apexinnovations.transwarp.data.Courseware;
+	import com.apexinnovations.transwarp.data.Page;
+	import com.apexinnovations.transwarp.data.Product;
 
 	TranswarpVersion.revision = "$Rev$";
 	
