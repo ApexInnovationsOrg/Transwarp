@@ -1,8 +1,4 @@
-package com.apexinnovations.transwarp.ui.tree {
-	import com.apexinnovations.transwarp.data.Course;
-	import com.apexinnovations.transwarp.data.Courseware;
-	import com.apexinnovations.transwarp.data.Folder;
-	import com.apexinnovations.transwarp.data.Page;
+package com.apexinnovations.transwarp.data {
 	import com.apexinnovations.transwarp.events.FolderOpenEvent;
 	import com.apexinnovations.transwarp.events.TranswarpEvent;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;

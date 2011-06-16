@@ -120,11 +120,9 @@ package com.apexinnovations.transwarp.preloader {
 			} else {
 				
 				// Delete file inclusion errors, if any
-				for each (var item:XML in xml.product.courses.elements()) {	// courses or pages
-					if (item.localName() == 'FILE_INCLUSION_ERROR') {
-						log.dispatch("FILE_INCLUSION_ERROR: " + item.text());
-						deleteXMLNode(item);
-					}
+				for each (var item:XML in xml..FILE_INCLUSION_ERROR) {
+					log.dispatch("FILE_INCLUSION_ERROR: " + item.text());
+					deleteXMLNode(item);
 				}
 	
 				// A little preprocessing of the XML...

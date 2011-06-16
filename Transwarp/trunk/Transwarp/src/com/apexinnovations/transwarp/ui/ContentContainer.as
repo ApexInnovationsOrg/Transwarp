@@ -2,6 +2,7 @@ package com.apexinnovations.transwarp.ui {
 	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.loadingtypes.LoadingItem;
 	
+	import com.apexinnovations.transwarp.assets.ContentLoader;
 	import com.apexinnovations.transwarp.data.Courseware;
 	import com.apexinnovations.transwarp.events.PageSelectionEvent;
 	import com.apexinnovations.transwarp.events.TranswarpEvent;
@@ -37,6 +38,8 @@ package com.apexinnovations.transwarp.ui {
 		
 		protected var _isAS2Content:Boolean;
 		
+		protected var loader:ContentLoader;
+		
 		protected var item:LoadingItem;
 		
 		public function ContentContainer() {
@@ -53,10 +56,14 @@ package com.apexinnovations.transwarp.ui {
 		}
 		
 		protected function pageChanged(event:PageSelectionEvent):void {
-			if(!Courseware.instance || !Courseware.instance.contentLoader) //Should only be true in xml load failure scenarios
-				return;
+			if(!loader) {
+				if(Courseware.instance && Courseware.instance.product) // Should only be false in total xml load failure cases
+					loader = new ContentLoader(Courseware.instance.product);
+				else
+					return;
+			}
 			
-			item = Courseware.instance.contentLoader.getItem(event.page.id);
+			item = loader.getItem(event.page.id);
 			if(item.isLoaded) {
 				_isAS2Content = item.content is AVM1Movie;
 				content = item.content.parent;
