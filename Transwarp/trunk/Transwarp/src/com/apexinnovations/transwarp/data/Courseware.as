@@ -105,7 +105,7 @@ package com.apexinnovations.transwarp.data
 			return array;
 		}
 			
-		public function Courseware(xml:XML, loadContent:Boolean = true, obeyAllowDeny:Boolean = true) {
+		public function Courseware(xml:XML, obeyAllowDeny:Boolean = true) {
 			if(_instance)
 				throw new IllegalOperationError(getQualifiedClassName(this) + " is a singleton");
 			
