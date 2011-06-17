@@ -19,7 +19,7 @@
 		<link>
 			<name>[source path] src</name>
 			<type>2</type>
-			<locationURI>DOCUMENTS/TranswarpData/src</locationURI>
+			<locationURI>DOCUMENTS/TranswarpConfig/src</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

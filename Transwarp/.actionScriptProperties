@@ -2,7 +2,7 @@
 <actionScriptProperties analytics="false" mainApplicationPath="com/apexinnovations/transwarp/Transwarp.mxml" projectUUID="aae77c0c-4c9e-49b0-94a4-9b7959b721c6" version="7">
   <compiler additionalCompilerArguments="-locale=en_US,es_ES -source-path=locale/{locale} -keep-generated-actionscript" autoRSLOrdering="true" copyDependentFiles="true" flexSDK="Flex Hero" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath>
-      <compilerSourcePathEntry kind="1" linkType="1" path="${DOCUMENTS}/TranswarpData/src"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="${DOCUMENTS}/TranswarpConfig/src"/>
     </compilerSourcePath>
     <libraryPath defaultLinkType="3">
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
