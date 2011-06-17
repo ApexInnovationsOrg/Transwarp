@@ -42,6 +42,8 @@ package com.apexinnovations.transwarp.ui {
 		
 		protected var item:LoadingItem;
 		
+		protected var _actualContent:*;
+		
 		public function ContentContainer() {
 			super();			
 			addEventListener(Event.ADDED_TO_STAGE, addedToStage);
@@ -86,10 +88,17 @@ package com.apexinnovations.transwarp.ui {
 			invalidateDisplayList();
 		}
 		
+		[Bindable("contentChanged")]
 		public function get content():DisplayObject { return _content; }
 		public function set content(value:DisplayObject):void {
 			if(_content != null) 
 				removeChild(_content);
+			
+			if(value is Loader)
+				_actualContent = Loader(value).content
+			else 
+				_actualContent = value;	
+			
 			
 			SoundMixer.stopAll();
 			_content = value;
@@ -101,6 +110,9 @@ package com.apexinnovations.transwarp.ui {
 			}
 			dispatchEvent(new Event("contentChanged"));
 		}
+		
+		[Bindable("contentChanged")] 
+		public function get actualContent():* { return _actualContent; }
 		
 		override protected function updateDisplayList(width:Number, height:Number):void {
 			super.updateDisplayList(width, height);
@@ -160,7 +172,7 @@ package com.apexinnovations.transwarp.ui {
 			dispatchEvent(new Event(Event.COMPLETE));
 			_isAS2Content = item.content is AVM1Movie;
 			content = item.content.parent;						
-			
+						
 			item.removeEventListener(Event.COMPLETE, contentLoaded);
 			item.removeEventListener(ProgressEvent.PROGRESS, contentProgress);
 			invalidateDisplayList();

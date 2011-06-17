@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 addedToStage="addedToStageHandler(event)"
+		 width="80%" height="16" xmlns:ui="com.apexinnovations.transwarp.ui.*">
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.TranswarpMovieClip;
+			import com.apexinnovations.transwarp.data.Courseware;
+						
+			public var source:TranswarpMovieClip;
+
+			protected var trackingMouse:Boolean = false;
+			protected var draggedToEndForcedStop:Boolean = false;
+			
+			[Bindable] protected var percent:Number;
+			
+			protected function addedToStageHandler(event:Event):void {
+				stage.addEventListener(Event.ENTER_FRAME, update);
+				stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
+			}
+			
+			protected function setProgress(current:int, total:int):void {
+				percent = current / total * 100;
+			}
+			
+			protected function update(event:Event):void {
+				var src:TranswarpMovieClip = source
+				
+				if(!src)
+					return;
+				
+				// We attempt to maintain the 'playing state' of the clip while the user drags the timeline.
+				// To prevent the clip from looping when the user drags the timeline all the way to the end, gotoAndStop is always used to stop it
+				//		if the timeline is dragged to the last frame.
+				// To prevent this workaround from causing the clip to remain paused if the timeline is dragged away from the final frame
+				// 		before releasing the mouse, we keep track of when the clip was stopped in this way.
+				
+				var playing:Boolean = src.isPlaying || draggedToEndForcedStop;
+				
+				playButton.visible = !playing;
+				playButton.includeInLayout = !playing;
+				
+				pauseButton.visible = playing;
+				pauseButton.includeInLayout = playing;
+				
+				if(trackingMouse) {		
+					
+					var newFrame:int = Math.max(0,Math.min(((bar.mouseX) / bar.width) * src.totalFrames, src.totalFrames));
+					
+					if(playing && newFrame == src.totalFrames) {
+						draggedToEndForcedStop = true;
+						src.gotoAndStop(newFrame);
+					} else if(playing)
+						src.gotoAndPlay(newFrame);
+					else
+						src.gotoAndStop(newFrame);
+				}
+				
+				setProgress(src.currentFrame, src.totalFrames);
+			}
+			
+			protected function mouseDown(event:MouseEvent):void {
+				trackingMouse = true;
+			}
+			
+			protected function mouseUp(event:MouseEvent):void {
+				trackingMouse = false;
+				if(draggedToEndForcedStop) {
+					draggedToEndForcedStop = false;
+					var src:MovieClip = source;
+					
+					if(!src || src.currentFrame == src.totalFrames)
+						return;
+					
+					src.play();
+				}
+			}
+
+		]]>
+	</fx:Script>
+	<s:layout>
+		<s:HorizontalLayout gap="3" />
+	</s:layout>
+	
+	<s:Graphic id="playButton" click="if(source) source.play();" width="16" height="16" buttonMode="true">
+		<s:Path data="M 0 0 L 16 8 0 16Z">
+			<s:fill><s:SolidColor color="{Courseware.instance.color}"/></s:fill>
+		</s:Path>
+	</s:Graphic>
+	
+
+	<s:Graphic id="pauseButton" click="if(source) source.stop();" width="16" height="16" buttonMode="true">
+		<s:Path data="M 3 0 L 7 0 7 16 3 16 Z M 9 0 13 0 13 16 9 16 Z">
+			<s:fill><s:SolidColor color="{Courseware.instance.color}"/></s:fill>
+		</s:Path>
+	</s:Graphic>
+	
+	<s:Group id="bar" mouseDown="mouseDown(event)" width="100%" height="100%">
+		<s:filters>
+			<s:DropShadowFilter inner="true" distance="2.3" blurX="2.3" blurY="2.3" alpha=".5" color="0" />
+			<s:GlowFilter inner="true" blurX="15" blurY="15" alpha=".2" color="0" />
+		</s:filters>
+		<s:Rect width="100%" height="100%" radiusX="3">
+			<s:fill>
+				<s:SolidColor color="0xffffff" />
+			</s:fill>
+		</s:Rect>
+		
+		<s:Rect height="100%" percentWidth="{percent}" radiusX="3">
+			<s:fill>
+				<s:SolidColor color="{Courseware.instance.color}" />
+			</s:fill>
+		</s:Rect>
+	</s:Group>	
+</s:Group>
