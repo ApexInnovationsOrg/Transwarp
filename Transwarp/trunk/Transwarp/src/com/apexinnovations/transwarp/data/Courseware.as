@@ -1,6 +1,7 @@
 package com.apexinnovations.transwarp.data
 {
 	import com.apexinnovations.transwarp.assets.ContentLoader;
+	import com.apexinnovations.transwarp.config.ConfigData;
 	import com.apexinnovations.transwarp.events.FolderOpenEvent;
 	import com.apexinnovations.transwarp.events.PageSelectionEvent;
 	import com.apexinnovations.transwarp.utils.*;
@@ -124,6 +125,9 @@ package com.apexinnovations.transwarp.data
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
 			}
+			
+			ConfigData.color = color;
+			ConfigData.website = _website;
 			
 			_product = new Product(xml.product[0]);
 			_user = new User(xml.user[0], this);
