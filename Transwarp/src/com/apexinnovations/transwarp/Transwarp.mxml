@@ -120,24 +120,28 @@
 			}
 			
 			private function uncaughtErrorHandler(event:UncaughtErrorEvent):void {
-				event.stopPropagation();
-				
-				var log:LogService = new LogService();
-				
-				if (event.error is Error) {
-					var error:Error = event.error as Error;
+				try {
+					event.stopPropagation();
 					
-					log.dispatch('UNHANDLED ERROR: ' + error.message);
+					var log:LogService = new LogService();
 					
-					//popupErrorDialog('We are sorry, but there has been a problem and the application must be closed.\n\n' + error.message + '\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
-				} else if (event.error is ErrorEvent) {
-					var errorEvent:ErrorEvent = event.error as ErrorEvent;
-					errorEvent.stopPropagation();
-					log.dispatch('UNHANDLED EVENT: ' + errorEvent.type + ': ' + errorEvent.text);
-									
-					//popupErrorDialog('We are sorry, but there has been a problem and the application must be closed.\n\n' + errorEvent.type + '\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
-				} else {
-					// a non-Error, non-ErrorEvent type was thrown and uncaught
+					if (event.error is Error) {
+						var error:Error = event.error as Error;
+						
+						log.dispatch('UNHANDLED ERROR: ' + error.message);
+						
+						//popupErrorDialog('We are sorry, but there has been a problem and the application must be closed.\n\n' + error.message + '\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
+					} else if (event.error is ErrorEvent) {
+						var errorEvent:ErrorEvent = event.error as ErrorEvent;
+						errorEvent.stopPropagation();
+						log.dispatch('UNHANDLED EVENT: ' + errorEvent.type + ': ' + errorEvent.text);
+										
+						//popupErrorDialog('We are sorry, but there has been a problem and the application must be closed.\n\n' + errorEvent.type + '\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
+					} else {
+						// a non-Error, non-ErrorEvent type was thrown and uncaught
+					}
+				} catch (e:Error) {
+					// Nothing, just don't blow up!
 				}
 			}
 		
