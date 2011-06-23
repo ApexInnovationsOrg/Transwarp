@@ -21,27 +21,31 @@ package com.apexinnovations.transwarp.webservices
 		
 		// The real class-specific work is done here
 		public function dispatch(message:String):void { 
-			var arr:Array = new Array();
-
-			var courseware:Courseware = Courseware.instance;
-			if(courseware) {
-				if(courseware.user) arr['userID'] = courseware.user.id;
-				if(courseware.currentCourse) arr['courseID'] = courseware.currentCourse.id;
-				if(courseware.currentPage) arr['pageID'] = courseware.currentPage.id;
+			try{
+				var arr:Array = new Array();
+	
+				var courseware:Courseware = Courseware.instance;
+				if(courseware) {
+					if(courseware.user) arr['userID'] = courseware.user.id;
+					if(courseware.currentCourse) arr['courseID'] = courseware.currentCourse.id;
+					if(courseware.currentPage) arr['pageID'] = courseware.currentPage.id;
+				}
+				arr['message'] = message;
+				
+				// Package up the URLRequest
+				var req:URLRequest = super.createRequest('log', super.encrypt(arr));
+				
+				// Add event listeners for success and failure
+				var loader:URLLoader= new URLLoader();
+				loader.addEventListener(Event.COMPLETE, jsonLoaded);
+				loader.addEventListener(IOErrorEvent.IO_ERROR, jsonError);
+				loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, jsonError);
+				
+				// Call the URL
+				loader.load(req);
+			} catch (e:Error) {
+				// Just ignore it
 			}
-			arr['message'] = message;
-			
-			// Package up the URLRequest
-			var req:URLRequest = super.createRequest('log', super.encrypt(arr));
-			
-			// Add event listeners for success and failure
-			var loader:URLLoader= new URLLoader();
-			loader.addEventListener(Event.COMPLETE, jsonLoaded);
-			loader.addEventListener(IOErrorEvent.IO_ERROR, jsonError);
-			loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, jsonError);
-			
-			// Call the URL
-			loader.load(req);
 		}
 		
 		
