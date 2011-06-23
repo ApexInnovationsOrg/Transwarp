@@ -127,7 +127,7 @@
 				if (event.error is Error) {
 					var error:Error = event.error as Error;
 					
-					log.dispatch('UNHANDLED ERROR: ' + error.message + '\n\n' + error.getStackTrace());
+					log.dispatch('UNHANDLED ERROR: ' + error.message);
 					
 					//popupErrorDialog('We are sorry, but there has been a problem and the application must be closed.\n\n' + error.message + '\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
 				} else if (event.error is ErrorEvent) {
