@@ -32,7 +32,7 @@
 	
 	<!--Bounds on the size of this save space on AS3 slides for instructions (60px at the bottom) and for the title (40px at the top)-->
 	<!--   On AS2 slides, we take into account the 40 px of saved space built into the slide and adjust that for the current scale of the slide -->
-	<ui:ContentContainer id="container" mask="{contentMask}" width="100%" top="{container.isAS2Content ? Math.max(0, 40-40*container.contentScaleY) : 40}" bottom="{container.isAS2Content ? 0 : 60}"
+	<ui:ContentContainer id="container" mask="{contentMask}" width="100%" top="{container.isAS2Content ? Math.max(0, 40-40*container.contentScaleY) : 40}" bottom="{container.isAS2Content ? 0 : bottomGroup.height + 5}"
 						 open="progressPanel.visible = true" complete="progressPanel.visible = false" progress="loadProgress(event)"/>
 	
 	<ui:PageTitle top="10" horizontalCenter="0" fontSize="20"/>
@@ -47,14 +47,15 @@
 		</s:Group>
 	</s:Group>
 	
-	<s:VGroup horizontalAlign="center" width="100%" bottom="0">
-		<ui:Timeline id="timeline" source="{container.actualContent as TranswarpMovieClip}" />
+	<s:VGroup id="bottomGroup" horizontalAlign="center" width="100%" bottom="5">
+		<ui:Timeline id="timeline" source="{container.actualContent as TranswarpMovieClip}" includeInLayout="{Courseware.instance.currentPage.timeline}" visible="{Courseware.instance.currentPage.timeline}"/>
 			
 		<s:HGroup id="instructions" 
 				  paddingLeft="10" paddingRight="10"
 				  scaleX="{Math.min(1, width / instructions.width)}"
 				  scaleY="{Math.min(1, width / instructions.width)}"
 				  visible="{Courseware.instance.currentPage.instructions !== null}"
+				  includeInLayout="{Courseware.instance.currentPage.instructions !== null}"
 				  verticalAlign="middle">
 			
 			<s:Rect height="{instrText.height - 6}" width="8">
@@ -63,7 +64,7 @@
 			
 	
 			<s:RichEditableText id="instrText" color="0x990000" fontWeight="bold" fontSize="14" paddingTop="4" paddingBottom="4" editable="false" selectable="false"
-						textFlow="{Courseware.instance.currentPage.instructions}" maxHeight="60"/>
+						textFlow="{Courseware.instance.currentPage.instructions}"/>
 		</s:HGroup>
 	</s:VGroup>
 	

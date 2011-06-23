@@ -63,21 +63,26 @@ package com.apexinnovations.transwarp.data
 				_parent = parent;
 				_supportText = (xml.supportText == undefined ? null : TextConverter.importToFlow(xml.supportText.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
 				_swf = xml.@swf;
-				var name:String = 'PAGE_' + Utils.zeroPad(_id, 6);
-				if(!_swf || _swf == '')
-					_swf = name + '/' + name + '.swf';
-				_audio = xml.@audio;
-				if(_audio == 'false') {
-					_audio = '';
-				} else if(!_audio) {
-					_audio = 'PAGE_' + Utils.zeroPad(_id, 6) + '.mp3';
-				}
-				
-				
-				_timeline = xml.@timeline;
+				_timeline = xml.@timeline == 'true';
 				_visited = xml.@visited == 'true';
+				
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
+			}
+			
+			if(_instructions && Utils.trim(Utils.textFlowToString(_instructions)) == "") {
+				_instructions = null;
+			}
+			
+			var fileName:String = 'PAGE_' + Utils.zeroPad(_id, 6);
+			
+			if(!_swf || _swf == '')
+				_swf = fileName + '/' + fileName + '.swf';
+			_audio = xml.@audio;
+			if(_audio == 'false') {
+				_audio = '';
+			} else if(!_audio) {
+				_audio = 'PAGE_' + Utils.zeroPad(_id, 6) + '.mp3';
 			}
 			
 			var separator:String = ' ' + ResourceManager.getInstance().getString("Chrome", "FOLDER_SEPARATOR") + ' '; 
