@@ -82,7 +82,7 @@ package com.apexinnovations.transwarp.data
 			if(_audio == 'false') {
 				_audio = '';
 			} else if(!_audio) {
-				_audio = 'PAGE_' + Utils.zeroPad(_id, 6) + '.mp3';
+				_audio = fileName + '/' + fileName + '.mp3';
 			}
 			
 			var separator:String = ' ' + ResourceManager.getInstance().getString("Chrome", "FOLDER_SEPARATOR") + ' '; 
