@@ -2,19 +2,22 @@ package com.apexinnovations.transwarp.assets {
 	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.loadingtypes.LoadingItem;
 	
+	import com.apexinnovations.transwarp.data.Course;
+	import com.apexinnovations.transwarp.data.Courseware;
+	import com.apexinnovations.transwarp.data.Page;
+	import com.apexinnovations.transwarp.data.Product;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	import com.apexinnovations.transwarp.utils.Utils;
 	
 	import flash.display.AVM1Movie;
 	import flash.display.Loader;
+	import flash.display.LoaderInfo;
 	import flash.display.MovieClip;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
+	import flash.events.ProgressEvent;
+	import flash.events.UncaughtErrorEvent;
 	import flash.sampler.stopSampling;
-	import com.apexinnovations.transwarp.data.Course;
-	import com.apexinnovations.transwarp.data.Courseware;
-	import com.apexinnovations.transwarp.data.Page;
-	import com.apexinnovations.transwarp.data.Product;
 
 	TranswarpVersion.revision = "$Rev$";
 	
@@ -70,20 +73,33 @@ package com.apexinnovations.transwarp.assets {
 			var item:LoadingItem = loader.add(getURL(page), {id: page.id});
 			item.addEventListener(Event.INIT, preloadInit);
 			item.addEventListener(Event.COMPLETE, preloadInit);
+			item.addEventListener(ProgressEvent.PROGRESS, setupErrorHandling);
 			item.addEventListener(BulkLoader.ERROR, onItemError);
 			return item;
 		}
 		
+		private function uncaughtErrorHandler(event:Event):void {
+			trace("Script Error in slide: " + (event.target as LoaderInfo).url);
+			//TODO: Log this and replace the slide with a 'broken slide' or something similar to prevent looping issues
+			
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		
+		
 		protected function preloadInit(event:Event):void {
 			var item:LoadingItem = event.target as LoadingItem;
 			var content:* = item.content;
-			
+					
 			if(!content)
 				return;
 			
+			if(content is Loader) {
+				Loader(content).contentLoaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
+			}
+			
 			if(item != lockedItem) {
 				if(content is AVM1Movie) {
-					trace("removing item at init: " + item.id);
 					loader.remove(item);
 					loader.start();
 				} else if (content is MovieClip)
@@ -126,9 +142,20 @@ package com.apexinnovations.transwarp.assets {
 		
 		protected function onItemError(event:ErrorEvent):void {
 			event.stopPropagation();
+			event.preventDefault();
 			Courseware.log("PAGE LOAD ERROR: " + event.type + ": " + event.text);
 		}
 		
+		protected function setupErrorHandling(event:Event):void {
+			var item:LoadingItem = event.target as LoadingItem;
+			var itemLoader:Loader = loader.getDisplayObjectLoader(item.id);
+			
+			itemLoader.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
+			
+			item.removeEventListener(ProgressEvent.PROGRESS, setupErrorHandling);
+		}
+		
+				
 		
 	}
 }
