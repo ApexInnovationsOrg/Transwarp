@@ -29,7 +29,7 @@ package com.apexinnovations.transwarp.webservices {
 		
 		public function VisitListener(minDuration:Number, updateInterval:Number, timeout:Number) {
 			_minDuration = minDuration * 1000;
-			_timeout = timeout * 1000; //timeout is given in seconds
+			_timeout = timeout * 1000;
 			_updateInterval = updateInterval * 1000;
 			
 			Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
@@ -49,7 +49,7 @@ package com.apexinnovations.transwarp.webservices {
 		
 		public function get minDuration():Number { return _minDuration; }
 		public function get timeout():Number { return _timeout; }
-		public function get updateIntervale():Number { return _updateInterval; }
+		public function get updateInterval():Number { return _updateInterval; }
 		public function get idle():Boolean { return _idle; }
 		
 		protected function pageChanged(event:Event = null):void {
@@ -72,7 +72,9 @@ package com.apexinnovations.transwarp.webservices {
 		}
 		
 		protected function visitSuccess(event:ApexWebServiceEvent):void {
-			visitID = event.data.insertID;
+			var id:uint = event.data.insertID;
+			if(id)
+				visitID = id; 
 		}
 		
 		protected function visitFailure(event:Event):void {

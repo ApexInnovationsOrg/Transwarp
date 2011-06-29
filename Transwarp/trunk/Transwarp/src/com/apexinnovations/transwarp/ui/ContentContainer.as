@@ -10,8 +10,10 @@ package com.apexinnovations.transwarp.ui {
 	
 	import flash.display.AVM1Movie;
 	import flash.display.DisplayObject;
+	import flash.display.Graphics;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
+	import flash.display.Sprite;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.FullScreenEvent;
@@ -20,6 +22,8 @@ package com.apexinnovations.transwarp.ui {
 	import flash.media.SoundMixer;
 	
 	import mx.core.UIComponent;
+	
+	import spark.core.SpriteVisualElement;
 	
 	TranswarpVersion.revision = "$Rev$";
 	
@@ -31,21 +35,25 @@ package com.apexinnovations.transwarp.ui {
 	public class ContentContainer extends UIComponent {
 		
 		protected var _content:DisplayObject;
-		protected var _maintainAspectRatio:Boolean = true;
+		
 				
 		protected var _contentWidth:Number;
 		protected var _contentHeight:Number;
 		
 		protected var _isAS2Content:Boolean;
+		protected var _maskContent:Boolean;
+		protected var _maintainAspectRatio:Boolean = true;
+		
+		protected var contentMask:Sprite;
 		
 		protected var loader:ContentLoader;
-		
 		protected var item:LoadingItem;
 		
 		protected var _actualContent:*;
 		
 		public function ContentContainer() {
-			super();			
+			super();
+			maskContent = true;
 			addEventListener(Event.ADDED_TO_STAGE, addedToStage);
 		}
 		
@@ -63,6 +71,11 @@ package com.apexinnovations.transwarp.ui {
 					loader = new ContentLoader(Courseware.instance.product);
 				else
 					return;
+			}
+			
+			if(item) { //Unregister events from previous item
+				item.removeEventListener(Event.COMPLETE, contentLoaded);
+				item.removeEventListener(ProgressEvent.PROGRESS, contentProgress);
 			}
 			
 			item = loader.getItem(event.page.id);
@@ -91,8 +104,9 @@ package com.apexinnovations.transwarp.ui {
 		[Bindable("contentChanged")]
 		public function get content():DisplayObject { return _content; }
 		public function set content(value:DisplayObject):void {
-			if(_content != null) 
+			if(_content != null) {
 				removeChild(_content);
+			}
 			
 			if(value is Loader)
 				_actualContent = Loader(value).content
@@ -107,6 +121,8 @@ package com.apexinnovations.transwarp.ui {
 				addChild(_content);
 				invalidateSize();
 				invalidateDisplayList();
+				if(_maskContent)
+					_content.mask = contentMask;
 			}
 			dispatchEvent(new Event("contentChanged"));
 		}
@@ -142,8 +158,9 @@ package com.apexinnovations.transwarp.ui {
 			var newXScale:Number = w == 0 ? 1 : width / w;
 			var newYScale:Number = h == 0 ? 1 : height / h;
 			
+			var scale:Number;		
+			
 			if(_maintainAspectRatio){
-				var scale:Number;
 				if(newXScale > newYScale) {
 					scale = newYScale;
 					_content.x = Math.floor((width - w*scale)/2); // Center horizontally
@@ -156,6 +173,19 @@ package com.apexinnovations.transwarp.ui {
 				_content.scaleX = newXScale;
 				_content.scaleY = newYScale;
 			}
+			
+			if(_maskContent) {
+				var g:Graphics = contentMask.graphics;
+				contentMask.scaleX = _content.scaleX; 
+				contentMask.scaleY = _content.scaleY;
+				contentMask.x = _content.x;
+				contentMask.y = _content.y;
+				g.clear();
+				g.beginFill(0xffcc00, 0.4);
+				g.drawRect(0, 0, _contentWidth, _contentHeight);
+				g.endFill();				
+			}
+			
 			dispatchEvent(new Event("contentSizeChanged"));
 		}
 		
@@ -186,5 +216,22 @@ package com.apexinnovations.transwarp.ui {
 		[Bindable("contentSizeChanged")] public function get contentHeight():Number { return _contentHeight; }
 		[Bindable("contentSizeChanged")] public function get contentX():Number { return _content ? _content.x : 0; }
 		[Bindable("contentSizeChanged")] public function get contentY():Number { return _content ? _content.y : 0; }
+
+		[Bindable] public function get maskContent():Boolean { return _maskContent; }
+
+		public function set maskContent(value:Boolean):void {
+			_maskContent = value;
+			if(value) {
+				if(!contentMask)
+					contentMask = new Sprite();
+				addChild(contentMask);
+				if(_content)
+					_content.mask = contentMask;
+				invalidateDisplayList();				
+			} else if(contentMask !== null) {
+				removeChild(contentMask);
+			}
+		}
+
 	}
 }

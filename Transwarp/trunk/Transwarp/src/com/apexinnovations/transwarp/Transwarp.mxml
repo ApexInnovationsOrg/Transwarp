@@ -7,7 +7,6 @@
 			   preloader="com.apexinnovations.transwarp.preloader.PreloaderDisplay"
 			   xmlns:ext="com.apexinnovations.transwarp.ui.ext.*"
 			   addedToStage="onAdded()"
-			   applicationComplete="applicationCompleteHandler()"
 			   minWidth="924">
 	<fx:Declarations>
 		<s:TitleWindow title="Title" id="errorDialog" close="PopUpManager.removePopUp(errorDialog); fscommand('quit');" width="400" height="300">
@@ -51,6 +50,8 @@
 			override public function set systemManager(value:ISystemManager):void {
 				super.systemManager = value;
 				
+				value.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
+				
 				manager = value as TranswarpSystemManager;
 				resourceManager.localeChain = ["en_US", "es_ES"]; //TODO: pull locale from the xml.
 				
@@ -72,7 +73,7 @@
 					
 					topBar.courses = courseware.product.courses;
 					
-					var listener:VisitListener = new VisitListener(5, 6, Courseware.instance.timeout);
+					var listener:VisitListener = new VisitListener(5, 60, Courseware.instance.timeout);
 					
 					listener.addEventListener(IdleEvent.IDLE, idleTimeout);
 					
@@ -114,15 +115,11 @@
 					errorDialog.title = title;
 				}
 			}
-
-			private function applicationCompleteHandler():void {
-				loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
-			}
 			
 			private function uncaughtErrorHandler(event:UncaughtErrorEvent):void {
 				try {
 					event.stopPropagation();
-					
+					event.preventDefault();
 					var log:LogService = new LogService();
 					
 					if (event.error is Error) {
