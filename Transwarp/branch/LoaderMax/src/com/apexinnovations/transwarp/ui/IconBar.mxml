@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ext:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:gfx="com.apexinnovations.transwarp.graphics.*"
+		 xmlns:ui="com.apexinnovations.transwarp.ui.*"
+		 xmlns:ext="com.apexinnovations.transwarp.ui.ext.*"
+		 width="50"
+		 addedToStage="onAdded()"
+		 toolTipPlacement="topRight"
+		 resize="resizeHandler(event)">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.Transwarp;
+			import com.apexinnovations.transwarp.data.*;
+			import com.apexinnovations.transwarp.graphics.*;
+			import com.apexinnovations.transwarp.ui.*;
+			import com.apexinnovations.transwarp.ui.dialogs.*;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			import flash.printing.*;
+			
+			import flashx.textLayout.elements.TextFlow;
+			
+			import mx.binding.utils.BindingUtils;
+			import mx.core.IVisualElement;
+			import mx.core.UIComponent;
+			import mx.managers.PopUpManager;
+			import mx.managers.PopUpManagerChildList;
+			import mx.utils.ColorUtil;
+			
+			TranswarpVersion.revision = "$Rev$";
+
+			protected var audioControl:AudioSlider = null;
+			protected var bookmarkDialog:BookmarksDialog = null;
+			protected var commentDialog:CommentDialog = null;
+			protected var configDialog:ConfigDialog = null;
+			protected var drawingTools:DrawingDialog = null;
+			protected var helpDialog:HelpDialog = null;
+			protected var keyQuestionsDialog:KeyQuestionsDialog = null;
+			protected var supportTextDialog:SupportTextDialog = null;
+			protected var historyDialog:HistoryDialog = null;
+			protected var linksDialog:LinksDialog = null;
+
+			//Convenience variable for enabling buttons without needing to write a novel for each one
+			[Bindable] protected var currentPage:Page;
+			protected function setPage(value:Page):void { currentPage = value; }
+			
+			override protected function createChildren():void {
+				super.createChildren();
+				
+				BindingUtils.bindSetter(setPage, Courseware.instance, "currentPage");
+				
+				for(var i:int=0; i<buttonGroup.numElements; ++i){
+					var e:IVisualElement = buttonGroup.getElementAt(i);
+					if(e is IconButton) {
+						var group:Group = new Group();
+						group.height = 45;
+						e.horizontalCenter = 0;
+						e.verticalCenter = 0;
+						group.addElement(e);
+						
+						if(i < buttonGroup.numElements) {	
+							var s:HorizontalSeparator = new HorizontalSeparator();
+							s.bottom = 0;
+							group.addElement(s);
+						}
+						
+						buttonGroup.addElementAt(group, i);
+					}
+				}
+			}
+			
+			protected function maximize(event:FullScreenEvent):void {
+				currentState = event.fullScreen ? "maximized" : "default";
+			}
+
+
+			protected function onAdded():void {
+				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);
+			}
+
+			protected function commentOnPage(evt:MouseEvent):void {
+				if (!commentDialog)
+					commentDialog = CommentDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), CommentDialog, false, PopUpManagerChildList.POPUP));
+
+				commentDialog.display();
+			}
+			
+			protected function configureOptions(evt:MouseEvent):void {
+				// Modal, so must be created every time or we get setFocus() issues
+				configDialog = ConfigDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), ConfigDialog, true, PopUpManagerChildList.POPUP));
+				
+				configDialog.display();
+			}
+			
+			protected function showAudioVolume(evt:MouseEvent):void {
+				if (!audioControl) {
+					audioControl = AudioSlider(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), AudioSlider, false, PopUpManagerChildList.POPUP))
+				}
+						
+				audioControl.anchor = DisplayObject(evt.target);
+				audioControl.display();
+			}
+			
+			protected function showBookmarks(evt:MouseEvent):void {
+				if (!bookmarkDialog)
+					bookmarkDialog = BookmarksDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), BookmarksDialog, false, PopUpManagerChildList.POPUP));
+				
+				bookmarkDialog.display();
+			}
+			
+			protected function showDrawingTools(evt:MouseEvent):void {
+				if (!drawingTools) {
+					drawingTools = DrawingDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), DrawingDialog, false, PopUpManagerChildList.POPUP))
+				}
+				
+				drawingTools.anchor = DisplayObject(evt.target);
+				if (drawingTools.visible) {
+					drawingTools.hide();
+				} else {
+					drawingTools.display();
+				}
+			}
+			
+			protected function showHelpPages(evt:MouseEvent):void {
+				if (!helpDialog)
+					helpDialog = HelpDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), HelpDialog, false, PopUpManagerChildList.POPUP));
+				
+				helpDialog.display();
+			}
+			
+			protected function showKeyQuestions(evt:MouseEvent):void {
+				if (!keyQuestionsDialog)
+					keyQuestionsDialog = KeyQuestionsDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), KeyQuestionsDialog, false, PopUpManagerChildList.POPUP));
+
+				keyQuestionsDialog.display();
+			}
+			
+			protected function showPageUpdates(evt:MouseEvent):void {
+				if (!historyDialog)
+					historyDialog = HistoryDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), HistoryDialog, false, PopUpManagerChildList.POPUP));
+
+				historyDialog.display();
+			}
+			
+			protected function showRelatedLinks(evt:MouseEvent):void {
+				if (!linksDialog)
+					linksDialog = LinksDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), LinksDialog, false, PopUpManagerChildList.POPUP));
+				
+				linksDialog.display();
+			}
+			
+			protected function showSupportText(evt:MouseEvent):void {
+				if (!supportTextDialog)
+					supportTextDialog = SupportTextDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), SupportTextDialog, false, PopUpManagerChildList.POPUP));
+				
+				supportTextDialog.display();
+			}
+			
+			protected function printStage(evt:MouseEvent):void {
+				var printJob:PrintJob = new PrintJob();
+				var options:PrintJobOptions = new PrintJobOptions();
+				options.printAsBitmap = true;
+				
+				if (printJob.start()) {
+					var printSprite:Sprite = new Sprite();
+					var bitmapData:BitmapData;
+					
+					if (Courseware.instance.user.printSlideOnly) {
+						var contents:ContentArea = (this.parentApplication as Transwarp).contentArea;
+
+						bitmapData = new BitmapData(contents.width, contents.height);
+						bitmapData.draw(contents);
+					} else {
+						bitmapData = new BitmapData(stage.stageWidth,stage.stageHeight);
+						bitmapData.draw(stage);
+					}
+					var screenShot:Bitmap = new Bitmap(bitmapData);
+										
+					//scale it to fill the page (portrait orientation):
+					var myScale:Number;
+					printSprite.addChild(screenShot);
+					
+					//========== printjob bug fix - prevent blank pages: ==========
+					printSprite.x = 2000; //keep it hidden to the side of the stage
+					stage.addChild(printSprite); //add to stage - prevents blank pages
+					//=============================================================
+					
+					myScale = Math.min(printJob.pageWidth/printSprite.width, printJob.pageHeight/printSprite.height);
+					printSprite.scaleX = printSprite.scaleY = myScale;
+					var printArea:Rectangle = new Rectangle(0, 0, printJob.pageWidth/myScale, printJob.pageHeight/myScale);
+					
+					printJob.addPage(printSprite,printArea,options);
+					printJob.send();
+					
+					stage.removeChild(printSprite);
+					printSprite = null;
+				}
+			}
+			
+			protected function resizeHandler(event:Event):void {
+				var scale:Number = Math.min(1,(height-20)/(buttonGroup.height + maximizeGroup.height));
+				buttonGroup.scaleX = maximizeGroup.scaleX = scale;
+				buttonGroup.scaleY = maximizeGroup.scaleY = scale;
+			}
+			
+			
+		]]>
+	</fx:Script>
+	
+	<ext:states>
+		<s:State name="default" />
+		<s:State name="maximized" />
+	</ext:states>
+	
+	<s:Rect width="100%" height="100%" topRightRadiusX="12" bottomRightRadiusX="12">
+		<s:fill>
+			<s:LinearGradient rotation="90" >
+				<s:GradientEntry color="{Courseware.instance.color}" ratio="0.48" />
+				<s:GradientEntry color="{ColorUtil.adjustBrightness2(Courseware.instance.color, -40)}"  />
+			</s:LinearGradient>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter blurX="7" blurY="7" distance="7" alpha=".4" />
+			<s:DropShadowFilter blurX="6" blurY="6" angle="225" inner="true" alpha=".25" />
+		</s:filters>
+	</s:Rect>
+	
+	<ext:VGroup id="buttonGroup" top="10" width="100%" horizontalAlign="center" gap="0">
+		<ui:IconButton icon="{KeyQuestionIcon}" click="showKeyQuestions(event);" highlight="{currentPage.hasQuestions}" toolTip="KEY_QUESTION" toolTipPlacement.maximized="right"/>
+		<ui:IconButton icon="{SupportingTextIcon}" click="showSupportText(event);" highlight="{currentPage.hasSupportText}" toolTip="SUPPORT_TEXT"/>
+		<ui:IconButton icon="{HistoryIcon}" click="showPageUpdates(event);" highlight="{currentPage.hasUpdates}" toolTip="HISTORY"/>		
+		<ui:IconButton icon="{LinksIcon}" click="showRelatedLinks(event);" highlight="{currentPage.hasLinks}" toolTip="REL_LINKS"/>
+		<ui:IconButton icon="{FavoritesIcon}" click="showBookmarks(event);" highlight="{currentPage.bookmarked}" toolTip="FAVORITES"/>
+		<ui:IconButton icon="{CommentIcon}" click="commentOnPage(event);" toolTip="COMMENTS"/>
+		<!--<ui:IconButton icon="{PaintbrushIcon}"  click="showDrawingTools(event);" toolTip="DRAWING"/>-->
+		<ui:IconButton id="audio" icon="{AudioIcon}" click="showAudioVolume(event);" toolTip="VOLUME"/>
+		<ui:IconButton icon="{ConfigurationIcon}" click="configureOptions(event);" toolTip="OPTIONS"/>
+		<ui:IconButton icon="{SnapshotIcon}" click="printStage(event);" toolTip="SNAPSHOT"/>
+		<ui:IconButton icon="{HelpIcon}"  click="showHelpPages(event);" toolTip="HELP"/>
+	</ext:VGroup>
+	
+	<s:VGroup id="maximizeGroup" width="100%" horizontalAlign="center" gap="15" bottom="10">
+		<ui:HorizontalSeparator visible="{height &lt;= buttonGroup.height + 65}"/>
+		<ui:IconButton icon="{MaximizeIcon}" width="30" height="30" click="stage.displayState=StageDisplayState.FULL_SCREEN" includeIn="default" toolTip="MAXIMIZE" />
+		<ui:IconButton icon="{MinimizeIcon}" width="30" height="30" click="stage.displayState=StageDisplayState.NORMAL" includeIn="maximized" toolTip="MINIMIZE"/>
+	</s:VGroup>
+	
+	
+</ext:Group>

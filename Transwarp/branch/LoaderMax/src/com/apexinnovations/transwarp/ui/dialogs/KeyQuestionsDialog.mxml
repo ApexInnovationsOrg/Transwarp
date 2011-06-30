@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dialogs:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			  xmlns:s="library://ns.adobe.com/flex/spark" 
+			  xmlns:mx="library://ns.adobe.com/flex/mx"
+			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
+			  title="{resourceManager.getString('Dialogs','KEY_QUESTIONS_TITLE')}"
+			  addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);">
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.events.PageSelectionEvent;
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.data.Question;
+			import com.apexinnovations.transwarp.ui.dialogs.QuestionButton;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			protected var _page:Page = null;
+			
+			[Bindable] public function get page():Page { return _page; }
+			public function set page(p:Page):void {
+				_page = p;
+				updateElementList();
+			}
+		
+			override protected function addedToStage(event:Event):void {
+				super.addedToStage(event);
+				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
+				pageChanged(new PageSelectionEvent(Courseware.instance.currentPage));
+			}
+			
+			protected function contentCreationComplete(event:Event):void {
+				updateElementList();
+			}
+			
+			protected function pageChanged(event:PageSelectionEvent):void {
+				page = Courseware.instance.currentPage;
+			}
+			
+			protected function updateElementList():void {
+				if (elementList) {
+					elementList.removeAllElements();
+					
+					for each(var q:Question in _page.questions) {
+						var btn:QuestionButton = new QuestionButton();
+						elementList.addElement(btn);
+						btn.question = q;
+					}
+				}
+				currentState = (elementList && elementList.numElements) ? "default" : "no_results";
+			}
+		]]>
+	</fx:Script>
+	
+	<dialogs:states>
+		<s:State name="default" />
+		<s:State name="no_results" />
+	</dialogs:states>
+	
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
+		<ui:PageTitle />
+		<s:Label width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10"
+				 includeIn="no_results"
+				 text="{resourceManager.getString('Dialogs','NO_QUESTIONS')}"/>
+		
+		<s:Scroller horizontalScrollPolicy="off" maxHeight="300" visible.no_results="false" height.no_results="0" >
+			<s:VGroup id="elementList" width="100%" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="5" />
+		</s:Scroller>
+		
+		<s:Label fontStyle="italic" width="380" textAlign="right" color="0x0000FF" excludeFrom="no_results"
+				 text="{resourceManager.getString('Dialogs','CLICK_QUESTION_FOR_ANSWER')}"/>
+	</s:VGroup>
+</dialogs:DialogBox>

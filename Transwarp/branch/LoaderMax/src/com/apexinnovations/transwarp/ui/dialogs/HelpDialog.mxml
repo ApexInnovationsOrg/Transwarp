@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dialogs:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			  xmlns:s="library://ns.adobe.com/flex/spark" 
+			  xmlns:mx="library://ns.adobe.com/flex/mx"
+			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
+			  title="{resourceManager.getString('Dialogs','HELP_TITLE')}"
+			  contentCreationComplete="contentCreationComplete(event);">
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.HelpPage;
+			import com.apexinnovations.transwarp.events.HelpSelectionEvent;
+			import com.apexinnovations.transwarp.ui.dialogs.HelpButton;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			import mx.managers.PopUpManager;
+
+			TranswarpVersion.revision = "$Rev$";
+			
+			[Bindable] protected var currentHelp:HelpPage;
+			
+			override protected function addedToStage(event:Event):void {
+				super.addedToStage(event);
+				addEventListener(HelpSelectionEvent.HELP_SELECTION_CHANGED, helpSelected);
+			}
+			
+			override protected function closeHandler(event:Event=null):void {
+				currentState = "default";
+				movieClipLoader.source = '';
+				super.closeHandler(event);
+			}
+			
+			protected function contentCreationComplete(event:Event):void {
+				updateElementList();
+			}
+			
+			protected function updateElementList():void {
+				if (elementList) {
+					elementList.removeAllElements();
+				
+					for each(var h:HelpPage in Courseware.instance.product.helpPages) {
+						var btn:HelpButton = new HelpButton();
+						elementList.addElement(btn);
+						btn.help = h;
+					}
+				}
+			}
+			
+			protected function helpSelected(event:HelpSelectionEvent):void {
+				var help:HelpPage = event.help;
+				currentHelp = help;
+				currentState = "showing_help";
+			}
+			
+			protected function helpLoaded(event:Event):void {
+				//currentState = "showing_help";
+			}
+			
+			protected function helpLoadingError(event:Event):void {
+				currentState = "error";
+			}
+			
+			protected function backHandler(event:Event):void {
+				currentState = "default";
+				currentHelp = null;
+
+				PopUpManager.centerPopUp(this);
+			}
+			
+		]]>
+	</fx:Script>
+		
+	<dialogs:states>
+		<s:State name="default" />
+		<s:State name="showing_help" />
+		<s:State name="error" />
+	</dialogs:states>
+
+<!--
+	<dialogs:transitions>
+		<s:Transition fromState="showing_help" toState="default">
+			<s:Parallel>
+				<s:Fade target="{this}" />
+				<s:Resize target="{this}" />
+				<s:Move target="{this}" autoCenterTransform="true" />
+			</s:Parallel>
+		</s:Transition>
+	</dialogs:transitions>
+-->
+	
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
+		<s:Label id="helpTitle" fontWeight="bold" fontSize.showing_help="18" color.error="0xFF0000"
+				 text.default="{resourceManager.getString('Dialogs','CLICK_HELP_TOPIC_FOR_HELP')}"
+				 text.error="{resourceManager.getString('Dialogs','ERROR_LOADING_HELP')}"
+				 text.showing_help="{currentHelp.name}"/>
+		
+		<s:Scroller id="scroller" horizontalScrollPolicy="off" maxHeight="300" visible.showing_help="false" width.showing_help="0" height.showing_help="0" >
+			<s:VGroup id="elementList" width="100%" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" />
+		</s:Scroller>
+		
+		<s:SWFLoader id="movieClipLoader" autoLoad="true" complete="helpLoaded(event);" ioError="helpLoadingError(event)" securityError="helpLoadingError(event);"
+					 updateComplete="PopUpManager.centerPopUp(this);" showBusyCursor="true" source="{currentHelp.url}" includeIn="showing_help" />
+		
+		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10" includeIn="showing_help">
+			<s:Button label="Back" click="backHandler(event);" />
+		</s:HGroup>
+	</s:VGroup>	
+</dialogs:DialogBox>

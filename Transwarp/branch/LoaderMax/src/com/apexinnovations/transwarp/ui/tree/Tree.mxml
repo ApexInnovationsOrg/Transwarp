@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:List xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		xmlns:mx="library://ns.adobe.com/flex/mx"
+		borderVisible="false" contentBackgroundAlpha="0"
+		itemRenderer="com.apexinnovations.transwarp.ui.tree.TranswarpTreeItemRenderer"
+		changing="changingHandler(event)" requireSelection="false">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.Folder;
+			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.events.TranswarpEvent;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			import mx.collections.IList;
+			import mx.events.CollectionEvent;
+			import mx.events.CollectionEventKind;
+			
+			import spark.events.IndexChangeEvent;
+			import spark.layouts.HorizontalLayout;
+			
+			TranswarpVersion.revision = "$Rev$";			
+			
+			protected var dataProviderChanged:Boolean = false;
+			
+			override protected function createChildren():void {
+				super.createChildren();
+				scroller.setStyle("horizontalScrollPolicy", false);
+			}
+			
+ 			override public function set dataProvider(value:IList):void {
+				if(dataProvider) {
+					dataProvider.removeEventListener(TranswarpEvent.FOLDER_OPEN_CLOSE, folderOpenClose);	
+				}
+				
+				super.dataProvider = value;
+				
+				value.addEventListener(CollectionEvent.COLLECTION_CHANGE, collectionChange); 
+				value.addEventListener(TranswarpEvent.FOLDER_OPEN_CLOSE, folderOpenClose);
+			}
+
+			protected function changingHandler(event:IndexChangeEvent):void {
+				if(event.newIndex == -1)
+					return;
+				
+				var selection:Object = dataProvider.getItemAt(event.newIndex);
+				if(selection is Folder)
+					event.preventDefault();
+			}
+			
+			protected function folderOpenClose(event:Event):void {
+				selectedIndex = dataProvider.getItemIndex(Courseware.instance.currentPage);
+			}
+			
+			override protected function commitProperties():void {
+				super.commitProperties();
+				/* 				if(dataProviderChanged) {
+					dataProviderChanged = false;
+					selectedIndex = dataProvider.getItemIndex(Courseware.instance.currentPage);
+				} */
+			}
+
+
+			protected function collectionChange(event:CollectionEvent):void {
+				if(event.kind == CollectionEventKind.RESET)
+					dataProviderChanged = true;
+			}
+			
+			override public function set selectedIndex(value:int):void {
+				super.selectedIndex = value;
+				if(selectedIndex >= 0 && selectedIndex == value)
+					ensureIndexIsVisible(value);
+			}
+			
+			override public function set selectedItem(value:*):void {
+				super.selectedItem = value;
+				
+				if(selectedItem == value && value != null){
+					ensureIndexIsVisible(dataProvider.getItemIndex(value));		
+				}
+				
+			}
+			
+			
+
+		]]>
+	</fx:Script>
+	
+</s:List>

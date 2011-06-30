@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Graphic version="2.0" viewHeight="792" viewWidth="612" ai:appVersion="15.0.2.399" ATE:version="1.0.0" flm:version="1.0.0" d:using="" xmlns="http://ns.adobe.com/fxg/2008" xmlns:ATE="http://ns.adobe.com/ate/2009" xmlns:ai="http://ns.adobe.com/ai/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008">
+  <Library/>
+  <Group ai:seqID="1" d:layerType="page" d:pageHeight="792" d:pageWidth="612" d:type="layer" d:userLabel="Artboard 1">
+    <Group ai:seqID="2" d:type="layer" d:userLabel="Icon">
+      <Path y="13.1533" ai:seqID="3" data="M0 4.63623C1.41992 4.76807 2.39795 4.40039 2.93408 3.53613 3.41699 2.35791 3.93896 1.47998 4.50195 0.903809 5.06494 0.354004 5.76123 0.0527344 6.59229 0L9.12402 2.08252C9.31201 2.89404 9.13721 3.61523 8.60205 4.24365 7.44922 5.55322 6.53809 6.33936
+ 5.86816 6.60107 4.15332 7.25586 2.19727 6.60107 0 4.63623Z">
+        <fill>
+          <SolidColor color="#BFB55E"/>
+        </fill>
+      </Path>
+      <Path x="7.35596" y="10.9136" ai:seqID="4" data="M0 1.68945 1.44629 0 3.65723 1.80762 2.25098 3.49707">
+        <fill>
+          <SolidColor color="#7F7F7F"/>
+        </fill>
+      </Path>
+      <Path x="9.4458" y="-8.2677e-005" ai:seqID="5" data="M9.6875 0.147544C9.92822 -0.0350736 10.1563 -0.0482572 10.3701 0.108481 10.5845 0.266196 10.6113 0.488364 10.4512 0.77645 8.41406 3.34334 6.64551 5.67489 5.14502 7.7701 3.4834 10.128 2.47852 11.5294 2.13037 11.9747L0 10.2457C0.348633 9.87899 1.56738
+ 8.64803 3.6582 6.55184 5.45313 4.71834 7.4624 2.58407 9.6875 0.147544Z">
+        <fill>
+          <SolidColor/>
+        </fill>
+      </Path>
+      <Path y="16.1638" ai:seqID="6" data="M6.3335 2.37775C6.9165 2.91974 6.13281 3.48713 5.86816 3.59064 4.15332 4.24543 2.19727 3.59064 0 1.6258 1.41992 1.75764 2.39795 1.38996 2.93408 0.525702 3.09521 0.132635 3.66357 -0.103693 4 0.0447445 4.8335 0.412909 4.40869 1.69269 4.7915 2.16974">
+        <fill>
+          <SolidColor color="#0000FF"/>
+        </fill>
+      </Path>
+    </Group>
+  </Group>
+  <Private/>
+</Graphic>

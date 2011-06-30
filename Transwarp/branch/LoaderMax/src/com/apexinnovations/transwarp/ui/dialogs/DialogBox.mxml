@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   skinClass="com.apexinnovations.transwarp.skins.DialogSkin"
+			   title="Generic Dialog Box" visible="false"
+			   addedToStage="addedToStage(event);" close="closeHandler(event);" mouseDown="mouseDown(event);" windowMoveEnd="resizeListener(event);">
+	<s:layout>
+		<s:VerticalLayout />
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.Transwarp;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			import mx.managers.PopUpManager;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			protected var modal:Boolean = false;
+			protected var resizable:Boolean = false;
+			
+			protected function closeHandler(event:Event = null):void {
+				if (modal) {
+					// Can't just set visibility since hidden modal dialogs screw up focus for all dialogs
+					stage.removeEventListener(Event.RESIZE, resizeListener); 
+					PopUpManager.removePopUp(this);
+				} else {
+					visible = false;
+				}
+			}
+			
+			protected function addedToStage(event:Event):void {
+				stage.addEventListener(Event.RESIZE, resizeListener);
+			}
+			
+			public function display():void {
+				if (modal || !visible) {
+					PopUpManager.centerPopUp(this);
+				}
+				visible = true;
+				PopUpManager.bringToFront(this);
+				setFocus();
+			}
+			
+			protected function mouseDown(event:MouseEvent):void {
+				PopUpManager.bringToFront(this);
+				setFocus();
+			}
+			
+			// Try to put the dialog back into viewable stage if window changes size
+			protected function resizeListener(event:Event):void {
+				if (x > stage.stageWidth - width) x = stage.stageWidth - width;
+				if (y > stage.stageHeight - height) y = stage.stageHeight - height;
+				if (x < 0) x = 0;
+				if (y < 0) y = 0;
+			}
+		]]>
+	</fx:Script>
+</s:TitleWindow>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:ui="com.apexinnovations.transwarp.ui.*"
+		 height="100%"
+		 addedToStage="onAdded()">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			[Bindable] public var color:uint; 
+			
+			protected function maximize(event:FullScreenEvent):void {
+				currentState = event.fullScreen ? "maximized" : "default";
+			}
+
+			protected function onAdded():void {
+				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);				
+			}
+
+		]]>
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="default" />
+		<s:State name="maximized" />
+	</s:states>
+	
+	<ui:LevelMenu bottom="5" top="14" left="35" includeIn="default"/>
+	<ui:IconBar left="0" bottom="1" top="2" />
+	
+</s:Group>

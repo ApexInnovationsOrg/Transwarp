@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dialogs:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			  xmlns:s="library://ns.adobe.com/flex/spark" 
+			  xmlns:mx="library://ns.adobe.com/flex/mx"
+			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
+			  title="{resourceManager.getString('Dialogs','SUPPORT_TEXT_TITLE')}"
+			  addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);">
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.events.PageSelectionEvent;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			import flashx.textLayout.elements.TextFlow;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			protected var _page:Page;
+			
+			[Bindable] public function get page():Page { return _page; }
+			public function set page(p:Page):void {
+				_page = p;
+				updateElementList();
+			}
+			
+			override protected function addedToStage(event:Event):void {
+				super.addedToStage(event);
+				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
+				pageChanged(new PageSelectionEvent(Courseware.instance.currentPage));
+			}
+			
+			protected function contentCreationComplete(event:Event):void {
+				updateElementList();
+			}
+			
+			protected function pageChanged(event:PageSelectionEvent):void {
+				page = Courseware.instance.currentPage;
+			}
+			
+			protected function updateElementList():void {
+				currentState = _page.supportText ? "default" : "no_results";
+			}
+		]]>
+	</fx:Script>
+
+	<dialogs:states>
+		<s:State name="default" />
+		<s:State name="no_results" />
+	</dialogs:states>
+	
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
+		<ui:PageTitle />
+		<s:Label width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10"
+				 text="{resourceManager.getString('Dialogs','NO_SUPPORT_TEXT')}" includeIn="no_results"/>
+		<s:TextArea width="380" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" editable="false"
+					horizontalScrollPolicy="off" minHeight="250" maxHeight="450" 
+					textFlow="{page.supportText}" includeIn="default"/>
+	</s:VGroup>
+</dialogs:DialogBox>

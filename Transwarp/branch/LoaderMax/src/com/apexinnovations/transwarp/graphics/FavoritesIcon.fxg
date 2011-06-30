@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Graphic version="2.0" ATE:version="1.0.0" flm:version="1.0.0" d:using="" xmlns="http://ns.adobe.com/fxg/2008" xmlns:ATE="http://ns.adobe.com/ate/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008">
+	<Group d:type="layer" d:userLabel="Icon">
+		<Path data="M9.5 7.2 13.05 0 16.6 7.2 24.55 8.3 18.85 13.95 20.2 21.85 13.1 18.1 6 21.9 7.35 13.95 1.6 8.4 9.5 7.2">
+			<fill>
+			  <SolidColor color="#FFFFFF"/>
+			</fill>
+		</Path>
+	</Group>
+</Graphic>

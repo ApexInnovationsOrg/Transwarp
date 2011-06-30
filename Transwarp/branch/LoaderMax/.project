@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Transwarp</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.adobe.flexbuilder.project.flexnature</nature>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>[source path] TranswarpConfig-src</name>
+			<type>2</type>
+			<locationURI>DOCUMENTS/TranswarpConfig/src</locationURI>
+		</link>
+		<link>
+			<name>[source path] TranswarpSlide-src</name>
+			<type>2</type>
+			<locationURI>DOCUMENTS/TranswarpSlide/src</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>

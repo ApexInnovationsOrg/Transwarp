@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:data="com.apexinnovations.transwarp.data.*"
+		 addedToStage="addedToStage(event)"
+		 fontFamily="Arial" fontSize="12" fontWeight="bold">
+	
+	
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.Folder;
+			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.events.PageSelectionEvent;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			import mx.events.PropertyChangeEvent;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			public var _page:Page;
+
+			public function get page():Page { return _page;}
+			public function set page(value:Page):void {
+				_page = value;
+				pageChanged();
+			}
+			
+			protected function pageChanged(event:PageSelectionEvent = null):void {
+				var p:Page = page ? page : Courseware.instance.currentPage;
+				
+				if(!p)
+					return;
+				
+				level.text = p.course.levelRoman + '.';
+				breadcrumbs.text = p.parentFolders;
+				breadcrumbs.includeInLayout = breadcrumbs.text !== '';
+				
+				title.text = p.name;
+			}
+			
+			
+			protected function addedToStage(event:Event):void {
+				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
+				pageChanged();
+			} 
+			
+		]]>
+	</fx:Script>
+
+	<s:Label id="level" color="0x888888" />
+	<s:Label id="breadcrumbs" color="{Courseware.instance.color}"/>
+	<s:Label id="title" />
+</s:HGroup>

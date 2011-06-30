@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dialogs:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			  xmlns:s="library://ns.adobe.com/flex/spark" 
+			  xmlns:mx="library://ns.adobe.com/flex/mx"
+			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
+			  contentCreationComplete="contentCreationComplete(event);"
+			  title="{resourceManager.getString('Dialogs','BOOKMARKS_TITLE')}">
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Course;
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.events.PageSelectionEvent;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			import mx.managers.PopUpManager;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			protected var _page:Page = null;
+			[Bindable] protected var _bookmarkedPages:Array = new Array;
+			
+			override protected function addedToStage(event:Event):void {
+				super.addedToStage(event);
+				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
+				pageChanged(new PageSelectionEvent(Courseware.instance.currentPage));
+				var c:Course, p:Page;
+				for each (c in Courseware.instance.product.courses) {
+					for each (p in c.pages) {
+						if (p.bookmarked) {
+							_bookmarkedPages.push(p);
+						}
+					}
+				}
+			}
+			
+			protected function bookmarkPage(val:Boolean):void {
+				_page.bookmarked = val;
+				if (val) {
+					_bookmarkedPages.push(_page);
+				} else {
+					_bookmarkedPages.splice(_bookmarkedPages.indexOf(_page), 1);
+				}
+				dg.dataProvider.refresh();
+				currentState = val ? "bookmarked" : "default";
+			}
+			
+			protected function contentCreationComplete(event:Event):void {
+				dg.sortByColumn(0);
+			}
+			
+			protected function deleteBookmark(val:Page):void {
+				val.bookmarked = false;
+				_bookmarkedPages.splice(_bookmarkedPages.indexOf(val), 1);
+				dg.dataProvider.refresh();
+				if (val == _page) currentState = "default";
+			}
+			
+			protected function pageChanged(event:PageSelectionEvent):void {
+				_page = Courseware.instance.currentPage;
+				currentState = _page.bookmarked ? "bookmarked" : "default";
+			}
+			
+			protected function sortByLevel(obj1:Object, obj2:Object):int {
+				var idx1:uint = (obj1 as Page).sortToken, idx2:uint = (obj2 as Page).sortToken;
+				return (idx1 < idx2 ? -1 : (idx1 == idx2 ? 0 : 1));
+			}
+		]]>
+	</fx:Script>
+	
+	<dialogs:states>
+		<s:State name="default" />
+		<s:State name="bookmarked" />
+	</dialogs:states>
+	
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
+		<ui:PageTitle />
+		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
+			<!-- Show star graphic -->
+			<s:Path data="M9.5 7.2 13.05 0 16.6 7.2 24.55 8.3 18.85 13.95 20.2 21.85 13.1 18.1 6 21.9 7.35 13.95 1.6 8.4 9.5 7.2">
+				<s:stroke>
+					<s:SolidColorStroke color="0x000000" weight="1" pixelHinting="true"/>
+				</s:stroke>
+				<s:fill>
+					<s:SolidColor color.default="#FFFFFF" color.bookmarked="{Courseware.instance.highlightColor}"/>
+				</s:fill>
+			</s:Path>
+
+			<s:Button width="140" click.default="bookmarkPage(true);" click.bookmarked="bookmarkPage(false);"
+					  label.default="{resourceManager.getString('Dialogs','BOOKMARK_THIS_PAGE')}" 
+					  label.bookmarked="{resourceManager.getString('Dialogs','DELETE_BOOKMARK')}"/>
+		</s:HGroup>
+		<s:Label text="Current Bookmarks:" width="400" fontWeight="bold" paddingTop="10" />
+		<s:HGroup verticalAlign="middle" width="100%">
+			<ui:DataGridSortable id="dg" width="400" height="100%" rowCount="5" dataProvider="{_bookmarkedPages}">
+				<ui:columns>
+					<mx:DataGridColumn dataField="course.levelRoman" width="55" textAlign="center" sortCompareFunction="sortByLevel"
+									   headerText="{resourceManager.getString('Dialogs','LEVEL')}"/>
+					<mx:DataGridColumn dataField="qualifiedName" 
+									   headerText="{resourceManager.getString('Dialogs','PAGE_NAME')}"/>
+				</ui:columns>
+			</ui:DataGridSortable>
+			<s:VGroup horizontalAlign="left">
+				<s:Button label="{resourceManager.getString('Dialogs','GOTO')}" enabled="{dg.selectedItem}" click="Courseware.instance.currentPage=(dg.selectedItem as Page);" />
+				<s:Button label="{resourceManager.getString('Dialogs','DELETE')}" enabled="{dg.selectedItem}" click="deleteBookmark(dg.selectedItem as Page);" />
+			</s:VGroup>
+		</s:HGroup>
+	</s:VGroup>	
+</dialogs:DialogBox>
