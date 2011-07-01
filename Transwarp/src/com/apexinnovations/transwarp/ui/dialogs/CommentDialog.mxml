@@ -29,6 +29,7 @@
 					
 					comment.dispatch(Utils.encodeJSONValue(commentText.text));
 					closeHandler(event);
+					commentText.text = '';
 				}
 			}
 		]]>
