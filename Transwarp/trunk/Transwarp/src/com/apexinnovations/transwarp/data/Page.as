@@ -99,8 +99,12 @@ package com.apexinnovations.transwarp.data
 			for each (var q:XML in xml.questions.question) {
 				_questions.push(new Question(q, this));
 			}
+			var tmp:Update;
 			for each (var u:XML in xml.updates.update) {
-				_updates.push(new Update(u, this));
+				tmp = new Update(u, this);
+				if (tmp.textFlow) {	// remove history without content
+					_updates.push(tmp);
+				}
 			}
 			
 			// Initialize text search fields for faster searching later
