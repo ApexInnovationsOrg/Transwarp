@@ -1,5 +1,6 @@
 package com.apexinnovations.transwarp.data
 {
+	import com.apexinnovations.transwarp.data.Courseware;
 	import com.apexinnovations.transwarp.data.Course;
 	import com.apexinnovations.transwarp.utils.*;
 	import com.apexinnovations.transwarp.webservices.*;
@@ -29,7 +30,7 @@ package com.apexinnovations.transwarp.data
 		private var _demo:Boolean = false;									// Is this page viewable on the demo?
 		private var _deny:String = '';										// Space separated list of types of user prevented from viewing this page (e.g. 'LMS Doctor Beta'). '' means none
 		private var _description:TextFlow = null;							// A brief description of this page, used in search results
-		private var _hasUpdates:Boolean = false;							// Does this page have updates since the user last logged in?
+		private var _lastUpdate:Date = null;								// When was the last update to this page?
 		private var _id:uint = 0;											// Unique PageID from repository/database
 		private var _instructions:TextFlow = null;							// Instruction text, as a TextFlow
 		private var _keywords:String = '';									// Space separated list of keywords for this page
@@ -105,8 +106,7 @@ package com.apexinnovations.transwarp.data
 				tmp = new Update(u, this);
 				if (Utils.trim(Utils.textFlowToString(tmp.textFlow)) != "") {
 					_updates.push(tmp);
-				} else {
-					tmp = null;	// remove history without content
+					if (tmp.time > _lastUpdate) _lastUpdate = tmp.time;
 				}
 			}
 			
@@ -129,7 +129,6 @@ package com.apexinnovations.transwarp.data
 			_searchFields[8] = '';
 			for each (var upd:Update in _updates) {
 				if (upd.textFlow) _searchFields[8] += Utils.textFlowToString(upd.textFlow);
-				if (upd.time > Courseware.instance.user.lastAccess) _hasUpdates = true;
 			}
 		}
 		
@@ -207,7 +206,7 @@ package com.apexinnovations.transwarp.data
 		[Bindable("pageDataChanged")] public function get hasQuestions():Boolean { return _questions.length > 0; }
 		[Bindable("pageDataChanged")] public function get hasSupportText():Boolean { return _supportText !== null; }
 		[Bindable("pageDataChanged")] public function get hasLinks():Boolean { return _links.length > 0; }
-		[Bindable("pageDataChanged")] public function get hasUpdates():Boolean { return _hasUpdates; }
+		[Bindable("pageDataChanged")] public function get hasUpdates():Boolean { return _lastUpdate > Courseware.instance.user.lastAccess; }
 				
 		// Does everything associated with commenting on this page 
 		public function comment(s:String):void {
