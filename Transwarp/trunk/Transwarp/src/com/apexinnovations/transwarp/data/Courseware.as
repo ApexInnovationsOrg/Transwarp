@@ -192,7 +192,7 @@ package com.apexinnovations.transwarp.data
 			dispatchEvent(new PageSelectionEvent(page));		
 		}
 		
-		public function get debug():Boolean { return _debug; }
+		[Bindable("courseChanged")] public function get debug():Boolean { return _debug; }
 		public function get owner():String { return _owner; }
 		public function get product():Product { return _product; }
 		public function get rootFolder():String { return _rootFolder; }
