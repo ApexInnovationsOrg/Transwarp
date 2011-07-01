@@ -29,6 +29,7 @@ package com.apexinnovations.transwarp.webservices
 					arr['userID'] = courseware.user.id;
 					arr['courseID'] = courseware.currentCourse.id;
 					arr['pageID'] = courseware.currentPage.id;
+					arr['swf'] = courseware.currentPage.swf;
 				}
 				arr['comment'] = comment;
 				
