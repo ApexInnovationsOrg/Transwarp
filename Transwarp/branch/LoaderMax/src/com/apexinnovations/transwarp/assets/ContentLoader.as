@@ -1,161 +1,97 @@
 package com.apexinnovations.transwarp.assets {
-	import br.com.stimuli.loading.BulkLoader;
-	import br.com.stimuli.loading.loadingtypes.LoadingItem;
-	
 	import com.apexinnovations.transwarp.data.Course;
 	import com.apexinnovations.transwarp.data.Courseware;
 	import com.apexinnovations.transwarp.data.Page;
 	import com.apexinnovations.transwarp.data.Product;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	import com.apexinnovations.transwarp.utils.Utils;
-	
-	import flash.display.AVM1Movie;
-	import flash.display.Loader;
-	import flash.display.LoaderInfo;
-	import flash.display.MovieClip;
-	import flash.events.ErrorEvent;
-	import flash.events.Event;
-	import flash.events.ProgressEvent;
-	import flash.events.UncaughtErrorEvent;
-	import flash.sampler.stopSampling;
+	import com.greensock.events.LoaderEvent;
+	import com.greensock.loading.LoaderMax;
+	import com.greensock.loading.MP3Loader;
+	import com.greensock.loading.SWFLoader;
+	import com.greensock.loading.core.LoaderItem;
+	import com.greensock.loading.data.MP3LoaderVars;
+	import com.greensock.loading.data.SWFLoaderVars;
 
 	TranswarpVersion.revision = "$Rev$";
 	
 	public class ContentLoader {
 		
 		protected var pages:Vector.<Page>;
-		protected var loader:BulkLoader;
+		protected var loader:LoaderMax;
 		
-		protected var lockedItem:LoadingItem;
+		protected var lockedItem:LoaderItem;
 		
+		protected var swfVars:Object;
+		protected var mp3Vars:Object;
 		
 		public function ContentLoader(product:Product) {
+			
+			swfVars = {allowMalformedURL : true, autoPlay: false, crop: false, scaleMode: "none"};
+			mp3Vars = {allowMalformedURL : true, autoPlay: false};
+			
 			pages = new Vector.<Page>();
-			for each(var c:Course in product.courses)
-				pages = pages.concat(c.pages);	
-				
-			loader = new BulkLoader("ContentLoader", 12, BulkLoader.LOG_SILENT);	
+			for each(var c:Course in product.courses) {
+				pages = pages.concat(c.pages);
+			}
 			
-			for each(var p:Page in pages)
+			loader = new LoaderMax({auditSize:false});
+			
+			loader.addEventListener(LoaderEvent.CHILD_FAIL, childFailed);
+			loader.addEventListener(LoaderEvent.IO_ERROR, ioError);
+			
+			for each(var p:Page in pages){
 				addPage(p);
-				
-			loader.start();
+			}
+			
+			loader.load();
 		}
 		
-		public function getItem(pageID:uint):LoadingItem {
-			var item:LoadingItem = loader.get(String(pageID));
-			var index:int = idToIndex(pageID);
+		public function getLoader(page:Page):LoaderMax {
+			var pageLoader:LoaderMax = loader.getLoader("loader"+page.id);
+			var index:int = pages.indexOf(page);
+			if(index > 0)
+				LoaderMax.prioritize("loader"+pages[index-1].id);
+			 
+			var i:int = Math.min(index + 4, pages.length-1);
+			
+			while(i >= index)
+				LoaderMax.prioritize("loader" + pages[i--].id);
+			
+			return pageLoader;		
+		}
+		
+		
+		protected function addPage(page:Page):void {
+			var pageLoader:LoaderMax = new LoaderMax({name:"loader"+page.id});
+			
+			var baseURL:String = Courseware.instance.rootFolder + '/';
+			var dateHash:String = makeDateHash(page);
+			
+			pageLoader.append(new SWFLoader(baseURL + page.swf + dateHash, new SWFLoaderVars(swfVars).name("swf"+page.id)));
 
-			if(index == -1) //Should never happen
-				return null;
-			
-			if(!item)
-				item = addPage(pages[index]);				
-			
-			var priority:int = loader.highestPriority + 5;
-			
-			loader.changeItemPriority(item.id, priority--);
+			if(page.audio != '' && page.audio != null)
+				pageLoader.append(new MP3Loader(baseURL + page.audio + dateHash, new MP3LoaderVars(mp3Vars).name("audio"+page.id)));
 						
-			changePriorityInRange(index, index+2, priority)
-			changePriorityInRange(index-1, index-1, priority-3);
+			loader.append(pageLoader);
 			
-			if(item != lockedItem && lockedItem && lockedItem.isLoaded && lockedItem.content is AVM1Movie) {
-				loader.remove(lockedItem);
-				loader.start();
-			}			
-			
-			lockedItem = item;
-			
-			return item;
-		}
-		
-		protected function addPage(page:Page):LoadingItem {
-			var item:LoadingItem = loader.add(getURL(page), {id: page.id});
-			item.addEventListener(Event.INIT, preloadInit);
-			item.addEventListener(Event.COMPLETE, preloadInit);
-			item.addEventListener(ProgressEvent.PROGRESS, setupErrorHandling);
-			item.addEventListener(BulkLoader.ERROR, onItemError);
-			return item;
-		}
-		
-		private function uncaughtErrorHandler(event:Event):void {
-			trace("Script Error in slide: " + (event.target as LoaderInfo).url);
-			//TODO: Log this and replace the slide with a 'broken slide' or something similar to prevent looping issues
-			
-			event.preventDefault();
-			event.stopPropagation();
-		}
-		
-		
-		protected function preloadInit(event:Event):void {
-			var item:LoadingItem = event.target as LoadingItem;
-			var content:* = item.content;
-					
-			if(!content)
-				return;
-			
-			if(content is Loader) {
-				Loader(content).contentLoaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
-			}
-			
-			if(item != lockedItem) {
-				if(content is AVM1Movie) {
-					loader.remove(item);
-					loader.start();
-				} else if (content is MovieClip)
-					MovieClip(content).stop();
-			}
-			
-			//TODO: Load configuration here?
-			
-			item.removeEventListener(Event.COMPLETE, preloadInit);
-			item.removeEventListener(Event.INIT, preloadInit);
-		}
-		
-		protected function idToIndex(id:uint):int {
-			for (var i:int=0; i<pages.length; ++i)
-				if(id == pages[i].id)
-					return i;
-			return -1;
-		}
-		
-		protected function changePriorityInRange(startIndex:int, endIndex:int, startPriority:int):void {
-			startIndex = Math.max(0, startIndex);
-			endIndex = Math.min(pages.length-1, endIndex);
-			for(var i:int = startIndex; i <= endIndex; ++i) {
-				loader.changeItemPriority(String(pages[i].id), startPriority--);
-			}
-		}
-		
-		protected function getURL(page:Page):String {
-			if(!page)
-				return '';
-			
-			return Courseware.instance.rootFolder + '/' + page.swf + makeDateHash(page); 
+			//TODO: Load Configuration
+						
 		}
 		
 		protected function makeDateHash(page:Page):String {
 			if(page.updates.length > 0)
 				return '?' + Utils.jenkinsHash(page.updates[0].time.toUTCString()).toString();
-			return '';
+			else 
+				return '';
 		}
 		
-		protected function onItemError(event:ErrorEvent):void {
-			event.stopPropagation();
-			event.preventDefault();
-			Courseware.log("PAGE LOAD ERROR: " + event.type + ": " + event.text);
-		}
-		
-		protected function setupErrorHandling(event:Event):void {
-			var item:LoadingItem = event.target as LoadingItem;
-			var itemLoader:Loader = loader.getDisplayObjectLoader(item.id);
+		protected function childFailed(event:LoaderEvent):void {
 			
-			itemLoader.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
-			
-			item.removeEventListener(ProgressEvent.PROGRESS, setupErrorHandling);
 		}
 		
-				
-		
-	}
+		protected function ioError(event:LoaderEvent):void {
+			
+		}
+	}	
 }
