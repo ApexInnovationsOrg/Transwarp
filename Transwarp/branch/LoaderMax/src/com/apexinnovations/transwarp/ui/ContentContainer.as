@@ -31,7 +31,6 @@ package com.apexinnovations.transwarp.ui {
 		
 		protected var watchedLoader:LoaderMax;
 		
-		
 		public function ContentContainer() {
 			super();
 			addEventListener(FlexEvent.CREATION_COMPLETE, creationComplete);
