@@ -3,12 +3,13 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 addedToStage="addedToStageHandler(event)"
-		 width="80%" height="16" xmlns:ui="com.apexinnovations.transwarp.ui.*">
+		 width="80%" height="16" xmlns:ui="com.apexinnovations.transwarp.ui.*" >
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.TranswarpMovieClip;
 			import com.apexinnovations.transwarp.data.Courseware;
-						
+			
+			[Bindable]
 			public var source:TranswarpMovieClip;
 
 			protected var trackingMouse:Boolean = false;
