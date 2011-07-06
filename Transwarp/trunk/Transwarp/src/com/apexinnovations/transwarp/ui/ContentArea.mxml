@@ -10,12 +10,13 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.TranswarpMovieClip;
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			TranswarpVersion.revision = "$Rev$";
-			
 
+			
 			protected function loadProgress(event:ProgressEvent):void {
 				progressBar.setProgress(event.bytesLoaded, event.bytesTotal);
 			}
@@ -23,47 +24,38 @@
 		]]>
 	</fx:Script>
 	
-	
-	<ui:PageTitle id="pageTitle" fontSize="20" top="10" horizontalCenter="0"/>
-	
-	<ui:ContentContainer id="container" mask="{contentMask}" width="{width}" top="{pageTitle.height + 10 }" bottom="{bottomGroup.height + 28}"
-						 open="progressPanel.visible = true" complete="progressPanel.visible=false" progress="loadProgress(event)"/>
-	
-	<s:VGroup id="bottomGroup" horizontalAlign="center" width="100%" bottom="10">
-		<ui:Timeline id="timeline" source="{container.actualContent as TranswarpMovieClip}" includeInLayout="{Courseware.instance.currentPage.timeline}" visible="{Courseware.instance.currentPage.timeline}"/>
+	<s:VGroup id="contentGroup" top="10" bottom="10" width="{width}" height="100%" gap="10" horizontalAlign="center">
 		
+		<ui:PageTitle id="pageTitle" fontSize="20" top="10" horizontalCenter="0"/>
 		
-		<s:HGroup id="instructions" 
-				  paddingLeft="10" paddingRight="10"
-				  scaleX="{Math.min(1, width / instructions.width)}"
-				  scaleY="{Math.min(1, width / instructions.width)}"
-				  visible="{Courseware.instance.currentPage.instructions !== null}"
-				  includeInLayout="{Courseware.instance.currentPage.instructions !== null}"
-				  verticalAlign="middle">
+		<ui:ContentContainer id="container" width="100%" height="100%" 
+							  open="progressPanel.visible = true" complete="progressPanel.visible = false"
+							  progress="loadProgress(event)"/>
+		
+		<s:VGroup id="bottomGroup" horizontalAlign="center" width="100%" bottom="10">
+			<ui:Timeline id="timeline" source="{container.content as TranswarpMovieClip}" includeInLayout="{Courseware.instance.currentPage.timeline}" visible="{Courseware.instance.currentPage.timeline &amp;&amp; timeline.source !== null}"/>
 			
-			<s:Rect height="{instrText.height - 6}" width="8">
-				<s:fill><s:SolidColor color="0x990000"/></s:fill>
-			</s:Rect>
-			
-			<s:RichEditableText id="instrText" color="0x990000" fontWeight="bold" fontSize="14" paddingTop="4" paddingBottom="4" editable="false" selectable="false"
-								textFlow="{Courseware.instance.currentPage.instructions}"/>
-		</s:HGroup>
-	</s:VGroup>
+			<s:HGroup id="instructions" 
+					  paddingLeft="10" paddingRight="10"
+					  scaleX="{Math.min(1, width / instructions.width)}"
+					  scaleY="{Math.min(1, width / instructions.width)}"
+					  visible="{Courseware.instance.currentPage.instructions !== null}"
+					  includeInLayout="{Courseware.instance.currentPage.instructions !== null}"
+					  verticalAlign="middle">
+				
+				<s:Rect height="{instrText.height - 6}" width="8">
+					<s:fill><s:SolidColor color="0x990000"/></s:fill>
+				</s:Rect>
+				
+				<s:RichEditableText id="instrText" color="0x990000" fontWeight="bold" fontSize="14" paddingTop="4" paddingBottom="4" editable="false" selectable="false"
+									textFlow="{Courseware.instance.currentPage.instructions}"/>
+			</s:HGroup>
+		</s:VGroup>
 		
-	
-	<s:Group width="{container.contentWidth}" height="{container.contentHeight}" scaleX="{container.contentScaleX}" scaleY="{container.contentScaleY}" x="{container.x + container.contentX}" y="{container.y + container.contentY}">
-		<s:Group id="contentMask" width="100%" height="100%">
-			<s:Rect width="100%" height="100%">
-				<s:fill>
-					<s:SolidColor color="0x00ccff" alpha="0.4" />
-				</s:fill>		
-			</s:Rect>
-		</s:Group>
-	</s:Group>
-	
+	</s:VGroup>	
 	
 	<s:Panel id="progressPanel" title="Loading..." width="30%" height="78" horizontalCenter="0" verticalCenter="0" visible="false" backgroundColor="0xFFFFFF" skinClass="com.apexinnovations.transwarp.skins.PanelSkin">
-		<mx:ProgressBar id="progressBar" labelPlacement="bottom" minimum="0" maximum="100" label="0%" direction="right" mode="manual" top="10" bottom="10" left="10" right="10"/>
+		<mx:ProgressBar id="progressBar" labelPlacement="bottom" label="%3%%" direction="right" mode="manual" top="10" bottom="10" left="10" right="10"/>
 	</s:Panel>
 	
 	<s:Label text="{Courseware.instance.currentPage.id}" color="0xaaaaaa" bottom="5" right="5" visible="{Courseware.instance.debug}" />
