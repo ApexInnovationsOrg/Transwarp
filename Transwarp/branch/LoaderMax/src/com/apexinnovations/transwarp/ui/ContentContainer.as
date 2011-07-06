@@ -48,6 +48,7 @@ package com.apexinnovations.transwarp.ui {
 		[Bindable] public function get content():MovieClip { return _content; }
 		protected function set content(value:MovieClip):void {
 			if(_content) {
+				trace("removing old content");
 				removeChild(_content);
 				SoundMixer.stopAll();
 			}
@@ -61,7 +62,8 @@ package com.apexinnovations.transwarp.ui {
 		}
 		
 		public function replay():void {
-			content = _content;
+			content = null;
+			contentLoaded();
 		}
 		
 		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
@@ -74,6 +76,7 @@ package com.apexinnovations.transwarp.ui {
 			if(!contentLoader)
 				return;
 			
+			content = null;
 			
 			if(watchedLoader) {
 				watchedLoader.removeEventListener(LoaderEvent.COMPLETE, contentLoaded);
@@ -85,10 +88,9 @@ package com.apexinnovations.transwarp.ui {
 			if(watchedLoader.status == LoaderStatus.COMPLETED)
 				contentLoaded();
 			else {
-				content = null;
 				if(watchedLoader.status == LoaderStatus.LOADING) {
 					dispatchEvent(new Event(Event.OPEN));
-					
+					dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS, false, false, watchedLoader.bytesLoaded, watchedLoader.bytesTotal));
 					watchedLoader.addEventListener(LoaderEvent.PROGRESS, contentProgress);
 					watchedLoader.addEventListener(LoaderEvent.COMPLETE, contentLoaded);
 				} else if(watchedLoader.status == LoaderStatus.FAILED) {

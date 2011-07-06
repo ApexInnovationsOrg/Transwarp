@@ -11,6 +11,9 @@ package com.apexinnovations.transwarp.assets {
 	import com.greensock.loading.SWFLoader;
 	import com.greensock.loading.data.MP3LoaderVars;
 	import com.greensock.loading.data.SWFLoaderVars;
+	import com.greensock.loading.display.ContentDisplay;
+	
+	import flash.events.UncaughtErrorEvent;
 
 	TranswarpVersion.revision = "$Rev$";
 	
@@ -65,15 +68,17 @@ package com.apexinnovations.transwarp.assets {
 			var baseURL:String = Courseware.instance.rootFolder + '/';
 			var dateHash:String = makeDateHash(page);
 			
-			pageLoader.append(new SWFLoader(baseURL + page.swf + dateHash, new SWFLoaderVars(swfVars).name("swf"+page.id)));
+			var swf:SWFLoader = new SWFLoader(baseURL + page.swf + dateHash, new SWFLoaderVars(swfVars).name("swf"+page.id))
+			swf.addEventListener(LoaderEvent.INIT, swfInit);
+			
+			pageLoader.append(swf);
 
 			if(page.audio != '' && page.audio != null)
 				pageLoader.append(new MP3Loader(baseURL + page.audio + dateHash, new MP3LoaderVars(mp3Vars).name("audio"+page.id)));
 						
 			loader.append(pageLoader);
 			
-			//TODO: Load Configuration
-						
+			//TODO: Load Configuration						
 		}
 		
 		protected function makeDateHash(page:Page):String {
@@ -81,6 +86,17 @@ package com.apexinnovations.transwarp.assets {
 				return '?' + Utils.jenkinsHash(page.updates[0].time.toUTCString()).toString();
 			else 
 				return '';
+		}
+		
+		protected function swfInit(event:LoaderEvent):void {
+			var loader:SWFLoader = event.target as SWFLoader;
+			loader.rawContent.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtChildError);			
+		}
+		
+		protected function uncaughtChildError(event:UncaughtErrorEvent):void {
+			trace("caught error in slide", event);
+			event.preventDefault();
+			//Courseware.log(
 		}
 		
 		protected function childFailed(event:LoaderEvent):void {
