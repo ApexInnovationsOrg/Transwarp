@@ -9,7 +9,6 @@ package com.apexinnovations.transwarp.assets {
 	import com.greensock.loading.LoaderMax;
 	import com.greensock.loading.MP3Loader;
 	import com.greensock.loading.SWFLoader;
-	import com.greensock.loading.core.LoaderItem;
 	import com.greensock.loading.data.MP3LoaderVars;
 	import com.greensock.loading.data.SWFLoaderVars;
 
@@ -19,8 +18,6 @@ package com.apexinnovations.transwarp.assets {
 		
 		protected var pages:Vector.<Page>;
 		protected var loader:LoaderMax;
-		
-		protected var lockedItem:LoaderItem;
 		
 		protected var swfVars:Object;
 		protected var mp3Vars:Object;
