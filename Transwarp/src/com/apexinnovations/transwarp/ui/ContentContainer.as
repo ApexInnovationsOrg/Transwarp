@@ -27,9 +27,11 @@ package com.apexinnovations.transwarp.ui {
 	public class ContentContainer extends UIComponent {
 		
 		protected var _content:MovieClip;		
+		
 		protected var contentLoader:ContentLoader;
 		
 		protected var watchedLoader:LoaderMax;
+		
 		
 		public function ContentContainer() {
 			super();
@@ -48,7 +50,6 @@ package com.apexinnovations.transwarp.ui {
 		[Bindable] public function get content():MovieClip { return _content; }
 		protected function set content(value:MovieClip):void {
 			if(_content) {
-				trace("removing old content");
 				removeChild(_content);
 				SoundMixer.stopAll();
 			}
@@ -62,8 +63,7 @@ package com.apexinnovations.transwarp.ui {
 		}
 		
 		public function replay():void {
-			content = null;
-			contentLoaded();
+			pageChanged();
 		}
 		
 		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
@@ -111,9 +111,9 @@ package com.apexinnovations.transwarp.ui {
 			var page:Page = Courseware.instance.currentPage;
 			
 			if(page.audio != '') {
-				var mp3:MP3Loader = MP3Loader(LoaderMax.getLoader("audio"+page.id));
-				if(mp3.status == LoaderStatus.COMPLETED) 
-					mp3.playSound();
+				var mp3 = MP3Loader(LoaderMax.getLoader("audio"+page.id));
+				if(mp3 && mp3.status == LoaderStatus.COMPLETED) 
+					mp3.gotoSoundTime(0, true);
 			}
 			
 			content = LoaderMax.getContent("swf"+page.id).rawContent as MovieClip;
