@@ -111,7 +111,7 @@ package com.apexinnovations.transwarp.ui {
 			var page:Page = Courseware.instance.currentPage;
 			
 			if(page.audio != '') {
-				var mp3 = MP3Loader(LoaderMax.getLoader("audio"+page.id));
+				var mp3:MP3Loader = MP3Loader(LoaderMax.getLoader("audio"+page.id));
 				if(mp3 && mp3.status == LoaderStatus.COMPLETED) 
 					mp3.gotoSoundTime(0, true);
 			}

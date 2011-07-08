@@ -59,10 +59,6 @@
 			
 			override protected function commitProperties():void {
 				super.commitProperties();
-				/* 				if(dataProviderChanged) {
-					dataProviderChanged = false;
-					selectedIndex = dataProvider.getItemIndex(Courseware.instance.currentPage);
-				} */
 			}
 
 
@@ -72,12 +68,18 @@
 			}
 			
 			override public function set selectedIndex(value:int):void {
+				if(value == selectedIndex)
+					return;
+				
 				super.selectedIndex = value;
 				if(selectedIndex >= 0 && selectedIndex == value)
 					ensureIndexIsVisible(value);
 			}
 			
-			override public function set selectedItem(value:*):void {
+			override public function set selectedItem(value:*):void {				
+				if(value == selectedItem)
+					return;
+				
 				super.selectedItem = value;
 				
 				if(selectedItem == value && value != null){
