@@ -35,8 +35,7 @@ package com.apexinnovations.transwarp.assets {
 				pages = pages.concat(c.pages);
 			}
 			
-			loader = new LoaderMax({auditSize:false});
-			
+			loader = new LoaderMax({auditSize:false, maxConnections: 6});
 			loader.addEventListener(LoaderEvent.CHILD_FAIL, childFailed);
 			loader.addEventListener(LoaderEvent.IO_ERROR, ioError);
 			
