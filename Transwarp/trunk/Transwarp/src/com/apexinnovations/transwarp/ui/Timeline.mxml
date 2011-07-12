@@ -8,6 +8,9 @@
 		<![CDATA[
 			import com.apexinnovations.transwarp.TranswarpMovieClip;
 			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			TranswarpVersion.revision = "$Rev$";
 			
 			[Bindable]
 			public var source:TranswarpMovieClip;
