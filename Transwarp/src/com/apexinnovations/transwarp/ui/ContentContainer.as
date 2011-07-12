@@ -1,7 +1,10 @@
 package com.apexinnovations.transwarp.ui {
+	import com.apexinnovations.transwarp.TranswarpSlide;
 	import com.apexinnovations.transwarp.assets.ContentLoader;
+	import com.apexinnovations.transwarp.assets.PageLoader;
 	import com.apexinnovations.transwarp.data.Courseware;
 	import com.apexinnovations.transwarp.data.Page;
+	import com.apexinnovations.transwarp.events.ContentReadyEvent;
 	import com.apexinnovations.transwarp.events.PageSelectionEvent;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	import com.greensock.events.LoaderEvent;
@@ -9,12 +12,16 @@ package com.apexinnovations.transwarp.ui {
 	import com.greensock.loading.LoaderStatus;
 	import com.greensock.loading.MP3Loader;
 	
+	import flash.display.DisplayObject;
+	import flash.display.Loader;
+	import flash.display.LoaderInfo;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.ProgressEvent;
 	import flash.geom.Rectangle;
 	import flash.media.SoundMixer;
 	
+	import mx.binding.utils.BindingUtils;
 	import mx.core.UIComponent;
 	import mx.events.FlexEvent;
 	
@@ -26,11 +33,12 @@ package com.apexinnovations.transwarp.ui {
 	[Event(name="error", type="flash.events.ErrorEvent")]
 	public class ContentContainer extends UIComponent {
 		
-		protected var _content:MovieClip;		
+		protected var _content:DisplayObject;		
+		protected var _rawContent:DisplayObject;
 		
 		protected var contentLoader:ContentLoader;
 		
-		protected var watchedLoader:LoaderMax;
+		protected var watchedLoader:PageLoader;
 		
 		
 		public function ContentContainer() {
@@ -47,8 +55,8 @@ package com.apexinnovations.transwarp.ui {
 			pageChanged();
 		}
 		
-		[Bindable] public function get content():MovieClip { return _content; }
-		protected function set content(value:MovieClip):void {
+		[Bindable] public function get content():DisplayObject { return _content; }
+		protected function set content(value:DisplayObject):void {
 			if(_content) {
 				removeChild(_content);
 				SoundMixer.stopAll();
@@ -58,8 +66,19 @@ package com.apexinnovations.transwarp.ui {
 			
 			if(_content) {
 				addChild(_content);
+				
+				if(_content is Loader)
+					rawContent = Loader(_content).content;
+				else
+					rawContent = content;
+
 				invalidateDisplayList();
 			}
+		}
+		
+		[Bindable] public function get rawContent():DisplayObject { return _rawContent; }
+		protected function set rawContent(value:DisplayObject):void {
+			_rawContent = value;
 		}
 		
 		public function replay():void {
@@ -67,9 +86,8 @@ package com.apexinnovations.transwarp.ui {
 		}
 		
 		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
-			if(_content) {
+			if(_content)
 				scaleContent(unscaledWidth, unscaledHeight);
-			}
 		}
 		
 		protected function pageChanged(event:PageSelectionEvent = null):void {
@@ -79,20 +97,22 @@ package com.apexinnovations.transwarp.ui {
 			content = null;
 			
 			if(watchedLoader) {
-				watchedLoader.removeEventListener(LoaderEvent.COMPLETE, contentLoaded);
+				watchedLoader.removeEventListener(ContentReadyEvent.CONTENT_READY, contentLoaded);
 				watchedLoader.removeEventListener(LoaderEvent.PROGRESS, contentProgress);
+				watchedLoader.removeEventListener(ContentReadyEvent.CONTENT_READY, contentLoaded);
 			}
 			
 			watchedLoader = contentLoader.getLoader(Courseware.instance.currentPage);
-						
-			if(watchedLoader.status == LoaderStatus.COMPLETED)
+			watchedLoader.requestContent();
+			
+			if(watchedLoader.contentReady)
 				contentLoaded();
 			else {
+				watchedLoader.addEventListener(ContentReadyEvent.CONTENT_READY, contentLoaded);
 				if(watchedLoader.status == LoaderStatus.LOADING) {
 					dispatchEvent(new Event(Event.OPEN));
 					dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS, false, false, watchedLoader.bytesLoaded, watchedLoader.bytesTotal));
 					watchedLoader.addEventListener(LoaderEvent.PROGRESS, contentProgress);
-					watchedLoader.addEventListener(LoaderEvent.COMPLETE, contentLoaded);
 				} else if(watchedLoader.status == LoaderStatus.FAILED) {
 					//How are we handling this?
 				}
@@ -106,20 +126,20 @@ package com.apexinnovations.transwarp.ui {
 			dispatchEvent(evt);
 		}
 		
-		protected function contentLoaded(event:LoaderEvent = null):void {
+		protected function contentLoaded(event:ContentReadyEvent = null):void {
 						
 			var page:Page = Courseware.instance.currentPage;
 			
-			if(page.audio != '') {
-				var mp3:MP3Loader = MP3Loader(LoaderMax.getLoader("audio"+page.id));
-				if(mp3 && mp3.status == LoaderStatus.COMPLETED) 
-					mp3.gotoSoundTime(0, true);
-			}
+			if(watchedLoader.page !== page)
+				return; //shouldn't happen
 			
-			content = LoaderMax.getContent("swf"+page.id).rawContent as MovieClip;
+			content = watchedLoader.swf;
+			
+			watchedLoader.playAudio();
 			
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
+		
 		
 		protected function scaleContent(width:Number, height:Number):void {
 			unscaleContent(); //prevent previous scaling from interfering
@@ -127,7 +147,13 @@ package com.apexinnovations.transwarp.ui {
 			var w:Number = _content.width;
 			var h:Number = _content.height;
 			
-			if(_content.loaderInfo) { //use loader info instead if available
+			
+			if(_content is Loader) {
+				var info:LoaderInfo = Loader(_content).contentLoaderInfo;
+				w = info.width;
+				h = info.height;
+				
+			} else if(_content.loaderInfo) { //use loader info instead if available
 				w = _content.loaderInfo.width;
 				h = _content.loaderInfo.height;
 			}
@@ -136,7 +162,7 @@ package com.apexinnovations.transwarp.ui {
 			var newXScale:Number = w == 0 ? 1 : width / w;
 			var newYScale:Number = h == 0 ? 1 : height / h;
 			
-			var scale:Number;				
+			var scale:Number;		
 			
 			if(newXScale > newYScale) {
 				scale = newYScale;

@@ -1,7 +1,7 @@
 package com.apexinnovations.transwarp.data
 {
-	import com.apexinnovations.transwarp.data.Courseware;
 	import com.apexinnovations.transwarp.data.Course;
+	import com.apexinnovations.transwarp.data.Courseware;
 	import com.apexinnovations.transwarp.utils.*;
 	import com.apexinnovations.transwarp.webservices.*;
 	
@@ -25,6 +25,7 @@ package com.apexinnovations.transwarp.data
 		private var _audio:String = '';										// name of audio file to load with page, if not the default of 'PAGE_{id}.mp3', or 'false' if no audio
 		private var _bookmarked:Boolean = false;							// Has this page been bookmarked by the user?
 		private var _configuration:String = '';								// URL of XML file to be loaded by SWF as configuration
+		private var _configurationType:String = '';
 		private var _course:Course = null;									// Which course is this page a part of?
 		private var _created:Date;											// XML format: YYYY-MM-DDTHH:MM:SS
 		private var _demo:Boolean = false;									// Is this page viewable on the demo?
@@ -55,6 +56,7 @@ package com.apexinnovations.transwarp.data
 				_allow = xml.@allow;
 				_bookmarked = xml.@bookmarked == 'true';
 				_configuration = xml.@configuration;
+				_configurationType = xml.@configurationType;
 				_created = DateFormatter.parseDateString(xml.@created);
 				_deny = xml.@deny;
 				_description = (xml.description == undefined ? null : TextConverter.importToFlow(xml.description.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
@@ -169,6 +171,7 @@ package com.apexinnovations.transwarp.data
 		
 		public function get audio():String { return _audio; }
 		public function get configuration():String { return _configuration; }
+		public function get configurationType():String { return _configurationType; }
 		public function get course():Course { return _course; }
 		public function get created():Date { return _created; }
 		public function get demo():Boolean { return _demo; }
@@ -283,8 +286,7 @@ package com.apexinnovations.transwarp.data
 			}
 			
 			return _weight;
-		}
-		
+		}		
 		
 		// Counts the number of occurrences of needle in haystack
 		private function find(needle:RegExp, haystack:String, caseInsensitive:Boolean = true):uint {
