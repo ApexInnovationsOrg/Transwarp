@@ -11,6 +11,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.TranswarpMovieClip;
+			import com.apexinnovations.transwarp.TranswarpSlide;
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
@@ -33,7 +34,7 @@
 							  progress="loadProgress(event)"/>
 		
 		<s:VGroup id="bottomGroup" horizontalAlign="center" width="100%" bottom="10">
-			<ui:Timeline id="timeline" source="{container.content as TranswarpMovieClip}" includeInLayout="{Courseware.instance.currentPage.timeline}" visible="{Courseware.instance.currentPage.timeline &amp;&amp; timeline.source !== null}"/>
+			<ui:Timeline id="timeline" source="{container.rawContent as TranswarpMovieClip}" includeInLayout="{Courseware.instance.currentPage.timeline}" visible="{Courseware.instance.currentPage.timeline &amp;&amp; timeline.source !== null}"/>
 			
 			<s:HGroup id="instructions" 
 					  paddingLeft="10" paddingRight="10"
