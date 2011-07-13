@@ -12,6 +12,7 @@ package com.apexinnovations.transwarp.assets {
 	import com.greensock.loading.LoaderStatus;
 	import com.greensock.loading.MP3Loader;
 	import com.greensock.loading.XMLLoader;
+	import com.greensock.loading.core.LoaderItem;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
@@ -26,7 +27,7 @@ package com.apexinnovations.transwarp.assets {
 		
 		protected var swfData:BinaryDataLoader;
 		protected var audio:MP3Loader;
-		protected var config:LoaderMax;
+		protected var config:LoaderItem;
 		
 		protected var _contentReady:Boolean = false;
 		protected var _initializeRequested:Boolean = false;
@@ -121,10 +122,14 @@ package com.apexinnovations.transwarp.assets {
 		
 		protected function checkReady():void {
 			if(contentInitialized && (!_page.configurationType != "swf" || configInitialized)) {
-								
-				if(configLoader)
+				
+				var configType:String = _page.configurationType;
+				
+				if(configType == "swf" && configInitialized)
 					Object(contentLoader.content).config = configLoader.content;
-				else if(page.configurationType == "string")
+				else if((configType == "text" || configType == "xml") && config.status == LoaderStatus.COMPLETED)
+					Object(contentLoader.content).config = config.content;
+				else if(configType == "string")
 					Object(contentLoader.content).config = page.configuration;
 				
 				_contentReady = true;
