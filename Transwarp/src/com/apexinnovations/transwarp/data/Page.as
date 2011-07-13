@@ -170,8 +170,8 @@ package com.apexinnovations.transwarp.data
 		}
 		
 		public function get audio():String { return _audio; }
-		public function get configuration():String { return _config; }
-		public function get configurationType():String { return _configType; }
+		public function get config():String { return _config; }
+		public function get configType():String { return _configType; }
 		public function get course():Course { return _course; }
 		public function get created():Date { return _created; }
 		public function get demo():Boolean { return _demo; }

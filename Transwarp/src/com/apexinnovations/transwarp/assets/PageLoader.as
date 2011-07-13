@@ -58,15 +58,15 @@ package com.apexinnovations.transwarp.assets {
 			
 			var configLoaderClass:Class;
 			
-			if(page.configurationType == "text")
+			if(page.configType == "text")
 				configLoaderClass = DataLoader;
-			else if(page.configurationType == "xml")
+			else if(page.configType == "xml")
 				configLoaderClass = XMLLoader;
-			else if(page.configurationType == "swf")
+			else if(page.configType == "swf")
 				configLoaderClass = BinaryDataLoader;
 			
 			if(configLoaderClass) {
-				config = new configLoaderClass(baseURL + page.configuration + dateHash, {allowMalformedURL: true});
+				config = new configLoaderClass(baseURL + page.config + dateHash, {allowMalformedURL: true});
 				append(config);
 			}			
 			
@@ -102,7 +102,7 @@ package com.apexinnovations.transwarp.assets {
 			contentLoader.loadBytes(swfData.content);
 			contentLoader.contentLoaderInfo.addEventListener(Event.INIT, contentInit);
 			
-			if(_page.configurationType == "swf") {
+			if(_page.configType == "swf") {
 				configLoader = new Loader();
 				configLoader.loadBytes(config.content);
 				configLoader.contentLoaderInfo.addEventListener(Event.INIT, configInit);
@@ -121,16 +121,16 @@ package com.apexinnovations.transwarp.assets {
 		}
 		
 		protected function checkReady():void {
-			if(contentInitialized && (!_page.configurationType != "swf" || configInitialized)) {
+			if(contentInitialized && (!_page.configType != "swf" || configInitialized)) {
 				
-				var configType:String = _page.configurationType;
+				var configType:String = _page.configType;
 				
 				if(configType == "swf" && configInitialized)
 					Object(contentLoader.content).config = configLoader.content;
 				else if((configType == "text" || configType == "xml") && config.status == LoaderStatus.COMPLETED)
 					Object(contentLoader.content).config = config.content;
 				else if(configType == "string")
-					Object(contentLoader.content).config = page.configuration;
+					Object(contentLoader.content).config = page.config;
 				
 				_contentReady = true;
 				dispatchEvent(new ContentReadyEvent(_swf, _page));
