@@ -36,6 +36,9 @@
 					labelDisplay.setStyle("fontStyle", FontPosture.NORMAL);
 					indentation = p.depth * 12;
 					labelDisplay.text = p.name;
+					if(Courseware.instance.debug)
+						labelDisplay.text = labelDisplay.text + " (" + p.id + ")";
+					
 					disclosure.visible = false;
 					
 				} else if(data is Folder) {

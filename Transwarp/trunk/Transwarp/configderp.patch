@@ -1,0 +1,160 @@
+Index: com/apexinnovations/transwarp/assets/ContentLoader.as
+===================================================================
+--- com/apexinnovations/transwarp/assets/ContentLoader.as	(revision 437)
++++ com/apexinnovations/transwarp/assets/ContentLoader.as	(working copy)
+@@ -1,4 +1,6 @@
+ package com.apexinnovations.transwarp.assets {
++	import com.apexinnovations.transwarp.TranswarpSlide;
++	import com.apexinnovations.transwarp.config.IConfigurationAcceptor;
+ 	import com.apexinnovations.transwarp.data.Course;
+ 	import com.apexinnovations.transwarp.data.Courseware;
+ 	import com.apexinnovations.transwarp.data.Page;
+@@ -6,13 +8,16 @@
+ 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
+ 	import com.apexinnovations.transwarp.utils.Utils;
+ 	import com.greensock.events.LoaderEvent;
++	import com.greensock.loading.DataLoader;
+ 	import com.greensock.loading.LoaderMax;
+ 	import com.greensock.loading.MP3Loader;
+ 	import com.greensock.loading.SWFLoader;
++	import com.greensock.loading.XMLLoader;
+ 	import com.greensock.loading.data.MP3LoaderVars;
+ 	import com.greensock.loading.data.SWFLoaderVars;
+ 	import com.greensock.loading.display.ContentDisplay;
+ 	
++	import flash.events.Event;
+ 	import flash.events.UncaughtErrorEvent;
+ 
+ 	TranswarpVersion.revision = "$Rev$";
+@@ -47,7 +52,7 @@
+ 		}
+ 		
+ 		public function getLoader(page:Page):LoaderMax {
+-			var pageLoader:LoaderMax = loader.getLoader("loader"+page.id);
++			var pageLoader:LoaderMax = loader.getLoader(String(page.id));
+ 			var index:int = pages.indexOf(page);
+ 			if(index > 0)
+ 				LoaderMax.prioritize("loader"+pages[index-1].id);
+@@ -62,7 +67,7 @@
+ 		
+ 		
+ 		protected function addPage(page:Page):void {
+-			var pageLoader:LoaderMax = new LoaderMax({name:"loader"+page.id});
++			var pageLoader:LoaderMax = new LoaderMax({name:page.id});
+ 			
+ 			var baseURL:String = Courseware.instance.rootFolder + '/';
+ 			var dateHash:String = makeDateHash(page);
+@@ -75,9 +80,20 @@
+ 			if(page.audio != '' && page.audio != null)
+ 				pageLoader.append(new MP3Loader(baseURL + page.audio + dateHash, new MP3LoaderVars(mp3Vars).name("audio"+page.id)));
+ 						
++				
++			/*if(page.configurationType == "text") {
++				pageLoader.append(new DataLoader(baseURL + page.configuration + dateHash, {allowMalformedURL: true, name: "config"+page.id}));
++			} else if(page.configurationType == "xml") {
++				pageLoader.append(new XMLLoader(baseURL + page.configuration + dateHash, {allowMalformedURL: true, name:"config"+page.id}));
++			} else if(page.configurationType == "swf") {
++				swf = new SWFLoader(baseURL + page.configuration + dateHash, new SWFLoaderVars(swfVars).name("config"+page.id));
++				swf.addEventListener(LoaderEvent.INIT, swfInit);
++				pageLoader.append(swf);
++			}*/
++			
++			//pageLoader.addEventListener(LoaderEvent.COMPLETE, childLoaded);
++			
+ 			loader.append(pageLoader);
+-			
+-			//TODO: Load Configuration						
+ 		}
+ 		
+ 		protected function makeDateHash(page:Page):String {
+@@ -89,21 +105,31 @@
+ 		
+ 		protected function swfInit(event:LoaderEvent):void {
+ 			var loader:SWFLoader = event.target as SWFLoader;
+-			loader.rawContent.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtChildError);			
++			loader.rawContent.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtChildError);		
+ 		}
+ 		
+ 		protected function uncaughtChildError(event:UncaughtErrorEvent):void {
+-			trace("caught error in slide", event);
++			trace("caught error in slide", event, event.text);
+ 			event.preventDefault();
+ 			//Courseware.log(
+ 		}
+ 		
++		protected function childLoaded(event:LoaderEvent):void {
++			var pageLoader:LoaderMax = event.target as LoaderMax;
++			var swfLoader:SWFLoader = pageLoader.getLoader("swf"+pageLoader.name) as SWFLoader;
++			var configLoader:LoaderMax = pageLoader.getLoader("config"+pageLoader.name) as LoaderMax;
++			
++			if(configLoader && swfLoader && swfLoader.rawContent is TranswarpSlide)
++				TranswarpSlide(swfLoader.rawContent).config = configLoader.content;
++		}
++		
+ 		protected function childFailed(event:LoaderEvent):void {
+ 			
+ 		}
+ 		
+ 		protected function ioError(event:LoaderEvent):void {
+-			
++			event.preventDefault();
++			event.stopPropagation();
+ 		}
+ 	}	
+ }
+\ No newline at end of file
+Index: com/apexinnovations/transwarp/data/Page.as
+===================================================================
+--- com/apexinnovations/transwarp/data/Page.as	(revision 432)
++++ com/apexinnovations/transwarp/data/Page.as	(working copy)
+@@ -25,6 +25,7 @@
+ 		private var _audio:String = '';										// name of audio file to load with page, if not the default of 'PAGE_{id}.mp3', or 'false' if no audio
+ 		private var _bookmarked:Boolean = false;							// Has this page been bookmarked by the user?
+ 		private var _configuration:String = '';								// URL of XML file to be loaded by SWF as configuration
++		private var _configurationType:String = '';
+ 		private var _course:Course = null;									// Which course is this page a part of?
+ 		private var _created:Date;											// XML format: YYYY-MM-DDTHH:MM:SS
+ 		private var _demo:Boolean = false;									// Is this page viewable on the demo?
+@@ -54,7 +55,8 @@
+ 				_depth = depth;
+ 				_allow = xml.@allow;
+ 				_bookmarked = xml.@bookmarked == 'true';
+-				_configuration = xml.@configuration;
++				/*_configuration = xml.@configuration;
++				_configurationType = xml.@configurationType;*/
+ 				_created = DateFormatter.parseDateString(xml.@created);
+ 				_deny = xml.@deny;
+ 				_description = (xml.description == undefined ? null : TextConverter.importToFlow(xml.description.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
+@@ -169,6 +171,7 @@
+ 		
+ 		public function get audio():String { return _audio; }
+ 		public function get configuration():String { return _configuration; }
++		public function get configurationType():String { return _configurationType; }
+ 		public function get course():Course { return _course; }
+ 		public function get created():Date { return _created; }
+ 		public function get demo():Boolean { return _demo; }
+Index: com/apexinnovations/transwarp/ui/ContentContainer.as
+===================================================================
+--- com/apexinnovations/transwarp/ui/ContentContainer.as	(revision 437)
++++ com/apexinnovations/transwarp/ui/ContentContainer.as	(working copy)
+@@ -1,4 +1,6 @@
+ package com.apexinnovations.transwarp.ui {
++	import com.apexinnovations.transwarp.TranswarpMovieClip;
++	import com.apexinnovations.transwarp.TranswarpSlide;
+ 	import com.apexinnovations.transwarp.assets.ContentLoader;
+ 	import com.apexinnovations.transwarp.data.Courseware;
+ 	import com.apexinnovations.transwarp.data.Page;
+@@ -116,8 +118,12 @@
+ 					mp3.gotoSoundTime(0, true);
+ 			}
+ 			
+-			content = LoaderMax.getContent("swf"+page.id).rawContent as MovieClip;
++			var mc:MovieClip = LoaderMax.getContent("swf"+page.id).rawContent as MovieClip;
++			//if(page.configurationType == "string" && mc is TranswarpSlide)
++			//	TranswarpSlide(mc).config = page.configuration;
+ 			
++			content = mc;
++			
+ 			dispatchEvent(new Event(Event.COMPLETE));
+ 		}
+ 		
