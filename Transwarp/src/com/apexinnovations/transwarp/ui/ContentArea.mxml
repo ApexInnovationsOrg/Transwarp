@@ -52,13 +52,14 @@
 									textFlow="{Courseware.instance.currentPage.instructions}"/>
 			</s:HGroup>
 		</s:VGroup>
+	
+		<s:Group width="100%" visible="{Courseware.instance.debug}" includeInLayout="{Courseware.instance.debug}">			
+			<s:Label right="5" text="{Courseware.instance.currentPage.id} ({Courseware.instance.currentPage.swf})" color="0xaaaaaa" />
+		</s:Group>
 		
 	</s:VGroup>	
 	
 	<s:Panel id="progressPanel" title="Loading..." width="30%" height="78" horizontalCenter="0" verticalCenter="0" visible="false" backgroundColor="0xFFFFFF" skinClass="com.apexinnovations.transwarp.skins.PanelSkin">
 		<mx:ProgressBar id="progressBar" labelPlacement="bottom" label="%3%%" direction="right" mode="manual" top="10" bottom="10" left="10" right="10"/>
 	</s:Panel>
-	
-	<s:Label text="{Courseware.instance.currentPage.id}" color="0xaaaaaa" bottom="5" right="5" visible="{Courseware.instance.debug}" />
-	
 </s:Group>

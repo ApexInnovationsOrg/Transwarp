@@ -64,5 +64,5 @@ package com.apexinnovations.transwarp {
 }
 
 // Force loading of special classes into frame 1:
-import flashx.textLayout.container.TextContainerManager;
-TextContainerManager;
+/*import flashx.textLayout.container.TextContainerManager;
+TextContainerManager;*/

@@ -91,7 +91,7 @@ package com.apexinnovations.transwarp.assets {
 		
 		
 		protected function pageLoaded(event:LoaderEvent):void {
-			if(_initializeRequested)
+			if(_initializeRequested && swfData.status == LoaderStatus.COMPLETED)
 				initializeContent();			
 		}		
 		
