@@ -16,7 +16,9 @@ package com.apexinnovations.transwarp.assets {
 	
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
+	import flash.display.LoaderInfo;
 	import flash.events.Event;
+	import flash.events.UncaughtErrorEvent;
 	
 	TranswarpVersion.revision = "$Rev$";
 	
@@ -111,12 +113,14 @@ package com.apexinnovations.transwarp.assets {
 		
 		protected function contentInit(event:Event):void {
 			contentInitialized = true;
+			LoaderInfo(event.target).uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtError);
 			_swf = event.target.loader;
 			checkReady();
 		}
 		
 		protected function configInit(event:Event):void {
 			configInitialized = true;
+			LoaderInfo(event.target).uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtError);
 			checkReady();
 		}
 		
@@ -135,6 +139,13 @@ package com.apexinnovations.transwarp.assets {
 				_contentReady = true;
 				dispatchEvent(new ContentReadyEvent(_swf, _page));
 			}				
+		}
+		
+		protected function uncaughtError(event:UncaughtErrorEvent):void {
+			event.stopPropagation();
+			event.preventDefault();
+			trace("caught error in slide or slide config");
+			//TODO: Log this?
 		}
 		
 		protected function makeDateHash(page:Page):String {

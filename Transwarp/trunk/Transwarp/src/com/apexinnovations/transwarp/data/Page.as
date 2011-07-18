@@ -62,7 +62,7 @@ package com.apexinnovations.transwarp.data
 				_description = (xml.description == undefined ? null : TextConverter.importToFlow(xml.description.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
 				_id = xml.@id;
 				_instructions = (xml.instructions == undefined ? null : TextConverter.importToFlow(xml.instructions.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
-				_keywords = xml.@keywords;
+				_keywords = xml.keywords;
 				_name = xml.@name;
 				_parent = parent;
 				_supportText = (xml.supportText == undefined ? null : TextConverter.importToFlow(xml.supportText.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
@@ -130,7 +130,7 @@ package com.apexinnovations.transwarp.data
 			}
 			_searchFields[8] = '';
 			for each (var upd:Update in _updates) {
-				if (upd.textFlow) _searchFields[8] += Utils.textFlowToString(upd.textFlow);
+				if (upd.textFlow && (Courseware.instance.debug || !upd.hidden)) _searchFields[8] += Utils.textFlowToString(upd.textFlow);
 			}
 		}
 		
@@ -218,7 +218,7 @@ package com.apexinnovations.transwarp.data
 		}
 		
 		// Searches the page for keywords, stores and returns a weight
-		public function search(terms:Array, exclude:Array, require:Array):uint {
+		public function search(terms:Array, exclude:Array, require:Array):uint {			
 			var i:int, j:int;
 			var found:Boolean = false;
 			var needle:RegExp;
@@ -260,6 +260,8 @@ package com.apexinnovations.transwarp.data
 			
 			// Now weight the page
 			for each (var term:String in terms) {
+				if(Courseware.instance.debug && _id == uint(term))
+					_weight += 100;
 				needle = matchWildcards(term);
 				_weight += find(needle, _searchFields[0]) * 5;	// qualifiedName
 				_weight += find(needle, _searchFields[1]) * 3;	// keywords
