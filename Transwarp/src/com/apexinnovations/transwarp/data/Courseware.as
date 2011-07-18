@@ -78,6 +78,10 @@ package com.apexinnovations.transwarp.data
 
 			// Get list of remaining search terms
 			var terms:Array = tmp.match(/("[^"]*"|\S+)/g);
+			for (i = 0; i < terms.length; i ++) {
+				terms[i] = terms[i].replace(/"/g, '');		// remove " chars
+			}
+			
 			terms = removeDuplicates(terms);
 			
 			for each (var course:Course in _instance.product.courses) {
