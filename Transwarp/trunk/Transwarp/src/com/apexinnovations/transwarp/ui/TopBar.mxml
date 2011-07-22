@@ -91,6 +91,12 @@
 				contents.container.replay();
 			}
 			
+			protected function reloadClick():void {
+				var contents:ContentArea = (this.parentApplication as Transwarp).contentArea;
+				
+				contents.container.reload();
+			}
+			
 			protected function submitSearch():void {
 				if (Utils.trim(searchInput.text) != '') {
 					if (!searchDialog) {
@@ -202,6 +208,10 @@
 		<ui:VerticalSeparator />
 		<ui:IconButton icon="{ReplayIcon}" click="replayClick()" height="30" toolTip="REPLAY"
 					   label="{resourceManager.getString('Buttons','REPLAY')}"/>
+		<!-- Conditionally Visible Reload Button -->
+		<ui:VerticalSeparator includeInLayout="{Courseware.instance.debug}" visible="{Courseware.instance.debug}" />
+		<ui:IconButton icon="{ReplayIcon}" height="30" label="RELOAD" click="reloadClick()"
+					   includeInLayout="{Courseware.instance.debug}" visible="{Courseware.instance.debug}"/>
 	</ext:HGroup>
 	
 	<s:HGroup id="searchGroup" height="32" verticalAlign="middle" visible="{hasSearch}" bottom="1" right="10">

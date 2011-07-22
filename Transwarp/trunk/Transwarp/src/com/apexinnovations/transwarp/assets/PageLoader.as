@@ -31,17 +31,19 @@ package com.apexinnovations.transwarp.assets {
 		protected var audio:MP3Loader;
 		protected var config:LoaderItem;
 		
-		protected var _contentReady:Boolean = false;
-		protected var _initializeRequested:Boolean = false;
+		protected var _contentReady:Boolean;
+		protected var _initializeRequested:Boolean;
 		
 		protected var contentLoader:Loader;
-		protected var contentInitialized:Boolean = false;
+		protected var contentInitialized:Boolean;
 		
 		protected var configLoader:Loader;
-		protected var configInitialized:Boolean = false;
+		protected var configInitialized:Boolean;
 		
 		public function PageLoader(page:Page) {
 			super();
+			
+			init();
 			
 			name = String(page.id);			
 			
@@ -74,7 +76,21 @@ package com.apexinnovations.transwarp.assets {
 			
 			addEventListener(LoaderEvent.COMPLETE, pageLoaded);
 		}
-				
+		
+		protected function init():void {
+			_contentReady = false;
+			_initializeRequested = false;
+			contentLoader = null;
+			contentInitialized = false;
+			configLoader = null;
+			configInitialized = false;
+		}
+		
+		public function reload():void {
+			init();
+			load(true);
+		}	
+		
 		public function get contentReady():Boolean { return _contentReady; }
 		public function get page():Page { return _page; }
 		public function get swf():DisplayObject { return _swf; }
@@ -102,12 +118,12 @@ package com.apexinnovations.transwarp.assets {
 				return;
 			contentLoader = new Loader();
 			contentLoader.loadBytes(swfData.content);
-			contentLoader.contentLoaderInfo.addEventListener(Event.INIT, contentInit);
+			contentLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, contentInit);
 			
 			if(_page.configType == "swf") {
 				configLoader = new Loader();
 				configLoader.loadBytes(config.content);
-				configLoader.contentLoaderInfo.addEventListener(Event.INIT, configInit);
+				configLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, configInit);
 			}
 		}
 		

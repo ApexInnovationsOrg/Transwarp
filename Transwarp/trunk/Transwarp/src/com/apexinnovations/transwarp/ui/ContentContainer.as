@@ -85,6 +85,13 @@ package com.apexinnovations.transwarp.ui {
 			pageChanged();
 		}
 		
+		public function reload():void {
+			if(watchedLoader) {
+				watchedLoader.reload();
+				pageChanged();
+			}
+		}
+		
 		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
 			if(_content)
 				scaleContent(unscaledWidth, unscaledHeight);
