@@ -25,6 +25,7 @@
 					config.dispatch("autoCloseMenu", autoCloseMenu.selected.toString());
 					user.autoCloseMenu = autoCloseMenu.selected;
 				}
+/*
 				if (user.animatePageTransitions != animatePageTransitions.selected) {
 					config.dispatch("animatePageTransitions", animatePageTransitions.selected.toString());
 					user.animatePageTransitions = animatePageTransitions.selected;
@@ -33,7 +34,7 @@
 					config.dispatch("closedCaptioning", closedCaptioning.selected.toString());
 					user.closedCaptioning = closedCaptioning.selected;
 				}
-				
+*/				
 				if (user.printSlideOnly != printSlideOnly.selected) {
 					config.dispatch("printSlideOnly", printSlideOnly.selected.toString());
 					user.printSlideOnly = printSlideOnly.selected;
@@ -54,10 +55,12 @@
 		<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" width="100%" >
 			<s:CheckBox id="autoCloseMenu" label="{getString('AUTO_CLOSE_MENU')}" selected="{Courseware.instance.user.autoCloseMenu}" />
 			<s:Label paddingLeft="18" text="{getString('AUTO_CLOSE_MENU_DESC')}" width="350" fontSize="10" fontStyle="italic" color="0x0000FF" />
+<!--
 			<s:CheckBox id="animatePageTransitions" label="{getString('ANIMATE_TRANSITIONS')}" selected="{Courseware.instance.user.animatePageTransitions}" />
 			<s:Label paddingLeft="18" text="{getString('ANIMATE_TRANSITIONS_DESC')}" width="350" fontSize="10" fontStyle="italic" color="0x0000FF" />
 			<s:CheckBox id="closedCaptioning" label="{getString('CLOSED_CAPTIONING')}" selected="{Courseware.instance.user.closedCaptioning}" />
 			<s:Label paddingLeft="18" text="{getString('CLOSED_CAPTIONING_DESC')}" width="350" fontSize="10" fontStyle="italic" color="0x0000FF" />
+-->
 			<s:CheckBox id="printSlideOnly" label="{getString('PRINT_PAGE')}" selected="{Courseware.instance.user.printSlideOnly}" />
 			<s:Label paddingLeft="18" text="{getString('PRINT_PAGE_DESC')}" width="350" fontSize="10" fontStyle="italic" color="0x0000FF" />
 		</s:VGroup>
