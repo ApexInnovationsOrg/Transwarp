@@ -178,45 +178,53 @@
 						bitmapData.draw(stage);
 					}
 					var screenShot:Bitmap = new Bitmap(bitmapData);
-
-					
-					
-					//Creating legal text at the bottom of the page and a watermark with copyright
-					var legalText:TextField = new TextField();
-					var watermark:TextField = new TextField();
-					
-					legalText.text = "You may not reprint any information from our website in whole or in part without the prior written permission of Apex Innovations.";
-					legalText.autoSize = TextFieldAutoSize.LEFT;
-					
-					watermark.text = "Copyright © 2007-" + (new Date()).getFullYear() + " Apex Innovations.";
-					watermark.autoSize = TextFieldAutoSize.LEFT;
-					
-					var myFormat:TextFormat = new TextFormat();
-					myFormat.color = 0x000000;
-					myFormat.size = 14;
-					myFormat.italic = true;
-					myFormat.font = "Arial";
-					watermark.blendMode = BlendMode.LAYER;
-					legalText.setTextFormat(myFormat);
-					myFormat.italic = false;
-					myFormat.size = 24;
-					myFormat.bold = true;
-					watermark.setTextFormat(myFormat);
-					
-					watermark.alpha = 0.05;
-//					watermark.rotation = -45;		// rotation doesn't work (and makes text invisible) if font not embedded
-					
-					
-					
+	
 					//scale it to fill the page (portrait orientation):
 					var myScale:Number;
 					printSprite.addChild(screenShot);
+					
+					//Creating legal text at the bottom of the page
+					var legalText:TextField = new TextField();
+					var legalFormat:TextFormat = new TextFormat();
+					
+					legalFormat.color = 0x000000;
+					legalFormat.size = 14;
+					legalFormat.italic = true;
+					legalFormat.font = "Arial";
+
+					legalText.text = "You may not reprint any information from our website in whole or in part without the prior written permission of Apex Innovations.";
+					legalText.autoSize = TextFieldAutoSize.LEFT;
+					legalText.setTextFormat(legalFormat);
+
+					printSprite.addChild(legalText);					
 					legalText.x = (screenShot.width - legalText.width)/2;
 					legalText.y = screenShot.height;
-					printSprite.addChild(legalText);
-					watermark.x = (screenShot.width - watermark.width)/2;
-					watermark.y = (screenShot.height - watermark.height)/2;
-					printSprite.addChild(watermark);
+
+					//Creating watermarks with copyright
+//					var watermarks:Array = new Array();
+					var watermarkFormat:TextFormat = new TextFormat();
+
+					watermarkFormat.color = 0x000000;
+					watermarkFormat.font = "Arial";
+					watermarkFormat.size = 24;
+					watermarkFormat.bold = true;
+					
+					// and now the loop
+					for (var i:int = 1; i <= 3; i++) {
+						var textField:TextField = new TextField();
+						textField.text = "Copyright © 2007-" + (new Date()).getFullYear() + " Apex Innovations.";
+						textField.autoSize = TextFieldAutoSize.LEFT;
+						textField.blendMode = BlendMode.LAYER;
+						textField.setTextFormat(watermarkFormat);
+						
+						printSprite.addChild(textField);
+						textField.x = (screenShot.width - textField.width)/2;
+						textField.y = (i * screenShot.height/4) - textField.height/2;
+						textField.alpha = 0.1;
+					}
+					
+					
+					
 					
 					//========== printjob bug fix - prevent blank pages: ==========
 					printSprite.x = 2000; //keep it hidden to the side of the stage
