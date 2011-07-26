@@ -178,10 +178,45 @@
 						bitmapData.draw(stage);
 					}
 					var screenShot:Bitmap = new Bitmap(bitmapData);
-										
+
+					
+					
+					//Creating legal text at the bottom of the page and a watermark with copyright
+					var legalText:TextField = new TextField();
+					var watermark:TextField = new TextField();
+					
+					legalText.text = "You may not reprint any information from our website in whole or in part without the prior written permission of Apex Innovations.";
+					legalText.autoSize = TextFieldAutoSize.LEFT;
+					
+					watermark.text = "Copyright © 2007-" + (new Date()).getFullYear() + " Apex Innovations.";
+					watermark.autoSize = TextFieldAutoSize.LEFT;
+					
+					var myFormat:TextFormat = new TextFormat();
+					myFormat.color = 0x000000;
+					myFormat.size = 14;
+					myFormat.italic = true;
+					myFormat.font = "Arial";
+					watermark.blendMode = BlendMode.LAYER;
+					legalText.setTextFormat(myFormat);
+					myFormat.italic = false;
+					myFormat.size = 24;
+					myFormat.bold = true;
+					watermark.setTextFormat(myFormat);
+					
+					watermark.alpha = 0.1;
+//					watermark.rotation = -45;
+					
+					
+					
 					//scale it to fill the page (portrait orientation):
 					var myScale:Number;
 					printSprite.addChild(screenShot);
+					legalText.x = (screenShot.width - legalText.width)/2;
+					legalText.y = screenShot.height;
+					printSprite.addChild(legalText);
+					watermark.x = (screenShot.width - watermark.width)/2;
+					watermark.y = (screenShot.height - watermark.height)/2;
+					printSprite.addChild(watermark);
 					
 					//========== printjob bug fix - prevent blank pages: ==========
 					printSprite.x = 2000; //keep it hidden to the side of the stage
