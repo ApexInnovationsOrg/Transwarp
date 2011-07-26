@@ -203,8 +203,8 @@
 					myFormat.bold = true;
 					watermark.setTextFormat(myFormat);
 					
-					watermark.alpha = 0.1;
-//					watermark.rotation = -45;
+					watermark.alpha = 0.05;
+//					watermark.rotation = -45;		// rotation doesn't work (and makes text invisible) if font not embedded
 					
 					
 					
