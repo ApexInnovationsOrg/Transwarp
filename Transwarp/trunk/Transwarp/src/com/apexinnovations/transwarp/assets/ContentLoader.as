@@ -1,28 +1,14 @@
 package com.apexinnovations.transwarp.assets {
 	import com.apexinnovations.transwarp.data.Course;
-	import com.apexinnovations.transwarp.data.Courseware;
 	import com.apexinnovations.transwarp.data.Page;
 	import com.apexinnovations.transwarp.data.Product;
-	import com.apexinnovations.transwarp.events.ContentReadyEvent;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
-	import com.apexinnovations.transwarp.utils.Utils;
 	import com.greensock.events.LoaderEvent;
-	import com.greensock.loading.BinaryDataLoader;
 	import com.greensock.loading.LoaderMax;
-	import com.greensock.loading.LoaderStatus;
-	import com.greensock.loading.MP3Loader;
 	import com.greensock.loading.SWFLoader;
-	import com.greensock.loading.data.MP3LoaderVars;
-	import com.greensock.loading.data.SWFLoaderVars;
-	import com.greensock.loading.display.ContentDisplay;
 	
-	import flash.display.Loader;
-	import flash.display.LoaderInfo;
-	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.UncaughtErrorEvent;
-	import flash.utils.ByteArray;
-	import flash.utils.Dictionary;
 
 	TranswarpVersion.revision = "$Rev$";
 	
