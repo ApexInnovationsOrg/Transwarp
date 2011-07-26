@@ -190,7 +190,7 @@ package com.apexinnovations.transwarp.data
 		public function get sortToken():uint { return _sortToken; }
 		public function set sortToken(value:uint):void { _sortToken = value;	}
 		[Bindable("pageDataChanged")] public function get supportText():TextFlow { return _supportText; }
-		public function get swf():String { return _swf; }
+		[Bindable("pageDataChanged")] public function get swf():String { return _swf; }
 		[Bindable("pageDataChanged")] public function get timeline():Boolean { return _timeline; }
 		[Bindable] public function get visited():Boolean { return _visited; }
 		public function set visited(val:Boolean):void {

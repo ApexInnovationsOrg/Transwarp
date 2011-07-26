@@ -1,27 +1,22 @@
 package com.apexinnovations.transwarp.ui {
-	import com.apexinnovations.transwarp.TranswarpSlide;
 	import com.apexinnovations.transwarp.assets.ContentLoader;
 	import com.apexinnovations.transwarp.assets.PageLoader;
 	import com.apexinnovations.transwarp.data.Courseware;
 	import com.apexinnovations.transwarp.data.Page;
-	import com.apexinnovations.transwarp.events.ContentReadyEvent;
 	import com.apexinnovations.transwarp.events.PageSelectionEvent;
+	import com.apexinnovations.transwarp.events.TranswarpEvent;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	import com.greensock.events.LoaderEvent;
-	import com.greensock.loading.LoaderMax;
 	import com.greensock.loading.LoaderStatus;
-	import com.greensock.loading.MP3Loader;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
-	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.ProgressEvent;
 	import flash.geom.Rectangle;
 	import flash.media.SoundMixer;
 	
-	import mx.binding.utils.BindingUtils;
 	import mx.core.UIComponent;
 	import mx.events.FlexEvent;
 	
@@ -104,9 +99,8 @@ package com.apexinnovations.transwarp.ui {
 			content = null;
 			
 			if(watchedLoader) {
-				watchedLoader.removeEventListener(ContentReadyEvent.CONTENT_READY, contentLoaded);
 				watchedLoader.removeEventListener(LoaderEvent.PROGRESS, contentProgress);
-				watchedLoader.removeEventListener(ContentReadyEvent.CONTENT_READY, contentLoaded);
+				watchedLoader.removeEventListener(TranswarpEvent.CONTENT_READY, contentLoaded);
 			}
 			
 			watchedLoader = contentLoader.getLoader(Courseware.instance.currentPage);
@@ -115,7 +109,7 @@ package com.apexinnovations.transwarp.ui {
 			if(watchedLoader.contentReady)
 				contentLoaded();
 			else {
-				watchedLoader.addEventListener(ContentReadyEvent.CONTENT_READY, contentLoaded);
+				watchedLoader.addEventListener(TranswarpEvent.CONTENT_READY, contentLoaded);
 				if(watchedLoader.status == LoaderStatus.LOADING) {
 					dispatchEvent(new Event(Event.OPEN));
 					dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS, false, false, watchedLoader.bytesLoaded, watchedLoader.bytesTotal));
@@ -133,7 +127,7 @@ package com.apexinnovations.transwarp.ui {
 			dispatchEvent(evt);
 		}
 		
-		protected function contentLoaded(event:ContentReadyEvent = null):void {
+		protected function contentLoaded(event:Event = null):void {
 						
 			var page:Page = Courseware.instance.currentPage;
 			

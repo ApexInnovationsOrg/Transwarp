@@ -1,8 +1,7 @@
 package com.apexinnovations.transwarp.assets {
-	import com.apexinnovations.transwarp.TranswarpSlide;
 	import com.apexinnovations.transwarp.data.Courseware;
 	import com.apexinnovations.transwarp.data.Page;
-	import com.apexinnovations.transwarp.events.ContentReadyEvent;
+	import com.apexinnovations.transwarp.events.TranswarpEvent;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	import com.apexinnovations.transwarp.utils.Utils;
 	import com.greensock.events.LoaderEvent;
@@ -19,30 +18,57 @@ package com.apexinnovations.transwarp.assets {
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.UncaughtErrorEvent;
+	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 	
 	TranswarpVersion.revision = "$Rev$";
 	
 	public class PageLoader extends LoaderMax {
+		protected static var swfMap:Dictionary = new Dictionary();
+		
 		protected var _page:Page;
-		
-		protected var _swf:DisplayObject;
-		
-		protected var swfData:BinaryDataLoader;
+				
 		protected var audio:MP3Loader;
 		protected var config:LoaderItem;
-		
-		protected var _contentReady:Boolean;
+
 		protected var _initializeRequested:Boolean;
-		
-		protected var contentLoader:Loader;
-		protected var contentInitialized:Boolean;
 		
 		protected var configLoader:Loader;
 		protected var configInitialized:Boolean;
 		
+		protected var shadowedLoader:PageLoader; // If this loader wants to load a page that is already being handled by another loader, 'shadow' that one instead.
+		
+		// When shadowing another PageLoader, these variables are not used.  
+		// The getters below pull the data from the shadowedLoader instead.
+		protected var _swfData:BinaryDataLoader;
+		protected var _binarySWFData:ByteArray;
+		protected var _contentLoader:Loader;
+		protected var _contentInitialized:Boolean;
+		
+		// Getters and setters used for shadowing another loader;
+		protected function set swfData(value:BinaryDataLoader):void { _swfData = value; }
+		protected function get swfData():BinaryDataLoader {
+			return shadowedLoader ? shadowedLoader._swfData : _swfData;
+		}
+		
+		protected function set contentLoader(value:Loader):void { _contentLoader = value; }
+		protected function get contentLoader():Loader {
+			return shadowedLoader ? shadowedLoader._contentLoader : _contentLoader;
+		}
+		
+		protected function set contentInitialized(value:Boolean):void { _contentInitialized = value; }
+		protected function get contentInitialized():Boolean {
+			return shadowedLoader ? shadowedLoader._contentInitialized : _contentInitialized;
+		}
+		
+		protected function set binarySWFData(value:ByteArray):void { _binarySWFData = value; }
+		protected function get binarySWFData():ByteArray {
+			return shadowedLoader ? shadowedLoader._binarySWFData : _binarySWFData;
+		}
+		
 		public function PageLoader(page:Page) {
 			super();
-			
+
 			init();
 			
 			name = String(page.id);			
@@ -52,7 +78,17 @@ package com.apexinnovations.transwarp.assets {
 			var baseURL:String = Courseware.instance.rootFolder + '/';
 			var dateHash:String = makeDateHash(page);
 						
-			swfData = new BinaryDataLoader(baseURL + page.swf + dateHash, {allowMalformedURL:true});
+			var swfURL:String = baseURL + page.swf;
+			
+			if(swfMap.hasOwnProperty(swfURL)) {
+				shadowedLoader = swfMap[swfURL];
+				shadowedLoader.addEventListener(TranswarpEvent.CONTENT_READY, shadowedLoaderContentReady);
+				shadowedLoader.addEventListener(TranswarpEvent.CONTENT_UNLOAD, shadowedLoaderContentUnload);
+			} else {
+				swfData = new BinaryDataLoader(swfURL + dateHash, {allowMalformedURL:true});
+				swfMap[swfURL] = this;
+			}
+			swfData.addEventListener(LoaderEvent.COMPLETE, swfLoadComplete);
 			append(swfData);
 			
 			if(page.audio && page.audio != '') {
@@ -77,26 +113,66 @@ package com.apexinnovations.transwarp.assets {
 			addEventListener(LoaderEvent.COMPLETE, pageLoaded);
 		}
 		
+		protected function shadowedLoaderContentUnload(event:Event):void {
+			prepend(swfData);
+		}
+		
+		protected function swfLoadComplete(event:LoaderEvent):void {
+			if(!shadowedLoader) {
+				binarySWFData = swfData.content;
+				swfData.unload();
+			}
+			remove(swfData);
+		}
+		
 		protected function init():void {
-			_contentReady = false;
 			_initializeRequested = false;
+			_binarySWFData = null;
 			contentLoader = null;
 			contentInitialized = false;
-			configLoader = null;
-			configInitialized = false;
+			/*configLoader = null;
+			configInitialized = false;*/
+		}
+		
+		public function unloadContent():void {
+			init();
+			if(shadowedLoader) {
+				shadowedLoader.unloadContent();
+			} else
+				dispatchEvent(new Event(TranswarpEvent.CONTENT_UNLOAD));
+			prepend(swfData);
 		}
 		
 		public function reload():void {
-			init();
-			load(true);
+			unloadContent();			
+			if(shadowedLoader)
+				shadowedLoader.load();
+			else
+				load();
 		}	
 		
-		public function get contentReady():Boolean { return _contentReady; }
+		public function get contentReady():Boolean { 
+			if(page.configType == "swf")
+				return configInitialized && contentInitialized;
+			else 
+				return contentInitialized;
+		}
+		
 		public function get page():Page { return _page; }
-		public function get swf():DisplayObject { return _swf; }
+		
+		public function get swf():DisplayObject { 
+			if(contentReady) {
+				applyConfig();
+				return contentLoader;
+			} else
+				return null;
+		}
 		
 		public function requestContent():void {
-			if(status == LoaderStatus.COMPLETED && swfData.status == LoaderStatus.COMPLETED)
+			if(contentReady) { 
+				dispatchEvent(new Event(TranswarpEvent.CONTENT_READY));
+				return;
+			} else if(shadowedLoader || (status == LoaderStatus.COMPLETED && binarySWFData !== null))
 				initializeContent();
 			else
 				_initializeRequested = true;
@@ -109,52 +185,64 @@ package com.apexinnovations.transwarp.assets {
 		
 		
 		protected function pageLoaded(event:LoaderEvent):void {
-			if(_initializeRequested && swfData.status == LoaderStatus.COMPLETED)
+			if(_initializeRequested)
 				initializeContent();			
 		}		
 		
-		protected function initializeContent():void {
-			if(contentLoader)
-				return;
-			contentLoader = new Loader();
-			contentLoader.loadBytes(swfData.content);
-			contentLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, contentInit);
-			
-			if(_page.configType == "swf") {
+		protected function initializeContent():void {			
+			if(contentReady)
+				dispatchEvent(new Event(TranswarpEvent.CONTENT_READY));
+			else if(shadowedLoader) {
+				shadowedLoader.requestContent();
+				//_initializeRequested = _initializeRequested || shadowedLoader._initializeRequested;
+			} else {
+				contentLoader = new Loader();
+				contentLoader.loadBytes(binarySWFData);
+				binarySWFData = null;
+				contentLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, contentInit);
+			}
+				
+			if(_page.configType == "swf" && !configLoader) {
 				configLoader = new Loader();
 				configLoader.loadBytes(config.content);
+				config.unload();
 				configLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, configInit);
 			}
+		}
+		
+		protected function shadowedLoaderContentReady(event:Event):void {
+			if(contentReady)
+				dispatchEvent(new Event(TranswarpEvent.CONTENT_READY));
 		}
 		
 		protected function contentInit(event:Event):void {
 			contentInitialized = true;
 			LoaderInfo(event.target).uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtError);
-			_swf = event.target.loader;
-			checkReady();
+			if(contentReady)
+				dispatchEvent(new Event(TranswarpEvent.CONTENT_READY));
 		}
 		
 		protected function configInit(event:Event):void {
 			configInitialized = true;
 			LoaderInfo(event.target).uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtError);
-			checkReady();
+			if(contentReady)
+				dispatchEvent(new Event(TranswarpEvent.CONTENT_READY));
 		}
 		
-		protected function checkReady():void {
-			if(contentInitialized && (!_page.configType != "swf" || configInitialized)) {
-				
-				var configType:String = _page.configType;
-				
-				if(configType == "swf" && configInitialized)
-					Object(contentLoader.content).config = configLoader.content;
-				else if((configType == "text" || configType == "xml") && config.status == LoaderStatus.COMPLETED)
-					Object(contentLoader.content).config = config.content;
-				else if(configType == "string")
-					Object(contentLoader.content).config = page.config;
-				
-				_contentReady = true;
-				dispatchEvent(new ContentReadyEvent(_swf, _page));
-			}				
+		
+		protected function applyConfig():void {
+			if(!contentInitialized)
+				return;
+			
+			var configType:String = _page.configType;
+			
+			if(configType == "swf" && configInitialized)
+				Object(contentLoader.content).config = configLoader.content;
+			else if((configType == "text" || configType == "xml") && config.status == LoaderStatus.COMPLETED)
+				Object(contentLoader.content).config = config.content;
+			else if(configType == "string")
+				Object(contentLoader.content).config = page.config;
+			
 		}
 		
 		protected function uncaughtError(event:UncaughtErrorEvent):void {
