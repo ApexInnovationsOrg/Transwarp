@@ -44,6 +44,7 @@ package com.apexinnovations.transwarp.data
 					_pages = _pages.concat(f.pages);
 				}
 			}
+			updateVisited();
 		}
 		
 		public function get contents():Array { return _contents; }
