@@ -21,6 +21,8 @@ package com.apexinnovations.transwarp.data
 	public class Courseware extends EventDispatcher {
 		private static var _instance:Courseware;	// Make this class a singleton
 		
+		private var _buttonBGColor:uint = 0x333333;	// The background color to use for buttons
+		private var _buttonFGColor:uint = 0xCCCCCC;	// The foreground color to use for buttons
 		private var _color:uint = 0xFFFFFF;			// The background color to use for this product in the engine's UI
 		private var _copyright:String = '';			// Copyright information about this engine
 		private var _currentCourse:Course = null;	// Current course the user is viewing
@@ -117,6 +119,8 @@ package com.apexinnovations.transwarp.data
 			_instance = this;
 			
 			try {
+				buttonBGColor = uint("0x" + String(xml.@buttonBGColor).substr(1,6));	// @color like '#FF00FF'
+				buttonFGColor = uint("0x" + String(xml.@buttonFGColor).substr(1,6));	// @color like '#FF00FF'
 				color = uint("0x" + String(xml.@color).substr(1,6));	// @color like '#FF00FF'
 				_copyright = xml.@copyright;
 				_debug = xml.@debug == 'true';
@@ -130,6 +134,8 @@ package com.apexinnovations.transwarp.data
 				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
 			}
 			
+			ConfigData.buttonBGColor = buttonBGColor;
+			ConfigData.buttonFGColor = buttonFGColor;
 			ConfigData.color = color;
 			ConfigData.website = _website;
 			
@@ -157,6 +163,18 @@ package com.apexinnovations.transwarp.data
 			currentPage = _currentCourse.pages[0];
 		}
 		
+
+		[Bindable("colorChanged")] public function get buttonBGColor():uint { return _buttonBGColor; }
+		public function set buttonBGColor(value:uint):void { 
+			_buttonBGColor = value;
+			dispatchEvent(new Event("colorChanged"));
+		}
+		
+		[Bindable("colorChanged")] public function get buttonFGColor():uint { return _buttonFGColor; }
+		public function set buttonFGColor(value:uint):void { 
+			_buttonFGColor = value;
+			dispatchEvent(new Event("colorChanged"));
+		}
 		
 		[Bindable("colorChanged")] public function get color():uint { return _color; }
 		public function set color(value:uint):void { 
