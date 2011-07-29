@@ -147,6 +147,8 @@ package com.apexinnovations.transwarp.preloader {
 				}
 				// ...Mark courseware timeout, color
 				xml.@timeout = xml.user.@coursewareTimeout;
+				xml.@buttonBGColor = xml.product.@buttonBGColor;
+				xml.@buttonFGColor = xml.product.@buttonFGColor;
 				xml.@color = xml.product.@color;
 				xml.@highlightColor = xml.product.@highlightColor;
 				xml.@volume = uint(xml.user.@audioVolume);
