@@ -41,12 +41,12 @@ package com.apexinnovations.transwarp.assets {
 			var pageLoader:PageLoader = loader.getLoader(String(page.id));
 			var index:int = pages.indexOf(page);
 			if(index > 0)
-				LoaderMax.prioritize("loader"+pages[index-1].id);
+				LoaderMax.prioritize(String(pages[index-1].id), false);
 			 
 			var i:int = Math.min(index + 4, pages.length-1);
 			
 			while(i >= index)
-				LoaderMax.prioritize("loader" + pages[i--].id);
+				LoaderMax.prioritize(String(pages[i--].id), i == index);
 			
 			return pageLoader;		
 		}

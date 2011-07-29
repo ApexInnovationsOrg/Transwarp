@@ -31,7 +31,8 @@ package com.apexinnovations.transwarp.assets {
 		protected var audio:MP3Loader;
 		protected var config:LoaderItem;
 
-		protected var _initializeRequested:Boolean;
+		protected var initializeRequested:Boolean;
+		protected var loadingComplete:Boolean;
 		
 		protected var configLoader:Loader;
 		protected var configInitialized:Boolean;
@@ -113,6 +114,11 @@ package com.apexinnovations.transwarp.assets {
 			addEventListener(LoaderEvent.COMPLETE, pageLoaded);
 		}
 		
+		/*override public function get status():int {
+			_status = LoaderStatus.COMPLETED; //HACK HACK HACK
+			return super.status;
+		}*/
+		
 		protected function shadowedLoaderContentUnload(event:Event):void {
 			prepend(swfData);
 		}
@@ -126,12 +132,11 @@ package com.apexinnovations.transwarp.assets {
 		}
 		
 		protected function init():void {
-			_initializeRequested = false;
+			loadingComplete = false;
+			initializeRequested = false;
 			_binarySWFData = null;
 			contentLoader = null;
 			contentInitialized = false;
-			/*configLoader = null;
-			configInitialized = false;*/
 		}
 		
 		public function unloadContent():void {
@@ -169,13 +174,14 @@ package com.apexinnovations.transwarp.assets {
 		}
 		
 		public function requestContent():void {
+			trace("request content");
 			if(contentReady) { 
 				dispatchEvent(new Event(TranswarpEvent.CONTENT_READY));
 				return;
-			} else if(shadowedLoader || (status == LoaderStatus.COMPLETED && binarySWFData !== null))
+			} else if(status == LoaderStatus.COMPLETED && (shadowedLoader ||binarySWFData !== null))
 				initializeContent();
 			else
-				_initializeRequested = true;
+				initializeRequested = true;
 		}
 		
 		public function playAudio():void {
@@ -185,7 +191,8 @@ package com.apexinnovations.transwarp.assets {
 		
 		
 		protected function pageLoaded(event:LoaderEvent):void {
-			if(_initializeRequested)
+			loadingComplete = true;
+			if(initializeRequested)
 				initializeContent();			
 		}		
 		
