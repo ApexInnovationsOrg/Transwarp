@@ -142,6 +142,8 @@ package com.apexinnovations.transwarp.data
 			_product = new Product(xml.product[0]);
 			_user = new User(xml.user[0], this);
 			
+			ConfigData.userID = _user.id;
+			
 			if(obeyAllowDeny) {
 				for each(var course:Course in _product.courses) {
 					var i:int = 0;
