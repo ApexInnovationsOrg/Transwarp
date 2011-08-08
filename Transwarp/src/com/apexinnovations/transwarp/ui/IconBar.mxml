@@ -278,7 +278,7 @@
 		<ui:IconButton icon="{LinksIcon}" click="showRelatedLinks(event);" highlight="{currentPage.hasLinks}" toolTip="REL_LINKS"/>
 		<ui:IconButton icon="{FavoritesIcon}" click="showBookmarks(event);" highlight="{currentPage.bookmarked}" toolTip="FAVORITES"/>
 		<ui:IconButton icon="{CommentIcon}" click="commentOnPage(event);" toolTip="COMMENTS"/>
-		<!--<ui:IconButton icon="{PaintbrushIcon}"  click="showDrawingTools(event);" toolTip="DRAWING"/>-->
+		<ui:IconButton icon="{PaintbrushIcon}"  click="showDrawingTools(event);" toolTip="DRAWING"/>
 		<ui:IconButton id="audio" icon="{AudioIcon}" click="showAudioVolume(event);" toolTip="VOLUME"/>
 		<ui:IconButton icon="{ConfigurationIcon}" click="configureOptions(event);" toolTip="OPTIONS"/>
 		<ui:IconButton icon="{SnapshotIcon}" click="printStage(event);" toolTip="SNAPSHOT"/>
