@@ -58,6 +58,7 @@ package com.apexinnovations.transwarp.data
 				_config = xml.@config;
 				_configType = xml.@configType;
 				_created = DateFormatter.parseDateString(xml.@created);
+				_demo = xml.@demo == 'true';
 				_deny = xml.@deny;
 				_description = (xml.description == undefined ? null : TextConverter.importToFlow(xml.description.children()[0], TextConverter.TEXT_LAYOUT_FORMAT));
 				_id = xml.@id;
