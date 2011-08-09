@@ -65,6 +65,7 @@ package com.apexinnovations.transwarp.data
 		public function set closedCaptioning(val:Boolean):void { _closedCaptioning = val; }
 		
 		public function get beta():Boolean { return (_classes.indexOf('Beta') != -1); }
+		public function get demo():Boolean { return (_classes.indexOf('demo') != -1); }
 		public function get doctor():Boolean { return (_classes.indexOf('Doctor') != -1); }
 		public function get emt():Boolean { return (_classes.indexOf('EMT') != -1); }
 		public function get lms():Boolean { return (_classes.indexOf('LMS') != -1); }
