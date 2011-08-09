@@ -69,7 +69,7 @@
 					themeColor = courseware.color;
 					
 					topBar.searchPrompt = resourceManager.getString('Chrome','SEARCH') + ' ' + courseware.product.name;
-					topBar.hasSearch = !User.instance.lms;
+					topBar.hasSearch = !(User.instance.lms || User.instance.demo);
 					
 					topBar.courses = courseware.product.courses;
 					

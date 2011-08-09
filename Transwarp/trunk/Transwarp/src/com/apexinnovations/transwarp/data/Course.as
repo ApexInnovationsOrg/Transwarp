@@ -21,7 +21,7 @@ package com.apexinnovations.transwarp.data
 		private var _restricted:Boolean = false;				// Is the user restricted from using this course?
 
 		
-		public function Course(xml:XML, parent:Product) {
+		public function Course(xml:XML, parent:Product, demo:Boolean) {
 			try {
 				_id = xml.@id;
 				_level = xml.@level;
@@ -34,12 +34,12 @@ package com.apexinnovations.transwarp.data
 			
 			for each (var child:XML in xml.children()) {
 				if (child.localName() == "page") {
-					var p:Page = new Page(child, this, 0);
+					var p:Page = new Page(child, this, 0, demo);
 					_contents.push(p);
 					_pages.push(p);
 					p.sortToken = _level * 1000 + _pages.length;
 				} else {
-					var f:Folder = new Folder(child, this, 0);
+					var f:Folder = new Folder(child, this, 0, demo);
 					_contents.push(f);
 					for each (var q:Page in f.pages) {
 						_pages.push(q);

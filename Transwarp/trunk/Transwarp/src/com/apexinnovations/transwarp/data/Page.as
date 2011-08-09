@@ -28,6 +28,7 @@ package com.apexinnovations.transwarp.data
 		private var _configType:String = '';
 		private var _course:Course = null;									// Which course is this page a part of?
 		private var _created:Date;											// XML format: YYYY-MM-DDTHH:MM:SS
+		private var _demoMode:Boolean = false;								// Are we in demo mode?
 		private var _demo:Boolean = false;									// Is this page viewable on the demo?
 		private var _deny:String = '';										// Space separated list of types of user prevented from viewing this page (e.g. 'LMS Doctor Beta'). '' means none
 		private var _description:TextFlow = null;							// A brief description of this page, used in search results
@@ -50,7 +51,7 @@ package com.apexinnovations.transwarp.data
 		private var _depth:int;												// The depth of this page in the course/folder/page hierarch
 		private var _searchFields:Vector.<String> = new Vector.<String>();	// These are the fields that will be searched - composited and converted to strings
 		
-		public function Page(xml:XML, parent:Object, depth:int) {
+		public function Page(xml:XML, parent:Object, depth:int, isDemo:Boolean) {
 			try {
 				_depth = depth;
 				_allow = xml.@allow;
@@ -84,7 +85,7 @@ package com.apexinnovations.transwarp.data
 			if(!_swf || _swf == '')
 				_swf = fileName + '/' + fileName + '.swf';
 			_audio = xml.@audio;
-			if(_audio == 'false') {
+			if(_audio.toLowerCase() == 'false' || _audio.toLowerCase() == "none" || _audio.toLowerCase() == "streamed") {
 				_audio = '';
 			} else if(!_audio) {
 				_audio = fileName + '/' + fileName + '.mp3';
@@ -98,40 +99,53 @@ package com.apexinnovations.transwarp.data
 			}
 			_course = (p as Course);
 
-			for each (var l:XML in xml.links.link) {
-				_links.push(new Link(l, this));
-			}
-			for each (var q:XML in xml.questions.question) {
-				_questions.push(new Question(q, this));
-			}
-			var tmp:Update;
-			for each (var u:XML in xml.updates.update) {
-				tmp = new Update(u, this);
-				if (Utils.trim(Utils.textFlowToString(tmp.textFlow)) != "") {
-					_updates.push(tmp);
-					if (tmp.time > _lastUpdate) _lastUpdate = tmp.time;
+			_demoMode = isDemo;
+			if (!_demoMode) {
+				for each (var l:XML in xml.links.link) {
+					_links.push(new Link(l, this));
 				}
-			}
-			
-			// Initialize text search fields for faster searching later
-			_searchFields[0] = qualifiedName;
-			_searchFields[1] = _keywords;
-			_searchFields[2] = Utils.textFlowToString(_description);
-			_searchFields[3] = Utils.textFlowToString(_supportText);
-			_searchFields[4] = Utils.textFlowToString(_instructions);
-			_searchFields[5] = '';
-			for each (var lnk:Link in _links) {
-				if (lnk.textFlow)	_searchFields[5] += Utils.textFlowToString(lnk.textFlow);
-			}
-			_searchFields[6] = '';
-			_searchFields[7] = '';
-			for each (var qstn:Question in _questions) {
-				if (qstn.qTextFlow)	_searchFields[6] += Utils.textFlowToString(qstn.qTextFlow);
-				if (qstn.aTextFlow)	_searchFields[7] += Utils.textFlowToString(qstn.aTextFlow);
-			}
-			_searchFields[8] = '';
-			for each (var upd:Update in _updates) {
-				if (upd.textFlow && (Courseware.instance.debug || !upd.hidden)) _searchFields[8] += Utils.textFlowToString(upd.textFlow);
+				for each (var q:XML in xml.questions.question) {
+					_questions.push(new Question(q, this));
+				}
+				var tmp:Update;
+				for each (var u:XML in xml.updates.update) {
+					tmp = new Update(u, this);
+					if (Utils.trim(Utils.textFlowToString(tmp.textFlow)) != "") {
+						_updates.push(tmp);
+						if (tmp.time > _lastUpdate) _lastUpdate = tmp.time;
+					}
+				}
+				
+				// Initialize text search fields for faster searching later
+				_searchFields[0] = qualifiedName;
+				_searchFields[1] = _keywords;
+				_searchFields[2] = Utils.textFlowToString(_description);
+				_searchFields[3] = Utils.textFlowToString(_supportText);
+				_searchFields[4] = Utils.textFlowToString(_instructions);
+				_searchFields[5] = '';
+				for each (var lnk:Link in _links) {
+					if (lnk.textFlow)	_searchFields[5] += Utils.textFlowToString(lnk.textFlow);
+				}
+				_searchFields[6] = '';
+				_searchFields[7] = '';
+				for each (var qstn:Question in _questions) {
+					if (qstn.qTextFlow)	_searchFields[6] += Utils.textFlowToString(qstn.qTextFlow);
+					if (qstn.aTextFlow)	_searchFields[7] += Utils.textFlowToString(qstn.aTextFlow);
+				}
+				_searchFields[8] = '';
+				for each (var upd:Update in _updates) {
+					if (upd.textFlow && (Courseware.instance.debug || !upd.hidden)) _searchFields[8] += Utils.textFlowToString(upd.textFlow);
+				}
+			} else {
+				if (!_demo) {
+					_instructions = null;
+					_keywords = null;
+					_supportText = null;
+					_swf = "PAGE_000000/PAGE_000000.swf";
+					_audio = '';
+					_timeline = false;
+				} 
+				_visited = !_demo;
 			}
 		}
 		
@@ -195,14 +209,16 @@ package com.apexinnovations.transwarp.data
 		[Bindable("pageDataChanged")] public function get timeline():Boolean { return _timeline; }
 		[Bindable] public function get visited():Boolean { return _visited; }
 		public function set visited(val:Boolean):void {
-			_visited = val;
-			
-			var event:PropertyChangeEvent = new PropertyChangeEvent(PropertyChangeEvent.PROPERTY_CHANGE);
-			event.source = this;
-			event.kind = PropertyChangeEventKind.UPDATE;
-			dispatchEvent(event);
-			
-			if (_visited && _parent is Folder) _parent.updateVisited();
+			if (!_demoMode) {
+				_visited = val;
+				
+				var event:PropertyChangeEvent = new PropertyChangeEvent(PropertyChangeEvent.PROPERTY_CHANGE);
+				event.source = this;
+				event.kind = PropertyChangeEventKind.UPDATE;
+				dispatchEvent(event);
+				
+				if (_visited && _parent is Folder) _parent.updateVisited();
+			}			
 		}
 		public function get updates():Vector.<Update> { return _updates; }
 		public function get weight():uint { return _weight; }

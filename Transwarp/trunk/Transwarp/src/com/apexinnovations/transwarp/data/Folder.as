@@ -24,7 +24,7 @@ package com.apexinnovations.transwarp.data
 		private var _visited:Boolean = false;					// Is everything in this folder visited
 		
 		
-		public function Folder(xml:XML, parent:Object, depth:int) {
+		public function Folder(xml:XML, parent:Object, depth:int, demo:Boolean) {
 			try {
 				_depth = depth;
 				_name = xml.@name;
@@ -35,11 +35,11 @@ package com.apexinnovations.transwarp.data
 
 			for each (var child:XML in xml.children()) {
 				if (child.localName() == "page") {
-					var p:Page = new Page(child, this, _depth + 1);
+					var p:Page = new Page(child, this, _depth + 1, demo);
 					_contents.push(p);
 					_pages.push(p);
 				} else {
-					var f:Folder = new Folder(child, this, _depth + 1);
+					var f:Folder = new Folder(child, this, _depth + 1, demo);
 					_contents.push(f);
 					_pages = _pages.concat(f.pages);
 				}

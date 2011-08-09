@@ -58,7 +58,7 @@ package com.apexinnovations.transwarp.data
 			var pages:Vector.<Page> = new Vector.<Page>();
 			
 			// LMS users aren't allowed to search
-			if (_instance.user.lms) return pages;
+			if (_instance.user.lms || _instance.user.demo) return pages;
 						
 			// Get list of excluded terms
 			var i:int;
@@ -139,8 +139,8 @@ package com.apexinnovations.transwarp.data
 			ConfigData.color = color;
 			ConfigData.website = _website;
 			
-			_product = new Product(xml.product[0]);
 			_user = new User(xml.user[0], this);
+			_product = new Product(xml.product[0], _user.demo);
 			
 			ConfigData.userID = _user.id;
 			

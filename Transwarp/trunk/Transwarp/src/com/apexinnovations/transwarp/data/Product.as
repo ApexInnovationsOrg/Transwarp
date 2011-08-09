@@ -26,7 +26,7 @@ package com.apexinnovations.transwarp.data
 			return _instance;
 		}		
 		
-		public function Product(xml:XML) {
+		public function Product(xml:XML, demo:Boolean) {
 			if(_instance)
 				throw new IllegalOperationError(getQualifiedClassName(this) + " is a singleton");
 			
@@ -43,7 +43,7 @@ package com.apexinnovations.transwarp.data
 			}
 
 			for each (var c:XML in xml.courses.course) {
-				_courses.push(new Course(c, this));
+				_courses.push(new Course(c, this, demo));
 			}
 			for each (var h:XML in xml.helpPages.helpPage) {
 				_helpPages.push(new HelpPage(h, this));
