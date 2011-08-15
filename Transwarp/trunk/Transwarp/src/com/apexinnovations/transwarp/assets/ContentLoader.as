@@ -1,75 +1,66 @@
 package com.apexinnovations.transwarp.assets {
+	import com.apexinnovations.transwarp.assets.loaders.LimitedMemoryLoader;
 	import com.apexinnovations.transwarp.data.Course;
 	import com.apexinnovations.transwarp.data.Page;
 	import com.apexinnovations.transwarp.data.Product;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
-	import com.greensock.events.LoaderEvent;
-	import com.greensock.loading.LoaderMax;
-	import com.greensock.loading.SWFLoader;
 	
-	import flash.events.EventDispatcher;
-	import flash.events.UncaughtErrorEvent;
+	import flash.utils.Dictionary;
 
 	TranswarpVersion.revision = "$Rev$";
 	
-	public class ContentLoader extends EventDispatcher{
+	public class ContentLoader {
 		
-		protected var pages:Vector.<Page>;
-		protected var loader:LoaderMax;
+		protected var mainLoader:LimitedMemoryLoader;
+		protected var loaders:Dictionary = new Dictionary();
 		
-		public function ContentLoader(product:Product) {
-			super();
-			
-			pages = new Vector.<Page>();
+		protected var courses:Array = [];
+		
+		public function ContentLoader() {
+			mainLoader = new LimitedMemoryLoader(80*1024*1024);
+		}
+		
+		public function addProduct(product:Product):void {
 			for each(var c:Course in product.courses) {
-				pages = pages.concat(c.pages);
+				var pageList:Array = [];
+				for each(var page:Page in c.pages) {
+					var idx:int = pageList.push(page);
+					var loader:PageLoader = new PageLoader(page); 
+					loaders[page] = loader;			
+				}
+				courses[c.id] = pageList;
 			}
-			
-			loader = new LoaderMax({auditSize:false, maxConnections: 6});
-			loader.addEventListener(LoaderEvent.CHILD_FAIL, childFailed);
-			loader.addEventListener(LoaderEvent.IO_ERROR, ioError);
-			
-			for each(var p:Page in pages){
-				loader.append(new PageLoader(p));
-			}
-			
-			loader.load();
 		}
 		
-		
-		public function getLoader(page:Page):PageLoader {
-			var pageLoader:PageLoader = loader.getLoader(String(page.id));
+		public function getPageLoader(page:Page, prioritizeBefore:int = 1, prioritizeAfter:int = 7):PageLoader {
+			var loader:PageLoader = loaders[page];
+			mainLoader.requestLoad(loader);
+			
+			var pages:Array = courses[page.course.id]
 			var index:int = pages.indexOf(page);
-			if(index > 0)
-				LoaderMax.prioritize(String(pages[index-1].id), false);
-			 
-			var i:int = Math.min(index + 4, pages.length-1);
 			
-			while(i >= index)
-				LoaderMax.prioritize(String(pages[i--].id), i == index);
+			var before:Array
+			var after:Array;
 			
-			return pageLoader;		
+			if(prioritizeBefore > 0 && index > 0) { 
+				before = pages.slice(Math.max(0,index - prioritizeBefore), Math.max(0, index-1));
+				before.filter(filter);
+				mainLoader.prioritizeLoaders(before);
+			}
+			
+			var last:int = pages.length - 1;
+			
+			if(prioritizeAfter > 0 && index < last) {
+				after = pages.slice(Math.min(last, index+1), Math.min(last, index + prioritizeAfter));
+				after.filter(filter);
+				mainLoader.prioritizeLoaders(after);
+			}		
+			
+			return loader;			
 		}
 		
-		protected function swfInit(event:LoaderEvent):void {
-			var loader:SWFLoader = event.target as SWFLoader;
-			loader.rawContent.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtChildError);			
+		protected function filter(item:*, index:int, array:Array):void {
+			array[index] = loaders[item];
 		}
-		
-		protected function uncaughtChildError(event:UncaughtErrorEvent):void {
-			trace("caught error in slide", event);
-			event.preventDefault();
-			//Courseware.log(
-		}
-		
-		protected function childFailed(event:LoaderEvent):void {
-			event.preventDefault();
-			event.stopPropagation();
-		}
-		
-		protected function ioError(event:LoaderEvent):void {
-			event.preventDefault();
-			event.stopPropagation();
-		}
-	}	
+	}
 }

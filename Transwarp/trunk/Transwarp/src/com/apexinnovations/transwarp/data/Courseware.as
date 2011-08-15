@@ -1,6 +1,4 @@
-package com.apexinnovations.transwarp.data
-{
-	import com.apexinnovations.transwarp.assets.ContentLoader;
+package com.apexinnovations.transwarp.data {
 	import com.apexinnovations.transwarp.config.ConfigData;
 	import com.apexinnovations.transwarp.events.FolderOpenEvent;
 	import com.apexinnovations.transwarp.events.PageSelectionEvent;
@@ -123,7 +121,7 @@ package com.apexinnovations.transwarp.data
 				buttonFGColor = uint("0x" + String(xml.@buttonFGColor).substr(1,6));	// @color like '#FF00FF'
 				color = uint("0x" + String(xml.@color).substr(1,6));	// @color like '#FF00FF'
 				_copyright = xml.@copyright;
-				_debug = xml.@debug == 'true';
+				_debug = true;// xml.@debug == 'true';
 				highlightColor = uint("0x" + String(xml.@highlightColor).substr(1,6));	// @color like '#FF00FF'
 				_owner = xml.@owner;
 				_rootFolder = xml.@rootFolder;

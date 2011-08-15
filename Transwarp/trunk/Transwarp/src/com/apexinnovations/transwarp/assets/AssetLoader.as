@@ -1,16 +1,12 @@
-package com.apexinnovations.transwarp.assets
-{
+package com.apexinnovations.transwarp.assets {
 	import br.com.stimuli.loading.*;
 	import br.com.stimuli.loading.loadingtypes.LoadingItem;
 	
 	import com.apexinnovations.transwarp.errors.AssetConflictError;
 	import com.apexinnovations.transwarp.events.AssetAddedEvent;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
-	import com.apexinnovations.transwarp.webservices.ApexWebService;
 	import com.apexinnovations.transwarp.webservices.LogService;
 	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
