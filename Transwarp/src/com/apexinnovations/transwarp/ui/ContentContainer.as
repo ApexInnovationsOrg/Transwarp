@@ -1,5 +1,5 @@
 package com.apexinnovations.transwarp.ui {
-	import com.apexinnovations.transwarp.assets.ContentLoader;
+	import com.apexinnovations.transwarp.Transwarp;
 	import com.apexinnovations.transwarp.assets.ContentLoader;
 	import com.apexinnovations.transwarp.assets.PageLoader;
 	import com.apexinnovations.transwarp.data.Courseware;
@@ -46,8 +46,8 @@ package com.apexinnovations.transwarp.ui {
 			if(!Courseware.instance || !Courseware.instance.product)
 				return; // This only occurrs with a total XML load failure
 			
-			contentLoader = new com.apexinnovations.transwarp.assets.ContentLoader();
-			contentLoader.addProduct(Courseware.instance.product);
+			contentLoader = new ContentLoader(Courseware.instance.product, Transwarp(parentApplication).mainLoader);
+			
 			Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
 			pageChanged();
 		}
