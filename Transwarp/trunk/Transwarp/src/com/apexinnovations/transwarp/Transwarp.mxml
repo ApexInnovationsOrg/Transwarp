@@ -23,6 +23,7 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.assets.loaders.LimitedMemoryLoader;
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.User;
 			import com.apexinnovations.transwarp.events.IdleEvent;
@@ -46,7 +47,9 @@
 			protected var currentlyIdle:Boolean = false;
 			
 			protected var xmlLoadError:Error;
-						
+			
+			public var mainLoader:LimitedMemoryLoader;
+			
 			override public function set systemManager(value:ISystemManager):void {
 				super.systemManager = value;
 				
@@ -60,6 +63,8 @@
 				} catch(e:Error) {
 					xmlLoadError = e;
 				}
+				
+				mainLoader = new LimitedMemoryLoader(75*1024*1024); // TODO: Adjust this cap per user?
 			}
 			
 			override protected function createChildren():void {

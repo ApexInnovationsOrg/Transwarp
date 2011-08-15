@@ -6,6 +6,7 @@ package com.apexinnovations.transwarp.assets {
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	import com.apexinnovations.transwarp.utils.Utils;
 	import com.greensock.loading.LoaderStatus;
+	import com.greensock.loading.core.LoaderCore;
 	
 	import flash.display.Loader;
 	import flash.events.Event;
@@ -17,7 +18,7 @@ package com.apexinnovations.transwarp.assets {
 		protected var _page:Page;
 		
 		protected var swfLoader:BinarySWFLoader;
-		protected var configLoader:SharedDataLoader;
+		protected var configLoader:LoaderCore;
 		protected var audioLoader:SharedMP3Loader;
 		
 		public function PageLoader(page:Page) {

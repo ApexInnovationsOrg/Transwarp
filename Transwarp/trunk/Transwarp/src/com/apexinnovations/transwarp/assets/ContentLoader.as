@@ -16,11 +16,9 @@ package com.apexinnovations.transwarp.assets {
 		
 		protected var courses:Array = [];
 		
-		public function ContentLoader() {
-			mainLoader = new LimitedMemoryLoader(80*1024*1024);
-		}
-		
-		public function addProduct(product:Product):void {
+		public function ContentLoader(product:Product, mainLoader:LimitedMemoryLoader) {
+			this.mainLoader = mainLoader;
+			
 			for each(var c:Course in product.courses) {
 				var pageList:Array = [];
 				for each(var page:Page in c.pages) {
