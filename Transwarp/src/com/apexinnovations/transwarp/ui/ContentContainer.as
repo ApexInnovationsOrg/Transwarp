@@ -1,5 +1,6 @@
 package com.apexinnovations.transwarp.ui {
 	import com.apexinnovations.transwarp.assets.ContentLoader;
+	import com.apexinnovations.transwarp.assets.ContentLoader;
 	import com.apexinnovations.transwarp.assets.PageLoader;
 	import com.apexinnovations.transwarp.data.Courseware;
 	import com.apexinnovations.transwarp.data.Page;
@@ -31,7 +32,7 @@ package com.apexinnovations.transwarp.ui {
 		protected var _content:DisplayObject;		
 		protected var _rawContent:DisplayObject;
 		
-		protected var contentLoader:ContentLoader;
+		protected var contentLoader:com.apexinnovations.transwarp.assets.ContentLoader;
 		
 		protected var watchedLoader:PageLoader;
 		
@@ -45,7 +46,8 @@ package com.apexinnovations.transwarp.ui {
 			if(!Courseware.instance || !Courseware.instance.product)
 				return; // This only occurrs with a total XML load failure
 			
-			contentLoader = new ContentLoader(Courseware.instance.product);
+			contentLoader = new com.apexinnovations.transwarp.assets.ContentLoader();
+			contentLoader.addProduct(Courseware.instance.product);
 			Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
 			pageChanged();
 		}
@@ -82,7 +84,7 @@ package com.apexinnovations.transwarp.ui {
 		
 		public function reload():void {
 			if(watchedLoader) {
-				watchedLoader.reload();
+				watchedLoader.load(true);
 				pageChanged();
 			}
 		}
@@ -103,7 +105,7 @@ package com.apexinnovations.transwarp.ui {
 				watchedLoader.removeEventListener(TranswarpEvent.CONTENT_READY, contentLoaded);
 			}
 			
-			watchedLoader = contentLoader.getLoader(Courseware.instance.currentPage);
+			watchedLoader = contentLoader.getPageLoader(Courseware.instance.currentPage);
 			watchedLoader.requestContent();
 			
 			if(watchedLoader.contentReady)

@@ -91,6 +91,7 @@ package com.apexinnovations.transwarp.preloader {
 			req.data = requestVars;
 			req.method = URLRequestMethod.POST;
 			
+			//var req:URLRequest = new URLRequest("responder.xml");
 			var loader:URLLoader = new URLLoader(req);
 			loader.addEventListener(Event.COMPLETE, loadAssets);
 			loader.addEventListener(IOErrorEvent.IO_ERROR, xmlLoadError);
@@ -162,6 +163,8 @@ package com.apexinnovations.transwarp.preloader {
 				// Now load up any required assets
 				AssetLoader.instance.addBitmapAsset(_xml.@website + "/Classroom/engine/" + _xml.product[0].@logoBig, "logoBig");
 				AssetLoader.instance.addBitmapAsset(_xml.@website + "/Classroom/engine/" + _xml.product[0].@logoSmall, "logoSmall");
+				//AssetLoader.instance.addBitmapAsset(_xml.product[0].@logoBig, "logoBig");
+				//AssetLoader.instance.addBitmapAsset(_xml.product[0].@logoSmall, "logoSmall");
 				
 				advanceFrame();
 			}
