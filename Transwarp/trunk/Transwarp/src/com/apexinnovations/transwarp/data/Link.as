@@ -2,9 +2,10 @@ package com.apexinnovations.transwarp.data
 {
 	import com.apexinnovations.transwarp.data.Courseware;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
+	import com.apexinnovations.transwarp.utils.Utils;
 	
-	import flash.events.EventDispatcher;
 	import flash.errors.*;
+	import flash.events.EventDispatcher;
 	import flash.utils.*;
 	
 	import flashx.textLayout.conversion.TextConverter;
@@ -21,7 +22,7 @@ package com.apexinnovations.transwarp.data
 		public function Link(xml:XML, parent:Page) {
 			try {
 				_parent = parent;
-				_textFlow = TextConverter.importToFlow(xml.children()[0], TextConverter.TEXT_LAYOUT_FORMAT);
+				_textFlow = Utils.importTextFlow(xml.children()[0]);
 				_url = xml.@url;
 			} catch ( e:Error ) {
 				// No need to throw an error, just log it

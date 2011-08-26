@@ -2,7 +2,8 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
-		 xmlns:ui="com.apexinnovations.transwarp.ui.*">
+		 xmlns:ui="com.apexinnovations.transwarp.ui.*"
+		 creationComplete="creationCompleteHandler(event)">
 	
 	<fx:Metadata>
 		[Event(name="error", type="flash.events.ErrorEvent")]
@@ -10,18 +11,45 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import com.apexinnovations.transwarp.TranswarpMovieClip;
-			import com.apexinnovations.transwarp.TranswarpSlide;
 			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.CoursewareObject;
+			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			import com.greensock.loading.LoaderStatus;
+			
+			import mx.events.FlexEvent;
 			
 			TranswarpVersion.revision = "$Rev$";
-
+			
+			[Bindable]
+			protected var timelineVisible:Boolean = false;
 			
 			protected function loadProgress(event:ProgressEvent):void {
 				progressBar.setProgress(event.bytesLoaded, event.bytesTotal);
 			}
 
+			protected function creationCompleteHandler(event:FlexEvent):void {
+				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
+				pageChanged();
+			}
+			
+			protected function pageChanged(event:PageSelectionEvent = null):void {
+				var target:CoursewareObject
+				if(!event)
+					target = Courseware.instance.currentPage;
+				else
+					target = event.page;
+								
+				var page:Page = target as Page;
+				timelineVisible = timeline.includeInLayout = page ? page.timeline : false;
+				instructions.visible = instructions.includeInLayout = page ? Boolean(page.instructions) : false;
+				instrText.textFlow = page ? page.instructions : null;
+				
+				debugInfo.text = target ? target.id + (page ? " (" + page.swf + ")" : "") : "";
+				
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -29,32 +57,30 @@
 		
 		<ui:PageTitle id="pageTitle" fontSize="20" top="10" horizontalCenter="0"/>
 		
-		<ui:ContentContainer id="container" width="100%" height="100%" 
+		<ui:PageContentContainer id="container" width="100%" height="100%" 
 							  open="progressPanel.visible = true" complete="progressPanel.visible = false"
 							  progress="loadProgress(event)"/>
 		
 		<s:VGroup id="bottomGroup" horizontalAlign="center" width="100%" bottom="10">
-			<ui:Timeline id="timeline" source="{container.rawContent as TranswarpMovieClip}" includeInLayout="{Courseware.instance.currentPage.timeline}" visible="{Courseware.instance.currentPage.timeline &amp;&amp; timeline.source !== null}"/>
+			<ui:Timeline id="timeline" source="{container.rawContent as TranswarpMovieClip}"
+						 visible="{timelineVisible &amp;&amp; container.loadingStatus == LoaderStatus.COMPLETED}"/>
 			
 			<s:HGroup id="instructions" 
 					  paddingLeft="10" paddingRight="10"
 					  scaleX="{Math.min(1, width / instructions.width)}"
 					  scaleY="{Math.min(1, width / instructions.width)}"
-					  visible="{Courseware.instance.currentPage.instructions !== null}"
-					  includeInLayout="{Courseware.instance.currentPage.instructions !== null}"
 					  verticalAlign="middle">
 				
 				<s:Rect height="{instrText.height - 6}" width="8">
 					<s:fill><s:SolidColor color="0x990000"/></s:fill>
 				</s:Rect>
 				
-				<s:RichEditableText id="instrText" color="0x990000" fontWeight="bold" fontSize="14" paddingTop="4" paddingBottom="4" editable="false" selectable="false"
-									textFlow="{Courseware.instance.currentPage.instructions}"/>
+				<s:RichEditableText id="instrText" color="0x990000" fontWeight="bold" fontSize="14" paddingTop="4" paddingBottom="4" editable="false" selectable="false" />
 			</s:HGroup>
 		</s:VGroup>
 	
 		<s:Group width="100%" visible="{Courseware.instance.debug}" includeInLayout="{Courseware.instance.debug}">			
-			<s:Label right="5" text="{Courseware.instance.currentPage.id} ({Courseware.instance.currentPage.swf})" color="0xaaaaaa" />
+			<s:Label id="debugInfo" right="5" color="0xaaaaaa" />
 		</s:Group>
 		
 	</s:VGroup>	

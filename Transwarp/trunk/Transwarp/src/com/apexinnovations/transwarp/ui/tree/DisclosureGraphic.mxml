@@ -11,6 +11,8 @@
 			
 			TranswarpVersion.revision = "$Rev$";			
 			
+			[Bindable] public var selected:Boolean = false;
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -21,8 +23,8 @@
 		<s:Path data="M 0 0 6 4 0 8 Z">
 			<s:fill>
 				<s:LinearGradient rotation="90">
-					<s:GradientEntry color="{Courseware.instance.color}" />
-					<s:GradientEntry color="{ColorUtil.adjustBrightness2(Courseware.instance.color, -50)}" />
+					<s:GradientEntry color="{selected ? 0xffffff : Courseware.instance.color}" />
+					<s:GradientEntry color="{selected ? 0xaaaaaa : ColorUtil.adjustBrightness2(Courseware.instance.color, -50)}" />
 				</s:LinearGradient>
 			</s:fill>
 		</s:Path>

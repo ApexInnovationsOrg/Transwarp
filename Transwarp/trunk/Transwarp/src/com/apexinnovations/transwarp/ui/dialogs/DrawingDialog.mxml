@@ -26,9 +26,9 @@
 			public var anchor:DisplayObject = null;
 			protected var _drawing:Boolean = false;
 			protected var _currentCursor:String = MouseCursor.AUTO;
-			protected var _clickBlocker:Graphics = null;
+			protected var _clickBlocker:DisplayObject = null;
 			protected var _graphics:Graphics = null;
-			protected var _canvas:SpriteVisualElement = null;
+			protected var _canvas:Sprite = null;
 
 			public function hide():void {
 				closeHandler(null);
@@ -42,9 +42,9 @@
 				var tw:Transwarp = this.parentApplication as Transwarp;
 				_canvas = tw.canvas;
 				_graphics = _canvas.graphics;
-				_clickBlocker = tw.clickBlocker.graphics;
+				_clickBlocker = tw.clickBlocker;//.graphics;
 				
-				stage.addEventListener(Event.RESIZE, blockInteractivity);
+				//stage.addEventListener(Event.RESIZE, blockInteractivity);
 				stage.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 				stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
 				stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
@@ -106,7 +106,7 @@
 				if (Mouse.cursor == DRAWING_CURSOR) {				// Not _currentCursor, since might be trying to drag this dialog
 					_drawing = true;
 					if (brush.selected) {
-						_graphics.lineStyle(ns.value, cp.selectedItem, 1);
+						_graphics.lineStyle(sizeSpinner.value, cp.selectedItem, 1);
 						_graphics.moveTo(event.currentTarget.mouseX, event.currentTarget.mouseY);
 					}
 					_canvas.mouseEnabled = true;
@@ -140,18 +140,12 @@
 			}
 			
 			protected function blockInteractivity(block:Boolean = true):void {
-				if (block) {
-					_clickBlocker.beginFill(0xffffff, 1);
-					_clickBlocker.drawRect(0, 0, _canvas.width, _canvas.height);
-					_clickBlocker.endFill();
-				} else {
-					_clickBlocker.clear();
-				}
+				_clickBlocker.visible = block;
 			}
 			
 			protected function specifyCursor():void {
 				if (brush.selected || eraser.selected) {
-					_currentCursor = createMouseCursor(ns.value/2, cp.selectedItem, brush.selected);
+					_currentCursor = createMouseCursor(sizeSpinner.value/2, cp.selectedItem, brush.selected);
 				} else {
 					_currentCursor = MouseCursor.AUTO;
 				}
@@ -180,9 +174,9 @@
 			<ui:VerticalSeparator height="100%"/>
 			<s:VGroup horizontalAlign="center" gap="5" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5" width="40" >
 				<s:Label fontWeight="bold" color="0x000000" text="{resourceManager.getString('Chrome','OPTION')}"/>
-				<s:Spinner id="ns" width="24" height="24" minimum="2" maximum="20" stepSize="2" value="10" toolTip="BRUSH_SIZE" enabled="{!stop.selected}" change="specifyCursor();" />
+				<s:Spinner id="sizeSpinner" width="24" height="24" minimum="2" maximum="20" stepSize="2" value="10" toolTip="BRUSH_SIZE" enabled="{!stop.selected}" change="specifyCursor();" />
 				<s:Group enabled="{!stop.selected}" width="24" height="24" toolTip="BRUSH_EXAMPLE">
-					<s:Ellipse x="{12 - ns.value/2}" y="{12 - ns.value/2}" width="{ns.value}" height="{ns.value}">
+					<s:Ellipse x="{12 - sizeSpinner.value/2}" y="{12 - sizeSpinner.value/2}" width="{sizeSpinner.value}" height="{sizeSpinner.value}">
 						<s:stroke>
 							<s:SolidColorStroke color="0x888888" weight="1" pixelHinting="false" alpha="{stop.selected ? 0 : 1}"/>
 						</s:stroke>

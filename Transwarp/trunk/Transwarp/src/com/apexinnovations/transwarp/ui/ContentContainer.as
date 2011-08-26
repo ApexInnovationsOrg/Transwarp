@@ -1,7 +1,7 @@
 package com.apexinnovations.transwarp.ui {
 	import com.apexinnovations.transwarp.Transwarp;
 	import com.apexinnovations.transwarp.assets.ContentLoader;
-	import com.apexinnovations.transwarp.assets.PageLoader;
+	import com.apexinnovations.transwarp.assets.loaders.PageLoader;
 	import com.apexinnovations.transwarp.data.Courseware;
 	import com.apexinnovations.transwarp.data.Page;
 	import com.apexinnovations.transwarp.events.PageSelectionEvent;
@@ -23,34 +23,16 @@ package com.apexinnovations.transwarp.ui {
 	
 	TranswarpVersion.revision = "$Rev$";
 	
-	[Event(name="open", type="flash.events.Event")]
-	[Event(name="progress", type="flash.events.ProgressEvent")]
-	[Event(name="complete", type="flash.events.Event")]
-	[Event(name="error", type="flash.events.ErrorEvent")]
+	
 	public class ContentContainer extends UIComponent {
 		
 		protected var _content:DisplayObject;		
-		protected var _rawContent:DisplayObject;
-		
-		protected var contentLoader:com.apexinnovations.transwarp.assets.ContentLoader;
-		
-		protected var watchedLoader:PageLoader;
-		
+		protected var _rawContent:DisplayObject;	
 		
 		public function ContentContainer() {
-			super();
-			addEventListener(FlexEvent.CREATION_COMPLETE, creationComplete);
+			super();	
 		}
 		
-		protected function creationComplete(event:FlexEvent):void {
-			if(!Courseware.instance || !Courseware.instance.product)
-				return; // This only occurrs with a total XML load failure
-			
-			contentLoader = new ContentLoader(Courseware.instance.product, Transwarp(parentApplication).mainLoader);
-			
-			Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
-			pageChanged();
-		}
 		
 		[Bindable] public function get content():DisplayObject { return _content; }
 		protected function set content(value:DisplayObject):void {
@@ -78,71 +60,13 @@ package com.apexinnovations.transwarp.ui {
 			_rawContent = value;
 		}
 		
-		public function replay():void {
-			pageChanged();
-		}
 		
-		public function reload():void {
-			if(watchedLoader) {
-				watchedLoader.load(true);
-				pageChanged();
-			}
-		}
 		
 		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
 			if(_content)
 				scaleContent(unscaledWidth, unscaledHeight);
 		}
-		
-		protected function pageChanged(event:PageSelectionEvent = null):void {
-			if(!contentLoader)
-				return;
-			
-			content = null;
-			
-			if(watchedLoader) {
-				watchedLoader.removeEventListener(LoaderEvent.PROGRESS, contentProgress);
-				watchedLoader.removeEventListener(TranswarpEvent.CONTENT_READY, contentLoaded);
-			}
-			
-			watchedLoader = contentLoader.getPageLoader(Courseware.instance.currentPage);
-			watchedLoader.requestContent();
-			
-			if(watchedLoader.contentReady)
-				contentLoaded();
-			else {
-				watchedLoader.addEventListener(TranswarpEvent.CONTENT_READY, contentLoaded);
-				if(watchedLoader.status == LoaderStatus.LOADING) {
-					dispatchEvent(new Event(Event.OPEN));
-					dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS, false, false, watchedLoader.bytesLoaded, watchedLoader.bytesTotal));
-					watchedLoader.addEventListener(LoaderEvent.PROGRESS, contentProgress);
-				} else if(watchedLoader.status == LoaderStatus.FAILED) {
-					//How are we handling this?
-				}
-			} 
-		}
-		
-		protected function contentProgress(event:LoaderEvent):void {
-			var evt:ProgressEvent = new ProgressEvent(ProgressEvent.PROGRESS);
-			evt.bytesLoaded = watchedLoader.bytesLoaded;
-			evt.bytesTotal = watchedLoader.bytesTotal;
-			dispatchEvent(evt);
-		}
-		
-		protected function contentLoaded(event:Event = null):void {
-						
-			var page:Page = Courseware.instance.currentPage;
-			
-			if(watchedLoader.page !== page)
-				return; //shouldn't happen
-			
-			content = watchedLoader.swf;
-			
-			watchedLoader.playAudio();
-			
-			dispatchEvent(new Event(Event.COMPLETE));
-		}
-		
+				
 		
 		protected function scaleContent(width:Number, height:Number):void {
 			unscaleContent(); //prevent previous scaling from interfering

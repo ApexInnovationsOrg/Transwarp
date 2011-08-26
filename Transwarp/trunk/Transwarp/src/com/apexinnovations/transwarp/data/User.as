@@ -1,5 +1,7 @@
 package com.apexinnovations.transwarp.data
 {
+	import com.apexinnovations.transwarp.utils.HashSet;
+	import com.apexinnovations.transwarp.utils.ISet;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
 	import flash.errors.*;
@@ -17,7 +19,7 @@ package com.apexinnovations.transwarp.data
 		
 		private var _autoCloseMenu:Boolean = false;			// Automatically close previous folders when opening new one at same level?
 		private var _animatePageTransitions:Boolean = true;	// Animate page transitions?
-		private var _classes:String = '';					// Space separated list of classes this user falls into (e.g. 'LMS Doctor Beta')
+		private var _classes:ISet;							// Space separated list of classes this user falls into (e.g. 'LMS Doctor Beta')
 		private var _closedCaptioning:Boolean = false;		// Turn on closed captioning?
 		private var _id:uint = 0;							// Unique UserID from database
 		private var _lastAccess:Date;						// XML format: YYYY-MM-DDTHH:MM:SS
@@ -40,7 +42,7 @@ package com.apexinnovations.transwarp.data
 			try {
 				_autoCloseMenu = xml.@autoCloseMenu == 'true';
 				_animatePageTransitions = xml.@animatePageTransitions == 'true';
-				_classes = xml.@classes;
+				_classes = new HashSet(String(xml.@classes).toLowerCase().split(' '));
 				_closedCaptioning = xml.@closedCaptioning == 'true';
 				_id = xml.@id;
 				_lastAccess = DateFormatter.parseDateString(xml.@lastAccess);
@@ -64,14 +66,11 @@ package com.apexinnovations.transwarp.data
 		[Bindable] public function get closedCaptioning():Boolean { return _closedCaptioning; }
 		public function set closedCaptioning(val:Boolean):void { _closedCaptioning = val; }
 		
-		public function get beta():Boolean { return (_classes.indexOf('Beta') != -1); }
-		public function get demo():Boolean { return (_classes.indexOf('demo') != -1); }
-		public function get doctor():Boolean { return (_classes.indexOf('Doctor') != -1); }
-		public function get emt():Boolean { return (_classes.indexOf('EMT') != -1); }
-		public function get lms():Boolean { return (_classes.indexOf('LMS') != -1); }
-		public function get nurse():Boolean { return (_classes.indexOf('Nurse') != -1); }
+		public function get beta():Boolean { return "beta" in _classes; }
+		public function get demo():Boolean { return "demo" in _classes; }
+		public function get lms():Boolean  { return "lms"  in _classes; }
 		
-		public function get classes():String { return _classes; }
+		public function get classes():ISet { return _classes; }
 		
 		public function get id():uint { return _id; }
 		

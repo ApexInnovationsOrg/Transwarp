@@ -36,18 +36,20 @@
 			}
 			
 			protected function pageChanged(event:PageSelectionEvent):void {
-				page = Courseware.instance.currentPage;
+				page = event.page as Page;
 			}
 			
 			protected function updateElementList():void {
 				if (elementList) {
 					elementList.removeAllElements();
 					
-					for each(var u:Update in _page.updates) {
-						if(Courseware.instance.debug || !u.hidden) {
-							var btn:HistoryLabel = new HistoryLabel();
-							elementList.addElement(btn);
-							btn.update = u;
+					if(page) {
+						for each(var u:Update in _page.updates) {
+							if(Courseware.instance.debug || !u.hidden) {
+								var btn:HistoryLabel = new HistoryLabel();
+								elementList.addElement(btn);
+								btn.update = u;
+							}
 						}
 					}
 				}

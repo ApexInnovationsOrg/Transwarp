@@ -3,9 +3,9 @@ package com.apexinnovations.transwarp.utils {
 	TranswarpVersion.revision = "$Rev$";
 	
 	public class Utils {
+		import flashx.textLayout.conversion.ConversionType;
 		import flashx.textLayout.conversion.TextConverter;
 		import flashx.textLayout.elements.TextFlow;
-		import flashx.textLayout.conversion.ConversionType;
 		
 		public function Utils() {}
 		
@@ -34,7 +34,7 @@ package com.apexinnovations.transwarp.utils {
 			
 			var tfx:XML = XML(TextConverter.export(tf, TextConverter.TEXT_LAYOUT_FORMAT, ConversionType.XML_TYPE));
 			var s:String = '';
-			for each (var x:XML in tfx..*.text()) {
+			for each (var x:XML in XMLList(tfx..*).text()) {
 				s += x + ' ';
 			}
 			
@@ -49,6 +49,21 @@ package com.apexinnovations.transwarp.utils {
 			var s:String = String(number);
 			while(s.length < width) s = '0' + s;
 			return s;
+		}
+		
+		public static function importTextFlow(markup:XML):TextFlow {
+			if(!markup)
+				return null;
+			
+			var s:String = '';
+			for each (var x:XML in XMLList(markup..*).text()) {
+				s += x;
+			}
+			
+			if(s.replace(/\s/g, '').length == 0)
+				return null;
+			
+			return TextConverter.importToFlow(markup, TextConverter.TEXT_LAYOUT_FORMAT);
 		}
 	}
 }

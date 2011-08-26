@@ -8,6 +8,7 @@
 			   xmlns:ext="com.apexinnovations.transwarp.ui.ext.*"
 			   addedToStage="onAdded()"
 			   minWidth="924">
+			   <!--enterFrame="enterFrameHandler(event)">-->
 	<fx:Declarations>
 		<s:TitleWindow title="Title" id="errorDialog" close="PopUpManager.removePopUp(errorDialog); fscommand('quit');" width="400" height="300">
 			<s:RichEditableText id="infoText" top="10" bottom="10" left="10" right="10" editable="false"/> 
@@ -32,6 +33,7 @@
 			
 			import flash.events.*;
 			
+			import mx.managers.FocusManager;
 			import mx.managers.ISystemManager;
 			import mx.managers.PopUpManager;
 			import mx.resources.ResourceManager;
@@ -90,9 +92,10 @@
 					var e:Error = xmlLoadError;
 					var log:LogService = new LogService();
 					
-					//Temporarily removed stack track until we can resolve json control character issues.
+					//Temporarily removed stack trace until we can resolve json control character issues.
 					//log.dispatch('XML Load Failure: ' + e.toString() + '\n' + e.getStackTrace());
-					//trace(e.getStackTrace());
+					trace(e.message);
+					trace(e.getStackTrace());
 					log.dispatch('XML Load Failure: ' + e.toString());
 					
 					themeColor = 0xa8a8a8;
@@ -159,6 +162,15 @@
 				// TODO Auto-generated method stub
 			}
 
+			protected var oldfocus:*;
+			
+			/*protected function enterFrameHandler(event:Event):void {
+				var focus:* = focusManager.getFocus();
+				if(oldfocus != focus)
+					trace(focus);
+				oldfocus = focus;
+			} */
+			
 		]]>
 	</fx:Script>
 	
@@ -178,10 +190,17 @@
 			  top="178" top.maximized="35"
 			  width="{width-contentArea.x}" height="{height-contentArea.y}" 
 			  error="pageLoadErrorHandler(event)"/>
-	
 	<!-- Drawing mask -->
-	<s:SpriteVisualElement id="clickBlocker" left="0" top="0" right="0" bottom="0" cacheAsBitmap="true" blendMode="erase"/>	
+	<s:Group id="clickBlocker" visible="false" left="0" top="0" right="0" bottom="0" cacheAsBitmap="true" mouseFocusEnabled="false">
+		<s:Rect left="0" top="0" right="0" bottom="0">
+			<s:fill>
+				<s:SolidColor alpha="0" />
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+	
 	<!-- Drawing canvas -->
-	<s:SpriteVisualElement id="canvas" left="0" top="0" right="0" bottom="0" cacheAsBitmap="true"/>	
+	<!--<s:SpriteVisualElement id="canvas" left="0" top="0" right="0" bottom="0" cacheAsBitmap="true" mouseEnabled="false"/>-->	
+	<s:Group id="canvas" left="0" top="0" right="0" bottom="0" cacheAsBitmap="true" mouseEnabled="false" mouseFocusEnabled="false" />
 	
 </transwarp:TranswarpBase>

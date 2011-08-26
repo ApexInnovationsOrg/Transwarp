@@ -59,7 +59,7 @@ package com.apexinnovations.transwarp.assets.loaders {
 			}
 		}
 		
-		public function requestLoad(loader:LoaderCore):void {
+		public function requestLoad(loader:LoaderCore):void {			
 			addLoader(loader);
 			var status:int = loader.status;
 			if(status == LoaderStatus.READY) {
@@ -134,10 +134,10 @@ package com.apexinnovations.transwarp.assets.loaders {
 		
 		protected function setActive(loader:*, value:Boolean):void {
 			if(value && !(loader in activeLoaders)) {
-				activeCount++;
+				activeCount += 1;
 				activeLoaders[loader] = true;
 			} else if(!value && loader in activeLoaders) {
-				activeCount--;
+				activeCount -= 1;
 				delete activeLoaders[loader];
 			}
 		}

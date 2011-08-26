@@ -4,21 +4,45 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   skinClass="com.apexinnovations.transwarp.skins.DialogSkin"
 			   title="Generic Dialog Box" visible="false"
-			   addedToStage="addedToStage(event);" close="closeHandler(event);" mouseDown="mouseDown(event);" windowMoveEnd="resizeListener(event);">
+			   addedToStage="addedToStage(event);" 
+			   close="closeHandler(event);" 
+			   mouseDown="mouseDown(event);" 
+			   windowMoveEnd="resizeListener(event);"
+			   removedFromStage="removedFromStage(event)"
+			   fontSize="14">
 	<s:layout>
 		<s:VerticalLayout />
 	</s:layout>
 	<fx:Script>
 		<![CDATA[
-			import com.apexinnovations.transwarp.Transwarp;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
+			import mx.core.UIComponent;
 			import mx.managers.PopUpManager;
 			
 			TranswarpVersion.revision = "$Rev$";
 			
 			protected var modal:Boolean = false;
-			protected var resizable:Boolean = false;
+			protected var _resizable:Boolean = false;
+			
+			// stage (X,Y) for where resize drag began. 
+			protected var clickX:Number;
+			protected var clickY:Number;
+			
+			// Width/Height when resizing began
+			protected var initialWidth:Number;
+			protected var initialHeight:Number;
+			
+			[SkinPart("false")]
+			public var resizeHandle:UIComponent;
+			
+			public function get resizable():Boolean { return _resizable; }
+			
+			public function set resizable(value:Boolean):void {
+				_resizable = value;
+				if(resizeHandle)
+					resizeHandle.visible = value;
+			}
 			
 			protected function closeHandler(event:Event = null):void {
 				if (modal) {
@@ -34,6 +58,12 @@
 				stage.addEventListener(Event.RESIZE, resizeListener);
 			}
 			
+			protected function removedFromStage(event:Event):void {
+				stage.removeEventListener(Event.RESIZE, resizeListener);
+				stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
+				stage.removeEventListener(MouseEvent.MOUSE_UP, mouseMoveHandler);
+			}
+			
 			public function display():void {
 				if (modal || !visible) {
 					PopUpManager.centerPopUp(this);
@@ -41,6 +71,7 @@
 				visible = true;
 				PopUpManager.bringToFront(this);
 				setFocus();
+				trace(width, height);
 			}
 			
 			protected function mouseDown(event:MouseEvent):void {
@@ -55,6 +86,46 @@
 				if (x < 0) x = 0;
 				if (y < 0) y = 0;
 			}
+			
+			override protected function partAdded(partName:String, instance:Object) : void {
+				super.partAdded(partName, instance);
+				
+				if (instance == resizeHandle) {
+					if(_resizable)
+						resizeHandle.visible = true;
+					resizeHandle.addEventListener(MouseEvent.MOUSE_DOWN, resizeClickHandler);
+				}
+			}
+			
+			override protected function partRemoved(partName:String, instance:Object):void {
+				if (instance == resizeHandle)
+					resizeHandle.removeEventListener(MouseEvent.MOUSE_DOWN, resizeClickHandler);
+				
+				super.partRemoved(partName, instance);
+			}
+			
+			protected function resizeClickHandler(event:MouseEvent):void {
+				clickX = event.stageX;
+				clickY = event.stageY;
+				
+				initialWidth = width;
+				initialHeight = height;
+				
+				stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler);
+				stage.addEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
+			}
+			
+			protected function mouseUpHandler(event:MouseEvent):void {
+				stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
+				stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler);
+			}
+			
+			protected function mouseMoveHandler(event:MouseEvent):void {
+				var topleft:Point = stage.globalToLocal(localToGlobal(new Point(0,0)));
+				width = Math.min(stage.stageWidth - topleft.x, Math.max(initialWidth + event.stageX - clickX, minWidth));
+				height = Math.min(stage.stageHeight - topleft.y, Math.max(initialHeight + event.stageY - clickY, minHeight));
+			}
+			
 		]]>
 	</fx:Script>
 </s:TitleWindow>

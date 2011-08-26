@@ -36,17 +36,18 @@
 			}
 			
 			protected function pageChanged(event:PageSelectionEvent):void {
-				page = Courseware.instance.currentPage;
+				page = event.page as Page;
 			}
 			
 			protected function updateElementList():void {
 				if (elementList) {
 					elementList.removeAllElements();
-					
-					for each(var q:Question in _page.questions) {
-						var btn:QuestionButton = new QuestionButton();
-						elementList.addElement(btn);
-						btn.question = q;
+					if(page) {
+						for each(var q:Question in _page.questions) {
+							var btn:QuestionButton = new QuestionButton();
+							elementList.addElement(btn);
+							btn.question = q;
+						}
 					}
 				}
 				currentState = (elementList && elementList.numElements) ? "default" : "no_results";
