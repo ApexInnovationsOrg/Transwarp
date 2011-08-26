@@ -54,7 +54,7 @@
 		<s:Label text="{Courseware.instance.user.name}: {getString('CONFIGURATION')}" fontWeight="bold" />
 		<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" width="100%" >
 			<s:CheckBox id="autoCloseMenu" label="{getString('AUTO_CLOSE_MENU')}" selected="{Courseware.instance.user.autoCloseMenu}" />
-			<s:Label paddingLeft="18" text="{getString('AUTO_CLOSE_MENU_DESC')}" width="350" fontStyle="italic" color="0x0000FF" />
+			<s:Label paddingLeft="18" text="{getString('AUTO_CLOSE_MENU_DESC')}" width="350" fontSize="12" fontStyle="italic" color="0x0000FF" />
 <!--
 			<s:CheckBox id="animatePageTransitions" label="{getString('ANIMATE_TRANSITIONS')}" selected="{Courseware.instance.user.animatePageTransitions}" />
 			<s:Label paddingLeft="18" text="{getString('ANIMATE_TRANSITIONS_DESC')}" width="350" fontStyle="italic" color="0x0000FF" />
@@ -62,7 +62,8 @@
 			<s:Label paddingLeft="18" text="{getString('CLOSED_CAPTIONING_DESC')}" width="350" fontStyle="italic" color="0x0000FF" />
 -->
 			<s:CheckBox id="printSlideOnly" label="{getString('PRINT_PAGE')}" selected="{Courseware.instance.user.printSlideOnly}" />
-			<s:Label paddingLeft="18" text="{getString('PRINT_PAGE_DESC')}" width="350" fontStyle="italic" color="0x0000FF" />
+
+			<s:Label paddingLeft="18" text="{getString('PRINT_PAGE_DESC')}" width="350" fontSize="12" fontStyle="italic" color="0x0000FF" />
 		</s:VGroup>
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
 			<s:Button label="{getString('SUBMIT')}" click="okHandler(event);"/>

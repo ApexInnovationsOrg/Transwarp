@@ -1,5 +1,4 @@
-package com.apexinnovations.transwarp.assets {
-	import com.apexinnovations.transwarp.assets.loaders.*;
+package com.apexinnovations.transwarp.assets.loaders {
 	import com.apexinnovations.transwarp.data.Courseware;
 	import com.apexinnovations.transwarp.data.Page;
 	import com.apexinnovations.transwarp.events.TranswarpEvent;

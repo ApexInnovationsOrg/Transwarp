@@ -20,7 +20,7 @@ package com.apexinnovations.transwarp.webservices
 		}
 		
 		// The real class-specific work is done here
-		public function dispatch(del:Boolean = false):void { 
+		public function dispatch(id:uint, del:Boolean = false):void { 
 			try{
 				var arr:Array = new Array();
 				
@@ -28,8 +28,8 @@ package com.apexinnovations.transwarp.webservices
 				if(courseware) {
 					arr['userID'] = courseware.user.id;
 					arr['courseID'] = courseware.currentCourse.id;
-					arr['pageID'] = courseware.currentPage.id;
 				}
+				arr['pageID'] = id;
 				if (del) arr['delete'] = del;
 				
 				// Package up the URLRequest

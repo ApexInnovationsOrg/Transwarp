@@ -1,6 +1,8 @@
 package com.apexinnovations.transwarp.assets {
 	import com.apexinnovations.transwarp.assets.loaders.LimitedMemoryLoader;
+	import com.apexinnovations.transwarp.assets.loaders.PageLoader;
 	import com.apexinnovations.transwarp.data.Course;
+	import com.apexinnovations.transwarp.data.CoursewareObject;
 	import com.apexinnovations.transwarp.data.Page;
 	import com.apexinnovations.transwarp.data.Product;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
@@ -30,11 +32,11 @@ package com.apexinnovations.transwarp.assets {
 			}
 		}
 		
-		public function getPageLoader(page:Page, prioritizeBefore:int = 1, prioritizeAfter:int = 7):PageLoader {
+		public function getPageLoader(page:Page, prioritizeBefore:int = 1, prioritizeAfter:int = 7):PageLoader {	
 			var loader:PageLoader = loaders[page];
 			mainLoader.requestLoad(loader);
 			
-			var pages:Array = courses[page.course.id]
+			var pages:Array = courses[page.parentCourse.id]
 			var index:int = pages.indexOf(page);
 			
 			var before:Array

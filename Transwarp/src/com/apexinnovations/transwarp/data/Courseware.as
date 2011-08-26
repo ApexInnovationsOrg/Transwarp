@@ -24,7 +24,7 @@ package com.apexinnovations.transwarp.data {
 		private var _color:uint = 0xFFFFFF;			// The background color to use for this product in the engine's UI
 		private var _copyright:String = '';			// Copyright information about this engine
 		private var _currentCourse:Course = null;	// Current course the user is viewing
-		private var _currentPage:Page = null;		// Current page the user is viewing
+		private var _currentPage:CoursewareObject	// Current page the user is viewing
 		private var _currentCourseList:CourseList;
 		private var _debug:Boolean = false;			// Are we in debug mode?
 		private var _highlightColor:uint = 0x000000;// The highlight color to use for this product in the engine's UI
@@ -54,10 +54,7 @@ package com.apexinnovations.transwarp.data {
 			if (!keywords) return null;
 			
 			var pages:Vector.<Page> = new Vector.<Page>();
-			
-			// LMS users aren't allowed to search
-			if (_instance.user.lms || _instance.user.demo) return pages;
-						
+									
 			// Get list of excluded terms
 			var i:int;
 			var tmp:String = keywords;
@@ -138,24 +135,21 @@ package com.apexinnovations.transwarp.data {
 			ConfigData.website = _website;
 			
 			_user = new User(xml.user[0], this);
-			_product = new Product(xml.product[0], _user.demo);
+			_product = new Product(xml.product[0], this);
+			
+			var sortToken:uint = 0;
+			for each(var c:Course in _product) {
+				for each(var item:CoursewareObject in c.flatList)
+					item.sortToken = sortToken++;
+			}
 			
 			ConfigData.userID = _user.id;
 			
-			if(obeyAllowDeny) {
-				for each(var course:Course in _product.courses) {
-					var i:int = 0;
-					var pages:Vector.<Page> = course.pages;
-					while(i < pages.length) {
-						var p:Page = pages[i];
-						if(!p.allowUser(_user)) {
-							pages.splice(i,1);
-							course.contents.splice(course.contents.indexOf(p), 1);
-						} else
-							i++;
-					}
+			/*if(obeyAllowDeny) {
+				for each(var child:CoursewareObject in _product.contents) {
+					
 				}
-			}
+			}*/
 			
 			_currentCourseList = new CourseList();
 			_currentCourseList.addEventListener(FolderOpenEvent.FOLDER_OPEN, folderOpenHandler);
@@ -203,13 +197,20 @@ package com.apexinnovations.transwarp.data {
 			return _currentCourseList;	
 		}		
 		
-		[Bindable] public function get currentPage():Page { return _currentPage; }
-		public function set currentPage(page:Page):void {
+		[Bindable("pageSelectionChanged")] public function get currentPage():CoursewareObject { return _currentPage; }
+		public function set currentPage(page:CoursewareObject):void {
 			if(_currentPage == page || page == null)
 				return;
 			_currentPage = page;
-			currentCourse = page.course;			// Might be sent to a page via search - need to change courses
-			page.visited = true;
+			currentCourse = page.parentCourse;			// Might be sent to a page via search - need to change courses
+			
+			var p:CoursewareObject = page;
+			while((p = p.parent) is Folder) 
+				Folder(p).open = true;
+			
+			if(!_user.demo)
+				page.visited = true;
+			
 			
 			dispatchEvent(new PageSelectionEvent(page));		
 		}
@@ -220,6 +221,7 @@ package com.apexinnovations.transwarp.data {
 		public function get rootFolder():String { return _rootFolder; }
 		public function get timeout():int { return _timeout; }
 		[Bindable("colorChanged")] public function get user():User { return _user; }
+		
 		[Bindable] public function get volume():uint { return 100 * SoundMixer.soundTransform.volume; }
 		public function set volume(val:uint):void {
 			SoundMixer.soundTransform = new SoundTransform(val/100);
@@ -249,58 +251,22 @@ package com.apexinnovations.transwarp.data {
 		
 		
 		public function nextPage():void {
-			moveSelection(pageToIndex(_currentPage) + 1, false);
+			moveSelection(1);
 		}
 		
 		public function prevPage():void {
-			moveSelection(pageToIndex(_currentPage) - 1, true);
+		 	moveSelection(-1);	
 		}
-		
-		protected function pageToIndex(page:Page):int {
-			var index:int = _currentCourseList.getItemIndex(_currentPage);
-			if(index < 0 && _currentCourse.pages.indexOf(page) > 0) {
-				var parent:* = page.parent;
-				while(parent is Folder) {
-					Folder(parent).open = true;
-					parent = Folder(parent).parent; 
-				}
-				return _currentCourseList.getItemIndex(page);
-			}
-
-			return index;			
-		}
-		
-		protected function moveSelection(newIndex:int, up:Boolean):void {
-			var list:CourseList = _currentCourseList;
-			
-			if(newIndex < 0 || newIndex >= list.length)
+				
+		protected function moveSelection(offset:int):void {
+			if(!_currentPage || ! _currentPage.parentCourse)
 				return;
-			
-			var newPage:* = list.getItemAt(newIndex);
-			if(newPage is Page) {
-				var page:Page = newPage as Page;
-				Courseware.instance.currentPage = page;
-				if(page.parent is Folder && !Folder(page.parent).open)
-					(page.parent as Folder).open = true;
-				
-			} else { //newPage is Folder
-				var folder:Folder = newPage as Folder;
-				if(up) {
-					if(folder.open) {
-						moveSelection(newIndex - 1, up);
-					} else {
-						folder.open = true
-						newIndex = list.getItemIndex(folder); //Opening the folder may change its index due to an auto-close of another folder
-						moveSelection(folder.contents.length + newIndex, up);
-					}
-				} else {
-					folder.open = true;
-					newIndex = list.getItemIndex(folder); //Opening the folder may change its index due to an auto-close of another folder
-					moveSelection(newIndex + 1, up);
-				}
-			}
+			var contents:Vector.<CoursewareObject> = _currentPage.parentCourse.flatList;
+			var index:int = contents.indexOf(_currentPage) + offset;
+			if(index < contents.length && index >= 0)
+				currentPage = contents[index];
 		}
-				
+		
 		protected function folderOpenHandler(event:FolderOpenEvent):void {
 			if(!_user.autoCloseMenu)
 				return;
@@ -308,7 +274,7 @@ package com.apexinnovations.transwarp.data {
 		}
 		
 		//Used for auto-closing folders when opening another.
-		protected function closeUnrelatedFolder(contents:Array, target:Folder):void {
+		protected function closeUnrelatedFolder(contents:Vector.<CoursewareObject>, target:Folder):void {
 			for each (var content:Object in contents) {
 				var folder:Folder = content as Folder;
 				if(folder && folder !== target) {

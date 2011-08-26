@@ -1,5 +1,6 @@
 package com.apexinnovations.transwarp.events
 {
+	import com.apexinnovations.transwarp.data.CoursewareObject;
 	import com.apexinnovations.transwarp.data.Page;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
@@ -11,9 +12,9 @@ package com.apexinnovations.transwarp.events
 		
 		public static const PAGE_SELECTION_CHANGED:String = "pageSelectionChanged";
 		
-		public var page:Page;
+		public var page:CoursewareObject;
 		
-		public function PageSelectionEvent(page:Page, bubbles:Boolean=false, cancelable:Boolean=false) {
+		public function PageSelectionEvent(page:CoursewareObject, bubbles:Boolean=false, cancelable:Boolean=false) {
 			this.page = page;
 			super(PAGE_SELECTION_CHANGED, bubbles, cancelable);
 		}

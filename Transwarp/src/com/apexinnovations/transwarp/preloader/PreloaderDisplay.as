@@ -146,6 +146,11 @@ package com.apexinnovations.transwarp.preloader {
 					}
 					page.@updated = updated;
 				}
+				
+				for each(var folder:XML in xml..folder) {
+					folder.@bookmarked = bookmarkedPages.indexOf(String(folder.@id)) != -1;
+				}
+				
 				// ...Mark courseware timeout, color
 				xml.@timeout = xml.user.@coursewareTimeout;
 				xml.@buttonBGColor = xml.product.@buttonBGColor;

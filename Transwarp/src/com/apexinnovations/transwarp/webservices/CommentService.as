@@ -6,6 +6,7 @@ package com.apexinnovations.transwarp.webservices
 {
 	import com.adobe.serialization.json.*;
 	import com.apexinnovations.transwarp.data.Courseware;
+	import com.apexinnovations.transwarp.data.Page;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	
 	import flash.events.*;
@@ -29,7 +30,8 @@ package com.apexinnovations.transwarp.webservices
 					arr['userID'] = courseware.user.id;
 					arr['courseID'] = courseware.currentCourse.id;
 					arr['pageID'] = courseware.currentPage.id;
-					arr['swf'] = courseware.currentPage.swf;
+					if(courseware.currentPage is Page)
+						arr['swf'] = Page(courseware.currentPage).swf;
 				}
 				arr['comment'] = comment;
 				

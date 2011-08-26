@@ -5,20 +5,38 @@
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
 			  title="{resourceManager.getString('Dialogs','HELP_TITLE')}"
-			  contentCreationComplete="contentCreationComplete(event);">
+			  contentCreationComplete="contentCreationComplete(event);"
+			  resizable="true"
+			  minWidth="365"
+			  minHeight="200">
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.Transwarp;
+			import com.apexinnovations.transwarp.assets.loaders.HelpLoader;
+			import com.apexinnovations.transwarp.assets.loaders.LimitedMemoryLoader;
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.HelpPage;
 			import com.apexinnovations.transwarp.events.HelpSelectionEvent;
+			import com.apexinnovations.transwarp.events.TranswarpEvent;
 			import com.apexinnovations.transwarp.ui.dialogs.HelpButton;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			import com.greensock.loading.LoaderStatus;
 			
 			import mx.managers.PopUpManager;
 
 			TranswarpVersion.revision = "$Rev$";
 			
 			[Bindable] protected var currentHelp:HelpPage;
+			
+			protected var helpButtons:Array;
+			protected var mainLoader:LimitedMemoryLoader;
+			protected var helpLoaders:Dictionary = new Dictionary();
+			protected var helpLoadersArray:Array = [];
+			
+			protected var prevWidth:Number;
+			protected var prevHeight:Number;
+			
+			public var maxInitialSizePercent:Number = 0.85;
 			
 			override protected function addedToStage(event:Event):void {
 				super.addedToStage(event);
@@ -27,23 +45,42 @@
 			
 			override protected function closeHandler(event:Event=null):void {
 				currentState = "default";
-				movieClipLoader.source = '';
+				container.content = null;
 				super.closeHandler(event);
 			}
 			
 			protected function contentCreationComplete(event:Event):void {
+				mainLoader = Transwarp(parentApplication).mainLoader;
 				updateElementList();
 			}
 			
 			protected function updateElementList():void {
-				if (elementList) {
-					elementList.removeAllElements();
+				if(!elementList)
+					return;
+				if(!helpButtons)
+					createHelpButtons();
 				
-					for each(var h:HelpPage in Courseware.instance.product.helpPages) {
-						var btn:HelpButton = new HelpButton();
-						elementList.addElement(btn);
-						btn.help = h;
-					}
+				elementList.removeAllElements();
+				for each(var b:HelpButton in helpButtons) {
+					if(Courseware.instance && b.help.visibleOnPage(Courseware.instance.currentPage))
+						elementList.addElement(b);
+				}
+			}
+			
+			override public function display():void {
+				super.display();
+				mainLoader.prioritizeLoaders(helpLoadersArray);
+			}
+			
+			protected function createHelpButtons():void {
+				helpButtons = [];
+				for each(var h:HelpPage in Courseware.instance.product.helpPages) {
+					var btn:HelpButton = new HelpButton();
+					btn.help = h;
+					helpButtons.push(btn);
+					var loader:HelpLoader = new HelpLoader(h);
+					helpLoaders[h] = loader;
+					helpLoadersArray.push(loader);
 				}
 			}
 			
@@ -51,10 +88,50 @@
 				var help:HelpPage = event.help;
 				currentHelp = help;
 				currentState = "showing_help";
+				
+				var loader:HelpLoader = helpLoaders[help];
+				
+				if(loader.status != LoaderStatus.COMPLETED) {
+					loadingPanel.visible = true;
+					progressBar.source = loader;
+					mainLoader.requestLoad(loader);
+				}
+				
+				if(loader.contentReady) {
+					helpLoaded();
+				} else {
+					loader.requestContent();
+					loader.addEventListener(TranswarpEvent.CONTENT_READY, helpLoaded);
+				}
 			}
 			
-			protected function helpLoaded(event:Event):void {
-				//currentState = "showing_help";
+			
+			protected function helpLoaded(event:Event=null):void {
+				currentState = "showing_help";
+				
+				loadingPanel.visible = false;
+				
+				var swf:Loader = helpLoaders[currentHelp].swf;
+				var info:LoaderInfo = swf.contentLoaderInfo;
+				
+				prevWidth = width;
+				prevHeight = height;
+				
+				var f:Number = maxInitialSizePercent;
+				if(stage.stageWidth * f < info.width || stage.stageHeight * f < info.height) {
+					if(info.width < info.height) {
+						height = stage.stageHeight * f;
+						width = height * (info.width / info.height);
+					} else {
+						width = stage.stageWidth * f;
+						height = width * (info.width / info.height);
+					}
+				} else {
+					width = info.width + 20;
+					height = info.height + 20;
+				}
+				container.content = swf;
+				PopUpManager.centerPopUp(this);
 			}
 			
 			protected function helpLoadingError(event:Event):void {
@@ -62,9 +139,15 @@
 			}
 			
 			protected function backHandler(event:Event):void {
+				var loader:HelpLoader = helpLoaders[currentHelp];
+				loader.removeEventListener(TranswarpEvent.CONTENT_READY, helpLoaded);
+				
 				currentState = "default";
+				width = prevWidth;
+				height = prevHeight;				
 				currentHelp = null;
-
+				container.content = null;
+				
 				PopUpManager.centerPopUp(this);
 			}
 			
@@ -89,7 +172,7 @@
 	</dialogs:transitions>
 -->
 	
-	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" width="100%" height="100%">
 		<s:Label id="helpTitle" fontWeight="bold" fontSize.showing_help="18" color.error="0xFF0000"
 				 text.default="{resourceManager.getString('Dialogs','CLICK_HELP_TOPIC_FOR_HELP')}"
 				 text.error="{resourceManager.getString('Dialogs','ERROR_LOADING_HELP')}"
@@ -99,8 +182,12 @@
 			<s:VGroup id="elementList" width="100%" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" />
 		</s:Scroller>
 		
-		<s:SWFLoader id="movieClipLoader" autoLoad="true" complete="helpLoaded(event);" ioError="helpLoadingError(event)" securityError="helpLoadingError(event);"
-					 updateComplete="PopUpManager.centerPopUp(this);" showBusyCursor="true" source="{currentHelp.url}" includeIn="showing_help" />
+		<s:Group width="100%" height="100%">
+			<ui:ContentContainer id="container" width="100%" height="100%" visible.showing_help="true" visible="false"/>
+			<s:Panel id="loadingPanel" title="Loading..." height="78" width="350" horizontalCenter="0" verticalCenter="0" visible="false" backgroundColor="0xFFFFFF" skinClass="com.apexinnovations.transwarp.skins.PanelSkin">
+				<mx:ProgressBar id="progressBar" labelPlacement="bottom" label="%3%%" direction="right" mode="manual" top="10" bottom="10" left="10" right="10"/>
+			</s:Panel>
+		</s:Group>
 		
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10" includeIn="showing_help">
 			<s:Button label="Back" click="backHandler(event);" />

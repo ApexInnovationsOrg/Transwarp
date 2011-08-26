@@ -5,7 +5,10 @@
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
 			  title="{resourceManager.getString('Dialogs','SUPPORT_TEXT_TITLE')}"
-			  addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);">
+			  addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);"
+			  resizable="true" height.no_results="100" height.default="350" width="400"
+			  minWidth="200"
+			  minHeight="100">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
@@ -36,11 +39,11 @@
 			}
 			
 			protected function pageChanged(event:PageSelectionEvent):void {
-				page = Courseware.instance.currentPage;
+				page = event.page as Page;
 			}
 			
 			protected function updateElementList():void {
-				currentState = _page.supportText ? "default" : "no_results";
+				currentState = _page && _page.supportText ? "default" : "no_results";
 			}
 		]]>
 	</fx:Script>
@@ -50,12 +53,12 @@
 		<s:State name="no_results" />
 	</dialogs:states>
 	
-	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" width="100%" height="100%">
 		<ui:PageTitle />
-		<s:Label width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10"
+		<s:Label width="100%" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10"
 				 text="{resourceManager.getString('Dialogs','NO_SUPPORT_TEXT')}" includeIn="no_results"/>
-		<s:TextArea width="380" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" editable="false"
-					horizontalScrollPolicy="off" minHeight="250" maxHeight="450" 
+		<s:TextArea width="100%" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" editable="false"
+					horizontalScrollPolicy="off" height="100%" 
 					textFlow="{page.supportText}" includeIn="default"/>
 	</s:VGroup>
 </dialogs:DialogBox>

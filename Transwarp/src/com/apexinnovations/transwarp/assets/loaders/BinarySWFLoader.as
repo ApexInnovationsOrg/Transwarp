@@ -9,6 +9,7 @@ package com.apexinnovations.transwarp.assets.loaders {
 	
 	TranswarpVersion.revision = "$Rev$";
 	
+	[Event(name="contentReady", type="com.apexinnovations.transwarp.events.TranswarpEvent")]
 	public class BinarySWFLoader extends BinaryDataLoader implements ISharedLoader {
 		
 		include "ISharedLoaderImpl.as"

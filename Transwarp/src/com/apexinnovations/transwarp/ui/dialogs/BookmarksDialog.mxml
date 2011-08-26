@@ -5,34 +5,42 @@
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
 			  contentCreationComplete="contentCreationComplete(event);"
-			  title="{resourceManager.getString('Dialogs','BOOKMARKS_TITLE')}">
+			  title="{resourceManager.getString('Dialogs','BOOKMARKS_TITLE')}"
+			  resizable="true" minHeight="340" minWidth="500">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Course;
 			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.CoursewareObject;
 			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import mx.managers.PopUpManager;
+			import mx.messaging.AbstractConsumer;
 			
 			TranswarpVersion.revision = "$Rev$";
 			
-			protected var _page:Page = null;
-			[Bindable] protected var _bookmarkedPages:Array = new Array;
+			protected var _page:CoursewareObject
+			[Bindable] protected var _bookmarkedPages:Array = [];
 			
 			override protected function addedToStage(event:Event):void {
 				super.addedToStage(event);
 				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
 				pageChanged(new PageSelectionEvent(Courseware.instance.currentPage));
-				var c:Course, p:Page;
-				for each (c in Courseware.instance.product.courses) {
-					for each (p in c.pages) {
+				
+				for each(var obj:CoursewareObject in Courseware.instance.product.flatList) {
+					if(obj.bookmarked)
+						_bookmarkedPages.push(obj);
+				}
+				
+				/* for each (var c:Course in Courseware.instance.product.courses) {
+					for each (var p:CoursewareObject in c.flatList) {
 						if (p.bookmarked) {
 							_bookmarkedPages.push(p);
 						}
 					}
-				}
+				} */
 			}
 			
 			protected function bookmarkPage(val:Boolean):void {
@@ -50,7 +58,7 @@
 				dg.sortByColumn(0);
 			}
 			
-			protected function deleteBookmark(val:Page):void {
+			protected function deleteBookmark(val:CoursewareObject):void {
 				val.bookmarked = false;
 				_bookmarkedPages.splice(_bookmarkedPages.indexOf(val), 1);
 				dg.dataProvider.refresh();
@@ -58,12 +66,12 @@
 			}
 			
 			protected function pageChanged(event:PageSelectionEvent):void {
-				_page = Courseware.instance.currentPage;
+				_page = event.page;
 				currentState = _page.bookmarked ? "bookmarked" : "default";
 			}
 			
 			protected function sortByLevel(obj1:Object, obj2:Object):int {
-				var idx1:uint = (obj1 as Page).sortToken, idx2:uint = (obj2 as Page).sortToken;
+				var idx1:uint = (obj1 as CoursewareObject).sortToken, idx2:uint = (obj2 as CoursewareObject).sortToken;
 				return (idx1 < idx2 ? -1 : (idx1 == idx2 ? 0 : 1));
 			}
 		]]>
@@ -74,7 +82,7 @@
 		<s:State name="bookmarked" />
 	</dialogs:states>
 	
-	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" >
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" width="100%" height="100%">
 		<ui:PageTitle />
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
 			<!-- Show star graphic -->
@@ -87,22 +95,22 @@
 				</s:fill>
 			</s:Path>
 
-			<s:Button width="140" click.default="bookmarkPage(true);" click.bookmarked="bookmarkPage(false);"
+			<s:Button click.default="bookmarkPage(true);" click.bookmarked="bookmarkPage(false);"
 					  label.default="{resourceManager.getString('Dialogs','BOOKMARK_THIS_PAGE')}" 
 					  label.bookmarked="{resourceManager.getString('Dialogs','DELETE_BOOKMARK')}"/>
 		</s:HGroup>
-		<s:Label text="Current Bookmarks:" width="400" fontWeight="bold" paddingTop="10" />
-		<s:HGroup verticalAlign="middle" width="100%">
-			<ui:DataGridSortable id="dg" width="400" height="100%" rowCount="5" dataProvider="{_bookmarkedPages}">
+		<s:Label text="Current Bookmarks:" fontWeight="bold" paddingTop="10" />
+		<s:HGroup verticalAlign="middle" width="100%" height="100%">
+			<ui:DataGridSortable id="dg" width="100%" height="100%" dataProvider="{_bookmarkedPages}">
 				<ui:columns>
-					<mx:DataGridColumn dataField="course.levelRoman" width="55" textAlign="center" sortCompareFunction="sortByLevel"
+					<mx:DataGridColumn dataField="parentCourse.levelRoman" width="55" textAlign="center" sortCompareFunction="sortByLevel"
 									   headerText="{resourceManager.getString('Dialogs','LEVEL')}"/>
 					<mx:DataGridColumn dataField="qualifiedName" 
 									   headerText="{resourceManager.getString('Dialogs','PAGE_NAME')}"/>
 				</ui:columns>
 			</ui:DataGridSortable>
 			<s:VGroup horizontalAlign="left">
-				<s:Button label="{resourceManager.getString('Dialogs','GOTO')}" enabled="{dg.selectedItem}" click="Courseware.instance.currentPage=(dg.selectedItem as Page);" />
+				<s:Button label="{resourceManager.getString('Dialogs','GOTO')}" enabled="{dg.selectedItem}" click="Courseware.instance.currentPage=(dg.selectedItem as CoursewareObject);" />
 				<s:Button label="{resourceManager.getString('Dialogs','DELETE')}" enabled="{dg.selectedItem}" click="deleteBookmark(dg.selectedItem as Page);" />
 			</s:VGroup>
 		</s:HGroup>

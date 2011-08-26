@@ -111,7 +111,7 @@
 				</s:LinearGradient>
 			</s:fill>
 		</s:Rect>
-		<s:RichText id="textDisplay" paddingTop="7" paddingBottom="5" paddingLeft="7" paddingRight="7"/>
+		<s:RichText id="textDisplay" paddingTop="7" paddingBottom="5" paddingLeft="7" paddingRight="7" fontSize="14"/>
 	</s:Group>
 	
 </s:Skin>
