@@ -4,6 +4,7 @@ package com.apexinnovations.transwarp.assets.loaders {
 	import com.apexinnovations.transwarp.events.TranswarpEvent;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	import com.apexinnovations.transwarp.utils.Utils;
+	import com.greensock.events.LoaderEvent;
 	import com.greensock.loading.LoaderStatus;
 	import com.greensock.loading.core.LoaderCore;
 	
@@ -25,7 +26,7 @@ package com.apexinnovations.transwarp.assets.loaders {
 			_page = page;
 			
 			var baseURL:String = Courseware.instance.rootFolder + '/'
-			//var baseURL:String = "./";
+
 			var dateHash:String = makeDateHash(_page);
 			
 			var swfURL:String = baseURL + _page.swf; 
@@ -52,13 +53,16 @@ package com.apexinnovations.transwarp.assets.loaders {
 				var configURL:String = baseURL + page.config;
 				configLoader = loaderFactory.getLoader(configURL, configURL + dateHash, configLoaderClass, {allowMalformedURL: true});
 				append(configLoader);
-			}			
+			}
 			
+			addEventListener(LoaderEvent.COMPLETE, childSWFReady);			
 		}
 		
 		public function get page():Page { return _page; }
 		
 		public function get contentReady():Boolean {
+			// Ensure that the main swf and potential config swfs are loaded and converted
+			// The cases where the config is not a swf are covered by the status == LoaderStatus.COMPLETED check below
 			var configReady:Boolean = configLoader is BinarySWFLoader? BinarySWFLoader(configLoader).contentReady : true;			
 			
 			return status == LoaderStatus.COMPLETED && swfLoader.contentReady && configReady;

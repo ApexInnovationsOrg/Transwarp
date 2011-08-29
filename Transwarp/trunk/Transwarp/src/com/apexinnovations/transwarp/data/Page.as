@@ -29,6 +29,7 @@ package com.apexinnovations.transwarp.data {
 		protected var _updates:Vector.<Update> = new Vector.<Update>();			// Vector (array) of related Updates
 		protected var _weight:uint = 0;											// The 'weight' of the page in a search ranking
 		protected var _searchFields:Vector.<String> = new Vector.<String>();	// These are the fields that will be searched - composited and converted to strings
+		protected var _snapshot:String;
 		
 		public function Page(xml:XML, parent:CoursewareObjectContainer, depth:int) {
 			super(xml, parent, depth);
@@ -45,6 +46,8 @@ package com.apexinnovations.transwarp.data {
 				_swf = xml.@swf;
 				_timeline = xml.@timeline == 'true';
 				_audio = String(xml.@audio).toLowerCase();
+				
+				_snapshot = xml.@snapshot;
 							
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName((this) + ': Bad Initialization XML:  [' + e.message + ']'));
@@ -61,56 +64,62 @@ package com.apexinnovations.transwarp.data {
 			else if(_audio == "")
 				_audio = fileName + "/" + fileName + ".mp3";
 			
+			if(_snapshot == "" || !_snapshot)
+				_snapshot = fileName + "/snapshot.png";			
 			
-			
-			if(parentCourseware.user.demo) {
-				if(!_demo) {
-					_audio = '';
-					_description = null;
-					_supportText = null;
-					_instructions = null;
-					_timeline = false;
-					_swf = "PAGE_000000/PAGE_000000.swf";
-				}
-				_visited = !_demo;
-			} else {
-				for each (var l:XML in xml.links.link) {
-					_links.push(new Link(l, this));
-				}
-				for each (var q:XML in xml.questions.question) {
-					_questions.push(new Question(q, this));
-				}
-				var tmp:Update;
-				for each (var u:XML in xml.updates.update) {
-					tmp = new Update(u, this);
-					if (Utils.trim(Utils.textFlowToString(tmp.textFlow)) != "") {
-						_updates.push(tmp);
-						if (tmp.time > _lastUpdate) _lastUpdate = tmp.time;
-					}
-				}
-				
-				// Initialize text search fields for faster searching later
-				_searchFields[0] = qualifiedName;
-				_searchFields[1] = _keywords;
-				_searchFields[2] = Utils.textFlowToString(_description);
-				_searchFields[3] = Utils.textFlowToString(_supportText);
-				_searchFields[4] = Utils.textFlowToString(_instructions);
-				_searchFields[5] = '';
-				for each (var lnk:Link in _links) {
-					if (lnk.textFlow)	_searchFields[5] += Utils.textFlowToString(lnk.textFlow);
-				}
-				_searchFields[6] = '';
-				_searchFields[7] = '';
-				for each (var qstn:Question in _questions) {
-					if (qstn.qTextFlow)	_searchFields[6] += Utils.textFlowToString(qstn.qTextFlow);
-					if (qstn.aTextFlow)	_searchFields[7] += Utils.textFlowToString(qstn.aTextFlow);
-				}
-				_searchFields[8] = '';
-				for each (var upd:Update in _updates) {
-					if (upd.textFlow && (Courseware.instance.debug || !upd.hidden)) _searchFields[8] += Utils.textFlowToString(upd.textFlow);
+			for each (var l:XML in xml.links.link) {
+				_links.push(new Link(l, this));
+			}
+			for each (var q:XML in xml.questions.question) {
+				_questions.push(new Question(q, this));
+			}
+			var tmp:Update;
+			for each (var u:XML in xml.updates.update) {
+				tmp = new Update(u, this);
+				if (Utils.trim(Utils.textFlowToString(tmp.textFlow)) != "") {
+					_updates.push(tmp);
+					if (tmp.time > _lastUpdate) _lastUpdate = tmp.time;
 				}
 			}
-						
+			
+			// Initialize text search fields for faster searching later
+			_searchFields[0] = qualifiedName;
+			_searchFields[1] = _keywords;
+			_searchFields[2] = Utils.textFlowToString(_description);
+			_searchFields[3] = Utils.textFlowToString(_supportText);
+			_searchFields[4] = Utils.textFlowToString(_instructions);
+			_searchFields[5] = '';
+			for each (var lnk:Link in _links) {
+				if (lnk.textFlow)	_searchFields[5] += Utils.textFlowToString(lnk.textFlow);
+			}
+			_searchFields[6] = '';
+			_searchFields[7] = '';
+			for each (var qstn:Question in _questions) {
+				if (qstn.qTextFlow)	_searchFields[6] += Utils.textFlowToString(qstn.qTextFlow);
+				if (qstn.aTextFlow)	_searchFields[7] += Utils.textFlowToString(qstn.aTextFlow);
+			}
+			_searchFields[8] = '';
+			for each (var upd:Update in _updates) {
+				if (upd.textFlow && (Courseware.instance.debug || !upd.hidden)) _searchFields[8] += Utils.textFlowToString(upd.textFlow);
+			}
+			
+			var demoUser:Boolean = _parentCourseware.user.demo
+			
+			if(_restricted || (demoUser && !_demo)) {
+				_audio = '';
+				_description = null;
+				_supportText = null;
+				_instructions = null;
+				_timeline = false;
+				
+				if(demoUser) {
+					_visited = !_demo;
+					_swf = "PAGE_000000/PAGE_000000.swf";
+				} else if(_restricted) {
+					_swf = "PAGE_000000/PAGE_000001.swf";
+				}
+			}				
+					 			
 		}
 			
 		public function get audio():String { return _audio; }
@@ -122,6 +131,7 @@ package com.apexinnovations.transwarp.data {
 		public function get keywords():String { return _keywords; }
 		public function get links():Vector.<Link> { return _links; }
 		public function get questions():Vector.<Question> { return _questions; }
+		public function get snapshot():String { return _snapshot; }
 		[Bindable("pageDataChanged")] public function get supportText():TextFlow { return _supportText; }
 		[Bindable("pageDataChanged")] public function get swf():String { return _swf; }
 		[Bindable("pageDataChanged")] public function get timeline():Boolean { return _timeline; }

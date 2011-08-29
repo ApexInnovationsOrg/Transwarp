@@ -3,7 +3,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 xmlns:ui="com.apexinnovations.transwarp.ui.*"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:landingpage="com.apexinnovations.transwarp.ui.landingpage.*">
 	
 	<fx:Metadata>
 		[Event(name="error", type="flash.events.ErrorEvent")]
@@ -13,6 +13,7 @@
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.CoursewareObject;
+			import com.apexinnovations.transwarp.data.Folder;
 			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
@@ -45,8 +46,9 @@
 				timelineVisible = timeline.includeInLayout = page ? page.timeline : false;
 				instructions.visible = instructions.includeInLayout = page ? Boolean(page.instructions) : false;
 				instrText.textFlow = page ? page.instructions : null;
-				
 				debugInfo.text = target ? target.id + (page ? " (" + page.swf + ")" : "") : "";
+				if(!page)
+					progressPanel.visible = false;
 				
 			}
 			
@@ -57,9 +59,12 @@
 		
 		<ui:PageTitle id="pageTitle" fontSize="20" top="10" horizontalCenter="0"/>
 		
-		<ui:PageContentContainer id="container" width="100%" height="100%" 
-							  open="progressPanel.visible = true" complete="progressPanel.visible = false"
-							  progress="loadProgress(event)"/>
+		<s:Group width="100%" height="100%">
+			<ui:PageContentContainer id="container" width="100%" height="100%" 
+								  open="progressPanel.visible = true" complete="progressPanel.visible = false"
+								  progress="loadProgress(event)"/>
+			<landingpage:LandingPage folder="{Courseware.instance.currentPage as Folder}" width="100%" height="100%"/>			
+		</s:Group>
 		
 		<s:VGroup id="bottomGroup" horizontalAlign="center" width="100%" bottom="10">
 			<ui:Timeline id="timeline" source="{container.rawContent as TranswarpMovieClip}"
@@ -84,6 +89,8 @@
 		</s:Group>
 		
 	</s:VGroup>	
+	
+	<!--<landingpage:LandingPageButton horizontalCenter="0" verticalCenter="0" page="{Courseware.instance.currentPage as Page}" />-->
 	
 	<s:Panel id="progressPanel" title="Loading..." width="30%" height="78" horizontalCenter="0" verticalCenter="0" visible="false" backgroundColor="0xFFFFFF" skinClass="com.apexinnovations.transwarp.skins.PanelSkin">
 		<mx:ProgressBar id="progressBar" labelPlacement="bottom" label="%3%%" direction="right" mode="manual" top="10" bottom="10" left="10" right="10"/>

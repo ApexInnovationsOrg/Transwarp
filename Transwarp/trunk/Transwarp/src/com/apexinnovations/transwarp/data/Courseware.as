@@ -118,7 +118,7 @@ package com.apexinnovations.transwarp.data {
 				buttonFGColor = uint("0x" + String(xml.@buttonFGColor).substr(1,6));	// @color like '#FF00FF'
 				color = uint("0x" + String(xml.@color).substr(1,6));	// @color like '#FF00FF'
 				_copyright = xml.@copyright;
-				_debug = true;// xml.@debug == 'true';
+				_debug = xml.@debug == 'true';
 				highlightColor = uint("0x" + String(xml.@highlightColor).substr(1,6));	// @color like '#FF00FF'
 				_owner = xml.@owner;
 				_rootFolder = xml.@rootFolder;

@@ -73,9 +73,10 @@ package com.apexinnovations.transwarp.ui {
 			if(watchedLoader) {
 				watchedLoader.removeEventListener(LoaderEvent.PROGRESS, contentProgress);
 				watchedLoader.removeEventListener(TranswarpEvent.CONTENT_READY, contentLoaded);
+				watchedLoader = null;
 			}
 			
-			if(!(Courseware.instance.currentPage as Page))
+			if(!(Courseware.instance.currentPage is Page))
 				return;
 			
 			watchedLoader = contentLoader.getPageLoader(Courseware.instance.currentPage as Page);
