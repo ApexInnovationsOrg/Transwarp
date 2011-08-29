@@ -6,18 +6,21 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.apexinnovations.transwarp.data.CourseList;
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.graphics.*;
-			import com.apexinnovations.transwarp.data.CourseList;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import mx.collections.ArrayList;
 			import mx.utils.ColorUtil;
 			
 			TranswarpVersion.revision = "$Rev$";
-					
+			
+			[Bindable] protected var showLevel:Boolean = false;
+			
 			override protected function createChildren():void {
 				super.createChildren();
+				showLevel = Courseware.instance.product.courses.length > 1;
 			}
 			
 		]]>
@@ -40,7 +43,7 @@
 	</s:Rect>
 	
 	<!--  Header  -->
-	<s:Rect width="100%" height="66" topRightRadiusX="12">
+	<s:Rect width="100%" height="{showLevel ? 66 : 50}" topRightRadiusX="12">
 		<s:fill>
 			<s:LinearGradient>
 				<s:GradientEntry color="{ColorUtil.adjustBrightness2(Courseware.instance.color, -30)}"/>
@@ -54,10 +57,11 @@
 	 
 	<s:VGroup left="30" top="20" color="0xffffff" gap="5">
 		<s:Label fontWeight="bold" fontSize="20" fontFamily="Arial"
-				 text="{resourceManager.getString('Chrome','LEVEL')} {Courseware.instance.currentCourse.levelRoman}"/>
+				 text="{resourceManager.getString('Chrome','LEVEL')} {Courseware.instance.currentCourse.levelRoman}" 
+				 visible="{showLevel}"
+				 includeInLayout="{showLevel}"/>
 		<s:Label text="{Courseware.instance.currentCourse.name}" fontFamily="Arial" fontSize="15" />
 	</s:VGroup>
-	
 	
 	<s:Line left="20" right="10" bottom="60">
 		<s:stroke>
@@ -65,8 +69,9 @@
 		</s:stroke>
 	</s:Line>
 	
-	<tree:Tree id="tree" width="100%" dataProvider="{Courseware.instance.currentCourseList}" selectedItem="@{Courseware.instance.currentPage}" top="72" left="20" bottom="60" right="10"/>
-	
+	<tree:Tree id="tree" width="100%" dataProvider="{Courseware.instance.currentCourseList}" selectedItem="@{Courseware.instance.currentPage}" 
+			   top="{showLevel ? 72 : 56}"
+			   left="20" bottom="60" right="10"/>
 	<!--  Footer  -->
 	<s:VGroup width="100%" horizontalAlign="center" bottom="8" gap="-1">
 		<graphics:ApexLogo/>

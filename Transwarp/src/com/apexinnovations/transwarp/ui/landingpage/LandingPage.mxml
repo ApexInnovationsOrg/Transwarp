@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Course;
+			import com.apexinnovations.transwarp.data.CoursewareObject;
+			import com.apexinnovations.transwarp.data.Folder;
+			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			protected var _folder:Folder;
+			protected var buttons:Vector.<LandingPageButton> = new Vector.<LandingPageButton>();
+			
+			public function get folder():Folder { return _folder; }
+
+			public function set folder(value:Folder):void {
+				if(value == _folder)
+					return;
+				
+				_folder = value;
+				
+				container.removeAllElements();
+				
+				if(_folder) {
+					var button:LandingPageButton;
+					var i:int = 0;
+					for each(var child:CoursewareObject in _folder.contents) {
+						if(child is Page) {
+							if(i < buttons.length) {
+								button = buttons[i];
+							} else {
+								button = new LandingPageButton();
+								buttons.push(button);
+							}
+							button.page = child as Page;
+							container.addElement(button);
+							i += 1;
+						}
+					}
+				}
+			}
+
+		]]>
+	</fx:Script>
+	
+	<s:TileGroup id="container" horizontalCenter="0" verticalCenter="0" orientation="columns" />
+	
+</s:Group>

@@ -65,9 +65,9 @@ package com.apexinnovations.transwarp.data {
 		
 		public function get parentCourse():Course { return _parentCourse; }
 		public function get parent():CoursewareObjectContainer { return _parent; }
-		public function get id():uint { return _id; }
+		[Bindable("coursewareObjectChanged")] public function get id():uint { return _id; }
 		public function get depth():int { return _depth }
-		public function get name():String { return _name; }
+		[Bindable("coursewareObjectChanged")] public function get name():String { return _name; }
 		public function get parentCourseware():Courseware { return _parentCourseware; }
 		public function get restricted():Boolean { return _restricted; }
 		public function get demo():Boolean { return _demo; }

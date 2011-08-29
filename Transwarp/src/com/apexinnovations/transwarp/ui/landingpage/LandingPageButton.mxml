@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				xmlns:landingpage="com.apexinnovations.transwarp.ui.landingpage.*"
+				buttonMode="true"
+				rollOver="mouseOverOutHandler(event)"
+				rollOut="mouseOverOutHandler(event)"
+				mouseDown="mouseUpDownHandler(event)"
+				addedToStage="addedToStageHandler(event)"
+				click="click(event)">
+				
+	
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			protected var down:Boolean = false;
+			protected var over:Boolean = false;
+			
+			[Bindable] public var page:Page;
+			
+			protected function mouseOverOutHandler(event:MouseEvent):void {
+				over = event.type == MouseEvent.ROLL_OVER;
+				updateState();				
+			}
+			
+			protected function mouseUpDownHandler(event:MouseEvent):void {
+				down = event.type == MouseEvent.MOUSE_DOWN;
+				updateState();
+			}
+			
+			protected function addedToStageHandler(event:Event):void {
+				stage.addEventListener(MouseEvent.MOUSE_UP, mouseUpDownHandler);
+			}
+			
+			protected function updateState():void {
+				if(!over && !down)
+					currentState = "up";
+				else if(down)
+					currentState = "down";
+				else if(over)
+					currentState = "over";
+			}
+			
+			protected function click(event:MouseEvent):void {
+				Courseware.instance.currentPage = page;
+			}
+			
+		]]>
+	</fx:Script>
+	
+	
+	<s:states>
+		<s:State name="up" />
+		<s:State name="over" />
+		<s:State name="down" />
+	</s:states>
+	
+	<s:filters>
+		<s:DropShadowFilter alpha="0.5" blurX="2.3" blurY="2.3" distance="2" />
+	</s:filters>
+	
+	<s:HGroup verticalAlign="middle" gap="15">
+		<s:Group>
+			<s:Group id="iconMask">
+				<s:Rect radiusX="10" width="100" height="100">
+					<s:fill><s:SolidColor/></s:fill>
+				</s:Rect>
+			</s:Group>
+			<s:Rect width="100" height="100" radiusX="10">
+				<s:stroke>
+					<s:SolidColorStroke weight="2" pixelHinting="true" alpha="0.9" />
+				</s:stroke>
+				<s:fill>
+					<s:SolidColor color="0xffffff" />
+				</s:fill>
+			</s:Rect>
+			<landingpage:LandingPageIcon page="{page}" width="100" height="100" mask="{iconMask}"/>
+			<s:Rect radiusX="10" width="100" height="100" excludeFrom="up">
+				<s:fill><s:SolidColor alpha="0.1" alpha.down="0.2" color="0"/></s:fill>
+			</s:Rect>
+			<s:filters>
+				<s:DropShadowFilter blurX="16" blurY="16" angle="225" inner="true" alpha=".45"/>
+			</s:filters>
+		</s:Group>
+		<s:Group>
+			<!-- Hit Area -->
+			<s:Rect width="100%" height="100%" alpha="0">
+				<s:fill> <s:SolidColor /> </s:fill>
+			</s:Rect>			
+			<s:Label text="{page.name}" fontSize="20" fontWeight="normal" maxWidth="285" />
+		</s:Group>
+	
+	</s:HGroup>
+</s:Group>
