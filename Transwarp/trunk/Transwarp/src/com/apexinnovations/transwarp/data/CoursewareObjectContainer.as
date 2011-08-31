@@ -48,6 +48,8 @@ package com.apexinnovations.transwarp.data {
 					}
 				}
 			}
+			
+			calculateVisited();
 		}
 		
 		
