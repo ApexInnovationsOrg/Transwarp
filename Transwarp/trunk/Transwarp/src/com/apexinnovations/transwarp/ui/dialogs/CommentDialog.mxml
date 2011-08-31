@@ -42,8 +42,8 @@
 		<s:Label  fontStyle="italic" width="100%" textAlign="right" color="0x0000FF"
 				 text="{resourceManager.getString('Dialogs','APPRECIATE_FEEDBACK')}"/>
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingBottom="10" paddingTop="10">
-			<s:Button label="{resourceManager.getString('Dialogs','SUBMIT')}" click="okHandler(event);"/>
-			<s:Button label="{resourceManager.getString('Dialogs','CANCEL')}" click="closeHandler(event);"/>
+			<s:Button label="{resourceManager.getString('Dialogs','SUBMIT')}" click="okHandler(event);" buttonMode="true"/>
+			<s:Button label="{resourceManager.getString('Dialogs','CANCEL')}" click="closeHandler(event);" buttonMode="true"/>
 		</s:HGroup>
 	</s:VGroup>
 </dialogs:DialogBox>

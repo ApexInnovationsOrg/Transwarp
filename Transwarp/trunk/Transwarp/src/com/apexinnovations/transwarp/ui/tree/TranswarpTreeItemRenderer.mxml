@@ -5,7 +5,7 @@
 				autoDrawBackground="false"
 				dataChange="dataChangeHandler(event)" xmlns:tree="com.apexinnovations.transwarp.ui.tree.*"
 				click="click()"
-				height="27">
+				height="27" buttonMode="true">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
