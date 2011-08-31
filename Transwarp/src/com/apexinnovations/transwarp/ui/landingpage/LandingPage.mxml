@@ -42,12 +42,17 @@
 							i += 1;
 						}
 					}
+					container.validateDisplayList();
+					container.validateNow();
+					trace(container.width, container.height);
+					trace(width, height);
 				}
+				
 			}
 
 		]]>
 	</fx:Script>
 	
-	<s:TileGroup id="container" horizontalCenter="0" verticalCenter="0" orientation="columns" />
+	<s:TileGroup id="container" horizontalCenter="0" verticalCenter="0" orientation="columns" requestedRowCount="5" />
 	
 </s:Group>
