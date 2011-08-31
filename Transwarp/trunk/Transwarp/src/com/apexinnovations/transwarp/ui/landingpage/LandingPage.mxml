@@ -42,10 +42,22 @@
 							i += 1;
 						}
 					}
+					
 					container.validateDisplayList();
-					container.validateNow();
-					trace(container.width, container.height);
-					trace(width, height);
+					
+					trace(container.rowCount, container.columnCount);
+					
+					var w:Number = container.horizontalGap * (container.columnCount - 1)  + container.columnCount * container.columnWidth;
+					var h:Number = container.verticalGap * (container.rowCount - 1) + container.rowCount * container.rowHeight;
+					
+					var wOverflow:Number = w - width * 0.9;
+					var hOverflow:Number = h - height * 0.9;
+					
+					if(wOverflow > 0 && wOverflow > hOverflow) {
+						container.scaleX = container.scaleY = (width*0.9) / w;
+					} else if(hOverflow > 0 && hOverflow > wOverflow) {
+						container.scaleX = container.scaleY = (height*0.9) / h;
+					}
 				}
 				
 			}
@@ -53,6 +65,6 @@
 		]]>
 	</fx:Script>
 	
-	<s:TileGroup id="container" horizontalCenter="0" verticalCenter="0" orientation="columns" requestedRowCount="5" />
+	<s:TileGroup id="container" horizontalCenter="0" verticalCenter="0" orientation="columns" requestedRowCount="4"/>
 	
 </s:Group>

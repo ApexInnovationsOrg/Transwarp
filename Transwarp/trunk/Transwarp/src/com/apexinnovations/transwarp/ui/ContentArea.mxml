@@ -55,15 +55,16 @@
 		]]>
 	</fx:Script>
 	
-	<s:VGroup id="contentGroup" top="10" bottom="10" width="{width}" height="100%" gap="10" horizontalAlign="center">
+	<s:VGroup top="10" bottom="10" width="{width}" height="100%" gap="10" horizontalAlign="center">
 		
 		<ui:PageTitle id="pageTitle" fontSize="20" top="10" horizontalCenter="0"/>
 		
-		<s:Group width="100%" height="100%">
+		<s:Group id="contentGroup" width="100%" height="100%">
 			<ui:PageContentContainer id="container" width="100%" height="100%" 
 								  open="progressPanel.visible = true" complete="progressPanel.visible = false"
 								  progress="loadProgress(event)"/>
-			<landingpage:LandingPage folder="{Courseware.instance.currentPage as Folder}" width="100%" height="100%"/>			
+			<landingpage:LandingPage folder="{Courseware.instance.currentPage as Folder}" 
+									 width="100%" height="100%" horizontalCenter="0" verticalCenter="0"/>			
 		</s:Group>
 		
 		<s:VGroup id="bottomGroup" horizontalAlign="center" width="100%" bottom="10">
@@ -89,8 +90,6 @@
 		</s:Group>
 		
 	</s:VGroup>	
-	
-	<!--<landingpage:LandingPageButton horizontalCenter="0" verticalCenter="0" page="{Courseware.instance.currentPage as Page}" />-->
 	
 	<s:Panel id="progressPanel" title="Loading..." width="30%" height="78" horizontalCenter="0" verticalCenter="0" visible="false" backgroundColor="0xFFFFFF" skinClass="com.apexinnovations.transwarp.skins.PanelSkin">
 		<mx:ProgressBar id="progressBar" labelPlacement="bottom" label="%3%%" direction="right" mode="manual" top="10" bottom="10" left="10" right="10"/>
