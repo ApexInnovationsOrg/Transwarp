@@ -53,7 +53,7 @@
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" width="100%" >
 		<s:Label text="{Courseware.instance.user.name}: {getString('CONFIGURATION')}" fontWeight="bold" />
 		<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" width="100%" >
-			<s:CheckBox id="autoCloseMenu" label="{getString('AUTO_CLOSE_MENU')}" selected="{Courseware.instance.user.autoCloseMenu}" />
+			<s:CheckBox id="autoCloseMenu" label="{getString('AUTO_CLOSE_MENU')}" selected="{Courseware.instance.user.autoCloseMenu}" buttonMode="true"/>
 			<s:Label paddingLeft="18" text="{getString('AUTO_CLOSE_MENU_DESC')}" width="350" fontSize="12" fontStyle="italic" color="0x0000FF" />
 <!--
 			<s:CheckBox id="animatePageTransitions" label="{getString('ANIMATE_TRANSITIONS')}" selected="{Courseware.instance.user.animatePageTransitions}" />
@@ -61,13 +61,13 @@
 			<s:CheckBox id="closedCaptioning" label="{getString('CLOSED_CAPTIONING')}" selected="{Courseware.instance.user.closedCaptioning}" />
 			<s:Label paddingLeft="18" text="{getString('CLOSED_CAPTIONING_DESC')}" width="350" fontStyle="italic" color="0x0000FF" />
 -->
-			<s:CheckBox id="printSlideOnly" label="{getString('PRINT_PAGE')}" selected="{Courseware.instance.user.printSlideOnly}" />
+			<s:CheckBox id="printSlideOnly" label="{getString('PRINT_PAGE')}" selected="{Courseware.instance.user.printSlideOnly}" buttonMode="true"/>
 
 			<s:Label paddingLeft="18" text="{getString('PRINT_PAGE_DESC')}" width="350" fontSize="12" fontStyle="italic" color="0x0000FF" />
 		</s:VGroup>
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
-			<s:Button label="{getString('SUBMIT')}" click="okHandler(event);"/>
-			<s:Button label="{getString('CANCEL')}" click="closeHandler(event);"/>
+			<s:Button label="{getString('SUBMIT')}" click="okHandler(event);" buttonMode="true"/>
+			<s:Button label="{getString('CANCEL')}" click="closeHandler(event);" buttonMode="true"/>
 		</s:HGroup>
 	</s:VGroup>
 </dialogs:DialogBox>

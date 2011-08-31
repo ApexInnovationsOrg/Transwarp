@@ -198,7 +198,7 @@
                 <s:VerticalLayout gap="0" horizontalAlign="justify" />
             </s:layout>
             <!--- @private -->
-            <s:Group id="topGroup" mask="{topGroupMask}">
+            <s:Group id="topGroup" mask="{topGroupMask}" buttonMode="true">
                 
                 <!--- layer 0: title bar fill @private -->
                 <s:Rect id="tbFill" left="0" right="0" top="0" bottom="1">
@@ -304,7 +304,7 @@
         </s:Group>
 		
 		<!-- resize handle -->
-		<s:Group id="resizeHandle" right="1" bottom="1" width="15" height="15" visible="false">
+		<s:Group id="resizeHandle" right="1" bottom="1" width="15" height="15" visible="false" buttonMode="true">
 			<s:Path data="M 4 13 L 13 4 L 13 13 L 4 13">
 				<s:fill>
 					<s:SolidColor color="0x000000" />

@@ -167,14 +167,14 @@
 		<s:HGroup verticalAlign="top" gap="5">
 			<s:VGroup horizontalAlign="center" gap="5" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5" width="40" >
 				<s:Label text="{resourceManager.getString('Chrome','TOOL')}" fontWeight="bold" color="0x000000" />
-				<ui:ToolButton id="brush" icon="{SmallPaintbrushIcon}" selected="true" toolTip="PAINTBRUSH" click="toolSelected('brush');"/>
-				<ui:ToolButton id="stop" icon="{ClearScreenIcon}" selected="false" toolTip="STOP_DRAWING" click="toolSelected('stop');" />
-				<ui:ToolButton id="eraser" icon="{EraserIcon}" selected="false" toolTip="ERASER" click="toolSelected('eraser');" visible="false" />
+				<ui:ToolButton id="brush" icon="{SmallPaintbrushIcon}" selected="true" toolTip="PAINTBRUSH" click="toolSelected('brush');" buttonMode="true"/>
+				<ui:ToolButton id="stop" icon="{ClearScreenIcon}" selected="false" toolTip="STOP_DRAWING" click="toolSelected('stop');" buttonMode="true"/>
+				<ui:ToolButton id="eraser" icon="{EraserIcon}" selected="false" toolTip="ERASER" click="toolSelected('eraser');" buttonMode="true" visible="false"/>
 			</s:VGroup>
 			<ui:VerticalSeparator height="100%"/>
 			<s:VGroup horizontalAlign="center" gap="5" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5" width="40" >
 				<s:Label fontWeight="bold" color="0x000000" text="{resourceManager.getString('Chrome','OPTION')}"/>
-				<s:Spinner id="sizeSpinner" width="24" height="24" minimum="2" maximum="20" stepSize="2" value="10" toolTip="BRUSH_SIZE" enabled="{!stop.selected}" change="specifyCursor();" />
+				<s:Spinner id="sizeSpinner" width="24" height="24" minimum="2" maximum="20" stepSize="2" value="10" toolTip="BRUSH_SIZE" enabled="{!stop.selected}" change="specifyCursor();" buttonMode="true"/>
 				<s:Group enabled="{!stop.selected}" width="24" height="24" toolTip="BRUSH_EXAMPLE">
 					<s:Ellipse x="{12 - sizeSpinner.value/2}" y="{12 - sizeSpinner.value/2}" width="{sizeSpinner.value}" height="{sizeSpinner.value}">
 						<s:stroke>
@@ -185,9 +185,9 @@
 						</s:fill>
 					</s:Ellipse>
 				</s:Group>
-				<ui:SparkColorPicker id="cp" selectedItem="#FF0000" change="specifyCursor(); Mouse.cursor = _currentCursor;" skinClass="com.apexinnovations.transwarp.skins.ColorPickerListSkin" enabled="{brush.selected}" toolTip="BRUSH_COLOR" />
+				<ui:SparkColorPicker id="cp" selectedItem="#FF0000" change="specifyCursor(); Mouse.cursor = _currentCursor;" skinClass="com.apexinnovations.transwarp.skins.ColorPickerListSkin" enabled="{brush.selected}" toolTip="BRUSH_COLOR" buttonMode="true"/>
 			</s:VGroup>
 		</s:HGroup>
-		<s:Button label="Clear" click="_graphics.clear();"/>
+		<s:Button label="Clear" click="_graphics.clear();" buttonMode="true"/>
 	</s:VGroup>
 </dialogs:DialogBox>

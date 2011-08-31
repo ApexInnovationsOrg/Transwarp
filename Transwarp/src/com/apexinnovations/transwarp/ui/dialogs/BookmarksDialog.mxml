@@ -84,7 +84,7 @@
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" width="100%" height="100%">
 		<ui:PageTitle />
-		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
+		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10" buttonMode="true">
 			<!-- Show star graphic -->
 			<s:Path data="M9.5 7.2 13.05 0 16.6 7.2 24.55 8.3 18.85 13.95 20.2 21.85 13.1 18.1 6 21.9 7.35 13.95 1.6 8.4 9.5 7.2">
 				<s:stroke>
@@ -110,8 +110,8 @@
 				</ui:columns>
 			</ui:DataGridSortable>
 			<s:VGroup horizontalAlign="left">
-				<s:Button label="{resourceManager.getString('Dialogs','GOTO')}" enabled="{dg.selectedItem}" click="Courseware.instance.currentPage=(dg.selectedItem as CoursewareObject);" />
-				<s:Button label="{resourceManager.getString('Dialogs','DELETE')}" enabled="{dg.selectedItem}" click="deleteBookmark(dg.selectedItem as Page);" />
+				<s:Button label="{resourceManager.getString('Dialogs','GOTO')}" enabled="{dg.selectedItem}" click="Courseware.instance.currentPage=(dg.selectedItem as CoursewareObject);" buttonMode="true" />
+				<s:Button label="{resourceManager.getString('Dialogs','DELETE')}" enabled="{dg.selectedItem}" click="deleteBookmark(dg.selectedItem as Page);" buttonMode="true" />
 			</s:VGroup>
 		</s:HGroup>
 	</s:VGroup>	
