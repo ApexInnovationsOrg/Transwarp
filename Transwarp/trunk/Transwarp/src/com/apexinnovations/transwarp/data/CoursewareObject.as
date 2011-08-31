@@ -84,15 +84,15 @@ package com.apexinnovations.transwarp.data {
 			if(_visited == value)
 				return;
 			
-			var event:PropertyChangeEvent = new PropertyChangeEvent(PropertyChangeEvent.PROPERTY_CHANGE, false, true);
+			var event:PropertyChangeEvent = new PropertyChangeEvent(PropertyChangeEvent.PROPERTY_CHANGE);
 			event.source = this;
 			event.property = "visited";
 			event.oldValue = _visited;
 			event.newValue = value;
 			event.kind = PropertyChangeEventKind.UPDATE;
 			
-			if(dispatchEvent(event))
-				_visited = value;
+			_visited = value;
+			dispatchEvent(event);
 		}
 		
 		[Bindable] public function get bookmarked():Boolean { return _bookmarked; }
