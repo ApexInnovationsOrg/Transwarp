@@ -122,8 +122,8 @@
 			
 			protected function mouseMoveHandler(event:MouseEvent):void {
 				var topleft:Point = stage.globalToLocal(localToGlobal(new Point(0,0)));
-				width = Math.min(stage.stageWidth - topleft.x, Math.max(initialWidth + event.stageX - clickX, minWidth));
-				height = Math.min(stage.stageHeight - topleft.y, Math.max(initialHeight + event.stageY - clickY, minHeight));
+				width = Math.min(stage.stageWidth - topleft.x, Math.max(initialWidth + event.stageX - clickX, minWidth), maxWidth);
+				height = Math.min(stage.stageHeight - topleft.y, Math.max(initialHeight + event.stageY - clickY, minHeight), maxHeight);
 			}
 			
 		]]>
