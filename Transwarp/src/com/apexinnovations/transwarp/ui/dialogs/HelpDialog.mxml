@@ -6,8 +6,8 @@
 			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
 			  title="{resourceManager.getString('Dialogs','HELP_TITLE')}"
 			  contentCreationComplete="contentCreationComplete(event);"
-			  resizable="true"
-			  minWidth="365"
+			  resizable.showing_help="true"
+			  minWidth="400"
 			  minHeight="200">
 	<fx:Script>
 		<![CDATA[
