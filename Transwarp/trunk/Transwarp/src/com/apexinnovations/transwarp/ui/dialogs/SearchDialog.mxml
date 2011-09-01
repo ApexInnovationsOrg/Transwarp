@@ -4,7 +4,8 @@
 			  xmlns:mx="library://ns.adobe.com/flex/mx"
 			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
 			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
-			  title="{getString('SEARCH_TITLE')}">
+			  title="{getString('SEARCH_TITLE')}"
+			  resizable="true" resizable.no_results="false" minWidth="405" maxWidth="405" minHeight.no_results="100" height.no_results="100" minHeight="250">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
@@ -33,7 +34,7 @@
 					x = stage.stageWidth - width;
 					y = anchor.height;
 				}
-				maxHeight = stage.stageHeight - y;
+				height = stage.stageHeight - y;
 				visible = true;
 				PopUpManager.bringToFront(this);
 				setFocus();
@@ -64,7 +65,7 @@
 		<s:State name="no_results" />
 	</dialogs:states>
 
-	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" left="5" right="5">
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" left="5" right="5" width="100%" height="100%">
 		<s:HGroup gap="5">
 			<s:Label text="Keyword(s):" fontWeight="bold" color="{Courseware.instance.color}" />			
 			<s:Label text="{keywords}" fontWeight="bold" color="0x000000" />			
@@ -76,8 +77,8 @@
 		<s:Label text="{getString('NO_RESULTS')}" width="380" fontSize="13" fontWeight="bold" textAlign="center"
 				 color="0xFF0000" paddingTop="10" paddingBottom="10" includeIn="no_results"/>
 		
-		<s:Scroller id="scroller" horizontalScrollPolicy="off" maxHeight="{maxHeight - 60 - scroller.y}" 
-					visible.default="true" visible.no_results="false" height.no_results="0">
+		<s:Scroller id="scroller" horizontalScrollPolicy="off" 
+					visible.default="true" visible.no_results="false" height.no_results="0" width="100%" height="100%">
 			<s:VGroup id="resultList" width="100%" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" />
 		</s:Scroller>
 		
