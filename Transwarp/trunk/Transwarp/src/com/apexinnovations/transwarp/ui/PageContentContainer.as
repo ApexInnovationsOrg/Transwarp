@@ -115,6 +115,7 @@ package com.apexinnovations.transwarp.ui {
 			content = watchedLoader.swf;
 			
 			watchedLoader.playAudio();
+			
 			dispatchEvent(new Event("loadingStatusChanged"));
 			dispatchEvent(new Event(Event.COMPLETE));
 		}

@@ -45,7 +45,7 @@ package com.apexinnovations.transwarp.data {
 				_supportText = Utils.importTextFlow(xml.supportText.children()[0]);
 				_swf = xml.@swf;
 				_timeline = xml.@timeline == 'true';
-				_audio = String(xml.@audio).toLowerCase();
+				_audio = String(xml.@audio);
 				
 				_snapshot = xml.@snapshot;
 							
@@ -59,7 +59,7 @@ package com.apexinnovations.transwarp.data {
 				_swf = fileName + "/" + fileName + ".swf";
 			}
 			
-			if(_audio == "false" || _audio == "none" || _audio == "streamed")
+			if(_audio == "false" || _audio == "NONE" || _audio == "STREAMED")
 				_audio = "";
 			else if(_audio == "")
 				_audio = fileName + "/" + fileName + ".mp3";
