@@ -116,7 +116,7 @@ package com.apexinnovations.transwarp.data {
 					_visited = !_demo;
 					_swf = "PAGE_000000/PAGE_000000.swf";
 				} else if(_restricted) {
-					_swf = "PAGE_000000/PAGE_000001.swf";
+					_swf = "PAGE_000001/PAGE_000001.swf";
 				}
 			}				
 					 			

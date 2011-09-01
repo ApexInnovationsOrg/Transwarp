@@ -22,6 +22,7 @@
 			[Bindable] protected var _course:Course;
 			
 			protected var _selected:Boolean;
+			protected var _restricted:Boolean;
 			
 			[Bindable]
 			protected var down:Boolean;			
@@ -37,15 +38,21 @@
 				if (selected) Courseware.instance.currentPage = value.pages[0];		// Go to first page in selected course
 			}
 			
+			public function get restricted():Boolean { return _restricted; }
+			public function set restricted(value:Boolean):void {
+				_restricted = value;
+				currentState = _selected ? "selected" : (_restricted ? "disabled" : "default");
+			}
+			
 			public function get selected():Boolean { return _selected; }
 			public function set selected(value:Boolean):void {
 				_selected = value;
-				currentState = _selected ? "selected" : "default";
+				currentState = _selected ? "selected" : (_restricted ? "disabled" : "default");
 			}
-
+			
 			protected function rollOverOut(event:MouseEvent):void {
 				if(currentState != "selected")
-					currentState = event.type == MouseEvent.ROLL_OVER ? "hovered" : "default";
+					currentState = event.type == MouseEvent.ROLL_OVER ? "hovered" : (_restricted ? "disabled" : "default");
 			}
 
 			protected function mouseDownUp(event:MouseEvent):void {
@@ -60,6 +67,7 @@
 			public function set course(value:Course):void { 
 				_course = value; 
 				selected = _course == Courseware.instance.currentCourse;
+				restricted = _course.restricted;
 				if(_course) {
 					levelRoman = _course.levelRoman;
 					levelName = _course.name;
@@ -79,6 +87,7 @@
 		<s:State name="default" />
 		<s:State name="hovered" />
 		<s:State name="selected" />
+		<s:State name="disabled" />
 	</s:states>
 	
 	<s:filters>
@@ -89,7 +98,7 @@
 	<s:Group width="237" height="25" x="{down ? 1 : 0}" y="{down? 1 : 0}">
 		<s:Rect width="100%" height="100%" radiusX="7">
 			<s:fill>
-				<s:SolidColor color="0xdddddd" color.selected="0xffffff" color.hovered="0xe8e8e8"/>
+				<s:SolidColor color="0xdddddd" color.selected="0xffffff" color.hovered="0xe8e8e8" color.disabled="0xaaaaaa"/>
 			</s:fill>
 		</s:Rect>
 		

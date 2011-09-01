@@ -89,7 +89,7 @@
 	</s:Line>
 	
 	<tree:DisclosureGraphic id="disclosure" left="{indentation + 7}" verticalCenter="-2" selected="false" selected.selected="true"/>
-	<s:Label id="labelDisplay" color="0" color.selected="0xffffff" fontFamily="Arial" fontSize="13" left="{indentation + 20}" verticalCenter="0"/>
+	<s:Label id="labelDisplay" color="0" color.selected="0xffffff" fontFamily="Arial" fontSize="13" left="{indentation + 20}" verticalCenter="0" showTruncationTip="true"/>
 	
 	
 </s:ItemRenderer>
