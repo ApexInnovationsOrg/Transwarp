@@ -40,6 +40,7 @@ package com.apexinnovations.transwarp.assets.loaders {
 				append(audioLoader);
 			}
 			
+			
 			var configLoaderClass:Class;
 			
 			if(page.configType == "text")

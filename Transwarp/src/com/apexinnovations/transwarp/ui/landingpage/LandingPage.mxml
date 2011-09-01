@@ -44,27 +44,32 @@
 					}
 					
 					container.validateDisplayList();
-					
-					trace(container.rowCount, container.columnCount);
-					
-					var w:Number = container.horizontalGap * (container.columnCount - 1)  + container.columnCount * container.columnWidth;
-					var h:Number = container.verticalGap * (container.rowCount - 1) + container.rowCount * container.rowHeight;
-					
-					var wOverflow:Number = w - width * 0.9;
-					var hOverflow:Number = h - height * 0.9;
-					
-					if(wOverflow > 0 && wOverflow > hOverflow) {
-						container.scaleX = container.scaleY = (width*0.9) / w;
-					} else if(hOverflow > 0 && hOverflow > wOverflow) {
-						container.scaleX = container.scaleY = (height*0.9) / h;
-					}
 				}
 				
+			}
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+				var w:Number = container.horizontalGap * (container.columnCount - 1)  + container.columnCount * container.columnWidth;
+				var h:Number = container.verticalGap * (container.rowCount - 1) + container.rowCount * container.rowHeight;
+				
+				var wOverflow:Number = w - unscaledWidth * 0.9;
+				var hOverflow:Number = h - unscaledHeight * 0.9;
+				var scale:Number = 1;
+				
+				if(wOverflow > 0 && wOverflow > hOverflow) {
+					scale = (unscaledWidth*0.9) / w;
+				} else if(hOverflow > 0 && hOverflow > wOverflow) {
+					scale = (unscaledHeight*0.9) / h;
+				}
+				container.scaleX = container.scaleY = scale;
+				
+				container.x = (unscaledWidth - w * scale)/2;
+				container.y = (unscaledHeight - h*scale)/2;
 			}
 
 		]]>
 	</fx:Script>
 	
-	<s:TileGroup id="container" horizontalCenter="0" verticalCenter="0" orientation="columns" requestedRowCount="4"/>
+	<s:TileGroup id="container" horizontalCenter="0" verticalCenter="0" orientation="columns" requestedRowCount="4" verticalGap="12"/>
 	
 </s:Group>
