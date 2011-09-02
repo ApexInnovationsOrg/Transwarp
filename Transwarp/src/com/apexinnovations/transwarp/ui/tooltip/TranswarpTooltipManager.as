@@ -36,6 +36,15 @@ package com.apexinnovations.transwarp.ui.tooltip {
 			toolTipClass = TranswarpTooltip;	
 		}
 		
+		override mx_internal function createTip():void {
+			if(currentTarget is IStyleClient) {
+				var client:IStyleClient = currentTarget as IStyleClient;
+				
+			}
+			
+			super.createTip();
+		}
+		
 		override mx_internal function initializeTip():void {
 			assignResources();				
 		}
