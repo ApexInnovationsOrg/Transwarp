@@ -7,7 +7,8 @@
 			   preloader="com.apexinnovations.transwarp.preloader.PreloaderDisplay"
 			   xmlns:ext="com.apexinnovations.transwarp.ui.ext.*"
 			   addedToStage="onAdded()"
-			   minWidth="924" xmlns:landingpage="com.apexinnovations.transwarp.ui.landingpage.*">
+			   minWidth="924" xmlns:landingpage="com.apexinnovations.transwarp.ui.landingpage.*"
+			   creationComplete="creationCompleteHandler(event)">
 			   <!--enterFrame="enterFrameHandler(event)">-->
 	<fx:Declarations>
 		<s:TitleWindow title="Title" id="errorDialog" close="PopUpManager.removePopUp(errorDialog); fscommand('quit');" width="400" height="300">
@@ -29,6 +30,7 @@
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.data.User;
+			import com.apexinnovations.transwarp.events.ContentAreaSizeEvent;
 			import com.apexinnovations.transwarp.events.IdleEvent;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			import com.apexinnovations.transwarp.webservices.*;
@@ -37,6 +39,7 @@
 			
 			import flash.events.*;
 			
+			import mx.events.FlexEvent;
 			import mx.managers.FocusManager;
 			import mx.managers.ISystemManager;
 			import mx.managers.PopUpManager;
@@ -138,7 +141,7 @@
 				}
 			}
 			
-			private function uncaughtErrorHandler(event:UncaughtErrorEvent):void {
+			protected function uncaughtErrorHandler(event:UncaughtErrorEvent):void {
 				try {
 					event.stopPropagation();
 					event.preventDefault();
@@ -175,15 +178,36 @@
 			protected function idleTimeout(event:Event):void {
 				// TODO Auto-generated method stub
 			}
-
-			protected var oldfocus:*;
 			
-			/*protected function enterFrameHandler(event:Event):void {
-				var focus:* = focusManager.getFocus();
-				if(oldfocus != focus)
-					trace(focus);
-				oldfocus = focus;
-			} */
+			
+			protected var prevH:Number;
+			protected var prevV:Number;
+			protected var minH:Number = -1;
+			protected var minV:Number = -1;
+			
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+				
+				if(minH < 0) // min size hasn't been computed yet;
+					return;
+				
+				var h:Number = minH - unscaledWidth;
+				var v:Number = minV - unscaledHeight;
+				
+				if(h > 0 || prevH > 0 || v > 0 || prevV > 0) {
+					dispatchEvent(new ContentAreaSizeEvent(h, v));
+				}
+				prevH = h;
+				prevV = v;
+			}
+			
+			
+			protected function creationCompleteHandler(event:FlexEvent):void {
+				minH = contentArea.x + 800;
+				minV = contentArea.y + 560 + 75; // Assume 75 pixels for instructions
+				invalidateDisplayList();
+			}
 			
 		]]>
 	</fx:Script>
@@ -200,8 +224,9 @@
 	</s:VGroup>
 	
 	<!--The weird size constraints on this group are another case of having to force flex's layout engine to behave as expected-->
+	<!--top="178" top.maximized="35"-->
 	<ui:ContentArea id="contentArea" left="{leftBar.width}"
-			  top="178" top.maximized="35"
+			  top="{topBar.height}"
 			  width="{width-contentArea.x}" height="{height-contentArea.y}" 
 			  error="pageLoadErrorHandler(event)"/>
 	<!-- Drawing mask -->

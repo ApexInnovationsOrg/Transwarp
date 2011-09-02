@@ -15,6 +15,7 @@
 			import com.apexinnovations.transwarp.data.CoursewareObject;
 			import com.apexinnovations.transwarp.data.Folder;
 			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.events.ContentAreaSizeEvent;
 			import com.apexinnovations.transwarp.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			import com.greensock.loading.LoaderStatus;
@@ -24,7 +25,7 @@
 			TranswarpVersion.revision = "$Rev$";
 			
 			[Bindable]
-			protected var timelineVisible:Boolean = false;
+			protected var timelineVisible:Boolean = false;			
 			
 			protected function loadProgress(event:ProgressEvent):void {
 				progressBar.setProgress(event.bytesLoaded, event.bytesTotal);
@@ -32,6 +33,7 @@
 
 			protected function creationCompleteHandler(event:FlexEvent):void {
 				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
+				parentApplication.addEventListener(ContentAreaSizeEvent.CONTENT_AREA_SIZE_CHANGED, contentAreaSizeHandler);
 				pageChanged();
 			}
 			
@@ -52,12 +54,21 @@
 				
 			}
 			
+			protected function contentAreaSizeHandler(event:ContentAreaSizeEvent):void {
+				var v:Number = Math.max(0, Math.min(87, event.vOverflow));
+				var gaps:Number = 10 - v * 8/87;
+				var titleHeight:Number = pageTitle.height - v * 5/87;
+				
+				topGroup.top = topGroup.bottom = topGroup.gap = gaps;
+				pageTitle.scaleX = pageTitle.scaleY = (titleHeight / pageTitle.height); 
+			}
+			
 		]]>
 	</fx:Script>
 	
-	<s:VGroup top="10" bottom="10" width="{width}" height="100%" gap="10" horizontalAlign="center">
+	<s:VGroup id="topGroup" top="10" bottom="10" width="{width}" height="100%" gap="10" horizontalAlign="center">
 		
-		<ui:PageTitle id="pageTitle" fontSize="20" top="10" horizontalCenter="0"/>
+		<ui:PageTitle id="pageTitle" fontSize="20" horizontalCenter="0"/>
 		
 		<s:Group id="contentGroup" width="100%" height="100%">
 			<ui:PageContentContainer id="container" width="100%" height="100%" 
@@ -67,7 +78,7 @@
 									 width="100%" height="100%"/>			
 		</s:Group>
 		
-		<s:VGroup id="bottomGroup" horizontalAlign="center" width="100%" bottom="10">
+		<s:VGroup id="bottomGroup" horizontalAlign="center" width="100%">
 			<ui:Timeline id="timeline" source="{container.rawContent as TranswarpMovieClip}"
 						 visible="{timelineVisible &amp;&amp; container.loadingStatus == LoaderStatus.COMPLETED}"/>
 			
