@@ -2,16 +2,22 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:graphics="com.apexinnovations.transwarp.graphics.*"
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="240" xmlns:tree="com.apexinnovations.transwarp.ui.tree.*" xmlns:ui="com.apexinnovations.transwarp.ui.*">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:tree="com.apexinnovations.transwarp.ui.tree.*"
+		 xmlns:ui="com.apexinnovations.transwarp.ui.*"
+		 width="240"
+		 creationComplete="creationCompleteHandler(event)">
 	
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.CourseList;
 			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.events.ContentAreaSizeEvent;
 			import com.apexinnovations.transwarp.graphics.*;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
 			import mx.utils.ColorUtil;
 			
 			TranswarpVersion.revision = "$Rev$";
@@ -21,6 +27,16 @@
 			override protected function createChildren():void {
 				super.createChildren();
 				showLevel = Courseware.instance.product.courses.length > 1;
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void {
+				parentApplication.addEventListener(ContentAreaSizeEvent.CONTENT_AREA_SIZE_CHANGED, contentAreaSizeHandler);
+				
+			}
+			
+			protected function contentAreaSizeHandler(event:ContentAreaSizeEvent):void {
+				var h:Number = Math.max(0, Math.min(35, event.hOverflow));
+				scaleX = scaleY = (width - h * 25/35) / width;
 			}
 			
 		]]>

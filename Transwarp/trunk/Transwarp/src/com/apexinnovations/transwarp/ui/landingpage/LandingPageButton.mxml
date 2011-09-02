@@ -93,7 +93,7 @@
 			<s:Rect width="100%" height="100%" alpha="0">
 				<s:fill> <s:SolidColor /> </s:fill>
 			</s:Rect>			
-			<s:Label text="{page.name}" fontSize="20" fontWeight="normal" maxWidth="150" />
+			<s:Label text="{page.name}" fontSize="20" fontWeight="normal" maxWidth="150"/>
 		</s:Group>
 	
 	</s:HGroup>

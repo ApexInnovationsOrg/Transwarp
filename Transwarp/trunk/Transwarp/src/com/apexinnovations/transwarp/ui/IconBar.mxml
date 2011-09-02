@@ -8,12 +8,14 @@
 		 width="50"
 		 addedToStage="onAdded()"
 		 toolTipPlacement="topRight"
-		 resize="resizeHandler(event)">
+		 resize="resizeHandler(event)"
+		 creationComplete="creationCompleteHandler(event)">
 	
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.Transwarp;
 			import com.apexinnovations.transwarp.data.*;
+			import com.apexinnovations.transwarp.events.ContentAreaSizeEvent;
 			import com.apexinnovations.transwarp.graphics.*;
 			import com.apexinnovations.transwarp.ui.*;
 			import com.apexinnovations.transwarp.ui.dialogs.*;
@@ -26,6 +28,7 @@
 			import mx.binding.utils.BindingUtils;
 			import mx.core.IVisualElement;
 			import mx.core.UIComponent;
+			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
 			import mx.managers.PopUpManagerChildList;
 			import mx.utils.ColorUtil;
@@ -63,6 +66,7 @@
 						
 						if(i < buttonGroup.numElements) {	
 							var s:HorizontalSeparator = new HorizontalSeparator();
+							s.width = 33;
 							s.bottom = 0;
 							group.addElement(s);
 						}
@@ -70,6 +74,10 @@
 						buttonGroup.addElementAt(group, i);
 					}
 				}
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void {
+				parentApplication.addEventListener(ContentAreaSizeEvent.CONTENT_AREA_SIZE_CHANGED, contentAreaSizeHandler);	
 			}
 			
 			protected function maximize(event:FullScreenEvent):void {
@@ -247,6 +255,11 @@
 			}
 			
 			
+			protected function contentAreaSizeHandler(event:ContentAreaSizeEvent):void {
+				var h:Number = Math.max(0, Math.min(35, event.hOverflow));
+				width = 50 - h * 10/35;
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -268,7 +281,7 @@
 		</s:filters>
 	</s:Rect>
 	
-	<ext:VGroup id="buttonGroup" top="10" width="100%" horizontalAlign="center" gap="0">
+	<ext:VGroup id="buttonGroup" top="4" width="100%" horizontalAlign="center" gap="0">
 		<ui:IconButton icon="{KeyQuestionIcon}" click="showKeyQuestions(event);" highlight="{currentPage is Page ? Page(currentPage).hasQuestions : false}" toolTip="KEY_QUESTION" toolTipPlacement.maximized="right"/>
 		<ui:IconButton icon="{SupportingTextIcon}" click="showSupportText(event);" highlight="{currentPage is Page ? Page(currentPage).hasSupportText : false}" toolTip="SUPPORT_TEXT"/>
 		<ui:IconButton icon="{HistoryIcon}" click="showPageUpdates(event);" highlight="{currentPage is Page ? Page(currentPage).hasUpdates : false}" toolTip="HISTORY"/>		
@@ -283,7 +296,7 @@
 	</ext:VGroup>
 	
 	<s:VGroup id="maximizeGroup" width="100%" horizontalAlign="center" gap="15" bottom="10">
-		<ui:HorizontalSeparator visible="{height &lt;= buttonGroup.height + 65}"/>
+		<ui:HorizontalSeparator visible="{height &lt;= buttonGroup.height + 50}" width="33"/>
 		<ui:IconButton icon="{MaximizeIcon}" width="30" height="30" click="stage.displayState=StageDisplayState.FULL_SCREEN" includeIn="default" toolTip="MAXIMIZE" />
 		<ui:IconButton icon="{MinimizeIcon}" width="30" height="30" click="stage.displayState=StageDisplayState.NORMAL" includeIn="maximized" toolTip="MINIMIZE"/>
 	</s:VGroup>
