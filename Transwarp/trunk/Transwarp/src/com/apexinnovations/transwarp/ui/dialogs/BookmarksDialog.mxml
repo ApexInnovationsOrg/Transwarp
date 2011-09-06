@@ -6,7 +6,7 @@
 			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
 			  contentCreationComplete="contentCreationComplete(event);"
 			  title="{resourceManager.getString('Dialogs','BOOKMARKS_TITLE')}"
-			  resizable="true" minHeight="340" minWidth="500">
+			  resizable="true" minWidth="{Math.max(PageTitle.width + 20, 450)}" minHeight="340">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Course;
@@ -68,6 +68,7 @@
 			protected function pageChanged(event:PageSelectionEvent):void {
 				_page = event.page;
 				currentState = _page.bookmarked ? "bookmarked" : "default";
+				this.invalidateDisplayList();
 			}
 			
 			protected function sortByLevel(obj1:Object, obj2:Object):int {
@@ -83,7 +84,7 @@
 	</dialogs:states>
 	
 	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" width="100%" height="100%">
-		<ui:PageTitle />
+		<ui:PageTitle id="PageTitle"/>
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10" buttonMode="true">
 			<!-- Show star graphic -->
 			<s:Path data="M9.5 7.2 13.05 0 16.6 7.2 24.55 8.3 18.85 13.95 20.2 21.85 13.1 18.1 6 21.9 7.35 13.95 1.6 8.4 9.5 7.2">

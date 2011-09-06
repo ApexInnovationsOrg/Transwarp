@@ -107,7 +107,7 @@
 				if (Utils.trim(searchInput.text) != '') {
 					if (!searchDialog) {
 						searchDialog = SearchDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), SearchDialog, false, PopUpManagerChildList.POPUP));
-						searchDialog.anchor = this;
+						searchDialog.anchor = (this.parentApplication as Transwarp).contentArea;
 					}
 					
 					searchDialog.keywords = searchInput.text;
