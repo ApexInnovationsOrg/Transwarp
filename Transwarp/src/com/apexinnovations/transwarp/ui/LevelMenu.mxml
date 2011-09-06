@@ -6,7 +6,7 @@
 		 xmlns:tree="com.apexinnovations.transwarp.ui.tree.*"
 		 xmlns:ui="com.apexinnovations.transwarp.ui.*"
 		 width="240"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:logos="com.apexinnovations.transwarp.graphics.logos.*">
 	
 	<fx:Script>
 		<![CDATA[
@@ -71,7 +71,7 @@
 		</s:filters>
 	</s:Rect>
 	 
-	<s:VGroup left="30" top="20" color="0xffffff" gap="5">
+	<s:VGroup left="37" top="20" color="0xffffff" gap="5">
 		<s:Label fontWeight="bold" fontSize="20" fontFamily="Arial"
 				 text="{resourceManager.getString('Chrome','LEVEL')} {Courseware.instance.currentCourse.levelRoman}" 
 				 visible="{showLevel}"
@@ -90,7 +90,7 @@
 			   left="20" bottom="60" right="10"/>
 	<!--  Footer  -->
 	<s:VGroup width="100%" horizontalAlign="center" bottom="8" gap="-1">
-		<graphics:ApexLogo/>
+		<logos:ApexLogo/>
 		<s:Label text="{resourceManager.getString('Chrome','COPYRIGHT')}" color="0x888888" fontSize="8" />
 	</s:VGroup>
 </s:Group>
