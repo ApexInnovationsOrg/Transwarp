@@ -6,9 +6,8 @@
 			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
 			  title="{resourceManager.getString('Dialogs','SUPPORT_TEXT_TITLE')}"
 			  addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);"
-			  resizable="true" height.no_results="100" height.default="350" width="400"
-			  minWidth="200"
-			  minHeight="100">
+			  resizable.default="true" height.no_results="112" height.default="350" width="400"
+			  minWidth="{PageTitle.width + 20}" minHeight="112">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
@@ -17,10 +16,13 @@
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import flashx.textLayout.elements.TextFlow;
+			import mx.managers.PopUpManager;
 			
 			TranswarpVersion.revision = "$Rev$";
 			
 			protected var _page:Page;
+			
+			public var anchor:DisplayObject = null;
 			
 			[Bindable] public function get page():Page { return _page; }
 			public function set page(p:Page):void {
@@ -38,8 +40,19 @@
 				updateElementList();
 			}
 			
+			override public function display():void {
+				if (!visible && anchor) {
+					x = anchor.x;
+					y = anchor.y + 112;
+				}
+				visible = true;
+				PopUpManager.bringToFront(this);
+				setFocus();
+			}
+			
 			protected function pageChanged(event:PageSelectionEvent):void {
 				page = event.page as Page;
+				this.invalidateDisplayList();
 			}
 			
 			protected function updateElementList():void {
@@ -53,9 +66,9 @@
 		<s:State name="no_results" />
 	</dialogs:states>
 	
-	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" width="100%" height="100%">
-		<ui:PageTitle />
-		<s:Label width="100%" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10"
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
+		<ui:PageTitle id="PageTitle"/>
+		<s:Label width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10"
 				 text="{resourceManager.getString('Dialogs','NO_SUPPORT_TEXT')}" includeIn="no_results"/>
 		<s:TextArea width="100%" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" editable="false"
 					horizontalScrollPolicy="off" height="100%" 

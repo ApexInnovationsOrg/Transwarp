@@ -140,29 +140,37 @@
 			}
 			
 			protected function showKeyQuestions(evt:MouseEvent):void {
-				if (!keyQuestionsDialog)
+				if (!keyQuestionsDialog) {
 					keyQuestionsDialog = KeyQuestionsDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), KeyQuestionsDialog, false, PopUpManagerChildList.POPUP));
+					keyQuestionsDialog.anchor = (this.parentApplication as Transwarp).contentArea;
+				}
 
 				keyQuestionsDialog.display();
 			}
 			
 			protected function showPageUpdates(evt:MouseEvent):void {
-				if (!historyDialog)
+				if (!historyDialog) {
 					historyDialog = HistoryDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), HistoryDialog, false, PopUpManagerChildList.POPUP));
+					historyDialog.anchor = (this.parentApplication as Transwarp).contentArea;
+				}
 
 				historyDialog.display();
 			}
 			
 			protected function showRelatedLinks(evt:MouseEvent):void {
-				if (!linksDialog)
+				if (!linksDialog) {
 					linksDialog = LinksDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), LinksDialog, false, PopUpManagerChildList.POPUP));
+					linksDialog.anchor = (this.parentApplication as Transwarp).contentArea;
+				}
 				
 				linksDialog.display();
 			}
 			
 			protected function showSupportText(evt:MouseEvent):void {
-				if (!supportTextDialog)
+				if (!supportTextDialog) {
 					supportTextDialog = SupportTextDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), SupportTextDialog, false, PopUpManagerChildList.POPUP));
+					supportTextDialog.anchor = (this.parentApplication as Transwarp).contentArea;
+			}
 				
 				supportTextDialog.display();
 			}

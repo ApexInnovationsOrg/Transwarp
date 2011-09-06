@@ -17,7 +17,11 @@
 			
 			TranswarpVersion.revision = "$Rev$";
 
+			import mx.managers.PopUpManager;
+			
 			protected var _page:Page = null;
+			
+			public var anchor:DisplayObject = null;
 			
 			[Bindable] public function get page():Page { return _page; }
 			public function set page(p:Page):void {
@@ -33,6 +37,16 @@
 			
 			protected function contentCreationComplete(event:Event):void {
 				updateElementList();
+			}
+			
+			override public function display():void {
+				if (!visible && anchor) {
+					x = anchor.x;
+					y = anchor.y + 336;
+				}
+				visible = true;
+				PopUpManager.bringToFront(this);
+				setFocus();
 			}
 			
 			protected function pageChanged(event:PageSelectionEvent):void {

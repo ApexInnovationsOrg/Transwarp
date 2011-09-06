@@ -32,7 +32,7 @@
 			override public function display():void {
 				if (!visible && anchor) {
 					x = stage.stageWidth - width;
-					y = anchor.height;
+					y = anchor.y;
 				}
 				height = stage.stageHeight - y;
 				visible = true;
