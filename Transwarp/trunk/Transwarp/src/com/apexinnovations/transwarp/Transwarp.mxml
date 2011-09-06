@@ -197,7 +197,9 @@
 				
 				if(h > 0 || prevH > 0 || v > 0 || prevV > 0) {
 					dispatchEvent(new ContentAreaSizeEvent(h, v));
-				}
+					//trace("         event", prevH, prevV, h, v);
+				} //else
+					//trace("no event", prevH, prevV, h, v);
 				prevH = h;
 				prevV = v;
 			}

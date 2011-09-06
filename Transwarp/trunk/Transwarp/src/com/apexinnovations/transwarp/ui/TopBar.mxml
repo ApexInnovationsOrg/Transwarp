@@ -142,7 +142,7 @@
 	<s:VGroup gap="-1" width="100%">
 		
 		<!--Top Area (big logo, flair, level buttons)-->
-		<s:Group id="topArea" height="110" excludeFrom="maximized">
+		<s:Group id="topArea" height="144" excludeFrom="maximized">
 			
 			<!--Gray Gradient at top-->
 			<s:Rect width="100%" height="100%" top="0">
@@ -186,6 +186,7 @@
 			
 			<s:VGroup horizontalAlign="right" left="29" verticalCenter="0" includeIn="default">
 				<assets:AssetImageControl assetID="logoBig" />
+				<!--<ui:ProductLogo />-->
 				<s:Label id="nameLabel" text="{resourceManager.getString('Chrome','BY_APEX')}" fontStyle="italic" color="#444444"/>
 			</s:VGroup>
 			
