@@ -131,6 +131,12 @@
 				//nameLabel.includeInLayout = includeName;
 			}
 			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+				navButtons.horizontalCenter = Transwarp(parentApplication).leftBar.width/2
+				
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -231,7 +237,7 @@
 				</assets:filters>
 			</assets:AssetImageControl>
 			
-			<ext:HGroup verticalAlign="middle" gap="12" height="100%" horizontalCenter="66"
+			<ext:HGroup id="navButtons" verticalAlign="middle" gap="12" height="100%"
 						color="0xffffff" fontFamily="Arial" fontWeight="bold"
 						toolTipPlacement="bottomRight">
 				<ui:IconButton icon="{ArrowPreviousIcon}" click="prevClick()" toolTip="PREV" height="30"
