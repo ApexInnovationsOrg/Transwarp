@@ -153,7 +153,7 @@
 				_currentCursor = createMouseCursor(sizeSpinner.value/2, cp.selectedItem, true);
 			}
 			
-			protected function clearDrawing(event:Event):void {
+			protected function clearDrawing(event:Event=null):void {
 				_graphics.clear();
 			}
 			
@@ -167,6 +167,6 @@
 			<s:Label text="{resourceManager.getString('Chrome','COLOR')}" fontWeight="bold" color="0x000000" paddingTop="10" />
 			<ui:SparkColorPicker id="cp" selectedItem="#FF0000" change="specifyCursor(); Mouse.cursor = _currentCursor;" skinClass="com.apexinnovations.transwarp.skins.ColorPickerListSkin" enabled="true" toolTip="BRUSH_COLOR" buttonMode="true"/>
 		</s:HGroup>
-		<s:Button label="Clear" click="_graphics.clear();" buttonMode="true"/>
+		<s:Button label="Clear" click="clearDrawing();" buttonMode="true"/>
 	</s:VGroup>
 </dialogs:DialogBox>
