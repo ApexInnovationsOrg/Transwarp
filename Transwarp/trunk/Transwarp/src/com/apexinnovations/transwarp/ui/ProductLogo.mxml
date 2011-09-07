@@ -10,11 +10,15 @@
 			import com.apexinnovations.transwarp.graphics.logos.HemispheresLogoSept2011;
 			import com.apexinnovations.transwarp.graphics.logos.ImpulseLogoSept2011;
 			import com.apexinnovations.transwarp.graphics.logos.ResponderLogoSept2011;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
 			import mx.events.FlexEvent;
 			
 			import spark.core.SpriteVisualElement;
 			import spark.primitives.Graphic;
+			
+			
+			TranswarpVersion.revision = "$Rev$";
 			
 			protected function creationCompleteHandler(event:FlexEvent):void {
 				var productID:uint = Courseware.instance.product.id;

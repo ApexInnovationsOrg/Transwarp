@@ -78,8 +78,6 @@
 			
 			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
 				if(visible) {
-					
-					
 					var minGap:Number = 20;
 					var maxGap:Number = 250;
 					
