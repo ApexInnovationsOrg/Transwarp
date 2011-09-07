@@ -63,7 +63,7 @@
 		</s:Rect>
 		<s:HGroup gap="8" verticalAlign="top" paddingTop="7" paddingBottom="7" paddingLeft="7" paddingRight="7" >
 			<s:Label text="{dateTimeFormatter.format(update.time)}" width="65" fontSize="12" color="0x0000FF" textAlign="right" /> 
-			<s:RichEditableText width="265" height="100%" editable="false" textFlow="{update.textFlow}" selectable="false" alpha="0.7" alpha.selected="1" alpha.hovered="1" >
+			<s:RichEditableText width="278" height="100%" editable="false" textFlow="{update.textFlow}" selectable="false" alpha="0.7" alpha.selected="1" alpha.hovered="1" >
 				
 			</s:RichEditableText>
 		</s:HGroup>		
