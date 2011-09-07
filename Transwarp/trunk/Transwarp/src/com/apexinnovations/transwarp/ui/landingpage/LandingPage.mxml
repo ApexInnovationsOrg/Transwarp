@@ -23,7 +23,7 @@
 			public function get folder():Folder { return _folder; }
 
 			public function set folder(value:Folder):void {
-				if(value == _folder)
+				if(value === _folder)
 					return;
 				
 				if(audioLoader) {
@@ -31,16 +31,17 @@
 					audioLoader.dispose();
 					audioLoader = null;
 				}
-								
-				_folder = value;
 				
-				var baseURL:String = Courseware.instance.rootFolder + '/'
-				audioLoader = new MP3Loader(baseURL + folder.audio);
-				audioLoader.load();
+				_folder = value;
 				
 				container.removeAllElements();
 				
 				if(_folder) {
+					if(_folder.audio !== "none" || _folder.audio !== "false") {
+						var baseURL:String = Courseware.instance.rootFolder + '/'
+						audioLoader = new MP3Loader(baseURL + folder.audio);
+						audioLoader.load();
+					}
 					var button:LandingPageButton;
 					var i:int = 0;
 					for each(var child:CoursewareObject in _folder.contents) {
@@ -67,6 +68,9 @@
 						container.requestedColumnCount = 2;
 					
 					container.validateDisplayList();
+					visible = true;
+				} else {
+					visible = false;
 				}
 				
 			}
