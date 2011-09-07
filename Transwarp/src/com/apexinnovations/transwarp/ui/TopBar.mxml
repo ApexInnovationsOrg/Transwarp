@@ -216,11 +216,11 @@
 			</s:Rect>
 			
 			<!--Light Gradient to sit behind the small logo-->
-			<s:Rect width="{logoSmall.width + 250}" height="34" bottom="0" includeIn="maximized">
+			<s:Rect width="{logoSmall.width + 250}" height="100%" bottom="0" includeIn="maximized" blendMode="add">
 				<s:fill>
 					<s:LinearGradient>
-						<s:GradientEntry color="0xffffff" alpha=".9"/>
-						<s:GradientEntry color="0x7b7b7b" alpha="0" />
+						<s:GradientEntry color="0xffffff" alpha=".7"/>
+						<s:GradientEntry color="0xffffff" alpha="0" />
 					</s:LinearGradient>
 				</s:fill>
 			</s:Rect>
