@@ -71,7 +71,6 @@
 				visible = true;
 				PopUpManager.bringToFront(this);
 				setFocus();
-				trace(width, height);
 			}
 			
 			protected function mouseDown(event:MouseEvent):void {
