@@ -2,6 +2,7 @@ package com.apexinnovations.transwarp.data {
 	import com.apexinnovations.transwarp.utils.HashSet;
 	import com.apexinnovations.transwarp.utils.ISet;
 	import com.apexinnovations.transwarp.utils.TranswarpVersion;
+	import com.apexinnovations.transwarp.utils.Utils;
 	import com.apexinnovations.transwarp.webservices.BookmarkService;
 	
 	import flash.events.EventDispatcher;
@@ -30,6 +31,7 @@ package com.apexinnovations.transwarp.data {
 		protected var _breadcrumbs:String = '';								// A listing of the parent folders of this page (e.g. "Folder 1 » Folder 2 » Folder 3 »")
 		protected var _bookmarked:Boolean;
 		protected var _sortToken:uint = 0;									// This allows for quick sorting of pages relative to their order in the courseware
+		protected var _audio:String = '';									// name of audio file to load with page, if not the default of 'PAGE_{id}.mp3', or 'false' if no audio
 		
 		public function CoursewareObject(xml:XML, parent:CoursewareObjectContainer, depth:int) {
 			super();
@@ -53,9 +55,18 @@ package com.apexinnovations.transwarp.data {
 				_allow = (String(xml.@allow) != "") ? new HashSet(String(xml.@allow).toLowerCase().split(' ')) : null;
 				_deny = (String(xml.@deny) != "") ? new HashSet(String(xml.@deny).toLowerCase().split(' ')) : null;
 				_bookmarked = xml.@bookmarked == "true";
+				_audio = String(xml.@audio);
 			} catch(e:Error) {
 				throw new ArgumentError(getQualifiedClassName(this) + ": Bad Initialization XML: [" + e.message + ']');
 			}
+			
+			//if we ever change folder audio to be named something other than PAGE_, this has to change
+			var fileName:String = "PAGE_" + Utils.zeroPad(_id, 6);
+			
+			if(_audio == "false" || _audio == "NONE" || _audio == "STREAMED")
+				_audio = "";
+			else if(_audio == "")
+				_audio = fileName + "/" + fileName + ".mp3";
 			
 			var separator:String = ' ' + ResourceManager.getInstance().getString("Chrome", "FOLDER_SEPARATOR") + ' '; 
 			
@@ -63,6 +74,7 @@ package com.apexinnovations.transwarp.data {
 				_breadcrumbs = _parent.qualifiedName + separator;
 		}
 		
+		public function get audio():String { return _audio; }
 		public function get parentCourse():Course { return _parentCourse; }
 		public function get parent():CoursewareObjectContainer { return _parent; }
 		[Bindable("coursewareObjectChanged")] public function get id():uint { return _id; }

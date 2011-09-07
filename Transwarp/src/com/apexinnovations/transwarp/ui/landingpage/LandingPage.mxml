@@ -7,15 +7,18 @@
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Course;
+			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.data.CoursewareObject;
 			import com.apexinnovations.transwarp.data.Folder;
 			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			import com.greensock.loading.MP3Loader;
 			
 			TranswarpVersion.revision = "$Rev$";
 			
 			protected var _folder:Folder;
 			protected var buttons:Vector.<LandingPageButton> = new Vector.<LandingPageButton>();
+			protected var audioLoader:MP3Loader;
 			
 			public function get folder():Folder { return _folder; }
 
@@ -23,7 +26,17 @@
 				if(value == _folder)
 					return;
 				
+				if(audioLoader) {
+					audioLoader.pauseSound();
+					audioLoader.dispose();
+					audioLoader = null;
+				}
+								
 				_folder = value;
+				
+				var baseURL:String = Courseware.instance.rootFolder + '/'
+				audioLoader = new MP3Loader(baseURL + folder.audio);
+				audioLoader.load();
 				
 				container.removeAllElements();
 				
@@ -58,41 +71,43 @@
 				
 			}
 			
+			
 			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
 				if(visible) {
-						
+					
+					
 					var minGap:Number = 20;
 					var maxGap:Number = 250;
 					
 					var cols:Number = container.columnCount;
 					var rows:Number = container.rowCount;
 					
-					var w:Number = cols * container.columnWidth + (cols-1) * container.horizontalGap;
+					var w:Number = cols * container.columnWidth;// + (cols-1) * container.horizontalGap;
 					var h:Number = cols * container.rowHeight + (rows-1) * container.verticalGap;
 									
 					var hOverflow:Number = w - unscaledWidth * 0.8;
 					var vOverflow:Number = h - unscaledHeight * 0.8;
 					var scale:Number = 1;
 					
-					/* var hGap:Number = Math.min(Math.max(20, -hOverflow / (container.columnCount-1)), maxGap);
-					var vGap:Number = Math.min(Math.max(20, -vOverflow / (container.rowCount-1)), maxGap);
+					var hGap:Number = Math.min(maxGap, Math.max(minGap, -hOverflow / (cols-1)));
+					//var vGap:Number = Math.min(Math.max(20, -vOverflow / (rows-1)), maxGap);
 					
 					container.horizontalGap = hGap;
-					container.verticalGap = vGap;
+					//container.verticalGap = vGap;
 					
 					var hgapspace:Number = hGap * (cols - 1)
-					var vgapspace:Number = vGap * (rows - 1);
+					//var vgapspace:Number = vGap * (rows - 1);
 						
 					w += hgapspace;
-					h += vgapspace;
+					//h += vgapspace;
 					
 					hOverflow += hgapspace;
-					vOverflow += vgapspace;
-					 */
+					//vOverflow += vgapspace;
+					
 					if(hOverflow > 0 && hOverflow > vOverflow) {
-						scale = (unscaledWidth*0.9) / w;
+						scale = (unscaledWidth*0.8) / w;
 					} else if(vOverflow > 0 && vOverflow > hOverflow) {
-						scale = (unscaledHeight*0.9) / h;
+						scale = (unscaledHeight*0.8) / h;
 					}
 					
 					container.scaleX = container.scaleY = scale;
