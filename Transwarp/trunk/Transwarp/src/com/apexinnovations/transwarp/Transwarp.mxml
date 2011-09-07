@@ -4,12 +4,15 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
 			   xmlns:transwarp="com.apexinnovations.transwarp.*"
 			   xmlns:ui="com.apexinnovations.transwarp.ui.*"
-			   preloader="com.apexinnovations.transwarp.preloader.PreloaderDisplay"
+			   xmlns:landingpage="com.apexinnovations.transwarp.ui.landingpage.*"
 			   xmlns:ext="com.apexinnovations.transwarp.ui.ext.*"
+			   preloader="com.apexinnovations.transwarp.preloader.PreloaderDisplay"
 			   addedToStage="onAdded()"
-			   minWidth="924" xmlns:landingpage="com.apexinnovations.transwarp.ui.landingpage.*"
+			   minWidth="850" minHeight="640"			   
 			   creationComplete="creationCompleteHandler(event)">
 			   <!--enterFrame="enterFrameHandler(event)">-->
+	
+	
 	<fx:Declarations>
 		<s:TitleWindow title="Title" id="errorDialog" close="PopUpManager.removePopUp(errorDialog); fscommand('quit');" width="400" height="300">
 			<s:RichEditableText id="infoText" top="10" bottom="10" left="10" right="10" editable="false"/> 
@@ -188,6 +191,8 @@
 			
 			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
 				super.updateDisplayList(unscaledWidth, unscaledHeight);
+				
+				//trace(unscaledWidth, unscaledHeight);
 				
 				if(minH < 0) // min size hasn't been computed yet;
 					return;
