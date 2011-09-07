@@ -10,6 +10,8 @@
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.Transwarp;
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.events.PageSelectionEvent;
 			import com.apexinnovations.transwarp.graphics.*;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
@@ -45,6 +47,7 @@
 				_clickBlocker = tw.clickBlocker;//.graphics;
 				
 				super.addedToStage(event);
+				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, clearDrawing);
 			}
 			
 			override protected function closeHandler(event:Event = null):void {
@@ -149,6 +152,11 @@
 			protected function specifyCursor():void {
 				_currentCursor = createMouseCursor(sizeSpinner.value/2, cp.selectedItem, true);
 			}
+			
+			protected function clearDrawing(event:Event):void {
+				_graphics.clear();
+			}
+			
 		]]>
 	</fx:Script>
 	
