@@ -13,7 +13,6 @@ package com.apexinnovations.transwarp.data {
 
 	public class Page extends CoursewareObject {
 		
-		protected var _audio:String = '';										// name of audio file to load with page, if not the default of 'PAGE_{id}.mp3', or 'false' if no audio
 		protected var _config:String = '';										// URL of XML file to be loaded by SWF as configuration
 		protected var _configType:String = '';
 		protected var _created:Date;											// XML format: YYYY-MM-DDTHH:MM:SS
@@ -45,7 +44,7 @@ package com.apexinnovations.transwarp.data {
 				_supportText = Utils.importTextFlow(xml.supportText.children()[0]);
 				_swf = xml.@swf;
 				_timeline = xml.@timeline == 'true';
-				_audio = String(xml.@audio);
+				
 				
 				_snapshot = xml.@snapshot;
 							
@@ -58,11 +57,6 @@ package com.apexinnovations.transwarp.data {
 			if(!_swf || _swf == '') {
 				_swf = fileName + "/" + fileName + ".swf";
 			}
-			
-			if(_audio == "false" || _audio == "NONE" || _audio == "STREAMED")
-				_audio = "";
-			else if(_audio == "")
-				_audio = fileName + "/" + fileName + ".mp3";
 			
 			if(_snapshot == "" || !_snapshot)
 				_snapshot = fileName + "/snapshot.png";			
@@ -121,8 +115,7 @@ package com.apexinnovations.transwarp.data {
 			}				
 					 			
 		}
-			
-		public function get audio():String { return _audio; }
+		
 		public function get config():String { return _config; }
 		public function get configType():String { return _configType; }
 		public function get created():Date { return _created; }

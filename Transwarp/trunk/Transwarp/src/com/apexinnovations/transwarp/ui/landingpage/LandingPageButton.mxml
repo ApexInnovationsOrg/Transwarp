@@ -23,6 +23,7 @@
 			protected var over:Boolean = false;
 			
 			[Bindable] public var page:Page;
+			[Bindable] public var maxLabelWidth:Number = 175;
 			
 			protected function mouseOverOutHandler(event:MouseEvent):void {
 				over = event.type == MouseEvent.ROLL_OVER;
@@ -93,7 +94,7 @@
 			<s:Rect width="100%" height="100%" alpha="0">
 				<s:fill> <s:SolidColor /> </s:fill>
 			</s:Rect>			
-			<s:Label text="{page.name}" fontSize="20" fontWeight="normal" maxWidth="150"/>
+			<s:Label id="label" text="{page.name}" fontSize="20" fontWeight="normal" maxWidth="{maxLabelWidth}"/>
 		</s:Group>
 	
 	</s:HGroup>

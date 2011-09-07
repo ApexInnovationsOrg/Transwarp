@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 creationComplete="creationCompleteHandler(event)">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.graphics.logos.HemispheresLogoSept2011;
+			import com.apexinnovations.transwarp.graphics.logos.ImpulseLogoSept2011;
+			import com.apexinnovations.transwarp.graphics.logos.ResponderLogoSept2011;
+			
+			import mx.events.FlexEvent;
+			
+			import spark.core.SpriteVisualElement;
+			import spark.primitives.Graphic;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void {
+				var productID:uint = Courseware.instance.product.id;
+				
+				var logo:SpriteVisualElement;
+				
+				switch(productID) {
+					case 1:		logo = new ImpulseLogoSept2011(); break;
+					case 2:		logo = new HemispheresLogoSept2011(); break;
+					case 4:		logo = new ResponderLogoSept2011(); break;
+				}
+				
+				addElement(logo);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	
+</s:Group>
