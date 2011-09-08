@@ -35,6 +35,7 @@ package com.apexinnovations.transwarp.data {
 		private var _user:User = null;				// The user that's accessing the courseware
 		private var _website:String = '';			// The base URL of the website this engine is being run from
 		
+		private var _successfulInit:Boolean = true;
 		// Return the singleton instance of this class
 		public static function get instance():Courseware {
 			return _instance;
@@ -125,7 +126,12 @@ package com.apexinnovations.transwarp.data {
 				_timeout = xml.@timeout;
 				volume = uint(xml.@volume);
 				_website = xml.@website;
+				
+				_user = new User(xml.user[0], this);
+				_product = new Product(xml.product[0], this);
+				
 			} catch ( e:Error ) {
+				_successfulInit = false;
 				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
 			}
 			
@@ -133,9 +139,6 @@ package com.apexinnovations.transwarp.data {
 			ConfigData.buttonFGColor = buttonFGColor;
 			ConfigData.color = color;
 			ConfigData.website = _website;
-			
-			_user = new User(xml.user[0], this);
-			_product = new Product(xml.product[0], this);
 			
 			var sortToken:uint = 0;
 			for each(var c:Course in _product) {
@@ -145,16 +148,16 @@ package com.apexinnovations.transwarp.data {
 			
 			ConfigData.userID = _user.id;
 			
-			/*if(obeyAllowDeny) {
-				for each(var child:CoursewareObject in _product.contents) {
-					
-				}
-			}*/
-			
 			_currentCourseList = new CourseList();
 			_currentCourseList.addEventListener(FolderOpenEvent.FOLDER_OPEN, folderOpenHandler);
 			currentCourse = _product.getCourseByID(_user.startCourseID);
 			currentPage = _currentCourse.pages[0];
+			
+			
+			if(CONFIG::DEBUG) {
+				_debug = true;
+			}
+			
 		}
 		
 
@@ -283,5 +286,10 @@ package com.apexinnovations.transwarp.data {
 				}
 			}
 		}
+
+		public function get successfulInit():Boolean {
+			return _successfulInit;
+		}
+
 	}	
 }

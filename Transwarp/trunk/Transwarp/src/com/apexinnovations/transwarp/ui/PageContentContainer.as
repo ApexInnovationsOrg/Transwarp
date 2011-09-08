@@ -28,6 +28,7 @@ package com.apexinnovations.transwarp.ui {
 	[Event(name="progress", type="flash.events.ProgressEvent")]
 	[Event(name="complete", type="flash.events.Event")]
 	[Event(name="error", type="flash.events.ErrorEvent")]
+	[Event(name="indeterminentLoad", type="com.apexinnovations.transwarp.events.TranswarpEvent")]
 	public class PageContentContainer extends ContentContainer {
 		
 		protected var contentLoader:ContentLoader;
@@ -72,7 +73,8 @@ package com.apexinnovations.transwarp.ui {
 			
 			if(watchedLoader) {
 				watchedLoader.removeEventListener(LoaderEvent.PROGRESS, contentProgress);
-				watchedLoader.removeEventListener(TranswarpEvent.CONTENT_READY, contentLoaded);
+				watchedLoader.removeEventListener(TranswarpEvent.CONTENT_READY, contentReady);
+				//watchedLoader.removeEventListener(LoaderEvent.COMPLETE);
 				watchedLoader = null;
 			}
 			
@@ -85,15 +87,27 @@ package com.apexinnovations.transwarp.ui {
 			dispatchEvent(new Event("loadingStatusChanged"));
 			
 			if(watchedLoader.contentReady)
-				contentLoaded();
+				contentReady();
 			else {
-				watchedLoader.addEventListener(TranswarpEvent.CONTENT_READY, contentLoaded);
-				if(watchedLoader.status == LoaderStatus.LOADING) {
-					dispatchEvent(new Event(Event.OPEN));
-					dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS, false, false, watchedLoader.bytesLoaded, watchedLoader.bytesTotal));
-					watchedLoader.addEventListener(LoaderEvent.PROGRESS, contentProgress);
-				} else if(watchedLoader.status == LoaderStatus.FAILED) {
-					//How are we handling this?
+				watchedLoader.addEventListener(TranswarpEvent.CONTENT_READY, contentReady);
+				switch(watchedLoader.status) {
+					
+					case LoaderStatus.LOADING:
+						dispatchEvent(new Event(Event.OPEN));
+						dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS, false, false, watchedLoader.bytesLoaded, watchedLoader.bytesTotal));
+						watchedLoader.addEventListener(LoaderEvent.PROGRESS, contentProgress);
+						watchedLoader.addEventListener(LoaderEvent.COMPLETE, contentLoaded);
+						break;
+							
+					case LoaderStatus.COMPLETED:
+						dispatchEvent(new Event(Event.OPEN));
+						dispatchEvent(new TranswarpEvent(TranswarpEvent.INDETERMINATE_LOAD));
+						break;
+					
+					case LoaderStatus.FAILED:
+						//how are we handling this?
+						break;
+					
 				}
 			} 
 		}
@@ -105,7 +119,13 @@ package com.apexinnovations.transwarp.ui {
 			dispatchEvent(evt);
 		}
 		
-		protected function contentLoaded(event:Event = null):void {
+		protected function contentLoaded(event:Event):void {
+			if(!watchedLoader.contentReady)
+				dispatchEvent(new TranswarpEvent(TranswarpEvent.INDETERMINATE_LOAD));
+			
+		}
+		
+		protected function contentReady(event:Event = null):void {
 			
 			var page:Page = Courseware.instance.currentPage as Page;
 			

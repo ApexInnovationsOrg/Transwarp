@@ -12,6 +12,8 @@
 			import com.apexinnovations.transwarp.data.Folder;
 			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			import com.greensock.events.LoaderEvent;
+			import com.greensock.loading.LoaderStatus;
 			import com.greensock.loading.MP3Loader;
 			
 			TranswarpVersion.revision = "$Rev$";
@@ -23,10 +25,14 @@
 			public function get folder():Folder { return _folder; }
 
 			public function set folder(value:Folder):void {
+				trace(value);
+				
 				if(value === _folder)
 					return;
 				
 				if(audioLoader) {
+					audioLoader.removeEventListener(LoaderEvent.FAIL, handleAudioLoad);
+					audioLoader.removeEventListener(LoaderEvent.COMPLETE, handleAudioLoad);
 					audioLoader.pauseSound();
 					audioLoader.dispose();
 					audioLoader = null;
@@ -40,7 +46,9 @@
 					if(_folder.audio !== "none" || _folder.audio !== "false") {
 						var baseURL:String = Courseware.instance.rootFolder + '/'
 						audioLoader = new MP3Loader(baseURL + folder.audio);
+						progressBar.source = audioLoader;
 						audioLoader.load();
+						handleAudioLoad();
 					}
 					var button:LandingPageButton;
 					var i:int = 0;
@@ -73,6 +81,21 @@
 					visible = false;
 				}
 				
+			}
+			
+			public function replay():void {
+				if(audioLoader) 
+					audioLoader.gotoSoundTime(0, true);				
+			}
+			
+			public function reload():void {
+				for each(var button:LandingPageButton in buttons) {
+					button.reload();
+				}
+				
+				if(audioLoader) {
+					audioLoader.load(true);	
+				}				
 			}
 			
 			
@@ -121,12 +144,39 @@
 
 				}
 				
-				super.updateDisplayList(unscaledWidth, unscaledHeight)
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
 			}
 
+			protected function handleAudioLoad(event:Event = null):void {
+				
+				var status:int = audioLoader.status;
+				
+				if(!audioLoader)
+					status = LoaderStatus.FAILED;
+						
+				
+				switch(status) {
+					case LoaderStatus.COMPLETED:
+					case LoaderStatus.FAILED:
+						progressPanel.visible = false;
+						break;
+					
+					case LoaderStatus.LOADING:
+						progressPanel.visible = true;
+						audioLoader.addEventListener(LoaderEvent.FAIL, handleAudioLoad);
+						audioLoader.addEventListener(LoaderEvent.COMPLETE, handleAudioLoad);
+						break;
+				}
+				
+			}
+			
 		]]>
 	</fx:Script>
 	
-	<s:TileGroup id="container" horizontalCenter="0" verticalCenter="0" orientation="columns" verticalGap="20" horizontalGap="20"/>
+	<s:TileGroup id="container" orientation="columns" horizontalCenter="0" verticalCenter="0" verticalGap="20" horizontalGap="20"/>
+	
+	<s:Panel id="progressPanel" title="Loading Audio..." width="30%" horizontalCenter="0" bottom="0" height="60" visible="false" backgroundColor="0xFFFFFF" skinClass="com.apexinnovations.transwarp.skins.PanelSkin">
+		<mx:ProgressBar id="progressBar" labelPlacement="bottom" label="" direction="right" mode="manual" top="10" bottom="10" left="10" right="10"/>
+	</s:Panel>
 	
 </s:Group>

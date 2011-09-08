@@ -10,6 +10,7 @@ package com.apexinnovations.transwarp.assets.loaders {
 	
 	import flash.display.Loader;
 	import flash.events.Event;
+	import flash.media.SoundMixer;
 
 	TranswarpVersion.revision = "$Rev$";
 	
@@ -78,8 +79,10 @@ package com.apexinnovations.transwarp.assets.loaders {
 		}
 		
 		public function playAudio():void {
-			if(audioLoader && audioLoader.status == LoaderStatus.COMPLETED)
+			if(audioLoader && audioLoader.status == LoaderStatus.COMPLETED) {
+				SoundMixer.stopAll();				
 				audioLoader.gotoSoundTime(0, true);
+			}
 		}
 		
 		public function requestContent():void {

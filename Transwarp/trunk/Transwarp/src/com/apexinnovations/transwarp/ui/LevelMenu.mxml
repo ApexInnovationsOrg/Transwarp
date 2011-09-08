@@ -26,7 +26,8 @@
 			
 			override protected function createChildren():void {
 				super.createChildren();
-				showLevel = Courseware.instance.product.courses.length > 1;
+				if(Courseware.instance.successfulInit)
+					showLevel = Courseware.instance.product.courses.length > 1;
 			}
 			
 			protected function creationCompleteHandler(event:FlexEvent):void {

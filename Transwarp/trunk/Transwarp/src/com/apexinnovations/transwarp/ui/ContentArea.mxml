@@ -28,6 +28,7 @@
 			protected var timelineVisible:Boolean = false;			
 			
 			protected function loadProgress(event:ProgressEvent):void {
+				progressBar.indeterminate = false;
 				progressBar.setProgress(event.bytesLoaded, event.bytesTotal);
 			}
 
@@ -38,14 +39,18 @@
 			}
 			
 			protected function pageChanged(event:PageSelectionEvent = null):void {
+				SoundMixer.stopAll();
+				
 				var target:CoursewareObject
 				if(!event)
 					target = Courseware.instance.currentPage;
 				else
 					target = event.page;
-								
+				
+				landingPage.folder = target as Folder;
+				
 				var page:Page = target as Page;
-				timelineVisible = timeline.includeInLayout = page ? page.timeline : false;
+				timelineVisible = false; //hide timeline until content ready
 				instructions.visible = instructions.includeInLayout = page ? Boolean(page.instructions) : false;
 				instrText.textFlow = page ? page.instructions : null;
 				debugInfo.text = target ? target.id + (page ? " (" + page.swf + ")" : "") : "";
@@ -53,6 +58,13 @@
 					progressPanel.visible = false;
 				
 			}
+			
+			protected function contentReady():void {
+				progressPanel.visible = false;
+				var page:Page = Courseware.instance.currentPage as Page;
+				timelineVisible = page && page.timeline;
+			}
+			
 			
 			protected function contentAreaSizeHandler(event:ContentAreaSizeEvent):void {
 				var v:Number = Math.max(0, Math.min(87, event.vOverflow));
@@ -72,10 +84,9 @@
 		
 		<s:Group id="contentGroup" width="100%" height="100%">
 			<ui:PageContentContainer id="container" width="100%" height="100%" 
-								  open="progressPanel.visible = true" complete="progressPanel.visible = false"
-								  progress="loadProgress(event)"/>
-			<landingpage:LandingPage folder="{Courseware.instance.currentPage as Folder}" 
-									 width="100%" height="100%"/>			
+								  open="progressPanel.visible = true" complete="contentReady()"
+								  progress="loadProgress(event)" indeterminentLoad="progressBar.indeterminate = true"/>
+			<landingpage:LandingPage id="landingPage" width="100%" height="100%"/>			
 		</s:Group>
 		
 		<s:VGroup id="bottomGroup" horizontalAlign="center" width="100%">

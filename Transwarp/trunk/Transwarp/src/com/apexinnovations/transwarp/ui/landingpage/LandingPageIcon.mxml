@@ -53,6 +53,13 @@
 					addedHandler();
 			}
 			
+			public function reload():void {
+				if(loader) {
+					loader.load(true);
+					addedHandler();
+				}
+			}
+			
 			protected function loadCompleteHandler(event:Event = null):void {
 				currentState = "default";
 				image.source = loader.rawContent;
