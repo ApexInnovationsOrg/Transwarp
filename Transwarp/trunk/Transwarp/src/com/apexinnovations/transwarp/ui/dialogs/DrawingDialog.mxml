@@ -162,11 +162,11 @@
 	
 	<s:VGroup paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" horizontalAlign="center" gap="20">
 		<s:HGroup verticalAlign="top" gap="10">
-			<s:Label text="{resourceManager.getString('Chrome','SIZE')}" fontWeight="bold" color="0x000000" paddingTop="10" />
+			<s:Label text="{resourceManager.getString('Dialogs','SIZE')}" fontWeight="bold" color="0x000000" paddingTop="10" />
 			<s:NumericStepper id="sizeSpinner" width="42" value="10" minimum="2" maximum="20" stepSize="2" snapInterval="2" allowValueWrap="false" toolTip="BRUSH_SIZE" change="specifyCursor();"/>
-			<s:Label text="{resourceManager.getString('Chrome','COLOR')}" fontWeight="bold" color="0x000000" paddingTop="10" />
+			<s:Label text="{resourceManager.getString('Dialogs','COLOR')}" fontWeight="bold" color="0x000000" paddingTop="10" />
 			<ui:SparkColorPicker id="cp" selectedItem="#FF0000" change="specifyCursor(); Mouse.cursor = _currentCursor;" skinClass="com.apexinnovations.transwarp.skins.ColorPickerListSkin" enabled="true" toolTip="BRUSH_COLOR" buttonMode="true"/>
 		</s:HGroup>
-		<s:Button label="{resourceManager.getString('Chrome','ERASE')}" click="_graphics.clear();" buttonMode="true"/>
+		<s:Button label="{resourceManager.getString('Dialogs','ERASE')}" click="_graphics.clear();" buttonMode="true"/>
 	</s:VGroup>
 </dialogs:DialogBox>
