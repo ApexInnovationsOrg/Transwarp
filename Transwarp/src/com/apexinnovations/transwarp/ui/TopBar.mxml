@@ -95,12 +95,14 @@
 				var contents:ContentArea = (this.parentApplication as Transwarp).contentArea;
 				
 				contents.container.replay();
+				contents.landingPage.replay();
 			}
 			
 			protected function reloadClick():void {
 				var contents:ContentArea = (this.parentApplication as Transwarp).contentArea;
 				
 				contents.container.reload();
+				contents.landingPage.reload();
 			}
 			
 			protected function submitSearch():void {

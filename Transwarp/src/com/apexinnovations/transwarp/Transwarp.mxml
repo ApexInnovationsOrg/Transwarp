@@ -76,17 +76,18 @@
 					xmlLoadError = e;
 				}
 				
-				mainLoader = new LimitedMemoryLoader(75*1024*1024); // TODO: Adjust this cap per user?
-				
-				// Load Page Snapshots 
-				var snapshotLoader:LoaderMax = new LoaderMax();
-				var baseURL:String = courseware.rootFolder + '/';
-				var snapshotFactory:SharedLoaderFactory = new SharedLoaderFactory();
-				for each(var page:Page in courseware.product.pages) {
-					var loader:ImageLoader = snapshotFactory.getLoader(page.snapshot, baseURL+page.snapshot, ImageLoader, {name: page.snapshot});
-					snapshotLoader.append(loader);
+				if(!xmlLoadError) {
+					mainLoader = new LimitedMemoryLoader(75*1024*1024); // TODO: Adjust this cap per user?
+					// Load Page Snapshots 
+					var snapshotLoader:LoaderMax = new LoaderMax();
+					var baseURL:String = courseware.rootFolder + '/';
+					var snapshotFactory:SharedLoaderFactory = new SharedLoaderFactory();
+					for each(var page:Page in courseware.product.pages) {
+						var loader:ImageLoader = snapshotFactory.getLoader(page.snapshot, baseURL+page.snapshot, ImageLoader, {name: page.snapshot});
+						snapshotLoader.append(loader);
+					}
+					snapshotLoader.load();
 				}
-				snapshotLoader.load();
 			}
 			
 			override protected function createChildren():void {

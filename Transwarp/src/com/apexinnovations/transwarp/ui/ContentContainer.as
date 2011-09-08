@@ -38,7 +38,6 @@ package com.apexinnovations.transwarp.ui {
 		protected function set content(value:DisplayObject):void {
 			if(_content) {
 				removeChild(_content);
-				SoundMixer.stopAll();
 			}
 			
 			_content = value;

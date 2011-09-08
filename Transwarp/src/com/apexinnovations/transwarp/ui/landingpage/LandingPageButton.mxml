@@ -25,6 +25,10 @@
 			[Bindable] public var page:Page;
 			[Bindable] public var maxLabelWidth:Number = 175;
 			
+			public function reload():void {
+				icon.reload();
+			}
+			
 			protected function mouseOverOutHandler(event:MouseEvent):void {
 				over = event.type == MouseEvent.ROLL_OVER;
 				updateState();				
@@ -81,7 +85,7 @@
 					<s:SolidColor color="0xffffff" />
 				</s:fill>
 			</s:Rect>
-			<landingpage:LandingPageIcon page="{page}" width="100" height="100" mask="{iconMask}"/>
+			<landingpage:LandingPageIcon id="icon" page="{page}" width="100" height="100" mask="{iconMask}"/>
 			<s:Rect radiusX="10" width="100" height="100" excludeFrom="up">
 				<s:fill><s:SolidColor alpha="0.1" alpha.down="0.2" color="0"/></s:fill>
 			</s:Rect>
