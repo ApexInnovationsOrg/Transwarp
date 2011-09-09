@@ -80,8 +80,6 @@ package com.apexinnovations.transwarp.ui {
 			watchedLoader = contentLoader.getPageLoader(_page);
 			watchedLoader.requestContent();
 			
-			trace(watchedLoader.status, watchedLoader.contentReady);
-			
 			if(watchedLoader.contentReady)
 				contentReady();
 			else {
