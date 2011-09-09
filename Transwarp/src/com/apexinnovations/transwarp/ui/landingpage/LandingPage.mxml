@@ -25,13 +25,13 @@
 			public function get folder():Folder { return _folder; }
 
 			public function set folder(value:Folder):void {
-				
 				if(value === _folder)
 					return;
 				
 				if(audioLoader) {
 					audioLoader.removeEventListener(LoaderEvent.FAIL, handleAudioLoad);
 					audioLoader.removeEventListener(LoaderEvent.COMPLETE, handleAudioLoad);
+					audioLoader.removeEventListener(LoaderEvent.PROGRESS, handleAudioProgress);
 					audioLoader.pauseSound();
 					audioLoader.dispose();
 					audioLoader = null;
@@ -45,7 +45,6 @@
 					if(_folder.audio !== "none" || _folder.audio !== "false") {
 						var baseURL:String = Courseware.instance.rootFolder + '/'
 						audioLoader = new MP3Loader(baseURL + folder.audio);
-						progressBar.source = audioLoader;
 						audioLoader.load();
 						handleAudioLoad();
 					}
@@ -161,12 +160,18 @@
 						break;
 					
 					case LoaderStatus.LOADING:
+						progressBar.setProgress(audioLoader.bytesLoaded, audioLoader.bytesTotal);
 						progressPanel.visible = true;
 						audioLoader.addEventListener(LoaderEvent.FAIL, handleAudioLoad);
 						audioLoader.addEventListener(LoaderEvent.COMPLETE, handleAudioLoad);
+						audioLoader.addEventListener(LoaderEvent.PROGRESS, handleAudioProgress);
 						break;
 				}
 				
+			}
+			
+			protected function handleAudioProgress(event:LoaderEvent):void {
+				progressBar.setProgress(audioLoader.bytesLoaded, audioLoader.bytesTotal);
 			}
 			
 		]]>

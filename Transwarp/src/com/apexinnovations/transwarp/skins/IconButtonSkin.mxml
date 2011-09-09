@@ -33,7 +33,7 @@
     
 	<s:filters>
 		<s:DropShadowFilter blurX="2.3" blurY="2.3" distance="3" alpha="0.5"
-							excludeFrom="disabled" />
+							excludeFrom="disabled"  alpha.upfaded="0.25" alpha.downfaded="0.25" alpha.overfaded="0.25"/>
 		<s:GlowFilter blurX="10" blurY="10" color="0" alpha="0.65" includeIn="over,down" />
 		<!--<s:GlowFilter blurX="35" blurY="35" inner="true" color="{ConfigData.buttonFGColor + 0x111100}" includeIn="downhighlight,overhighlight,uphighlight" alpha="0.8" />-->
 	</s:filters>

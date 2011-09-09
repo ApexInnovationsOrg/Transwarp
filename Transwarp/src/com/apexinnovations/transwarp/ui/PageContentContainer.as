@@ -51,10 +51,6 @@ package com.apexinnovations.transwarp.ui {
 			}
 		}
 		
-		[Bindable("loadingStatusChanged")] public function get loadingStatus():int {
-			return watchedLoader ? watchedLoader.status : -1;
-		}
-		
 		protected function creationComplete(event:FlexEvent):void {
 			if(!Courseware.instance || !Courseware.instance.product)
 				return; // This only occurrs with a total XML load failure
@@ -74,7 +70,7 @@ package com.apexinnovations.transwarp.ui {
 			if(watchedLoader) {
 				watchedLoader.removeEventListener(LoaderEvent.PROGRESS, contentProgress);
 				watchedLoader.removeEventListener(TranswarpEvent.CONTENT_READY, contentReady);
-				//watchedLoader.removeEventListener(LoaderEvent.COMPLETE);
+				watchedLoader.removeEventListener(LoaderEvent.COMPLETE, contentReady);
 				watchedLoader = null;
 			}
 			
@@ -84,7 +80,7 @@ package com.apexinnovations.transwarp.ui {
 			watchedLoader = contentLoader.getPageLoader(_page);
 			watchedLoader.requestContent();
 			
-			dispatchEvent(new Event("loadingStatusChanged"));
+			trace(watchedLoader.status, watchedLoader.contentReady);
 			
 			if(watchedLoader.contentReady)
 				contentReady();
@@ -92,6 +88,7 @@ package com.apexinnovations.transwarp.ui {
 				watchedLoader.addEventListener(TranswarpEvent.CONTENT_READY, contentReady);
 				switch(watchedLoader.status) {
 					
+					case LoaderStatus.READY:
 					case LoaderStatus.LOADING:
 						dispatchEvent(new Event(Event.OPEN));
 						dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS, false, false, watchedLoader.bytesLoaded, watchedLoader.bytesTotal));
@@ -120,7 +117,7 @@ package com.apexinnovations.transwarp.ui {
 		}
 		
 		protected function contentLoaded(event:Event):void {
-			if(!watchedLoader.contentReady)
+			if(watchedLoader && !watchedLoader.contentReady)
 				dispatchEvent(new TranswarpEvent(TranswarpEvent.INDETERMINATE_LOAD));
 			
 		}
@@ -136,7 +133,6 @@ package com.apexinnovations.transwarp.ui {
 			
 			watchedLoader.playAudio();
 			
-			dispatchEvent(new Event("loadingStatusChanged"));
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
 
