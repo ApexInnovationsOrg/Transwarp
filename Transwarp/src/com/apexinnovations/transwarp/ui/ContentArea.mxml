@@ -47,8 +47,6 @@
 				else
 					target = event.page;
 				
-				landingPage.folder = target as Folder;
-				
 				var page:Page = target as Page;
 				timelineVisible = false; //hide timeline until content ready
 				instructions.visible = instructions.includeInLayout = page ? Boolean(page.instructions) : false;
@@ -56,6 +54,10 @@
 				debugInfo.text = target ? target.id + (page ? " (" + page.swf + ")" : "") : "";
 				if(!page)
 					progressPanel.visible = false;
+				//trace("page changed");
+				
+				landingPage.folder = target as Folder;
+				container.page = target as Page;
 				
 			}
 			
@@ -63,6 +65,7 @@
 				progressPanel.visible = false;
 				var page:Page = Courseware.instance.currentPage as Page;
 				timelineVisible = page && page.timeline;
+				//trace("ready", timelineVisible);
 			}
 			
 			
@@ -91,7 +94,7 @@
 		
 		<s:VGroup id="bottomGroup" horizontalAlign="center" width="100%">
 			<ui:Timeline id="timeline" source="{container.rawContent as TranswarpMovieClip}"
-						 visible="{timelineVisible &amp;&amp; container.loadingStatus == LoaderStatus.COMPLETED}"/>
+						 visible="{timelineVisible}"/>
 			
 			<s:HGroup id="instructions" 
 					  paddingLeft="10" paddingRight="10"

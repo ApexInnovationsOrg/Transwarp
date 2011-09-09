@@ -25,7 +25,6 @@
 			public function get folder():Folder { return _folder; }
 
 			public function set folder(value:Folder):void {
-				trace(value);
 				
 				if(value === _folder)
 					return;

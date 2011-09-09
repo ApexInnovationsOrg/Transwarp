@@ -32,7 +32,7 @@ package com.apexinnovations.transwarp.ui {
 	public class PageContentContainer extends ContentContainer {
 		
 		protected var contentLoader:ContentLoader;
-		
+		protected var _page:Page;
 		protected var watchedLoader:PageLoader;
 		
 		public function PageContentContainer() {
@@ -61,11 +61,11 @@ package com.apexinnovations.transwarp.ui {
 			
 			contentLoader = new ContentLoader(Courseware.instance.product, Transwarp(parentApplication).mainLoader);
 			
-			Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
+			//Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
 			pageChanged();
 		}
 		
-		protected function pageChanged(event:PageSelectionEvent = null):void {
+		protected function pageChanged():void {
 			if(!contentLoader)
 				return;
 			
@@ -78,10 +78,10 @@ package com.apexinnovations.transwarp.ui {
 				watchedLoader = null;
 			}
 			
-			if(!(Courseware.instance.currentPage is Page))
+			if(!_page)
 				return;
 			
-			watchedLoader = contentLoader.getPageLoader(Courseware.instance.currentPage as Page);
+			watchedLoader = contentLoader.getPageLoader(_page);
 			watchedLoader.requestContent();
 			
 			dispatchEvent(new Event("loadingStatusChanged"));
@@ -127,11 +127,11 @@ package com.apexinnovations.transwarp.ui {
 		
 		protected function contentReady(event:Event = null):void {
 			
-			var page:Page = Courseware.instance.currentPage as Page;
+			/*var page:Page = Courseware.instance.currentPage as Page;
 			
 			if(watchedLoader.page !== page)
 				return; //shouldn't happen
-			
+			*/
 			content = watchedLoader.swf;
 			
 			watchedLoader.playAudio();
@@ -139,6 +139,16 @@ package com.apexinnovations.transwarp.ui {
 			dispatchEvent(new Event("loadingStatusChanged"));
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
+
+		public function get page():Page { return _page; }
+		public function set page(value:Page):void {
+			if(_page == value)
+				return;
+			
+			_page = value;
+			pageChanged();
+		}
+
 		
 	}
 }
