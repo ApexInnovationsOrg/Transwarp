@@ -20,13 +20,23 @@
 			
 			TranswarpVersion.revision = "$Rev$";
 			
-			public var _page:CoursewareObject;
+			protected var _page:CoursewareObject;
+			protected var _suffix:String = "";
 
 			public function get page():CoursewareObject { return _page;}
 			public function set page(value:CoursewareObject):void {
 				_page = value;
 				pageChanged();
 			}
+			
+			public function get suffix():String { return _suffix; }
+			public function set suffix(value:String):void {
+				if(_suffix != value) {
+					_suffix = value;
+					pageChanged();
+				}
+			}
+			
 			
 			protected function pageChanged(event:PageSelectionEvent = null):void {
 				var p:CoursewareObject = page ? page : Courseware.instance.currentPage;
@@ -38,7 +48,7 @@
 				breadcrumbs.text = p.breadcrumbs;
 				breadcrumbs.includeInLayout = breadcrumbs.text !== '';
 				
-				title.text = p.name;
+				title.text = p.name + (_suffix ? _suffix : "");
 			}
 			
 			

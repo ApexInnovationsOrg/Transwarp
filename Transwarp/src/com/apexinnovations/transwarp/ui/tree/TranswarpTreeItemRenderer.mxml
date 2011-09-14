@@ -7,7 +7,8 @@
 				autoDrawBackground="false"
 				dataChange="dataChangeHandler(event)" 
 				click="click()"
-				height="27" buttonMode="true" toolTipClass="{MenuButtonTooltip}"
+				height="27" 
+				toolTipClass="{MenuButtonTooltip}"
 				right="0">
 	<fx:Script>
 		<![CDATA[
@@ -20,6 +21,7 @@
 			import flash.text.engine.FontPosture;
 			import flash.text.engine.FontWeight;
 			
+			import mx.controls.listClasses.BaseListData;
 			import mx.events.FlexEvent;
 			import mx.utils.ColorUtil;
 			
@@ -28,8 +30,9 @@
 			[Bindable] protected var indentation:int;
 			[Bindable] protected var disclosureWidth:int;
 			
+			
 			protected function dataChangeHandler(event:FlexEvent):void {
-
+				
 				if(data is Page) {
 					var p:Page = data as Page;
 					labelDisplay.setStyle("fontWeight", p.visited ? FontWeight.NORMAL : FontWeight.BOLD);
@@ -37,8 +40,8 @@
 					indentation = p.depth * 12;
 					labelDisplay.text = p.name;
 					if(Courseware.instance.debug)
-						labelDisplay.text = labelDisplay.text + " (" + p.id + ")";
-					
+						labelDisplay.text = p.id + " - " + labelDisplay.text;
+					buttonMode = true;								
 					disclosure.visible = false;
 					//toolTip = String(data.id);
 					
@@ -50,9 +53,14 @@
 					disclosureWidth = 12;
 					
 					disclosure.rotation = f.open ? 90 : 0;
+					var tree:Tree = owner as Tree;					
+					buttonMode = tree ? tree.allowFolderSelection : true;
 					
 					indentation = f.depth * 12;
 					labelDisplay.text = f.name;
+					
+					if(Courseware.instance.debug)
+						labelDisplay.text = f.id + " - " + labelDisplay.text;
 				} else {
 					labelDisplay.text = "File Inclusion Error";
 					disclosure.visible = false;

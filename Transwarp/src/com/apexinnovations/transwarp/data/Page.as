@@ -45,7 +45,6 @@ package com.apexinnovations.transwarp.data {
 				_swf = xml.@swf;
 				_timeline = xml.@timeline == 'true';
 				
-				
 				_snapshot = xml.@snapshot;
 							
 			} catch ( e:Error ) {

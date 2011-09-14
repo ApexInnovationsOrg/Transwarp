@@ -117,6 +117,9 @@ package com.apexinnovations.transwarp.data {
 		}
 		
 		public function allowUser(user:User):Boolean {
+			if(_parentCourseware && !_parentCourseware.obeyAllowDeny)
+				return true;
+			
 			var p:Boolean = true;
 			if(_allow && _allow.size > 0)
 				p = _allow.hasIntersect(user.classes);
