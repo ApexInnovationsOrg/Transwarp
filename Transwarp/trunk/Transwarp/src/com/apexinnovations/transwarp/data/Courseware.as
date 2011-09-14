@@ -35,6 +35,8 @@ package com.apexinnovations.transwarp.data {
 		private var _user:User = null;				// The user that's accessing the courseware
 		private var _website:String = '';			// The base URL of the website this engine is being run from
 		
+		private var _obeyAllowDeny:Boolean = true;
+		
 		private var _successfulInit:Boolean = true;
 		// Return the singleton instance of this class
 		public static function get instance():Courseware {
@@ -127,6 +129,13 @@ package com.apexinnovations.transwarp.data {
 				volume = uint(xml.@volume);
 				_website = xml.@website;
 				
+				if(CONFIG::DEBUG) {
+					_debug = true;
+					obeyAllowDeny = false;
+				}
+				
+				_obeyAllowDeny = obeyAllowDeny;
+				
 				_user = new User(xml.user[0], this);
 				_product = new Product(xml.product[0], this);
 				
@@ -151,13 +160,7 @@ package com.apexinnovations.transwarp.data {
 			_currentCourseList = new CourseList();
 			_currentCourseList.addEventListener(FolderOpenEvent.FOLDER_OPEN, folderOpenHandler);
 			currentCourse = _product.getCourseByID(_user.startCourseID);
-			currentPage = _currentCourse.pages[0];
-			
-			
-			if(CONFIG::DEBUG) {
-				_debug = true;
-			}
-			
+			currentPage = _currentCourse.pages[0];			
 		}
 		
 
@@ -224,6 +227,8 @@ package com.apexinnovations.transwarp.data {
 		public function get rootFolder():String { return _rootFolder; }
 		public function get timeout():int { return _timeout; }
 		[Bindable("colorChanged")] public function get user():User { return _user; }
+		
+		public function get obeyAllowDeny():Boolean { return _obeyAllowDeny; }
 		
 		[Bindable] public function get volume():uint { return 100 * SoundMixer.soundTransform.volume; }
 		public function set volume(val:uint):void {

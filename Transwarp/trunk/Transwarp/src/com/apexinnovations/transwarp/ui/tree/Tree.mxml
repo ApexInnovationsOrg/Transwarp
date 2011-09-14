@@ -28,6 +28,8 @@
 			
 			protected var dataProviderChanged:Boolean = false;
 			
+			public var allowFolderSelection:Boolean = true;
+			
 			override protected function createChildren():void {
 				super.createChildren();
 				scroller.setStyle("horizontalScrollPolicy", false);
@@ -48,10 +50,11 @@
 				if(event.newIndex == -1)
 					return;
 				
-				/*var selection:Object = dataProvider.getItemAt(event.newIndex);
-				if(selection is Folder)
-					event.preventDefault();
-				*/
+				if(!allowFolderSelection) {
+					var selection:Object = dataProvider.getItemAt(event.newIndex);
+					if(selection is Folder)
+						event.preventDefault();
+				}
 			}
 			
 			protected function folderOpenClose(event:Event):void {

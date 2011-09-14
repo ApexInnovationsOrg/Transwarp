@@ -11,12 +11,15 @@ package com.apexinnovations.transwarp.ui {
 	import com.greensock.loading.LoaderStatus;
 	
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.ProgressEvent;
 	import flash.geom.Rectangle;
 	import flash.media.SoundMixer;
+	import flash.text.StaticText;
+	import flash.text.TextField;
 	
 	import mx.core.UIComponent;
 	import mx.events.FlexEvent;
@@ -121,19 +124,32 @@ package com.apexinnovations.transwarp.ui {
 		}
 		
 		protected function contentReady(event:Event = null):void {
-			
-			/*var page:Page = Courseware.instance.currentPage as Page;
-			
-			if(watchedLoader.page !== page)
-				return; //shouldn't happen
-			*/
 			content = watchedLoader.swf;
 			
 			watchedLoader.playAudio();
 			
+			/*if(Courseware.instance.debug) {
+				makeSelectable(content as DisplayObjectContainer);		
+			}*/
+			
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
 
+/*		protected function makeSelectable(node:DisplayObjectContainer):void {
+			if(!node)
+				return;
+			for(var i:int = 0; i < node.numChildren; ++i) {
+				var child:DisplayObject = node.getChildAt(i);
+				trace(child);
+				if(child is TextField)
+					TextField(child).selectable = true;
+				else if(child is StaticText)
+					StaticText(child).
+				else if(child is DisplayObjectContainer)
+					makeSelectable(child as DisplayObjectContainer);
+			}
+		}*/
+		
 		public function get page():Page { return _page; }
 		public function set page(value:Page):void {
 			if(_page == value)
