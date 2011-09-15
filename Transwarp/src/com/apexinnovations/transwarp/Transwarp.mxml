@@ -103,11 +103,13 @@
 					if(courseware.user.id != 0) {
 						var listener:VisitListener = new VisitListener(5, 60, Courseware.instance.timeout);
 						listener.addEventListener(IdleEvent.IDLE, idleTimeout);
+						
+						manager.addEventListener(MouseEvent.MOUSE_DOWN, listener.resetTimeout);
+						manager.addEventListener(MouseEvent.MOUSE_MOVE, listener.resetTimeout);
+						manager.addEventListener(KeyboardEvent.KEY_DOWN, listener.resetTimeout);
 					}
 					
-					manager.addEventListener(MouseEvent.MOUSE_DOWN, listener.resetTimeout);
-					manager.addEventListener(MouseEvent.MOUSE_MOVE, listener.resetTimeout);
-					manager.addEventListener(KeyboardEvent.KEY_DOWN, listener.resetTimeout);
+					
 					
 				} else {
 					var e:Error = xmlLoadError;
