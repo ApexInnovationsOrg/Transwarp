@@ -26,7 +26,7 @@ package com.apexinnovations.transwarp.preloader {
 		
 		protected var _xml:XML;
 		
-		protected var _rslDone:Boolean = false;
+		protected var _rslDone:Boolean = CONFIG::OFFLINE;
 		protected var _rslsLoaded:int = 0;
 		protected var _estimatedRSLSize:Number = 343000;
 		protected var _estimatedRSLTotalSize:Number = _estimatedRSLSize * 4;
@@ -81,20 +81,26 @@ package com.apexinnovations.transwarp.preloader {
 			
 			if(CONFIG::DEBUG) {
 				if (requestVars.baseURL == 'undefined') {
-					requestVars.data = '69f26ef8147d984e52a9cf6cdb397592daa7a3f56a4c26b5a915c68b9c0c64ade2488a93188d9024989fc1d535d852c2875016a31690bcdf90ff9fe57b4fbe47'; // Responder
+					//requestVars.data = '69f26ef8147d984e52a9cf6cdb397592daa7a3f56a4c26b5a915c68b9c0c64ade2488a93188d9024989fc1d535d852c2875016a31690bcdf90ff9fe57b4fbe47'; // Responder
 					//requestVars.data = "e312c92591e7067db6857b02130f7d8b3ce8016b9b28cc8de90efbcc81356dfb0619e755974be99c80a9d5f458deaa16720256f25b2f946b6b0a4befb9791c10"; // Canadian Hemi
-					//requestVars.data = '8998d80e3ea4b7688fb3e724c80a9f8f595fdefe848dda2407dbe3c2a1f7a039e41a2f6dc36ac5ee02c3b1494a236afdcfd51e186a766ab5fa9c202deea38f40'; // userID = 56, courseID = 1, seatID = 1234, timestamp = 42
+					requestVars.data = '8998d80e3ea4b7688fb3e724c80a9f8f595fdefe848dda2407dbe3c2a1f7a039e41a2f6dc36ac5ee02c3b1494a236afdcfd51e186a766ab5fa9c202deea38f40'; // userID = 56, courseID = 1, seatID = 1234, timestamp = 42 (imPULSE)
 					requestVars.baseURL = 'http://www.apexsandbox.com';
-				}
+					}
+			} 
+			
+			
+			if(CONFIG::OFFLINE) {
+				requestVars.baseURL = '/';
+				var req:URLRequest = new URLRequest("responder.xml");				
+			} else {
+				var req:URLRequest = new URLRequest(requestVars.baseURL + "/Classroom/engine/load.php");
+				req.data = requestVars;
+				req.method = URLRequestMethod.POST;
 			}
+			
 			
 			ApexWebService.baseURL = requestVars.baseURL;
 			
-			var req:URLRequest = new URLRequest(ApexWebService.baseURL + "/Classroom/engine/load.php");
-			req.data = requestVars;
-			req.method = URLRequestMethod.POST;
-			
-			//var req:URLRequest = new URLRequest("responder.xml");
 			var loader:URLLoader = new URLLoader(req);
 			loader.addEventListener(Event.COMPLETE, loadAssets);
 			loader.addEventListener(IOErrorEvent.IO_ERROR, xmlLoadError);
@@ -169,11 +175,14 @@ package com.apexinnovations.transwarp.preloader {
 				}
 				
 				// Now load up any required assets
-				AssetLoader.instance.addBitmapAsset(_xml.@website + "/Classroom/engine/" + _xml.product[0].@logoBig, "logoBig");
-				AssetLoader.instance.addBitmapAsset(_xml.@website + "/Classroom/engine/" + _xml.product[0].@logoSmall, "logoSmall");
-				//AssetLoader.instance.addBitmapAsset(_xml.product[0].@logoBig, "logoBig");
-				//AssetLoader.instance.addBitmapAsset(_xml.product[0].@logoSmall, "logoSmall");
-				
+				if(CONFIG::OFFLINE) {
+					AssetLoader.instance.addBitmapAsset(_xml.product[0].@logoBig, "logoBig");
+					AssetLoader.instance.addBitmapAsset(_xml.product[0].@logoSmall, "logoSmall");
+				} else {
+					AssetLoader.instance.addBitmapAsset(_xml.@website + "/Classroom/engine/" + _xml.product[0].@logoBig, "logoBig");
+					AssetLoader.instance.addBitmapAsset(_xml.@website + "/Classroom/engine/" + _xml.product[0].@logoSmall, "logoSmall");	
+				}
+								
 				advanceFrame();
 			}
 		}

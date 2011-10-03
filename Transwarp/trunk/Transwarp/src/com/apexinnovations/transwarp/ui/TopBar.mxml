@@ -131,11 +131,35 @@
 				var includeName:Boolean = topArea.height > 110;
 				nameLabel.visible = includeName;
 				//nameLabel.includeInLayout = includeName;
+				
+				var rows:int = levelNav.rowCount;
+				var cols:int = levelNav.columnCount;
+				var w:Number = (cols-1) * levelNav.horizontalGap + cols * levelNav.columnWidth;
+				var h:Number = (rows-1) * levelNav.verticalGap + rows * levelNav.rowHeight;
+				
+				
+				
 			}
 			
 			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
-				navButtons.horizontalCenter = Transwarp(parentApplication).leftBar.width/2
+				navButtons.horizontalCenter = Transwarp(parentApplication).leftBar.width/2;
 				
+				/* var rows:int = levelNav.rowCount;
+				var cols:int = levelNav.columnCount;
+				var w:Number = (cols-1) * levelNav.horizontalGap + cols * levelNav.columnWidth;
+				var h:Number = (rows-1) * levelNav.verticalGap + rows * levelNav.rowHeight;
+					
+								
+				if(unscaledWidth - 210 < w) {
+					levelNav.scaleX = (unscaledWidth - 210) / w;					
+				}
+				
+				if(unscaledHeight - 32 < h) {
+					levelNav.scaleY = (unscaledHeight - 32) / h;					
+				}
+				
+				levelNav.scaleX = levelNav.scaleY = Math.min(1, levelNav.scaleY, levelNav.scaleX);
+				 */
 				super.updateDisplayList(unscaledWidth, unscaledHeight);
 			}
 			
@@ -198,7 +222,7 @@
 				<s:Label id="nameLabel" text="{resourceManager.getString('Chrome','BY_APEX')}" fontStyle="italic" color="#444444"/>
 			</s:VGroup>
 			
-			<s:TileGroup id="levelNav" left="285" right="40" top="32" requestedRowCount="3" orientation="columns" verticalGap="10" horizontalGap="10" height.maximized="0" visible.maximized="false" visible="{!hasRightGradient}"/>
+			<s:TileGroup id="levelNav" left="285" right="25" top="32" requestedRowCount="3" orientation="columns" verticalGap="10" horizontalGap="10" visible="{!hasRightGradient}" creationComplete="initLevelNav()"/>
 			
 		</s:Group>
 		
