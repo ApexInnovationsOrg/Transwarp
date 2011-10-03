@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!-- mySimpleBuild.xml --> 
+<project name="Transwarp" basedir="."> 
+    
+    <property name="FLEX_HOME" value="C:/Program Files (x86)/Adobe/Adobe Flash Builder 4.5/sdks/4.5.1"/> 
+    <property name="APP_ROOT" value="${basedir}"/> 
+    <property name="DEPLOY_DIR" value="${APP_ROOT}/bin-debug"/>
+    
+    <taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+    
+    
+    <target name="build"> 
+        
+        <mxmlc file="${APP_ROOT}\src\com\apexinnovations\transwarp\Transwarp.mxml"
+        	   keep-generated-actionscript="true"
+        	   output="${DEPLOY_DIR}/Transwarp.swf"
+        	   locale="en_US,es_ES"
+        	   compiler.debug="true"> 
+            
+            <load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/> 
+<!--            <source-path path-element="${FLEX_HOME}/frameworks"/>-->
+            
+            
+            <compiler.source-path path-element="${APP_ROOT}/src" />
+			<compiler.source-path path-element="${APP_ROOT}/libs"/>        
+            <compiler.source-path path-element="${APP_ROOT}/../TranswarpSlide/src"/>
+            <compiler.source-path path-element="${APP_ROOT}/../TranswarpConfig/src"/>
+			
+			<compiler.source-path path-element="${APP_ROOT}/locale/{locale}" />
+            
+            <compiler.include-libraries dir="${FLEX_HOME}/frameworks/libs/mobile" append="true">
+            	<include name="mobilecomponents.swc" />
+            </compiler.include-libraries>
+            
+           <compiler.library-path dir="${FLEX_HOME}/frameworks/locale/">
+            	<include name="en_US" />
+            </compiler.library-path>
+
+            
+            <compiler.library-path dir="${APP_ROOT}">
+            	<include name="libs" />
+            </compiler.library-path>
+            
+            
+             <define name="CONFIG::DEBUG" value="true" />
+        </mxmlc> 
+    </target>
+    
+</project>

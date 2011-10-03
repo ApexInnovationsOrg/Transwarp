@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <actionScriptProperties analytics="false" mainApplicationPath="com/apexinnovations/transwarp/Transwarp.mxml" projectUUID="aae77c0c-4c9e-49b0-94a4-9b7959b721c6" version="10">
-  <compiler additionalCompilerArguments="-locale=en_US,es_ES -source-path=locale/{locale} -keep-generated-actionscript -define+=CONFIG::DEBUG,false" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+  <compiler additionalCompilerArguments="-locale=en_US,es_ES -source-path=locale/{locale} -keep-generated-actionscript -define+=CONFIG::DEBUG,true -define+=CONFIG::OFFLINE,false" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath>
       <compilerSourcePathEntry kind="1" linkType="1" path="${DOCUMENTS}/TranswarpConfig/src"/>
       <compilerSourcePathEntry kind="1" linkType="1" path="${DOCUMENTS}/TranswarpSlide/src"/>
     </compilerSourcePath>
-    <libraryPath defaultLinkType="3">
+    <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
       <libraryPathEntry kind="4" path="">
         <excludedEntries>

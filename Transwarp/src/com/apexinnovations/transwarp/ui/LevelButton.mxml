@@ -111,8 +111,8 @@
 			</s:fill>
 		</s:Rect>
 		
-		<s:Label text="{levelRoman}" fontFamily="Arial" color="0xffffff" fontWeight="bold" fontSize="17" left="10" verticalCenter="0" />
-		<s:Label text="{levelName}" fontFamily="Arial" fontSize="12" color="0" color.selected="{Courseware.instance.color}" left="50" verticalCenter="0"/>	
+		<s:Label text="{levelRoman}" color="0xffffff" fontWeight="bold" fontSize="17" left="10" verticalCenter="0" />
+		<s:Label text="{levelName}" fontSize="12" color="0" color.selected="{Courseware.instance.color}" left="50" verticalCenter="0"/>	
 	</s:Group>		
 	
 </s:Group>
