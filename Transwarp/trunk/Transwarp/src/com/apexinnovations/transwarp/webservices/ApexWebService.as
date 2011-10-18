@@ -16,7 +16,7 @@ package com.apexinnovations.transwarp.webservices
 	
 	public class ApexWebService extends EventDispatcher {
 		private static const FLASHVAR_INTERNAL_SEPARATOR:String = "|:|";
-		private static var crypto:AES = new AES("f30a06c050eba200830a0200300f007ede0007060034000aa00300f007ede00f", AES.MODE_CBC, AES.PADDING_ZEROS);
+		private static var crypto:AES = new AES("f30a06c050eba200830a0200300f007ede0007060034000aa00300f007ede00f", AES.MODE_CBC, AES.PADDING_ZEROS); // Must match EVENT_DATA_ENCRYPTION_KEY in Classroom.inc on website
 		
 		private static var _baseURL:String = '';	// Base URL for interaction with Web Services
 		private static var _userID:uint = 0;		// Current User ID
