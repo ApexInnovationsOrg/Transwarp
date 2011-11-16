@@ -16,6 +16,7 @@
 	
 	<fx:Script>
 		<![CDATA[			
+			import com.apexinnovations.transwarp.data.CoursewareObject;
 			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			import com.greensock.events.LoaderEvent;
@@ -27,15 +28,15 @@
 			
 			TranswarpVersion.revision = "$Rev$";
 			
-			protected var _page:Page;
+			protected var _page:CoursewareObject;
 			protected var loader:ImageLoader;
 			
 			[Embed(source="/../assets/broken_icon.png")]
 			protected var BrokenImage:Class;
 			
 			
-			public function get page():Page { return _page; }
-			public function set page(value:Page):void {
+			public function get page():CoursewareObject { return _page; }
+			public function set page(value:CoursewareObject):void {
 				if(_page) {
 					if(loader) {
 						loader.removeEventListener(LoaderEvent.COMPLETE, loadCompleteHandler);

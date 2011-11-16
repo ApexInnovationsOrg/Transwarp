@@ -32,6 +32,7 @@ package com.apexinnovations.transwarp.data {
 		protected var _bookmarked:Boolean;
 		protected var _sortToken:uint = 0;									// This allows for quick sorting of pages relative to their order in the courseware
 		protected var _audio:String = '';									// name of audio file to load with page, if not the default of 'PAGE_{id}.mp3', or 'false' if no audio
+		protected var _snapshot:String;
 		
 		public function CoursewareObject(xml:XML, parent:CoursewareObjectContainer, depth:int) {
 			super();
@@ -56,12 +57,16 @@ package com.apexinnovations.transwarp.data {
 				_deny = (String(xml.@deny) != "") ? new HashSet(String(xml.@deny).toLowerCase().split(' ')) : null;
 				_bookmarked = xml.@bookmarked == "true";
 				_audio = String(xml.@audio);
+				_snapshot = xml.@snapshot;
 			} catch(e:Error) {
 				throw new ArgumentError(getQualifiedClassName(this) + ": Bad Initialization XML: [" + e.message + ']');
 			}
 			
 			//if we ever change folder audio to be named something other than PAGE_, this has to change
 			var fileName:String = "PAGE_" + Utils.zeroPad(_id, 6);
+			
+			if(_snapshot == "" || !_snapshot)
+				_snapshot = fileName + "/snapshot.png";		
 			
 			if(_audio == "false" || _audio == "NONE" || _audio == "STREAMED")
 				_audio = "";
@@ -88,6 +93,8 @@ package com.apexinnovations.transwarp.data {
 		public function get breadcrumbs():String { return _breadcrumbs; }
 		public function get qualifiedName():String { return _breadcrumbs + _name; }
 		public function get visited():Boolean { return _visited; }
+		public function get snapshot():String { return _snapshot; }
+		
 		
 		public function get sortToken():uint { return _sortToken; }
 		public function set sortToken(value:uint):void { _sortToken = value; }

@@ -14,6 +14,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.CoursewareObject;
 			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			
@@ -22,7 +23,7 @@
 			protected var down:Boolean = false;
 			protected var over:Boolean = false;
 			
-			[Bindable] public var page:Page;
+			[Bindable] public var page:CoursewareObject;
 			[Bindable] public var maxLabelWidth:Number = 175;
 			
 			public function reload():void {
