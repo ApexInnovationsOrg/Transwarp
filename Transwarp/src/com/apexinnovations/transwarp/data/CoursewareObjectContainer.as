@@ -52,7 +52,6 @@ package com.apexinnovations.transwarp.data {
 			calculateVisited();
 		}
 		
-		
 		public function get pages():Vector.<Page> { return _pages; }
 		public function get contents():Vector.<CoursewareObject> { return _contents; }
 		public function get viewableContents():Array {

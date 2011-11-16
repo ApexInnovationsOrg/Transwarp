@@ -28,7 +28,7 @@ package com.apexinnovations.transwarp.data {
 		protected var _updates:Vector.<Update> = new Vector.<Update>();			// Vector (array) of related Updates
 		protected var _weight:uint = 0;											// The 'weight' of the page in a search ranking
 		protected var _searchFields:Vector.<String> = new Vector.<String>();	// These are the fields that will be searched - composited and converted to strings
-		protected var _snapshot:String;
+		
 		
 		public function Page(xml:XML, parent:CoursewareObjectContainer, depth:int) {
 			super(xml, parent, depth);
@@ -44,8 +44,6 @@ package com.apexinnovations.transwarp.data {
 				_supportText = Utils.importTextFlow(xml.supportText.children()[0]);
 				_swf = xml.@swf;
 				_timeline = xml.@timeline == 'true';
-				
-				_snapshot = xml.@snapshot;
 							
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName((this) + ': Bad Initialization XML:  [' + e.message + ']'));
@@ -55,10 +53,7 @@ package com.apexinnovations.transwarp.data {
 			
 			if(!_swf || _swf == '') {
 				_swf = fileName + "/" + fileName + ".swf";
-			}
-			
-			if(_snapshot == "" || !_snapshot)
-				_snapshot = fileName + "/snapshot.png";			
+			}	
 			
 			for each (var l:XML in xml.links.link) {
 				_links.push(new Link(l, this));
@@ -123,7 +118,6 @@ package com.apexinnovations.transwarp.data {
 		public function get keywords():String { return _keywords; }
 		public function get links():Vector.<Link> { return _links; }
 		public function get questions():Vector.<Question> { return _questions; }
-		public function get snapshot():String { return _snapshot; }
 		[Bindable("pageDataChanged")] public function get supportText():TextFlow { return _supportText; }
 		[Bindable("pageDataChanged")] public function get swf():String { return _swf; }
 		[Bindable("pageDataChanged")] public function get timeline():Boolean { return _timeline; }

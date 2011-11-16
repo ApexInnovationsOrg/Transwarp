@@ -31,6 +31,9 @@
 			import com.apexinnovations.transwarp.assets.loaders.LimitedMemoryLoader;
 			import com.apexinnovations.transwarp.assets.loaders.SharedLoaderFactory;
 			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.CoursewareObject;
+			import com.apexinnovations.transwarp.data.CoursewareObjectContainer;
+			import com.apexinnovations.transwarp.data.Folder;
 			import com.apexinnovations.transwarp.data.Page;
 			import com.apexinnovations.transwarp.data.User;
 			import com.apexinnovations.transwarp.events.ContentAreaSizeEvent;
@@ -82,12 +85,21 @@
 					var snapshotLoader:LoaderMax = new LoaderMax();
 					var baseURL:String = courseware.rootFolder + '/';
 					var snapshotFactory:SharedLoaderFactory = new SharedLoaderFactory();
-					for each(var page:Page in courseware.product.pages) {
+					createSnapshotLoaders(courseware.product, baseURL, snapshotFactory, snapshotLoader);
+					snapshotLoader.load();
+				}
+			}
+			
+			protected function createSnapshotLoaders(root:CoursewareObjectContainer, baseURL:String, snapshotFactory:SharedLoaderFactory, snapshotLoader:LoaderMax):void {
+				for each(var page:CoursewareObject in root.contents) {
+					if(page is Page || page is Folder) {
 						var loader:ImageLoader = snapshotFactory.getLoader(page.snapshot, baseURL+page.snapshot, ImageLoader, {name: page.snapshot});
 						snapshotLoader.append(loader);
 					}
-					snapshotLoader.load();
+					if(page is CoursewareObjectContainer)
+						createSnapshotLoaders(page as CoursewareObjectContainer, baseURL, snapshotFactory, snapshotLoader);
 				}
+				
 			}
 			
 			override protected function createChildren():void {
