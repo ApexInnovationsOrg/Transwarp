@@ -109,7 +109,7 @@
 					themeColor = courseware.color;
 					
 					topBar.searchPrompt = resourceManager.getString('Chrome','SEARCH') + ' ' + courseware.product.name;
-					topBar.hasSearch = !(User.instance.lms || User.instance.demo);
+					topBar.normalUser = !(User.instance.lms || User.instance.demo);
 					
 					topBar.courses = courseware.product.courses;
 					
@@ -121,9 +121,6 @@
 						manager.addEventListener(MouseEvent.MOUSE_MOVE, listener.resetTimeout);
 						manager.addEventListener(KeyboardEvent.KEY_DOWN, listener.resetTimeout);
 					}
-					
-					
-					
 				} else {
 					var e:Error = xmlLoadError;
 					var log:LogService = new LogService();
@@ -138,7 +135,6 @@
 					
 					popupErrorDialog(resourceManager.getString("Dialogs","LOADING_DATA_FROM_SERVER_ERROR"));
 				}
-				
 			}
 			
 			protected function maximize(event:FullScreenEvent):void {
@@ -208,8 +204,6 @@
 			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
 				super.updateDisplayList(unscaledWidth, unscaledHeight);
 				
-				//trace(unscaledWidth, unscaledHeight);
-				
 				if(minH < 0) // min size hasn't been computed yet;
 					return;
 				
@@ -218,9 +212,7 @@
 				
 				if(h > 0 || prevH > 0 || v > 0 || prevV > 0) {
 					dispatchEvent(new ContentAreaSizeEvent(h, v));
-					//trace("         event", prevH, prevV, h, v);
-				} //else
-					//trace("no event", prevH, prevV, h, v);
+				}
 				prevH = h;
 				prevV = v;
 			}
