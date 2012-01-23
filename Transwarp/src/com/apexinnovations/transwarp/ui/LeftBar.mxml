@@ -9,7 +9,8 @@
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
-			
+			import com.apexinnovations.transwarp.data.*;
+					
 			TranswarpVersion.revision = "$Rev$";
 			
 			[Bindable] public var color:uint; 
@@ -20,6 +21,12 @@
 
 			protected function onAdded():void {
 				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);				
+			}
+			
+			override protected function createChildren():void {
+				iconBar.normalUser = !(User.instance.lms || User.instance.demo);
+
+				super.createChildren();
 			}
 
 		]]>

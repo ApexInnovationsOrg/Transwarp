@@ -51,10 +51,9 @@ package com.apexinnovations.transwarp.webservices
 		
 		// Dispatch the COMPLETE event
 		protected function jsonLoaded(e:Event):void {
-			trace(URLLoader(e.target).data);
 			var myJSON:Object = JSON.decode(URLLoader(e.target).data);
 
-			trace(this.getClass() + ': JSON data received [success=' + myJSON.success + (myJSON.insertID ? ', insertID=' + myJSON.insertID : '') + (myJSON.debugInfo ? ', debugInfo=(' + myJSON.debugInfo + ')' : '') + ']'); 
+			//trace(this.getClass() + ': JSON data received [success=' + myJSON.success + (myJSON.insertID ? ', insertID=' + myJSON.insertID : '') + (myJSON.debugInfo ? ', debugInfo=(' + myJSON.debugInfo + ')' : '') + ']'); 
 			dispatchEvent(new ApexWebServiceEvent(ApexWebServiceEvent.LOG_COMPLETE, myJSON));
 		}
 		// Dispatch the FAILURE event

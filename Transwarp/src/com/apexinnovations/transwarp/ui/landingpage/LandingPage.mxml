@@ -112,7 +112,7 @@
 					var hOverflow:Number = w - unscaledWidth * 0.8;
 					var vOverflow:Number = h - unscaledHeight * 0.8;
 					
-					trace(unscaledHeight*0.8, h, vOverflow)
+					//trace(unscaledHeight*0.8, h, vOverflow)
 					var scale:Number = 1;
 					
 					var hGap:Number = Math.min(maxGap, Math.max(minGap, -hOverflow / (cols-1)));
