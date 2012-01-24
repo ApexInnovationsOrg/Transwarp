@@ -92,7 +92,7 @@
 			}
 			
 			protected function maximize(event:FullScreenEvent):void {
-				currentState = (!(User.instance.lms || User.instance.demo)) ? (event.fullScreen ? "normalMaximized" : "normalDefault") : (event.fullScreen ? "limitedMaximized" : "limitedDefault");
+				currentState = (event.fullScreen ? "maximized" : "default");
 			}
 
 
