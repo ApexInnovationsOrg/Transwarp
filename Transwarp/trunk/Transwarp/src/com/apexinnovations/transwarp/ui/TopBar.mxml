@@ -123,15 +123,14 @@
 			
 			
 			protected function contentAreaSizeHandler(event:ContentAreaSizeEvent):void {
-				var v:Number = Math.max(0, Math.min(87, event.vOverflow));				
+				var v:Number = Math.max(0, Math.min(topArea.minHeight, event.vOverflow));				
 				
-				topArea.height = 144 - v * 44/87;
-				controlBar.height = 34 - v * 6/87;
+				topArea.height = 100 - v * 15/topArea.minHeight;
+				if (topArea.height < topArea.minHeight) topArea.height = topArea.minHeight;
+				if (topArea.height > 100) topArea.height = 100;
+				controlBar.height = 34 - v * 6/topArea.minHeight;
 				
-				var includeName:Boolean = topArea.height > 110;
-				nameLabel.visible = includeName;
-				//nameLabel.includeInLayout = includeName;
-				
+				nameLabel.visible = (topArea.height > topArea.maxHeight - 9);
 			}
 			
 			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
@@ -151,17 +150,17 @@
 				var sx:Number = 1; 
 				var sy:Number = 1;
 				
-				if(unscaledWidth - 210 < w) {
-					sx = (unscaledWidth - 210) / w;					
+				if(unscaledWidth - levelNav.x - levelNav.horizontalGap < w) {
+					sx = (unscaledWidth - levelNav.x - levelNav.horizontalGap) / w;					
 				}
 				
-				if(topArea.height - 32 < h) {
-					sy = (topArea.height - 32) / h;					
+				if(topArea.height - levelNav.y - levelNav.verticalGap < h) {
+					sy = (topArea.height - levelNav.y - levelNav.verticalGap) / h;					
 				}
-				
-				var scale:Number = Math.min(1, sy, sx);
+
+				var scale:Number = Math.min(1, Math.abs(sy), Math.abs(sx));
 				levelNav.scaleX = levelNav.scaleY = scale;
-				levelNav.top = scale * 13 + 15;
+				levelNav.top = 28; //scale * 13 + 15;
 				
 				super.updateDisplayList(unscaledWidth, unscaledHeight);
 			}
@@ -177,7 +176,7 @@
 	<s:VGroup gap="-1" width="100%">
 		
 		<!--Top Area (big logo, flair, level buttons)-->
-		<s:Group id="topArea" height="144" excludeFrom="maximized">
+		<s:Group id="topArea" maxHeight="100" minHeight="80" excludeFrom="maximized">
 			
 			<!--Gray Gradient at top-->
 			<s:Rect width="100%" height="100%" top="0">
@@ -219,13 +218,13 @@
 			
 			<s:Label text="v4.0.{TranswarpVersion.revision}" right="0" color="{ColorUtil.adjustBrightness2(Courseware.instance.color, 50)}" top="4" textAlign="right" fontSize="12" paddingRight="4" includeIn="default" />
 			
-			<s:VGroup horizontalAlign="right" left="29" verticalCenter="0" includeIn="default">
-				<assets:AssetImageControl assetID="logoBig" />
+			<s:VGroup horizontalAlign="right" left="15" top="3" includeIn="default">
+				<assets:AssetImageControl assetID="logoBig" height="62" smooth="true" smoothingQuality="high"/>
 				<!--<ui:ProductLogo />-->
 				<s:Label id="nameLabel" text="{resourceManager.getString('Chrome','BY_APEX')}" fontStyle="italic" color="#444444"/>
 			</s:VGroup>
 			
-			<s:TileGroup id="levelNav" left="285" right="25" top="32" requestedRowCount="2" orientation="columns" verticalGap="10" horizontalGap="10" visible="{!hasRightGradient}" creationComplete="initLevelNav()" minWidth="732"/>
+			<s:TileGroup id="levelNav" left="280" right="8" verticalAlign="middle" requestedRowCount="2" orientation="columns" verticalGap="10" horizontalGap="5" visible="{!hasRightGradient}" creationComplete="initLevelNav()" minWidth="732"/>
 			
 		</s:Group>
 		
@@ -266,7 +265,7 @@
 				</assets:filters>
 			</assets:AssetImageControl>
 			
-			<ext:HGroup id="navButtons" verticalAlign="middle" gap="12" height="100%"
+			<ext:HGroup id="navButtons" right="{searchGroup.width}" verticalAlign="middle" gap="12" height="100%"
 						color="0xffffff" fontFamily="Arial" fontWeight="bold"
 						toolTipPlacement="bottomRight">
 				<ui:IconButton icon="{ArrowPreviousIcon}" click="prevClick()" toolTip="PREV" height="30"
