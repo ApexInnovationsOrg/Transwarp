@@ -101,7 +101,7 @@ package com.apexinnovations.transwarp.ui {
 			
 			// Supposedly scrollRect is faster than using an actual mask for plain rectangle masks
 			// the code for it is shorter at least. =)
-			_content.scrollRect = new Rectangle(0,0,w,h);			
+			_content.scrollRect = new Rectangle(0,0,w,h);
 		}
 		
 		protected function unscaleContent():void {

@@ -70,20 +70,20 @@
 			
 			
 			protected function contentAreaSizeHandler(event:ContentAreaSizeEvent):void {
-				var v:Number = Math.max(0, Math.min(87, event.vOverflow));
-				var gaps:Number = 10 - v * 8/87;
-				var titleHeight:Number = pageTitle.height - v * 5/87;
-				
+				var over:Number = Math.max(0, Math.min(40, Math.max(event.vOverflow, event.hOverflow)));
+				var gaps:Number = 10 - over * 8/40;
+				var titleHeight:Number = pageTitle.height - over * 5/40;
+
 				topGroup.top = topGroup.bottom = topGroup.gap = gaps;
-				pageTitle.scaleX = pageTitle.scaleY = (titleHeight / pageTitle.height); 
+				pageTitle.scaleX = pageTitle.scaleY = (titleHeight / pageTitle.height);
 			}
 			
 		]]>
 	</fx:Script>
 	
-	<s:VGroup id="topGroup" top="10" bottom="10" width="{width}" height="100%" gap="10" horizontalAlign="center">
+	<s:VGroup id="topGroup" top="0" bottom="0" width="{width}" height="100%" gap="5" horizontalAlign="center">
 		
-		<ui:PageTitle id="pageTitle" fontSize="20" horizontalCenter="0"/>
+		<ui:PageTitle id="pageTitle" fontSize="20" horizontalCenter="0" paddingTop="0" paddingBottom="0" />
 		
 		<s:Group id="contentGroup" width="100%" height="100%">
 			<ui:PageContentContainer id="container" width="100%" height="100%" 
@@ -94,7 +94,7 @@
 		
 		<s:VGroup id="bottomGroup" horizontalAlign="center" width="100%">
 			<ui:Timeline id="timeline" source="{container.rawContent as TranswarpMovieClip}"
-						 visible="{timelineVisible}"/>
+						 visible="{timelineVisible}" height="{timelineVisible ? 20 : 0}"/>
 			
 			<s:HGroup id="instructions" 
 					  paddingLeft="10" paddingRight="10"
@@ -102,15 +102,15 @@
 					  scaleY="{Math.min(1, width / instructions.width)}"
 					  verticalAlign="middle">
 				
-				<s:Rect height="{instrText.height - 6}" width="8">
+				<s:Rect height="{instrText.height}" top="-1" width="8">
 					<s:fill><s:SolidColor color="0x990000"/></s:fill>
 				</s:Rect>
 				
-				<s:RichEditableText id="instrText" color="0x990000" fontWeight="bold" fontSize="14" paddingTop="4" paddingBottom="4" editable="false" selectable="false" />
+				<s:RichEditableText id="instrText" color="0x990000" fontWeight="bold" fontSize="14" paddingTop="0" paddingBottom="0" editable="false" selectable="false" />
 			</s:HGroup>
 		</s:VGroup>
 	
-		<s:Group width="100%" visible="{Courseware.instance.debug}" includeInLayout="{Courseware.instance.debug}">			
+		<s:Group width="100%" visible="{Courseware.instance.debug}" includeInLayout="{Courseware.instance.debug}">
 			<s:Label id="debugInfo" right="5" color="0xaaaaaa" />
 		</s:Group>
 		
