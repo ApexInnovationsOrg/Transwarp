@@ -34,11 +34,11 @@
 					config.dispatch("closedCaptioning", closedCaptioning.selected.toString());
 					user.closedCaptioning = closedCaptioning.selected;
 				}
-*/				
 				if (user.printSlideOnly != printSlideOnly.selected) {
 					config.dispatch("printSlideOnly", printSlideOnly.selected.toString());
 					user.printSlideOnly = printSlideOnly.selected;
 				}
+				*/				
 				
 				closeHandler(event);
 			}
@@ -60,10 +60,10 @@
 			<s:Label paddingLeft="18" text="{getString('ANIMATE_TRANSITIONS_DESC')}" width="350" fontStyle="italic" color="0x0000FF" />
 			<s:CheckBox id="closedCaptioning" label="{getString('CLOSED_CAPTIONING')}" selected="{Courseware.instance.user.closedCaptioning}" />
 			<s:Label paddingLeft="18" text="{getString('CLOSED_CAPTIONING_DESC')}" width="350" fontStyle="italic" color="0x0000FF" />
--->
 			<s:CheckBox id="printSlideOnly" label="{getString('PRINT_PAGE')}" selected="{Courseware.instance.user.printSlideOnly}" buttonMode="true"/>
-
 			<s:Label paddingLeft="18" text="{getString('PRINT_PAGE_DESC')}" width="350" fontSize="12" fontStyle="italic" color="0x0000FF" />
+			-->
+			
 		</s:VGroup>
 		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
 			<s:Button label="{getString('SUBMIT')}" click="okHandler(event);" buttonMode="true"/>
