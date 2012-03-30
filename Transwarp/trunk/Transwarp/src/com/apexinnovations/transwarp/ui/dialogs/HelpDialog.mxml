@@ -21,6 +21,7 @@
 			import com.apexinnovations.transwarp.ui.dialogs.HelpButton;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			import com.greensock.loading.LoaderStatus;
+			import flash.media.SoundMixer;
 			
 			import mx.managers.PopUpManager;
 
@@ -44,6 +45,7 @@
 			}
 			
 			override protected function closeHandler(event:Event=null):void {
+				SoundMixer.stopAll();
 				currentState = "default";
 				container.content = null;
 				super.closeHandler(event);
@@ -89,6 +91,7 @@
 				currentHelp = help;
 				currentState = "showing_help";
 				
+				SoundMixer.stopAll();
 				var loader:HelpLoader = helpLoaders[help];
 				
 				if(loader.status != LoaderStatus.COMPLETED) {
@@ -142,6 +145,7 @@
 				var loader:HelpLoader = helpLoaders[currentHelp];
 				loader.removeEventListener(TranswarpEvent.CONTENT_READY, helpLoaded);
 				
+				SoundMixer.stopAll();
 				currentState = "default";
 				width = prevWidth;
 				height = prevHeight;				
