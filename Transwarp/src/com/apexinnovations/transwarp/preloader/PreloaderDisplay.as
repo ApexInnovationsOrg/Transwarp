@@ -128,8 +128,8 @@ package com.apexinnovations.transwarp.preloader {
 				_manager.xml = xml;
 			
 			if (xml.localName() == 'error') {
-				// Dispatch a log entry
-				log.dispatch(xml.text());
+				// This should only really ever happen if someone tries to pull up courseware after session expired - let's just ignore
+				// log.dispatch(xml.text());
 			} else {
 				
 				// Delete file inclusion errors, if any

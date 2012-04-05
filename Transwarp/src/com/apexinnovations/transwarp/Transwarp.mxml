@@ -129,7 +129,7 @@
 					//log.dispatch('XML Load Failure: ' + e.toString() + '\n' + e.getStackTrace());
 					trace(e.message);
 					trace(e.getStackTrace());
-					log.dispatch('XML Load Failure: ' + e.toString());
+					// log.dispatch('XML Load Failure: ' + e.toString());	for now, just skip entirely - probably just expired session causing "Bad Initialization XML"
 					
 					themeColor = 0xa8a8a8;
 					
