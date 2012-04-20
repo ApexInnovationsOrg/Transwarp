@@ -24,7 +24,7 @@
 			protected var over:Boolean = false;
 			
 			[Bindable] public var page:CoursewareObject;
-			[Bindable] public var maxLabelWidth:Number = 175;
+			[Bindable] public var maxLabelWidth:Number = 200;
 			
 			public function reload():void {
 				icon.reload();
@@ -99,7 +99,7 @@
 			<s:Rect width="100%" height="100%" alpha="0">
 				<s:fill> <s:SolidColor /> </s:fill>
 			</s:Rect>			
-			<s:Label id="label" text="{page.name}" fontSize="26" fontWeight="normal" maxWidth="{maxLabelWidth}"/>
+			<s:Label id="label" text="{page.name}" fontSize="27" fontWeight="normal" maxWidth="{maxLabelWidth}"/>
 		</s:Group>
 	
 	</s:HGroup>
