@@ -37,6 +37,15 @@
 		<s:State name="maximized" />
 	</s:states>
 	
+	<s:Rect height="100%" width="100%" blendMode="multiply" top="20">
+		<s:fill>
+			<s:LinearGradient>
+				<s:GradientEntry color="0xdddddd" alpha="1" ratio="0" />
+				<s:GradientEntry color="0xffffff" alpha="1" ratio=".5"/>
+				<s:GradientEntry color="0xdddddd" alpha="1" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
 	<ui:LevelMenu bottom="5" top="14" left="{iconBar.width - 25}" includeIn="default"/>
 	<ui:IconBar id="iconBar" left="0" bottom="1" top="2" />
 	
