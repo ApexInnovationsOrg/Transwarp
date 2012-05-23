@@ -44,6 +44,8 @@
 			import com.greensock.loading.LoaderMax;
 			
 			import flash.events.*;
+			import flash.events.TimerEvent;
+			import flash.utils.Timer;
 			
 			import mx.events.FlexEvent;
 			import mx.managers.FocusManager;
@@ -144,6 +146,10 @@
 
 			protected function onAdded():void {
 				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);
+				// Add a 200ms delay to resize everything
+				var myTimer:Timer = new Timer(200, 1);
+				myTimer.start();
+				myTimer.addEventListener(TimerEvent.TIMER_COMPLETE, delayCompleteHandler);
 			}
 
 			protected function popupErrorDialog(info:String, title:String = 'Error'):void {
@@ -225,6 +231,11 @@
 				invalidateDisplayList();
 			}
 			
+			private function delayCompleteHandler(e:TimerEvent):void {
+				contentArea.dispatchEvent(new Event(Event.RESIZE));
+				topBar.dispatchEvent(new Event(Event.RESIZE));
+				leftBar.dispatchEvent(new Event(Event.RESIZE));
+			}
 		]]>
 	</fx:Script>
 	
