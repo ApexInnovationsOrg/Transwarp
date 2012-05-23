@@ -37,6 +37,7 @@ package com.apexinnovations.transwarp {
 			Singleton.registerClass("mx.managers::IToolTipManager2", 
 				Class(getDefinitionByName("com.apexinnovations.transwarp.ui.tooltip.TranswarpTooltipManager")));
 			super.kickOff();
+			super.dispatchEvent(new Event(Event.RESIZE));
 		}
 		
 		override mx_internal function preloader_completeHandler(event:Event):void {

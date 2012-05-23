@@ -110,6 +110,7 @@
 					
 					topBar.searchPrompt = resourceManager.getString('Chrome','SEARCH') + ' ' + courseware.product.name;
 					topBar.normalUser = !(User.instance.lms || User.instance.demo);
+					topBar.lmsUser = User.instance.lms;
 					
 					topBar.courses = courseware.product.courses;
 					
