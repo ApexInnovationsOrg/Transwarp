@@ -38,6 +38,7 @@
 			TranswarpVersion.revision = "$Rev$";
 			
 			[Bindable] public var normalUser:Boolean = true;
+			[Bindable] public var lmsUser:Boolean = false;
 			[Bindable] public var hasRightGradient:Boolean = true;
 			[Bindable] public var searchPrompt:String = "Search";			
 			
@@ -58,7 +59,7 @@
 			
 			public function set courses(value:Vector.<Course>):void {
 				_courses = value;
-				if(_courses && _courses.length > 1)
+				if(_courses && _courses.length > 1 && !lmsUser)
 					hasRightGradient = false;
 				
 				if(levelNav)
