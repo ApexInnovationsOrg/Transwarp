@@ -60,5 +60,6 @@ package com.apexinnovations.transwarp.data
 		[Bindable("helpPageChanged")] public function get name():String { return _name; }
 		public function get parent():Product { return _parent; }
 		[Bindable("helpPageChanged")] public function get url():String { return _url; }
+		public function set url(val:String):void { _url = val; }
 	}
 }
