@@ -21,6 +21,7 @@
 			import com.apexinnovations.transwarp.ui.dialogs.HelpButton;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
 			import com.greensock.loading.LoaderStatus;
+			
 			import flash.media.SoundMixer;
 			
 			import mx.managers.PopUpManager;
@@ -77,6 +78,8 @@
 			protected function createHelpButtons():void {
 				helpButtons = [];
 				for each(var h:HelpPage in Courseware.instance.product.helpPages) {
+					// replace "{_lms}" in url with either "_lms" or "", depending on if user is LMS user 
+					h.url = h.url.replace('{_lms}', h.parent.parentCourseware.user.lms ? '_lms' : '');
 					var btn:HelpButton = new HelpButton();
 					btn.help = h;
 					helpButtons.push(btn);
