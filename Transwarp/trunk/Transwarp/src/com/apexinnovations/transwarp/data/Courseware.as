@@ -207,8 +207,8 @@ package com.apexinnovations.transwarp.data {
 		public function set currentPage(page:CoursewareObject):void {
 			if(_currentPage == page || page == null)
 				return;
+			if(currentCourse != page.parentCourse) currentCourse = page.parentCourse;			// Might be sent to a page via search - need to change courses
 			_currentPage = page;
-			currentCourse = page.parentCourse;			// Might be sent to a page via search - need to change courses
 			
 			var p:CoursewareObject = page;
 			while((p = p.parent) is Folder) 
