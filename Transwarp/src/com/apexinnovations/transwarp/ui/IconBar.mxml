@@ -149,7 +149,7 @@
 			
 			protected function showHelpPages(evt:MouseEvent):void {
 				if (!helpDialog)
-					helpDialog = HelpDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), HelpDialog, false, PopUpManagerChildList.POPUP));
+					helpDialog = HelpDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), HelpDialog, true, PopUpManagerChildList.POPUP));
 				
 				helpDialog.display();
 			}
