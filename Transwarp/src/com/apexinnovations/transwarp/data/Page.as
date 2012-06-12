@@ -13,6 +13,7 @@ package com.apexinnovations.transwarp.data {
 
 	public class Page extends CoursewareObject {
 		
+		protected var _audioTranscript:TextFlow = null;							// Any audio transcript, as a TextFlow
 		protected var _config:String = '';										// URL of XML file to be loaded by SWF as configuration
 		protected var _configType:String = '';
 		protected var _created:Date;											// XML format: YYYY-MM-DDTHH:MM:SS
@@ -25,6 +26,7 @@ package com.apexinnovations.transwarp.data {
 		protected var _supportText:TextFlow = null;								// Any supporting text, as a TextFlow
 		protected var _swf:String = '';											// URL of SWF file to load
 		protected var _timeline:Boolean = false;								// Does this page have a timeline across the bottom to show progress?
+		protected var _transcript:TextFlow = null;								// Any transcript of the text on the page, as a TextFlow
 		protected var _updates:Vector.<Update> = new Vector.<Update>();			// Vector (array) of related Updates
 		protected var _weight:uint = 0;											// The 'weight' of the page in a search ranking
 		protected var _searchFields:Vector.<String> = new Vector.<String>();	// These are the fields that will be searched - composited and converted to strings
@@ -34,6 +36,7 @@ package com.apexinnovations.transwarp.data {
 			super(xml, parent, depth);
 			
 			try {
+				_audioTranscript = Utils.importTextFlow(xml.audioTranscript.children()[0]);
 				_config = xml.@config;
 				_configType = xml.@configType;
 				_created = DateFormatter.parseDateString(xml.@created);
@@ -44,6 +47,7 @@ package com.apexinnovations.transwarp.data {
 				_supportText = Utils.importTextFlow(xml.supportText.children()[0]);
 				_swf = xml.@swf;
 				_timeline = xml.@timeline == 'true';
+				_transcript = Utils.importTextFlow(xml.transcript.children()[0]);
 							
 			} catch ( e:Error ) {
 				throw new ArgumentError(getQualifiedClassName((this) + ': Bad Initialization XML:  [' + e.message + ']'));
@@ -90,6 +94,8 @@ package com.apexinnovations.transwarp.data {
 			for each (var upd:Update in _updates) {
 				if (upd.textFlow && (Courseware.instance.debug || !upd.hidden)) _searchFields[8] += Utils.textFlowToString(upd.textFlow);
 			}
+			_searchFields[9] = Utils.textFlowToString(_audioTranscript);
+			_searchFields[10] = Utils.textFlowToString(_transcript);
 			
 			var demoUser:Boolean = _parentCourseware.user.demo
 			
@@ -98,6 +104,8 @@ package com.apexinnovations.transwarp.data {
 				_description = null;
 				_supportText = null;
 				_instructions = null;
+				_audioTranscript = null;
+				_transcript = null;
 				_timeline = false;
 				
 				if(demoUser) {
@@ -147,7 +155,7 @@ package com.apexinnovations.transwarp.data {
 			// First, see if we have all required terms
 			for (i = 0; i < require.length; i++) {
 				found = false;
-				for (j = 0; j < 9; j++) {
+				for (j = 0; j < 11; j++) {
 					if (find(matchWildcards(require[i]), _searchFields[j])) {
 						found = true;
 						break;
@@ -160,7 +168,7 @@ package com.apexinnovations.transwarp.data {
 			// Next make sure we don't have any excluded terms
 			for (i = 0; i < exclude.length; i++) {
 				found = false;
-				for (j = 0; j < 9; j++) {
+				for (j = 0; j < 11; j++) {
 					if (find(matchWildcards(exclude[i]), _searchFields[j])) {
 						found = true;
 						break;
@@ -190,6 +198,8 @@ package com.apexinnovations.transwarp.data {
 				_weight += find(needle, _searchFields[6]) * 1;	// questions
 				_weight += find(needle, _searchFields[7]) * 2;	// answers
 				_weight += find(needle, _searchFields[8]) * 1;	// updates
+				_weight += find(needle, _searchFields[9]) * 2;	// audioTranscript
+				_weight += find(needle, _searchFields[10]) * 3;	// transcript
 			}
 			
 			for each (term in require) {
@@ -203,6 +213,8 @@ package com.apexinnovations.transwarp.data {
 				_weight += find(needle, _searchFields[6]) * 1;	// questions
 				_weight += find(needle, _searchFields[7]) * 2;	// answers
 				_weight += find(needle, _searchFields[8]) * 1;	// updates
+				_weight += find(needle, _searchFields[9]) * 2;	// audioTranscript
+				_weight += find(needle, _searchFields[10]) * 3;	// transcript
 			}
 			
 			return _weight;
