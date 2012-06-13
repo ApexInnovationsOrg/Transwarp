@@ -1,5 +1,6 @@
 package com.apexinnovations.transwarp.data {
 	import com.apexinnovations.transwarp.utils.Utils;
+	import com.apexinnovations.transwarp.utils.TranswarpVersion;
 	import com.apexinnovations.transwarp.webservices.BookmarkService;
 	import com.apexinnovations.transwarp.webservices.CommentService;
 	
@@ -10,6 +11,8 @@ package com.apexinnovations.transwarp.data {
 	
 	import mx.formatters.DateFormatter;
 	import mx.resources.ResourceManager;
+
+	TranswarpVersion.revision = "$Rev$";
 
 	public class Page extends CoursewareObject {
 		
