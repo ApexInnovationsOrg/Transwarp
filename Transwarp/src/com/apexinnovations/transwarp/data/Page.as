@@ -140,7 +140,7 @@ package com.apexinnovations.transwarp.data {
 		[Bindable("pageDataChanged")] public function get hasLinks():Boolean { return _links.length > 0; }
 		//[Bindable("pageDataChanged")] public function get hasUpdates():Boolean { return _lastUpdate > Courseware.instance.user.lastAccess; }
 		//The lastUpdate function is cool, but some years after it was decided that it should stay on indefinitely
-		[Bindable("pageDataChanged")] public function get hasUpdates():Boolean { return _lastUpdate; }
+		[Bindable("pageDataChanged")] public function get hasUpdates():Boolean { return _lastUpdate !== null; }
 
 		// Does everything associated with commenting on this page 
 		public function comment(s:String):void {
