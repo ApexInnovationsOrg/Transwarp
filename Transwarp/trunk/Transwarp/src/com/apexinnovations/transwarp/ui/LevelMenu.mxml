@@ -5,7 +5,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 xmlns:tree="com.apexinnovations.transwarp.ui.tree.*"
 		 xmlns:ui="com.apexinnovations.transwarp.ui.*"
-		 width="240"
+		 width="250"
 		 creationComplete="creationCompleteHandler(event)" xmlns:logos="com.apexinnovations.transwarp.graphics.logos.*">
 	
 	<fx:Script>
@@ -48,7 +48,8 @@
 		[ResourceBundle("Chrome")]
 	</fx:Metadata>
 	
-	<s:Rect width="100%" height="100%" topRightRadiusX="12" bottomRightRadiusX="12">
+	<!-- CONTAINER -->
+	<s:Rect width="100%" height="100%" bottomRightRadiusX="12">
 		<s:stroke>
 			<s:SolidColorStroke color="{Courseware.instance.color}" weight="1"/>
 		</s:stroke>
@@ -64,7 +65,7 @@
 	</s:Rect>
 	
 	<!--  Header  -->
-	<s:Rect width="100%" height="{showLevel ? 66 : 50}" topRightRadiusX="12">
+	<s:Rect width="100%" height="{showLevel ? 66 : 50}" >
 		<s:fill>
 			<s:LinearGradient>
 				<s:GradientEntry color="{ColorUtil.adjustBrightness2(Courseware.instance.color, -30)}"/>

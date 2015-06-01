@@ -131,6 +131,10 @@
 				if (topArea.height > 100) topArea.height = 100;
 				controlBar.height = 34 - v * 6/topArea.minHeight;
 				
+				//JK - Put in static values to stop bar from resizing and looking awkward for new Hemi 2
+				topArea.height = 100;
+				controlBar.height = 34;
+				
 				nameLabel.visible = (topArea.height > topArea.maxHeight - 9);
 			}
 			
@@ -235,7 +239,7 @@
 				</s:Path>
 			</s:Graphic>
 			
-			<s:Label text="v4.0.{TranswarpVersion.revision}" right="0" color="{ColorUtil.adjustBrightness2(Courseware.instance.color, 50)}" top="4" textAlign="right" fontSize="12" paddingRight="4" includeIn="default" />
+			<s:Label text="v5.0.{TranswarpVersion.revision}" right="0" color="{ColorUtil.adjustBrightness2(Courseware.instance.color, 50)}" top="4" textAlign="right" fontSize="12" paddingRight="4" includeIn="default" />
 			
 			<s:VGroup horizontalAlign="right" left="15" top="3" includeIn="default">
 				<assets:AssetImageControl assetID="logoBig" height="62" smooth="true" smoothingQuality="high"/>
