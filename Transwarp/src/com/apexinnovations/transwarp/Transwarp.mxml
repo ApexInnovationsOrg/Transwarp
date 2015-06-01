@@ -234,7 +234,7 @@
 	</transwarp:states>
 	
 	<!--Setting this group's width to "100%" resulted in it being 10,000 px wide instead of what was expected.-->
-	<s:VGroup width="{width}" height="100%" gap.default="{-35 - (topBar.height - 80)/2.25}" gap.maximized="-35">
+	<s:VGroup width="{width}" height="100%" gap.default="{-35 - (topBar.height - 178)/2.25}" gap.maximized="-40">
 		<ui:TopBar id="topBar"/>
 		<ui:LeftBar id="leftBar"/>		
 	</s:VGroup>
