@@ -37,7 +37,7 @@
 		<s:State name="maximized" />
 	</s:states>
 	
-	<s:Rect height="100%" width="100%" blendMode="multiply" top="20">
+	<s:Rect height="100%" width="100%" blendMode="multiply" top="15">
 		<s:fill>
 			<s:LinearGradient>
 				<s:GradientEntry color="0xdddddd" alpha="1" ratio="0" />
@@ -46,7 +46,7 @@
 			</s:LinearGradient>
 		</s:fill>
 	</s:Rect>
-	<ui:LevelMenu bottom="5" top="14" left="{iconBar.width - 25}" includeIn="default"/>
-	<ui:IconBar id="iconBar" left="0" bottom="1" top="2" />
+	<ui:LevelMenu bottom="5" top="15" left="{iconBar.width - 25}" includeIn="default"/>
+	<ui:IconBar id="iconBar" left="0" bottom="1" top="15" />
 	
 </s:Group>
