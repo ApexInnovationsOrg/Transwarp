@@ -8,7 +8,7 @@
 			   xmlns:ext="com.apexinnovations.transwarp.ui.ext.*"
 			   preloader="com.apexinnovations.transwarp.preloader.PreloaderDisplay"
 			   addedToStage="onAdded()"
-			   minWidth="860" minHeight="640"			   
+			   minWidth="860" minHeight="640"
 			   creationComplete="creationCompleteHandler(event)">
 			   <!--enterFrame="enterFrameHandler(event)">-->
 	

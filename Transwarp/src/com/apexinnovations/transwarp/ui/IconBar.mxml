@@ -168,7 +168,6 @@
 					historyDialog = HistoryDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), HistoryDialog, false, PopUpManagerChildList.POPUP));
 					historyDialog.anchor = (this.parentApplication as Transwarp).contentArea;
 				}
-
 				historyDialog.display();
 			}
 			

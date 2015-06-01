@@ -23,6 +23,7 @@
 			TranswarpVersion.revision = "$Rev$";
 			
 			[Bindable] protected var showLevel:Boolean = false;
+			[Bindable] protected var curDate:Date = new Date();
 			
 			override protected function createChildren():void {
 				super.createChildren();
@@ -95,6 +96,6 @@
 	<!--  Footer  -->
 	<s:VGroup width="100%" horizontalAlign="center" bottom="8" gap="-1">
 		<logos:ApexLogo/>
-		<s:Label text="{resourceManager.getString('Chrome','COPYRIGHT')}" color="0x888888" fontSize="8" />
+		<s:Label text="{resourceManager.getString('Chrome','COPYRIGHT') + ' ' + curDate.getFullYear()}" color="0x888888" fontSize="8" />
 	</s:VGroup>
 </s:Group>

@@ -18,6 +18,7 @@ package com.apexinnovations.transwarp.preloader {
 	import mx.events.RSLEvent;
 	import mx.preloaders.SparkDownloadProgressBar;
 	
+	
 	TranswarpVersion.revision = "$Rev$";
 	
 	public class PreloaderDisplay extends SparkDownloadProgressBar {
@@ -35,16 +36,16 @@ package com.apexinnovations.transwarp.preloader {
 		protected var _rslBytesLoaded:Number = 0;
 		protected var _currentRSLBytesLoaded:Number = 0;
 		
-		protected var _estimatedAppSize:Number = 700000;
+		protected var _estimatedAppSize:Number = 70000;
 		protected var _appBytesTotal:Number = -1;
 		protected var _appBytesLoaded:Number = 0;
-		
+		protected  var comeFrom:String;
 		public function PreloaderDisplay() {
 			super();
 		}
 		
 		// Embed the background image.     
-		[Embed(source="/../assets/apex-logo.png")] public var ApexLogo:Class;
+		[Embed(source="/../assets/H2_LoadingScreenImage.jpg")] public var ApexLogo:Class;
 					
 		override public function set preloader(value:Sprite):void {
 			super.preloader = value;
@@ -87,14 +88,15 @@ package com.apexinnovations.transwarp.preloader {
 					//requestVars.data = '8998d80e3ea4b7688fb3e724c80a9f8f595fdefe848dda2407dbe3c2a1f7a039e41a2f6dc36ac5ee02c3b1494a236afdcfd51e186a766ab5fa9c202deea38f40'; // imPULSE
 					//requestVars.data = '69f26ef8147d984e52a9cf6cdb397592daa7a3f56a4c26b5a915c68b9c0c64ade2488a93188d9024989fc1d535d852c2875016a31690bcdf90ff9fe57b4fbe47'; // Responder
 					//requestVars.data = 'cb13cd07dbff7a145999e2fe7167fa1aee0b4b0b2d3bf33babd925ad2850c5fa307e20684a47b5e11d813c1fce21fa54db804249f0bd44c2976de896f36251de'; // Transitions
-					requestVars.baseURL = 'http://www.apexsandbox.com';
+					requestVars.baseURL = 'http://apexwebtest.com';
 				}
 			} 
 			
 			
 			if(CONFIG::OFFLINE) {
 				requestVars.baseURL = '/';
-				var req:URLRequest = new URLRequest("Hemispheres-Patient.xml");				
+				comeFrom = comeFrom + ".xml";
+				var req:URLRequest = new URLRequest(comeFrom);				
 			} else {
 				var req:URLRequest = new URLRequest(requestVars.baseURL + "/Classroom/engine/load.php");
 				req.data = requestVars;
@@ -193,6 +195,7 @@ package com.apexinnovations.transwarp.preloader {
 		override public function initialize():void {
 			super.initialize();
 			backgroundImage = ApexLogo;
+			comeFrom = root.loaderInfo.url.slice(root.loaderInfo.url.lastIndexOf("/")+1,root.loaderInfo.url.lastIndexOf(".")); //Used to determine the name of file which is running transwarp for offline xmls
 			loadXML();
 			visible = true;
 		}
@@ -207,7 +210,7 @@ package com.apexinnovations.transwarp.preloader {
 			var progress:Number = combinedBytesLoaded / combinedBytesTotal; 
 			setDownloadProgress(combinedBytesLoaded, combinedBytesTotal);
 		}
-				
+			
 		override protected function rslProgressHandler(event:RSLEvent):void {
 			if(event.rslIndex > _currentRSLIndex) {
 				if(_rslBytesTotal == -1)
