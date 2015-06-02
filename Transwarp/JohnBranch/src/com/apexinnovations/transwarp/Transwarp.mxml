@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transwarp:TranswarpBase xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   xmlns:transwarp="com.apexinnovations.transwarp.*"
+			   xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			   xmlns:landingpage="com.apexinnovations.transwarp.ui.landingpage.*"
+			   xmlns:ext="com.apexinnovations.transwarp.ui.ext.*"
+			   preloader="com.apexinnovations.transwarp.preloader.PreloaderDisplay"
+			   addedToStage="onAdded()"
+			   minWidth="860" minHeight="640"
+			   creationComplete="creationCompleteHandler(event)">
+			   <!--enterFrame="enterFrameHandler(event)">-->
+	
+	
+	<fx:Declarations>
+		<s:TitleWindow title="Title" id="errorDialog" close="PopUpManager.removePopUp(errorDialog); fscommand('quit');" width="400" height="300">
+			<s:RichEditableText id="infoText" top="10" bottom="10" left="10" right="10" editable="false"/> 
+		</s:TitleWindow>
+	</fx:Declarations>
+	
+	<fx:Metadata>
+		[ResourceBundle("Tooltips")]
+		[ResourceBundle("Buttons")]
+		[ResourceBundle("Chrome")]
+		[ResourceBundle("Dialogs")]	
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.assets.loaders.LimitedMemoryLoader;
+			import com.apexinnovations.transwarp.assets.loaders.SharedLoaderFactory;
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.CoursewareObject;
+			import com.apexinnovations.transwarp.data.CoursewareObjectContainer;
+			import com.apexinnovations.transwarp.data.Folder;
+			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.data.User;
+			import com.apexinnovations.transwarp.events.ContentAreaSizeEvent;
+			import com.apexinnovations.transwarp.events.IdleEvent;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			import com.apexinnovations.transwarp.webservices.*;
+			import com.greensock.loading.ImageLoader;
+			import com.greensock.loading.LoaderMax;
+			
+			import flash.events.*;
+			import flash.events.TimerEvent;
+			import flash.utils.Timer;
+			
+			import mx.events.FlexEvent;
+			import mx.managers.FocusManager;
+			import mx.managers.ISystemManager;
+			import mx.managers.PopUpManager;
+			import mx.resources.ResourceManager;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			[Bindable] protected var themeColor:uint = 0xcc3337;
+			
+			protected var manager:TranswarpSystemManager;
+			protected var courseware:Courseware;
+			
+			protected var maximized:Boolean = false;
+			protected var currentlyIdle:Boolean = false;
+			
+			protected var xmlLoadError:Error;
+			
+			public var mainLoader:LimitedMemoryLoader;
+			
+			override public function set systemManager(value:ISystemManager):void {
+				super.systemManager = value;
+				
+				value.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
+				
+				manager = value as TranswarpSystemManager;
+				resourceManager.localeChain = ["en_US", "es_ES"]; //TODO: pull locale from the xml.
+				
+				try {
+					courseware = new Courseware(manager.xml);
+				} catch(e:Error) {
+					xmlLoadError = e;
+				}
+				
+				if(!xmlLoadError) {
+					mainLoader = new LimitedMemoryLoader(75*1024*1024); // TODO: Adjust this cap per user?
+					// Load Page Snapshots 
+					var snapshotLoader:LoaderMax = new LoaderMax();
+					var baseURL:String = courseware.rootFolder + '/';
+					var snapshotFactory:SharedLoaderFactory = new SharedLoaderFactory();
+					createSnapshotLoaders(courseware.product, baseURL, snapshotFactory, snapshotLoader);
+					snapshotLoader.load();
+				}
+			}
+			
+			protected function createSnapshotLoaders(root:CoursewareObjectContainer, baseURL:String, snapshotFactory:SharedLoaderFactory, snapshotLoader:LoaderMax):void {
+				for each(var page:CoursewareObject in root.contents) {
+					if(page is Page || page is Folder) {
+						var loader:ImageLoader = snapshotFactory.getLoader(page.snapshot, baseURL+page.snapshot, ImageLoader, {name: page.snapshot});
+						snapshotLoader.append(loader);
+					}
+					if(page is CoursewareObjectContainer)
+						createSnapshotLoaders(page as CoursewareObjectContainer, baseURL, snapshotFactory, snapshotLoader);
+				}
+				
+			}
+			
+			override protected function createChildren():void {
+				super.createChildren();
+				
+				if(!xmlLoadError) {
+					themeColor = courseware.color;
+					
+					topBar.searchPrompt = resourceManager.getString('Chrome','SEARCH') + ' ' + courseware.product.name;
+					topBar.normalUser = !(User.instance.lms || User.instance.demo);
+					topBar.lmsUser = User.instance.lms;
+					
+					topBar.courses = courseware.product.courses;
+					
+					if(courseware.user.id != 0) {
+						var listener:VisitListener = new VisitListener(5, 60, Courseware.instance.timeout);
+						listener.addEventListener(IdleEvent.IDLE, idleTimeout);
+						
+						manager.addEventListener(MouseEvent.MOUSE_DOWN, listener.resetTimeout);
+						manager.addEventListener(MouseEvent.MOUSE_MOVE, listener.resetTimeout);
+						manager.addEventListener(KeyboardEvent.KEY_DOWN, listener.resetTimeout);
+					}
+				} else {
+					var e:Error = xmlLoadError;
+					var log:LogService = new LogService();
+					
+					//Temporarily removed stack trace until we can resolve json control character issues.
+					//log.dispatch('XML Load Failure: ' + e.toString() + '\n' + e.getStackTrace());
+					trace(e.message);
+					trace(e.getStackTrace());
+					// log.dispatch('XML Load Failure: ' + e.toString());	for now, just skip entirely - probably just expired session causing "Bad Initialization XML"
+					
+					themeColor = 0xa8a8a8;
+					
+					popupErrorDialog(resourceManager.getString("Dialogs","LOADING_DATA_FROM_SERVER_ERROR"));
+				}
+			}
+			
+			protected function maximize(event:FullScreenEvent):void {
+				currentState = event.fullScreen ? "maximized" : "default";
+			}
+
+			protected function onAdded():void {
+				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);
+			}
+
+			protected function popupErrorDialog(info:String, title:String = 'Error'):void {
+				if (!currentlyIdle) {
+					if (errorDialog.isPopUp) PopUpManager.removePopUp(errorDialog);	// Take down any currently displayed dialogs
+					
+					PopUpManager.addPopUp(errorDialog, this, true);
+					PopUpManager.centerPopUp(errorDialog);
+					infoText.text = info;
+					errorDialog.title = title;
+				}
+			}
+			
+			protected function uncaughtErrorHandler(event:UncaughtErrorEvent):void {
+				try {
+					event.stopPropagation();
+					event.preventDefault();
+					var log:LogService = new LogService();
+					
+					if (event.error is Error) {
+						var error:Error = event.error as Error;
+						
+						log.dispatch('UNHANDLED ERROR: ' + error.message);
+						
+						//popupErrorDialog('We are sorry, but there has been a problem and the application must be closed.\n\n' + error.message + '\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
+					} else if (event.error is ErrorEvent) {
+						var errorEvent:ErrorEvent = event.error as ErrorEvent;
+						errorEvent.stopPropagation();
+						log.dispatch('UNHANDLED EVENT: ' + errorEvent.type + ': ' + errorEvent.text);
+										
+						//popupErrorDialog('We are sorry, but there has been a problem and the application must be closed.\n\n' + errorEvent.type + '\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
+					} else {
+						// a non-Error, non-ErrorEvent type was thrown and uncaught
+					}
+				} catch (e:Error) {
+					// Nothing, just don't blow up!
+				}
+			}
+		
+
+			protected function pageLoadErrorHandler(event:ErrorEvent):void {
+				event.stopPropagation();
+				//popupErrorDialog("We are sorry, but there has been an error loading this page.  Please contact Apex Technical Support at 1-866-294-4599 x111. \n\n" + event.text, "Error Loading Page");
+				//Courseware.log("PAGE LOAD ERROR: " + event.type + ": " + event.text);
+			}
+
+
+			protected function idleTimeout(event:Event):void {
+				// TODO Auto-generated method stub
+			}
+			
+			
+			protected var prevH:Number;
+			protected var prevV:Number;
+			protected var minH:Number = -1;
+			protected var minV:Number = -1;
+			
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+				
+				if(minH < 0) // min size hasn't been computed yet;
+					return;
+				
+				var h:Number = minH - unscaledWidth;
+				var v:Number = minV - unscaledHeight;
+				
+				dispatchEvent(new ContentAreaSizeEvent(h, v));
+
+				prevH = h;
+				prevV = v;
+			}
+			
+			
+			protected function creationCompleteHandler(event:FlexEvent):void {
+				minH = contentArea.x + 800;
+				minV = contentArea.y + 560 + 50; // Assume 50 pixels for instructions
+				invalidateDisplayList();
+			}
+		]]>
+	</fx:Script>
+	
+	<transwarp:states>
+		<s:State name="default" />
+		<s:State name="maximized" />
+	</transwarp:states>
+	
+	<!--Setting this group's width to "100%" resulted in it being 10,000 px wide instead of what was expected.-->
+	<s:VGroup width="{width}" height="100%" gap.default="{-35 - (topBar.height - 178)/2.25}" gap.maximized="-50" bottom.maximized="-16">
+		<ui:TopBar id="topBar"/>
+		<ui:LeftBar id="leftBar"/>		
+	</s:VGroup>
+	
+	<!--The weird size constraints on this group are another case of having to force flex's layout engine to behave as expected-->
+	<!--top="178" top.maximized="35"-->
+	<ui:ContentArea id="contentArea" left="{leftBar.width}"
+			  top="{topBar.height}"
+			  width="{width-contentArea.x}" height="{height-contentArea.y}" 
+			  error="pageLoadErrorHandler(event)"/>
+	<!-- Drawing mask -->
+	<s:Group id="clickBlocker" visible="false" left="0" top="0" right="0" bottom="0" cacheAsBitmap="true" mouseFocusEnabled="false">
+		<s:Rect left="0" top="0" right="0" bottom="0">
+			<s:fill>
+				<s:SolidColor alpha="0" />
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+	
+	<!-- Drawing canvas -->
+	<!--<s:SpriteVisualElement id="canvas" left="0" top="0" right="0" bottom="0" cacheAsBitmap="true" mouseEnabled="false"/>-->	
+	<s:Group id="canvas" left="0" top="0" right="0" bottom="0" cacheAsBitmap="true" mouseEnabled="false" mouseFocusEnabled="false" />
+	
+</transwarp:TranswarpBase>

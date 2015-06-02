@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dialogs:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			  xmlns:s="library://ns.adobe.com/flex/spark" 
+			  xmlns:mx="library://ns.adobe.com/flex/mx"
+			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
+			  title="{getString('CONFIGURATION_TITLE')}"
+			  modal="true">
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.User;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			import com.apexinnovations.transwarp.webservices.ConfigService;
+			
+			import mx.managers.PopUpManager;
+
+			TranswarpVersion.revision = "$Rev$";
+			
+			protected function okHandler(event:Event):void {
+				var config:ConfigService = new ConfigService();
+				var user:User = Courseware.instance.user;
+				
+				if (user.autoCloseMenu != autoCloseMenu.selected) {
+					config.dispatch("autoCloseMenu", autoCloseMenu.selected.toString());
+					user.autoCloseMenu = autoCloseMenu.selected;
+				}
+/*
+				if (user.animatePageTransitions != animatePageTransitions.selected) {
+					config.dispatch("animatePageTransitions", animatePageTransitions.selected.toString());
+					user.animatePageTransitions = animatePageTransitions.selected;
+				}
+				if (user.closedCaptioning != closedCaptioning.selected) {
+					config.dispatch("closedCaptioning", closedCaptioning.selected.toString());
+					user.closedCaptioning = closedCaptioning.selected;
+				}
+				if (user.printSlideOnly != printSlideOnly.selected) {
+					config.dispatch("printSlideOnly", printSlideOnly.selected.toString());
+					user.printSlideOnly = printSlideOnly.selected;
+				}
+				*/				
+				
+				closeHandler(event);
+			}
+			
+			protected function getString(key:String):String {
+				return resourceManager.getString("Dialogs", key);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" width="100%" >
+		<s:Label text="{Courseware.instance.user.name}: {getString('CONFIGURATION')}" fontWeight="bold" />
+		<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" height="100%" width="100%" >
+			<s:CheckBox id="autoCloseMenu" label="{getString('AUTO_CLOSE_MENU')}" selected="{Courseware.instance.user.autoCloseMenu}" buttonMode="true"/>
+			<s:Label paddingLeft="18" text="{getString('AUTO_CLOSE_MENU_DESC')}" width="350" fontSize="12" fontStyle="italic" color="0x0000FF" />
+<!--
+			<s:CheckBox id="animatePageTransitions" label="{getString('ANIMATE_TRANSITIONS')}" selected="{Courseware.instance.user.animatePageTransitions}" />
+			<s:Label paddingLeft="18" text="{getString('ANIMATE_TRANSITIONS_DESC')}" width="350" fontStyle="italic" color="0x0000FF" />
+			<s:CheckBox id="closedCaptioning" label="{getString('CLOSED_CAPTIONING')}" selected="{Courseware.instance.user.closedCaptioning}" />
+			<s:Label paddingLeft="18" text="{getString('CLOSED_CAPTIONING_DESC')}" width="350" fontStyle="italic" color="0x0000FF" />
+			<s:CheckBox id="printSlideOnly" label="{getString('PRINT_PAGE')}" selected="{Courseware.instance.user.printSlideOnly}" buttonMode="true"/>
+			<s:Label paddingLeft="18" text="{getString('PRINT_PAGE_DESC')}" width="350" fontSize="12" fontStyle="italic" color="0x0000FF" />
+			-->
+			
+		</s:VGroup>
+		<s:HGroup verticalAlign="bottom" horizontalAlign="center" width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10">
+			<s:Button label="{getString('SUBMIT')}" click="okHandler(event);" buttonMode="true"/>
+			<s:Button label="{getString('CANCEL')}" click="closeHandler(event);" buttonMode="true"/>
+		</s:HGroup>
+	</s:VGroup>
+</dialogs:DialogBox>

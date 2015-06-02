@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dialogs:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				   xmlns:s="library://ns.adobe.com/flex/spark" 
+				   xmlns:mx="library://ns.adobe.com/flex/mx"
+				   xmlns:gfx="com.apexinnovations.transwarp.graphics.*"
+				   xmlns:ui="com.apexinnovations.transwarp.ui.*"
+				   xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
+				   title="Drawing"
+				   mouseOver="mouseOver();" mouseOut="mouseOut();">
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.Transwarp;
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.events.PageSelectionEvent;
+			import com.apexinnovations.transwarp.graphics.*;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			import flash.display.*;
+			import flash.geom.*;
+			import flash.ui.*;
+			
+			import mx.managers.PopUpManager;
+			
+			import spark.core.SpriteVisualElement;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			public var anchor:DisplayObject = null;
+			protected var _drawing:Boolean = false;
+			protected var _currentCursor:String = MouseCursor.AUTO;
+			protected var _clickBlocker:DisplayObject = null;
+			protected var _graphics:Graphics = null;
+			protected var _canvas:Sprite = null;
+
+			public function hide():void {
+				closeHandler(null);
+			}
+			
+			// Fake a define
+			protected function get DRAWING_CURSOR():String { return "draw"; }
+			
+			
+			override protected function addedToStage(event:Event):void {
+				var tw:Transwarp = this.parentApplication as Transwarp;
+				_canvas = tw.canvas;
+				_graphics = _canvas.graphics;
+				_clickBlocker = tw.clickBlocker;//.graphics;
+				
+				super.addedToStage(event);
+				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, clearDrawing);
+			}
+			
+			override protected function closeHandler(event:Event = null):void {
+				blockInteractivity(false);
+				_currentCursor = MouseCursor.AUTO;
+
+				Mouse.cursor = _currentCursor;
+
+				super.closeHandler(event);
+				
+				// Moved these out of removedFromStage to fix focus issue
+				stage.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
+				stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+				stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUp);
+			}
+			
+			override public function display():void {
+				super.display();
+				
+				blockInteractivity(true);
+				specifyCursor();
+				Mouse.cursor = _currentCursor;
+
+				// Moved these out of addedToStage to fix focus issue
+				stage.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
+				stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMove);
+				stage.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
+			}
+			
+			protected function createCursorBitmapData(radius:uint, color:uint, showFill:Boolean):BitmapData {
+				var shp:Shape = new Shape();
+				shp.graphics.lineStyle(0, 0x888888, 1, true);
+				shp.graphics.beginFill(color, Number(showFill));
+				shp.graphics.drawCircle(radius, radius, radius);
+				shp.graphics.endFill();
+				
+				var diameter:uint = 2 * radius;
+				
+				var bounds:Rectangle = new Rectangle(0, 0, diameter+1, diameter+1);
+				var bitmap:BitmapData = new BitmapData(diameter+1, diameter+1, true, 0);
+				bitmap.draw(shp);
+				
+				return bitmap;
+			}
+			
+			protected function createMouseCursor(radius:uint, color:uint, showFill:Boolean):String {
+				if (Mouse["supportsNativeCursor"]) {
+					var v:Vector.<BitmapData> = new Vector.<BitmapData>();
+					v[0] = createCursorBitmapData(radius, color, showFill);
+					
+					var mcd:MouseCursorData = new MouseCursorData();
+					mcd.data = v;
+					mcd.hotSpot = new Point(radius,radius);
+					
+					Mouse.unregisterCursor(DRAWING_CURSOR);
+					Mouse.registerCursor(DRAWING_CURSOR, mcd);
+					
+					return DRAWING_CURSOR;
+				} else {
+					return MouseCursor.AUTO;
+				}
+			}
+			
+			override protected function mouseDown(event:MouseEvent):void {
+				super.mouseDown(event);
+				if (Mouse.cursor == DRAWING_CURSOR) {				// Not _currentCursor, since might be trying to drag this dialog
+					_drawing = true;
+					_graphics.lineStyle(sizeSpinner.value, cp.selectedItem, 1);
+					_graphics.moveTo(event.currentTarget.mouseX, event.currentTarget.mouseY);
+					
+					_canvas.mouseEnabled = true;
+				} else _drawing = false;
+			}
+			
+			protected function mouseMove(event:MouseEvent):void {
+				if (_currentCursor == DRAWING_CURSOR && _drawing) {	// Not Mouse.cursor, since might be drawing behind this dialog
+					_graphics.lineTo(event.currentTarget.mouseX, event.currentTarget.mouseY);
+				}
+			}
+			
+			protected function mouseOver():void {
+				Mouse.cursor = MouseCursor.AUTO;
+			}
+			
+			protected function mouseOut():void {
+				Mouse.cursor = _currentCursor;
+			}
+			
+			protected function mouseUp(event:MouseEvent):void {
+				if (_currentCursor == DRAWING_CURSOR && _drawing) {	// Not Mouse.cursor, since might be drawing behind this dialog
+					_drawing = false;
+					_graphics.lineTo(event.currentTarget.mouseX, event.currentTarget.mouseY);
+					
+					_canvas.mouseEnabled = false;
+				}
+			}
+			
+			protected function blockInteractivity(block:Boolean = true):void {
+				_clickBlocker.visible = block;
+			}
+			
+			protected function specifyCursor():void {
+				_currentCursor = createMouseCursor(sizeSpinner.value/2, cp.selectedItem, true);
+			}
+			
+			protected function clearDrawing(event:Event=null):void {
+				_graphics.clear();
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:VGroup paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" horizontalAlign="center" gap="20">
+		<s:HGroup verticalAlign="top" gap="10">
+			<s:Label text="{resourceManager.getString('Dialogs','SIZE')}" fontWeight="bold" color="0x000000" paddingTop="10" />
+			<s:NumericStepper id="sizeSpinner" width="42" value="10" minimum="2" maximum="20" stepSize="2" snapInterval="2" allowValueWrap="false" toolTip="BRUSH_SIZE" change="specifyCursor();"/>
+			<s:Label text="{resourceManager.getString('Dialogs','COLOR')}" fontWeight="bold" color="0x000000" paddingTop="10" />
+			<ui:SparkColorPicker id="cp" selectedItem="#FF0000" change="specifyCursor(); Mouse.cursor = _currentCursor;" skinClass="com.apexinnovations.transwarp.skins.ColorPickerListSkin" enabled="true" toolTip="BRUSH_COLOR" buttonMode="true"/>
+		</s:HGroup>
+		<s:Button label="{resourceManager.getString('Dialogs','ERASE')}" click="_graphics.clear();" buttonMode="true"/>
+	</s:VGroup>
+</dialogs:DialogBox>

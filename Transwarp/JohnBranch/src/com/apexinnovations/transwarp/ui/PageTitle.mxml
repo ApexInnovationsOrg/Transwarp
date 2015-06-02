@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:data="com.apexinnovations.transwarp.data.*"
+		 addedToStage="addedToStage(event)"
+		 fontFamily="Arial" fontSize="14" fontWeight="bold">
+	
+	
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.CoursewareObject;
+			import com.apexinnovations.transwarp.data.Folder;
+			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.events.PageSelectionEvent;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			import mx.events.PropertyChangeEvent;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			protected var _page:CoursewareObject;
+			protected var _suffix:String = "";
+
+			public function get page():CoursewareObject { return _page;}
+			public function set page(value:CoursewareObject):void {
+				_page = value;
+				pageChanged();
+			}
+			
+			public function get suffix():String { return _suffix; }
+			public function set suffix(value:String):void {
+				if(_suffix != value) {
+					_suffix = value;
+					pageChanged();
+				}
+			}
+			
+			
+			protected function pageChanged(event:PageSelectionEvent = null):void {
+				var p:CoursewareObject = page ? page : Courseware.instance.currentPage;
+				
+				if(!p)
+					return;
+				
+				level.text = p.parentCourse.levelRoman + '.';
+				breadcrumbs.text = p.breadcrumbs;
+				breadcrumbs.includeInLayout = breadcrumbs.text !== '';
+				
+				title.text = p.name + (_suffix ? _suffix : "");
+			}
+			
+			
+			protected function addedToStage(event:Event):void {
+				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
+				pageChanged();
+			} 
+			
+		]]>
+	</fx:Script>
+
+	<s:Label id="level" color="0x888888" />
+	<s:Label id="breadcrumbs" color="{Courseware.instance.color}"/>
+	<s:Label id="title" />
+</s:HGroup>

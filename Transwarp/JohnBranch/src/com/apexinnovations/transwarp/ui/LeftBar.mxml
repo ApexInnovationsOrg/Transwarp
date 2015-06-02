@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:ui="com.apexinnovations.transwarp.ui.*"
+		 height="100%"
+		 addedToStage="onAdded()">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			import com.apexinnovations.transwarp.data.*;
+					
+			TranswarpVersion.revision = "$Rev$";
+			
+			[Bindable] public var color:uint; 
+			
+			protected function maximize(event:FullScreenEvent):void {
+				currentState = event.fullScreen ? "maximized" : "default";
+			}
+
+			protected function onAdded():void {
+				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);				
+			}
+			
+			override protected function createChildren():void {
+				iconBar.normalUser = !(User.instance.lms || User.instance.demo);
+
+				super.createChildren();
+			}
+
+		]]>
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="default" />
+		<s:State name="maximized" />
+	</s:states>
+	
+	<s:Rect height="100%" width="100%" blendMode="multiply" top="15">
+		<s:fill>
+			<s:LinearGradient>
+				<s:GradientEntry color="0xdddddd" alpha="1" ratio="0" />
+				<s:GradientEntry color="0xffffff" alpha="1" ratio=".5"/>
+				<s:GradientEntry color="0xdddddd" alpha="1" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<ui:LevelMenu bottom="5" top="15" left="{iconBar.width - 25}" includeIn="default"/>
+	<ui:IconBar id="iconBar" left="0" bottom="1" top="15" />
+	
+</s:Group>

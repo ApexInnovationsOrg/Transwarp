@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+    ADOBE SYSTEMS INCORPORATED
+    Copyright 2008 Adobe Systems Incorporated
+    All Rights Reserved.
+    
+    NOTICE: Adobe permits you to use, modify, and distribute this file
+    in accordance with the terms of the license agreement accompanying it.
+
+-->
+
+<!--- The default skin class for the close button of the Spark TitleWindow component.  
+
+     @see spark.skins.spark.TitleWindowSkin     
+     @see spark.components.TitleWindow
+
+     @langversion 3.0
+     @playerversion Flash 10
+     @playerversion AIR 1.5
+     @productversion Flex 4
+-->
+<s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+    xmlns:fb="http://ns.adobe.com/flashbuilder/2009" alpha.disabled="0.5">
+	<fx:Metadata>[HostComponent("com.apexinnovations.transwarp.ui.dialogs.DialogBox")]</fx:Metadata>
+    
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			TranswarpVersion.revision = "$Rev$";
+		]]>
+	</fx:Script>
+	
+    <!-- host component -->
+    <fx:Script fb:purpose="styling">
+        /* Define the skin elements that should not be colorized. 
+        For closeButton, the graphics are colorized but the x is not. */
+        static private const exclusions:Array = [];
+        
+        /** 
+         * @private
+         */     
+        override public function get colorizeExclusions():Array {return exclusions;}
+        
+        /* Define the symbol fill items that should be colored by the "symbolColor" style. */
+        static private const symbols:Array = [];
+        
+        /**
+         * @private
+         */
+        override public function get symbolItems():Array {return symbols};
+    </fx:Script>
+    
+    <s:states>
+		<s:State name="normal" />
+		<s:State name="inactive" />
+		<s:State name="normalWithControlBar" />
+		<s:State name="disabledWithControlBar" />
+		<s:State name="inactiveWithControlBar" />
+		<s:State name="up" />
+        <s:State name="over"/>
+        <s:State name="down" />
+        <s:State name="disabled" />
+    </s:states>
+    
+    <!--- Define the border and fill. -->
+    <s:Rect left="-5" top="-4" right="-4" bottom="-5">
+        <s:stroke>
+            <s:SolidColorStroke color="0xFFFFFF" alpha="0.0" alpha.over="0.8" alpha.down="0.8" weight="1"/> <!-- box color -->
+        </s:stroke>
+        <s:fill>
+            <s:SolidColor color="0xFFFFFF" alpha="0" alpha.down="0.6" /> <!-- box fill color -->
+        </s:fill>
+    </s:Rect>
+    
+    <!--- Defines the appearance of the x in the close button. -->
+    <s:Group top="1" left="1" id="xSymbol">     
+	
+		<s:Path blendMode="normal" alpha=".85" 
+				data="M 1 5 L 4 8 L 1 11 L 3 13 L 6 10 L 9 13 L 11 11 L 8 8 L 11 5 L 9 3 L 6 6 L 3 3 L 1 5 Z">
+			<s:fill>
+				<s:SolidColor color="0x444444" /> <!-- Shadow color of X -->
+			</s:fill>
+		</s:Path>
+        <s:Path blendMode="normal" alpha=".85"
+                data="M 1 4 L 4 7 L 1 10 L 3 12 L 6 9 L 9 12 L 11 10 L 8 7 L 11 4 L 9 2 L 6 5 L 3 2 L 1 4 Z">
+			<s:fill>
+				<s:SolidColor id="xFill1" color="0xFFFFFF" /><!-- X color -->
+			</s:fill>
+        </s:Path>
+    </s:Group>
+</s:SparkSkin>

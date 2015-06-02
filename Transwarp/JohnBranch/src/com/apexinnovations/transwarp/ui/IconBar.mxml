@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ext:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:gfx="com.apexinnovations.transwarp.graphics.*"
+		 xmlns:ui="com.apexinnovations.transwarp.ui.*"
+		 xmlns:ext="com.apexinnovations.transwarp.ui.ext.*"
+		 width="50"
+		 addedToStage="onAdded()"
+		 toolTipPlacement="topRight"
+		 resize="resizeHandler(event)"
+		 creationComplete="creationCompleteHandler(event)">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.Transwarp;
+			import com.apexinnovations.transwarp.data.*;
+			import com.apexinnovations.transwarp.events.ContentAreaSizeEvent;
+			import com.apexinnovations.transwarp.graphics.*;
+			import com.apexinnovations.transwarp.ui.*;
+			import com.apexinnovations.transwarp.ui.dialogs.*;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			import com.apexinnovations.transwarp.webservices.*;
+			
+			import flash.printing.*;
+			
+			import flashx.textLayout.elements.TextFlow;
+			
+			import mx.binding.utils.BindingUtils;
+			import mx.core.IVisualElement;
+			import mx.core.UIComponent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			import mx.managers.PopUpManagerChildList;
+			import mx.utils.ColorUtil;
+			
+			TranswarpVersion.revision = "$Rev$";
+
+			protected var audioControl:AudioSlider = null;
+			protected var bookmarkDialog:BookmarksDialog = null;
+			protected var commentDialog:CommentDialog = null;
+			protected var configDialog:ConfigDialog = null;
+			protected var drawingTools:DrawingDialog = null;
+			protected var helpDialog:HelpDialog = null;
+			protected var keyQuestionsDialog:KeyQuestionsDialog = null;
+			protected var supportTextDialog:SupportTextDialog = null;
+			protected var historyDialog:HistoryDialog = null;
+			protected var linksDialog:LinksDialog = null;
+
+			//Convenience variable for enabling buttons without needing to write a novel for each one
+			[Bindable] protected var currentPage:CoursewareObject;
+			[Bindable] public var normalUser:Boolean = true;	// Not an LMS or Demo user
+			protected function setPage(value:CoursewareObject):void { currentPage = value; }
+			
+			override protected function createChildren():void {
+				var i:int,
+					e:IVisualElement;
+				for(i=buttonGroup.numElements -1; i>=0; i--){
+					e = buttonGroup.getElementAt(i);
+					if(e is IconButton && !e.visible) {
+						buttonGroup.removeElement(e);
+					}
+				}
+
+				super.createChildren();
+				
+				BindingUtils.bindSetter(setPage, Courseware.instance, "currentPage");
+
+				for(i=0; i<buttonGroup.numElements; ++i){
+					e = buttonGroup.getElementAt(i);
+					if(e is IconButton && e.visible) {
+						var group:Group = new Group();
+						group.height = 45;
+						e.horizontalCenter = 0;
+						e.verticalCenter = 0;
+						group.addElement(e);
+						
+						if(i < buttonGroup.numElements) {	
+							var s:HorizontalSeparator = new HorizontalSeparator();
+							s.width = 33;
+							s.bottom = 0;
+							group.addElement(s);
+						}
+						
+						buttonGroup.addElementAt(group, i);
+					}
+				}
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void {
+				parentApplication.addEventListener(ContentAreaSizeEvent.CONTENT_AREA_SIZE_CHANGED, contentAreaSizeHandler);	
+			}
+			
+			protected function maximize(event:FullScreenEvent):void {
+				currentState = (event.fullScreen ? "maximized" : "default");
+			}
+
+
+			protected function onAdded():void {
+				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);
+			}
+
+			protected function commentOnPage(evt:MouseEvent):void {
+				if (!commentDialog)
+					commentDialog = CommentDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), CommentDialog, false, PopUpManagerChildList.POPUP));
+				
+				commentDialog.display();
+			}
+			
+			protected function apexCommunity(evt:MouseEvent):void {
+				navigateToURL(new URLRequest("https://www.apexinnovations.com/ApexCommunity.php"));
+			}
+			
+			protected function configureOptions(evt:MouseEvent):void {
+				// Modal, so must be created every time or we get setFocus() issues
+				configDialog = ConfigDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), ConfigDialog, true, PopUpManagerChildList.POPUP));
+				
+				configDialog.display();
+			}
+			
+			protected function showAudioVolume(evt:MouseEvent):void {
+				if (!audioControl) {
+					audioControl = AudioSlider(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), AudioSlider, false, PopUpManagerChildList.POPUP))
+				}
+						
+				audioControl.anchor = DisplayObject(evt.target);
+				audioControl.display();
+			}
+			
+			protected function showBookmarks(evt:MouseEvent):void {
+				if (!bookmarkDialog)
+					bookmarkDialog = BookmarksDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), BookmarksDialog, false, PopUpManagerChildList.POPUP));
+				
+				bookmarkDialog.display();
+			}
+			
+			protected function showDrawingTools(evt:MouseEvent):void {
+				if (!drawingTools) {
+					drawingTools = DrawingDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), DrawingDialog, false, PopUpManagerChildList.POPUP))
+				}
+				
+				drawingTools.anchor = DisplayObject(evt.target);
+				if (drawingTools.visible) {
+					drawingTools.hide();
+				} else {
+					drawingTools.display();
+				}
+			}
+			
+			protected function showHelpPages(evt:MouseEvent):void {
+				if (!helpDialog)
+					helpDialog = HelpDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), HelpDialog, true, PopUpManagerChildList.POPUP));
+				
+				helpDialog.display();
+			}
+			
+			protected function showKeyQuestions(evt:MouseEvent):void {
+				if (!keyQuestionsDialog) {
+					keyQuestionsDialog = KeyQuestionsDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), KeyQuestionsDialog, false, PopUpManagerChildList.POPUP));
+					keyQuestionsDialog.anchor = (this.parentApplication as Transwarp).contentArea;
+				}
+
+				keyQuestionsDialog.display();
+			}
+			
+			protected function showPageUpdates(evt:MouseEvent):void {
+				if (!historyDialog) {
+					historyDialog = HistoryDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), HistoryDialog, false, PopUpManagerChildList.POPUP));
+					historyDialog.anchor = (this.parentApplication as Transwarp).contentArea;
+				}
+				historyDialog.display();
+			}
+			
+			protected function showRelatedLinks(evt:MouseEvent):void {
+				if (!linksDialog) {
+					linksDialog = LinksDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), LinksDialog, false, PopUpManagerChildList.POPUP));
+					linksDialog.anchor = (this.parentApplication as Transwarp).contentArea;
+				}
+				
+				linksDialog.display();
+			}
+			
+			protected function showSupportText(evt:MouseEvent):void {
+				if (!supportTextDialog) {
+					supportTextDialog = SupportTextDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), SupportTextDialog, false, PopUpManagerChildList.POPUP));
+					supportTextDialog.anchor = (this.parentApplication as Transwarp).contentArea;
+			}
+				
+				supportTextDialog.display();
+			}
+
+			protected function resizeHandler(event:Event):void {
+				var scale:Number = Math.min(1,(height-20)/(buttonGroup.height + maximizeGroup.height));
+				buttonGroup.scaleX = maximizeGroup.scaleX = scale;
+				buttonGroup.scaleY = maximizeGroup.scaleY = scale;
+			}
+			
+			
+			protected function contentAreaSizeHandler(event:ContentAreaSizeEvent):void {
+				var h:Number = Math.max(0, Math.min(35, event.hOverflow));
+				width = 50 - h * 10/35;
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<ext:states>
+		<s:State name="default" />
+		<s:State name="maximized" />
+	</ext:states>
+	
+	<s:Rect width="100%" height="100%" bottomRightRadiusX="12" >
+		<s:fill>
+			<s:LinearGradient rotation="90" >
+				<s:GradientEntry color="{Courseware.instance.color}" ratio="0.48" />
+				<s:GradientEntry color="{ColorUtil.adjustBrightness2(Courseware.instance.color, -40)}"  />
+			</s:LinearGradient>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter blurX="7" blurY="7" distance="6" alpha=".35" />
+			<s:DropShadowFilter blurX="6" blurY="6" angle="225" inner="true" alpha=".30" />
+		</s:filters>
+	</s:Rect>
+	
+	<ext:VGroup id="buttonGroup" top="4" width="100%" horizontalAlign="center" gap="0">
+		<ui:IconButton icon="{KeyQuestionIcon}" click="showKeyQuestions(event);" highlight="{currentPage is Page ? Page(currentPage).hasQuestions : false}" faded="{!(currentPage is Page ? Page(currentPage).hasQuestions : false)}" toolTip="KEY_QUESTION" toolTipPlacement.maximized="right" visible="{normalUser}"/>
+		<ui:IconButton icon="{SupportingTextIcon}" click="showSupportText(event);" highlight="{currentPage is Page ? Page(currentPage).hasSupportText : false}" faded="{!(currentPage is Page ? Page(currentPage).hasSupportText : false)}" toolTip="SUPPORT_TEXT"/>
+		<ui:IconButton icon="{HistoryIcon}" click="showPageUpdates(event);" highlight="{currentPage is Page ? Page(currentPage).hasUpdates : false}" faded="{!(currentPage is Page ? Page(currentPage).hasUpdates : false)}" toolTip="HISTORY" visible="{normalUser}"/>
+		<ui:IconButton icon="{LinksIcon}" click="showRelatedLinks(event);" highlight="{currentPage is Page ? Page(currentPage).hasLinks : false}" faded="{!(currentPage is Page ? Page(currentPage).hasLinks : false)}" toolTip="REL_LINKS"/>
+		<ui:IconButton icon="{FavoritesIcon}" click="showBookmarks(event);" highlight="{currentPage.bookmarked}" toolTip="FAVORITES" visible="{normalUser}"/>
+		<ui:IconButton icon="{CommunityIcon}" click="apexCommunity(event);" toolTip="COMMUNITY" visible="{normalUser}"/>
+		<ui:IconButton icon="{CommentIcon}" click="commentOnPage(event);" toolTip="COMMENTS"/>
+		<ui:IconButton icon="{PaintbrushIcon}"  click="showDrawingTools(event);" toolTip="DRAWING" visible="{normalUser}"/>
+		<ui:IconButton id="audio" icon="{AudioIcon}" click="showAudioVolume(event);" toolTip="VOLUME"/>
+		<ui:IconButton icon="{ConfigurationIcon}" click="configureOptions(event);" toolTip="OPTIONS"/>
+		<ui:IconButton icon="{HelpIcon}"  click="showHelpPages(event);" toolTip="HELP"/>
+	</ext:VGroup>
+	
+	<s:VGroup id="maximizeGroup" width="100%" horizontalAlign="center" gap="15" bottom="10">
+		<ui:HorizontalSeparator visible="{height &lt;= buttonGroup.height + 50}" width="33"/>
+		<ui:IconButton icon="{MaximizeIcon}" width="30" height="30" click="stage.displayState=StageDisplayState.FULL_SCREEN" includeIn="default" toolTip="MAXIMIZE" />
+		<ui:IconButton icon="{MinimizeIcon}" width="30" height="30" click="stage.displayState=StageDisplayState.NORMAL" includeIn="maximized" toolTip="MINIMIZE"/>
+	</s:VGroup>
+	
+	
+</ext:Group>

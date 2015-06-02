@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Transwarp</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>
+			<triggers>clean,full,incremental,</triggers>
+			<arguments>
+				<dictionary>
+					<key>LaunchConfigHandle</key>
+					<value>&lt;project&gt;/.externalToolBuilders/Ant Debug Build.launch</value>
+				</dictionary>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.adobe.flexbuilder.project.flexnature</nature>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>[source path] TranswarpConfig-src</name>
+			<type>2</type>
+			<locationURI>DOCUMENTS/TranswarpConfig/src</locationURI>
+		</link>
+		<link>
+			<name>[source path] TranswarpSlide-src</name>
+			<type>2</type>
+			<locationURI>DOCUMENTS/TranswarpSlide/src</locationURI>
+		</link>
+		<link>
+			<name>bin-release1</name>
+			<type>2</type>
+			<location>C:/Users/wendt/Desktop</location>
+		</link>
+		<link>
+			<name>bin-release2</name>
+			<type>2</type>
+			<location>C:/Users/john/Desktop/tw</location>
+		</link>
+	</linkedResources>
+	<filteredResources>
+		<filter>
+			<id>1431536476161</id>
+			<name></name>
+			<type>26</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-repository</arguments>
+			</matcher>
+		</filter>
+	</filteredResources>
+</projectDescription>

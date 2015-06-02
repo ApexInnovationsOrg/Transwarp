@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:assets="com.apexinnovations.transwarp.assets.*"
+		 xmlns:graphics="com.apexinnovations.transwarp.graphics.*" 
+		 xmlns:ui="com.apexinnovations.transwarp.ui.*" 
+		 xmlns:ext="com.apexinnovations.transwarp.ui.ext.*"
+		 width="100%"
+		 addedToStage="onAdded()"
+		 creationComplete="creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.Transwarp;
+			import com.apexinnovations.transwarp.data.Course;
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.data.User;
+			import com.apexinnovations.transwarp.events.ContentAreaSizeEvent;
+			import com.apexinnovations.transwarp.events.TranswarpEvent;
+			import com.apexinnovations.transwarp.graphics.ArrowNextIcon;
+			import com.apexinnovations.transwarp.graphics.ArrowPreviousIcon;
+			import com.apexinnovations.transwarp.graphics.ReplayIcon;
+			import com.apexinnovations.transwarp.graphics.SearchIcon;
+			import com.apexinnovations.transwarp.ui.dialogs.SearchDialog;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			import com.apexinnovations.transwarp.utils.Utils;
+			
+			import mx.binding.utils.BindingUtils;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			import mx.managers.PopUpManagerChildList;
+			import mx.utils.ColorUtil;
+			
+			import spark.components.TitleWindow;
+			import spark.events.TitleWindowBoundsEvent;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			[Bindable] public var normalUser:Boolean = true;
+			[Bindable] public var lmsUser:Boolean = false;
+			[Bindable] public var hasRightGradient:Boolean = true;
+			[Bindable] public var searchPrompt:String = "Search";			
+			
+			protected var _courses:Vector.<Course>;
+			protected var searchDialog:SearchDialog = null;
+			
+			override protected function createChildren():void {
+				super.createChildren();
+			}
+			
+			protected function maximize(event:FullScreenEvent):void {
+				currentState = event.fullScreen ? "maximized" : "default";
+			}
+			
+			protected function onAdded():void {
+				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);
+			}
+			
+			public function set courses(value:Vector.<Course>):void {
+				_courses = value;
+				if(_courses && _courses.length > 1 && !lmsUser)
+					hasRightGradient = false;
+				
+				if(levelNav)
+					initLevelNav();
+			}
+			
+			protected function initLevelNav():void {
+				var i:int = 0;
+				for each(var c:Course in _courses) {
+					var b:LevelButton;
+					
+					if(i < levelNav.numElements)
+						b = levelNav.getElementAt(i) as LevelButton;
+					else {
+						b = new LevelButton();
+						levelNav.addElement(b);	
+					}
+					
+					b.course = c;
+					
+					i++;
+				}					
+			}
+			
+			protected function prevClick():void {
+				Courseware.instance.prevPage();
+			}
+			
+			protected function nextClick():void {
+				Courseware.instance.nextPage();
+			}
+			
+			protected function replayClick():void {
+				var contents:ContentArea = (this.parentApplication as Transwarp).contentArea;
+				
+				contents.container.replay();
+				contents.landingPage.replay();
+			}
+			
+			protected function reloadClick():void {
+				var contents:ContentArea = (this.parentApplication as Transwarp).contentArea;
+				
+				contents.container.reload();
+				contents.landingPage.reload();
+			}
+			
+			protected function submitSearch():void {
+				if (Utils.trim(searchInput.text) != '') {
+					if (!searchDialog) {
+						searchDialog = SearchDialog(PopUpManager.createPopUp(DisplayObjectContainer(this.systemManager), SearchDialog, false, PopUpManagerChildList.POPUP));
+						searchDialog.anchor = (this.parentApplication as Transwarp).contentArea;
+					}
+					
+					searchDialog.keywords = searchInput.text;
+					searchDialog.display();
+				}
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void {
+				parentApplication.addEventListener(ContentAreaSizeEvent.CONTENT_AREA_SIZE_CHANGED, contentAreaSizeHandler);	
+			}
+			
+			
+			protected function contentAreaSizeHandler(event:ContentAreaSizeEvent):void {
+				var v:Number = Math.max(0, Math.min(topArea.minHeight, event.vOverflow));				
+				
+				topArea.height = 100 - v * 15/topArea.minHeight;
+				if (topArea.height < topArea.minHeight) topArea.height = topArea.minHeight;
+				if (topArea.height > 100) topArea.height = 100;
+				controlBar.height = 34 - v * 6/topArea.minHeight;
+				
+				//JK - Put in static values to stop bar from resizing and looking awkward for new Hemi 2
+				topArea.height = 100;
+				controlBar.height = 34;
+				
+				nameLabel.visible = (topArea.height > topArea.maxHeight - 9);
+			}
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+				navButtons.horizontalCenter = Transwarp(parentApplication).leftBar.width/2;
+				var centerOverflow:Number =  searchGroup.x - (unscaledWidth/2 + navButtons.horizontalCenter + navButtons.width/2);
+				
+				if(centerOverflow < 5) {
+					navButtons.horizontalCenter += centerOverflow - 5;					
+				}
+				
+				
+				var rows:int = levelNav.rowCount;
+				var cols:int = levelNav.columnCount;
+				var w:Number = (cols-1) * levelNav.horizontalGap + cols * levelNav.columnWidth;
+				var h:Number = (rows-1) * levelNav.verticalGap + rows * levelNav.rowHeight;
+							
+				var sx:Number = 1; 
+				var sy:Number = 1;
+				
+				if(unscaledWidth - levelNav.x - levelNav.horizontalGap < w) {
+					sx = (unscaledWidth - levelNav.x - levelNav.horizontalGap) / w;					
+				}
+				
+				if(topArea.height - levelNav.y - levelNav.verticalGap < h) {
+					sy = (topArea.height - levelNav.y - levelNav.verticalGap) / h;					
+				}
+
+				var scale:Number = Math.min(1, Math.abs(sy), Math.abs(sx));
+				levelNav.scaleX = levelNav.scaleY = scale;
+				levelNav.top = 28; //scale * 13 + 15;
+				
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="default" />
+		<s:State name="maximized" />
+	</s:states>
+	
+	<s:VGroup gap="-1" width="100%">
+		
+		<!--Top Area (big logo, flair, level buttons)-->
+		<s:Group id="topArea" maxHeight="100" minHeight="80" excludeFrom="maximized">
+			
+			<!--Gray Gradient at top-->
+			<s:Rect width="100%" height="100%" top="0">
+				<s:fill>
+					<s:LinearGradient rotation="270" scaleX="-148">
+						<s:GradientEntry ratio="0" color="#E0E1E2"/>
+						<s:GradientEntry ratio="0.12156863" color="#E2E3E3"/>
+						<s:GradientEntry ratio="0.28235294" color="#E6E6E6"/>
+						<s:GradientEntry ratio="0.43137255" color="#EAEAE9"/>
+						<s:GradientEntry ratio="0.6745098" color="#E6E6E6"/>
+						<s:GradientEntry ratio="0.82745098" color="#DFDFDF"/>
+						<s:GradientEntry ratio="0.95294118" color="#D4D5D6"/>
+						<s:GradientEntry ratio="1" color="#CFD0D0"/>		
+					</s:LinearGradient>
+				</s:fill>
+			</s:Rect>
+			
+			<!--Color gradient for products with only 1 level-->
+			<s:Rect height="100%" width="40%" right="0" visible="{hasRightGradient}" blendMode="multiply">
+				<s:fill>
+					<s:LinearGradient>
+						<s:GradientEntry color="0xffffff" alpha="0" />
+						<s:GradientEntry color="{ColorUtil.adjustBrightness2(Courseware.instance.color,25)}" alpha=".65" />
+					</s:LinearGradient>
+				</s:fill>
+			</s:Rect>
+			<!--Gray gradient for products with more than 1 level-->
+			<s:Rect height="100%" width="100%" right="0" visible="{!hasRightGradient}" blendMode="multiply">
+				<s:fill>
+					<s:LinearGradient rotation="10">
+						<s:GradientEntry ratio="0" color="#000000" alpha="0" />
+						<s:GradientEntry ratio=".1" color="#000000" alpha=".06" />
+						<s:GradientEntry ratio=".2" color="#000000" alpha=".09" />
+						<s:GradientEntry ratio=".3" color="#000000" alpha=".07" />
+						<s:GradientEntry ratio=".4" color="#000000" alpha=".105" />
+						<s:GradientEntry ratio=".5" color="#000000" alpha=".085" />
+						<s:GradientEntry ratio=".6" color="#000000" alpha=".125" />
+						<s:GradientEntry ratio=".7" color="#000000" alpha=".105" />
+						<s:GradientEntry ratio=".8" color="#000000" alpha=".155" />
+						<s:GradientEntry ratio=".9" color="#000000" alpha=".135" />
+						<s:GradientEntry ratio="1" color="#000000" alpha=".13" />
+					</s:LinearGradient>
+				</s:fill>
+			</s:Rect>
+			
+			<!--"Flair" graphic at the top of the gray gradient-->
+			<s:Graphic id="flair" left="270" top="0" includeIn="default">
+				<s:Path data="M 0 0 19 19 {width-flair.x} 19 {width-flair.x} 0 Z">
+					<s:fill>
+						<s:LinearGradient scaleX="-11.625" rotation="270">
+							<s:GradientEntry color="{Courseware.instance.color}" ratio="0.08"/>
+							<s:GradientEntry color="{ColorUtil.adjustBrightness2(Courseware.instance.color, -50)}" ratio="0.9"/>
+						</s:LinearGradient>
+					</s:fill>
+				</s:Path>
+			</s:Graphic>
+			
+			<s:Label text="v5.0.{TranswarpVersion.revision}" right="0" color="{ColorUtil.adjustBrightness2(Courseware.instance.color, 50)}" top="4" textAlign="right" fontSize="12" paddingRight="4" includeIn="default" />
+			
+			<s:VGroup horizontalAlign="right" left="15" top="3" includeIn="default">
+				<assets:AssetImageControl assetID="logoBig" height="62" smooth="true" smoothingQuality="high"/>
+				<!--<ui:ProductLogo />-->
+				<s:Label id="nameLabel" text="{resourceManager.getString('Chrome','BY_APEX')}" fontStyle="italic" color="#444444"/>
+			</s:VGroup>
+			
+			<s:TileGroup id="levelNav" left="290" right="8" verticalAlign="middle" requestedRowCount="2" orientation="columns" verticalGap="10" horizontalGap="5" visible="{!hasRightGradient}" creationComplete="initLevelNav()" minWidth="732"/>
+			
+		</s:Group>
+		
+		
+		<!--Dark Grey Bar (Small Logo, Prev, Next, Search, ect)-->
+		<s:Group id="controlBar" height="28" width="100%">
+			<!--Darker Gray bar that serves as background for Next, Prev, Replay etc-->
+			<s:Rect width="100%" height="100%" bottom="0">
+				<s:fill>
+					<s:LinearGradient rotation="90">
+						<s:GradientEntry color="#4E4D4F" ratio=".02206"/>
+						<s:GradientEntry color="#5A5A5C" ratio=".03676"/>
+						<s:GradientEntry color="#696A6C" ratio=".07353"/>
+						<s:GradientEntry color="#747577" ratio=".11029"/>
+						<s:GradientEntry color="#797B7D" ratio=".20706"/>			
+						
+						<s:GradientEntry color="#747577" ratio=".52941"/>
+						<s:GradientEntry color="#696A6C" ratio=".73529"/>
+						<s:GradientEntry color="#5A5A5C" ratio=".88235"/>
+						<s:GradientEntry color="#4E4D4F" ratio=".97059"/>
+					</s:LinearGradient>			
+				</s:fill>
+			</s:Rect>
+			
+			<!--Light Gradient to sit behind the small logo-->
+			<s:Rect width="{logoSmall.width + 250}" height="100%" bottom="0" includeIn="maximized" blendMode="add">
+				<s:fill>
+					<s:LinearGradient>
+						<s:GradientEntry color="0xffffff" alpha=".7"/>
+						<s:GradientEntry color="0xffffff" alpha="0" />
+					</s:LinearGradient>
+				</s:fill>
+			</s:Rect>
+			
+			<assets:AssetImageControl id="logoSmall" assetID="logoSmall" includeIn="maximized" left="60" verticalCenter="0">
+				<assets:filters>
+					<s:GlowFilter color="0xffffff" alpha="0.9" blurX="5" blurY="5" />
+				</assets:filters>
+			</assets:AssetImageControl>
+			
+			<!--RedBar under level label
+			<s:Rect width="295" height="100%" >
+				<s:fill>
+					<s:LinearGradient rotation="90">
+						<s:GradientEntry color="{ColorUtil.adjustBrightness2(Courseware.instance.color, -30)}"/>
+						<s:GradientEntry color="{Courseware.instance.color}" />
+					</s:LinearGradient>
+				</s:fill>
+			</s:Rect>
+			-->
+			
+			<s:HGroup id="levelLabel" verticalAlign="middle" left.default="5" left.maximized="{logoSmall.x + logoSmall.width + 15}" color="0xffffff" height="100%">
+				<s:Label fontWeight="bold" fontSize="16" fontFamily="Arial"
+						 text="{resourceManager.getString('Chrome','LEVEL')} {Courseware.instance.currentCourse.levelRoman} : " 
+						 visible="true"
+						 includeInLayout="true"/>
+			</s:HGroup>
+			
+			<s:HGroup id="pageLabel" verticalAlign="middle" left.default="{levelLabel.width + 10}" left.maximized="{logoSmall.x + logoSmall.width + levelLabel.width + 20}" color="0xffffff" height="100%">
+				<s:Label fontWeight="bold" fontSize="13" fontFamily="Arial"
+						 text="{Courseware.instance.currentCourse.name}" 
+						 visible="true"
+						 includeInLayout="true"/>
+			</s:HGroup>
+			
+			<ext:HGroup id="navButtons" right="{searchGroup.width}" verticalAlign="middle" gap="12" height="100%"
+						color="0xffffff" fontFamily="Arial" fontWeight="bold"
+						toolTipPlacement="bottomRight">
+				<ui:IconButton icon="{ArrowPreviousIcon}" click="prevClick()" toolTip="PREV" height="30"
+							   label="{resourceManager.getString('Buttons','PREV')}"/>
+				<ui:VerticalSeparator />
+				<ui:IconButton icon="{ArrowNextIcon}" iconPlacement="right" click="nextClick()" toolTip="NEXT" height="30"
+							   label="{resourceManager.getString('Buttons','NEXT')}"/>
+				<ui:VerticalSeparator />
+				<ui:IconButton icon="{ReplayIcon}" click="replayClick()" height="30" toolTip="REPLAY"
+							   label="{resourceManager.getString('Buttons','REPLAY')}"/>
+				<!-- Conditionally Visible Reload Button -->
+				<ui:VerticalSeparator includeInLayout="{Courseware.instance.debug}" visible="{Courseware.instance.debug}" />
+				<ui:IconButton icon="{ReplayIcon}" height="30" label="RELOAD" click="reloadClick()"
+							   includeInLayout="{Courseware.instance.debug}" visible="{Courseware.instance.debug}"/>
+			</ext:HGroup>
+			
+			<s:HGroup id="searchGroup" height="100%" verticalAlign="middle" visible="{normalUser}" right="10">
+				<s:TextInput id="searchInput" prompt="{searchPrompt}" width="183" enter="submitSearch()"/>
+				<ui:IconButton icon="{SearchIcon}" click="submitSearch()" width="30" height="25" toolTip="SEARCH" toolTipPlacement="bottomLeft"/>
+			</s:HGroup>
+			
+		</s:Group>
+		
+	</s:VGroup>
+</s:Group>

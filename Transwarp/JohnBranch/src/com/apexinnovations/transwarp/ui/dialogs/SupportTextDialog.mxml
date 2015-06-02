@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dialogs:DialogBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			  xmlns:s="library://ns.adobe.com/flex/spark" 
+			  xmlns:mx="library://ns.adobe.com/flex/mx"
+			  xmlns:ui="com.apexinnovations.transwarp.ui.*"
+			  xmlns:dialogs="com.apexinnovations.transwarp.ui.dialogs.*"
+			  title="{resourceManager.getString('Dialogs','SUPPORT_TEXT_TITLE')}"
+			  addedToStage="addedToStage(event);" contentCreationComplete="contentCreationComplete(event);"
+			  resizable.default="true" height.no_results="112" height.default="350"
+			  minWidth="{Math.max(402, PageTitle.width + 20)}" minHeight="112">
+	<fx:Script>
+		<![CDATA[
+			import com.apexinnovations.transwarp.data.Courseware;
+			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.events.PageSelectionEvent;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			
+			import flashx.textLayout.elements.TextFlow;
+			import mx.managers.PopUpManager;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			protected var _page:Page;
+			
+			public var anchor:DisplayObject = null;
+			
+			[Bindable] public function get page():Page { return _page; }
+			public function set page(p:Page):void {
+				_page = p;
+				updateElementList();
+			}
+			
+			override protected function addedToStage(event:Event):void {
+				super.addedToStage(event);
+				Courseware.instance.addEventListener(PageSelectionEvent.PAGE_SELECTION_CHANGED, pageChanged);
+				pageChanged(new PageSelectionEvent(Courseware.instance.currentPage));
+			}
+			
+			protected function contentCreationComplete(event:Event):void {
+				updateElementList();
+			}
+			
+			override public function display():void {
+				if (!visible && anchor) {
+					x = anchor.x;
+					y = anchor.y + 112;
+				}
+				visible = true;
+				PopUpManager.bringToFront(this);
+				setFocus();
+			}
+			
+			protected function pageChanged(event:PageSelectionEvent):void {
+				page = event.page as Page;
+				this.invalidateDisplayList();
+			}
+			
+			protected function updateElementList():void {
+				currentState = _page && _page.supportText ? "default" : "no_results";
+			}
+		]]>
+	</fx:Script>
+
+	<dialogs:states>
+		<s:State name="default" />
+		<s:State name="no_results" />
+	</dialogs:states>
+	
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" width="100%" height="100%">
+		<ui:PageTitle id="PageTitle"/>
+		<s:Label width="380" fontSize="13" fontWeight="bold" textAlign="center" color="0xFF0000" paddingTop="10" paddingBottom="10"
+				 text="{resourceManager.getString('Dialogs','NO_SUPPORT_TEXT')}" includeIn="no_results"/>
+		<s:TextArea width="100%" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" editable="false"
+					horizontalScrollPolicy="off" height="100%" 
+					textFlow="{page.supportText}" includeIn="default"/>
+	</s:VGroup>
+</dialogs:DialogBox>

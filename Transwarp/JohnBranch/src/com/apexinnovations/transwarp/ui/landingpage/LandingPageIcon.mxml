@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="com.apexinnovations.transwarp.ui.*"
+				creationComplete="creationCompleteHandler(event)">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:states>
+		<s:State name="default" />
+		<s:State name="loading" />
+		<s:State name="broken" />
+	</s:states>
+	
+	
+	<fx:Script>
+		<![CDATA[			
+			import com.apexinnovations.transwarp.data.CoursewareObject;
+			import com.apexinnovations.transwarp.data.Page;
+			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			import com.greensock.events.LoaderEvent;
+			import com.greensock.loading.ImageLoader;
+			import com.greensock.loading.LoaderMax;
+			import com.greensock.loading.LoaderStatus;
+			
+			import mx.events.FlexEvent;
+			
+			TranswarpVersion.revision = "$Rev$";
+			
+			protected var _page:CoursewareObject;
+			protected var loader:ImageLoader;
+			
+			[Embed(source="/../assets/broken_icon.png")]
+			protected var BrokenImage:Class;
+			
+			
+			public function get page():CoursewareObject { return _page; }
+			public function set page(value:CoursewareObject):void {
+				if(_page) {
+					if(loader) {
+						loader.removeEventListener(LoaderEvent.COMPLETE, loadCompleteHandler);
+						loader.removeEventListener(LoaderEvent.FAIL, loadFailHandler);
+					}
+					loader = null;
+				}
+				
+				_page = value;
+				
+				if(_page) {
+					loader = LoaderMax.getLoader(_page.snapshot);
+				}
+				if(stage)
+					addedHandler();
+			}
+			
+			public function reload():void {
+				if(loader) {
+					loader.load(true);
+					addedHandler();
+				}
+			}
+			
+			protected function loadCompleteHandler(event:Event = null):void {
+				currentState = "default";
+				image.source = loader.rawContent;
+			}
+			
+			protected function addedHandler(event:Event = null):void {
+				if(!loader || loader.status == LoaderStatus.FAILED) {
+					loadFailHandler();
+				} else if(loader.status == LoaderStatus.LOADING || loader.status == LoaderStatus.READY) {
+					loader.prioritize();
+					loader.addEventListener(LoaderEvent.COMPLETE, loadCompleteHandler);
+					loader.addEventListener(LoaderEvent.FAIL, loadFailHandler);
+					currentState = "loading";
+				} else if(loader.status == LoaderStatus.COMPLETED) {
+					loadCompleteHandler();
+				}
+			}
+			
+			protected function loadFailHandler(event:Event=null):void {
+				currentState = "broken";
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void {
+				if(_page && stage)
+					addedHandler();
+				
+				addEventListener(Event.ADDED_TO_STAGE, addedHandler);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:BusyIndicator horizontalCenter="0" verticalCenter="0" includeIn="loading" />
+	<s:BitmapImage id="image" excludeFrom="loading" width="100%" height="100%" source.broken="{new BrokenImage()}" />
+</s:Group>
