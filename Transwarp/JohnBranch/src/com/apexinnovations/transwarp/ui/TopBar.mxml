@@ -68,20 +68,29 @@
 			
 			protected function initLevelNav():void {
 				var i:int = 0;
+				var ct:int = 0;
 				for each(var c:Course in _courses) {
 					var b:LevelButton;
 					
-					if(i < levelNav.numElements)
+					if(i < levelNav.numElements){
 						b = levelNav.getElementAt(i) as LevelButton;
-					else {
+					}else{
 						b = new LevelButton();
+						b.left = (ct * (b.width +3));
+					
+						if(i%2){ 
+							b.top = b.height + 8;
+							b.left += 20;
+							ct++;
+						}
+										
 						levelNav.addElement(b);	
 					}
 					
 					b.course = c;
 					
 					i++;
-				}					
+				} 	
 			}
 			
 			protected function prevClick():void {
@@ -135,37 +144,42 @@
 				topArea.height = 100;
 				controlBar.height = 34;
 				
-				nameLabel.visible = (topArea.height > topArea.maxHeight - 9);
+				//nameLabel.visible = (topArea.height > topArea.maxHeight - 9);
 			}
 			
 			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
-				navButtons.horizontalCenter = Transwarp(parentApplication).leftBar.width/2;
-				var centerOverflow:Number =  searchGroup.x - (unscaledWidth/2 + navButtons.horizontalCenter + navButtons.width/2);
+				navButtons.horizontalCenter = (Transwarp(parentApplication).leftBar.width/2) - 50;
+				var centerOverflow:Number =  (searchGroup.x) - (unscaledWidth/2 + navButtons.horizontalCenter + navButtons.width/2);
+				var spacing:int = 5;
 				
-				if(centerOverflow < 5) {
-					navButtons.horizontalCenter += centerOverflow - 5;					
+				if(centerOverflow < spacing) {
+					navButtons.horizontalCenter += centerOverflow - spacing;					
 				}
 				
 				
-				var rows:int = levelNav.rowCount;
-				var cols:int = levelNav.columnCount;
-				var w:Number = (cols-1) * levelNav.horizontalGap + cols * levelNav.columnWidth;
-				var h:Number = (rows-1) * levelNav.verticalGap + rows * levelNav.rowHeight;
-							
+				var rows:int = 2;
+				var cols:int = 4;
+				var w:Number = (cols-1) * spacing + cols * 245;
+				var h:Number = (rows-1) * spacing + rows * 20;
+				
 				var sx:Number = 1; 
 				var sy:Number = 1;
 				
-				if(unscaledWidth - levelNav.x - levelNav.horizontalGap < w) {
-					sx = (unscaledWidth - levelNav.x - levelNav.horizontalGap) / w;					
+				if(unscaledWidth - levelNav.x - spacing < w) {
+					sx = (unscaledWidth - levelNav.x - spacing) / w;					
 				}
 				
-				if(topArea.height - levelNav.y - levelNav.verticalGap < h) {
-					sy = (topArea.height - levelNav.y - levelNav.verticalGap) / h;					
+				if(topArea.height - levelNav.y - spacing < h) {
+					sy = (topArea.height - levelNav.y - spacing) / h;					
 				}
-
+				
 				var scale:Number = Math.min(1, Math.abs(sy), Math.abs(sx));
-				levelNav.scaleX = levelNav.scaleY = scale;
-				levelNav.top = 28; //scale * 13 + 15;
+				if(Transwarp(parentApplication).width < 1400){
+					scale -= .125;
+				}
+				levelNav.scaleX = levelNav.scaleY = scale + .1;
+				levelNav.top = flair.height + 12; //scale * 13 + 15;
+				//levelNav.top = (flair.height + ((levelBG.height - levelNav.height)/2)) - 1; //scale * 13 + 15;
 				
 				super.updateDisplayList(unscaledWidth, unscaledHeight);
 			}
@@ -229,7 +243,11 @@
 			
 			<!--"Flair" graphic at the top of the gray gradient-->
 			<s:Graphic id="flair" left="270" top="0" includeIn="default">
-				<s:Path data="M 0 0 19 19 {width-flair.x} 19 {width-flair.x} 0 Z">
+				<s:Path data="M 0 0 
+							  L 15 19 
+							  L {width-flair.x} 19 
+							  L {width-flair.x} 0 
+							  Z">
 					<s:fill>
 						<s:LinearGradient scaleX="-11.625" rotation="270">
 							<s:GradientEntry color="{Courseware.instance.color}" ratio="0.08"/>
@@ -241,13 +259,34 @@
 			
 			<s:Label text="v5.0.{TranswarpVersion.revision}" right="0" color="{ColorUtil.adjustBrightness2(Courseware.instance.color, 50)}" top="4" textAlign="right" fontSize="12" paddingRight="4" includeIn="default" />
 			
+			<!--"Blade" graphic behind the buttons -->
+			<s:Graphic id="levelBG" left="300" top="19" includeIn="default">
+				<s:Path data="M 0 0 
+						L 56 72
+						L {width-levelBG.x} 72
+						L {width-levelBG.x} 0 
+						Z">
+					<s:fill>
+						<s:SolidColor color="0x000000" alpha="0.15" />
+					</s:fill>
+					<s:filters>
+						<s:DropShadowFilter blurX="5" blurY="5" distance="5" alpha="0.15" angle="225" inner="true"/>
+					</s:filters>
+				</s:Path>
+			</s:Graphic>
+			
 			<s:VGroup horizontalAlign="right" left="15" top="3" includeIn="default">
 				<assets:AssetImageControl assetID="logoBig" height="62" smooth="true" smoothingQuality="high"/>
 				<!--<ui:ProductLogo />-->
 				<s:Label id="nameLabel" text="{resourceManager.getString('Chrome','BY_APEX')}" fontStyle="italic" color="#444444"/>
 			</s:VGroup>
 			
-			<s:TileGroup id="levelNav" left="290" right="8" verticalAlign="middle" requestedRowCount="2" orientation="columns" verticalGap="10" horizontalGap="5" visible="{!hasRightGradient}" creationComplete="initLevelNav()" minWidth="732"/>
+			<s:Group id="levelNav"						
+						 left="330" 
+						 right="8" 
+						 visible="{!hasRightGradient}" 
+						 creationComplete="initLevelNav()" 
+						 minWidth="740"/>
 			
 		</s:Group>
 		
@@ -330,7 +369,7 @@
 							   includeInLayout="{Courseware.instance.debug}" visible="{Courseware.instance.debug}"/>
 			</ext:HGroup>
 			
-			<s:HGroup id="searchGroup" height="100%" verticalAlign="middle" visible="{normalUser}" right="10">
+			<s:HGroup id="searchGroup" height="100%" verticalAlign="middle" visible="{normalUser}" right="25">
 				<s:TextInput id="searchInput" prompt="{searchPrompt}" width="183" enter="submitSearch()"/>
 				<ui:IconButton icon="{SearchIcon}" click="submitSearch()" width="30" height="25" toolTip="SEARCH" toolTipPlacement="bottomLeft"/>
 			</s:HGroup>

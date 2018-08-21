@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<transwarp:TranswarpBase xmlns:fx="http://ns.adobe.com/mxml/2009" 
-			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   xmlns:transwarp="com.apexinnovations.transwarp.*"
-			   xmlns:ui="com.apexinnovations.transwarp.ui.*"
-			   xmlns:landingpage="com.apexinnovations.transwarp.ui.landingpage.*"
-			   xmlns:ext="com.apexinnovations.transwarp.ui.ext.*"
-			   preloader="com.apexinnovations.transwarp.preloader.PreloaderDisplay"
-			   addedToStage="onAdded()"
-			   minWidth="860" minHeight="640"
-			   creationComplete="creationCompleteHandler(event)">
-			   <!--enterFrame="enterFrameHandler(event)">-->
+<transwarp:TranswarpBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+						 xmlns:s="library://ns.adobe.com/flex/spark"
+						 xmlns:mx="library://ns.adobe.com/flex/mx"
+						 xmlns:transwarp="com.apexinnovations.transwarp.*"
+						 xmlns:ui="com.apexinnovations.transwarp.ui.*"
+						 xmlns:landingpage="com.apexinnovations.transwarp.ui.landingpage.*"
+						 xmlns:ext="com.apexinnovations.transwarp.ui.ext.*"
+						 minWidth="860" minHeight="640" addedToStage="onAdded()"
+						 creationComplete="creationCompleteHandler(event)"
+						 preloader="com.apexinnovations.transwarp.preloader.PreloaderDisplay">
+	<!--enterFrame="enterFrameHandler(event)">-->
 	
 	
 	<fx:Declarations>
@@ -143,11 +142,11 @@
 			protected function maximize(event:FullScreenEvent):void {
 				currentState = event.fullScreen ? "maximized" : "default";
 			}
-
+			
 			protected function onAdded():void {
 				stage.addEventListener(FullScreenEvent.FULL_SCREEN, maximize);
 			}
-
+			
 			protected function popupErrorDialog(info:String, title:String = 'Error'):void {
 				if (!currentlyIdle) {
 					if (errorDialog.isPopUp) PopUpManager.removePopUp(errorDialog);	// Take down any currently displayed dialogs
@@ -175,7 +174,7 @@
 						var errorEvent:ErrorEvent = event.error as ErrorEvent;
 						errorEvent.stopPropagation();
 						log.dispatch('UNHANDLED EVENT: ' + errorEvent.type + ': ' + errorEvent.text);
-										
+						
 						//popupErrorDialog('We are sorry, but there has been a problem and the application must be closed.\n\n' + errorEvent.type + '\n\nPlease contact Apex Technical Support at 1-866-294-4599 x111.');
 					} else {
 						// a non-Error, non-ErrorEvent type was thrown and uncaught
@@ -184,15 +183,15 @@
 					// Nothing, just don't blow up!
 				}
 			}
-		
-
+			
+			
 			protected function pageLoadErrorHandler(event:ErrorEvent):void {
 				event.stopPropagation();
 				//popupErrorDialog("We are sorry, but there has been an error loading this page.  Please contact Apex Technical Support at 1-866-294-4599 x111. \n\n" + event.text, "Error Loading Page");
 				//Courseware.log("PAGE LOAD ERROR: " + event.type + ": " + event.text);
 			}
-
-
+			
+			
 			protected function idleTimeout(event:Event):void {
 				// TODO Auto-generated method stub
 			}
@@ -214,7 +213,7 @@
 				var v:Number = minV - unscaledHeight;
 				
 				dispatchEvent(new ContentAreaSizeEvent(h, v));
-
+				
 				prevH = h;
 				prevV = v;
 			}
@@ -234,7 +233,7 @@
 	</transwarp:states>
 	
 	<!--Setting this group's width to "100%" resulted in it being 10,000 px wide instead of what was expected.-->
-	<s:VGroup width="{width}" height="100%" gap.default="{-35 - (topBar.height - 178)/2.25}" gap.maximized="-50" bottom.maximized="-16">
+	<s:VGroup width="{width}" height="100%" gap.default="{-35 - (topBar.height - 80)/2.25}" gap.maximized="-35">
 		<ui:TopBar id="topBar"/>
 		<ui:LeftBar id="leftBar"/>		
 	</s:VGroup>
@@ -242,9 +241,9 @@
 	<!--The weird size constraints on this group are another case of having to force flex's layout engine to behave as expected-->
 	<!--top="178" top.maximized="35"-->
 	<ui:ContentArea id="contentArea" left="{leftBar.width}"
-			  top="{topBar.height}"
-			  width="{width-contentArea.x}" height="{height-contentArea.y}" 
-			  error="pageLoadErrorHandler(event)"/>
+					top="{topBar.height}"
+					width="{width-contentArea.x}" height="{height-contentArea.y}" 
+					error="pageLoadErrorHandler(event)"/>
 	<!-- Drawing mask -->
 	<s:Group id="clickBlocker" visible="false" left="0" top="0" right="0" bottom="0" cacheAsBitmap="true" mouseFocusEnabled="false">
 		<s:Rect left="0" top="0" right="0" bottom="0">

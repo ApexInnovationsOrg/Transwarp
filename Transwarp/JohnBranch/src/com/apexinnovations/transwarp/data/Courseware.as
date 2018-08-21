@@ -136,6 +136,7 @@ package com.apexinnovations.transwarp.data {
 				
 				_obeyAllowDeny = obeyAllowDeny;
 				
+				
 				_user = new User(xml.user[0], this);
 				_product = new Product(xml.product[0], this);
 				

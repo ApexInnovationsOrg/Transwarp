@@ -82,18 +82,18 @@ package com.apexinnovations.transwarp.preloader {
 			
 			if(CONFIG::DEBUG) {
 				if (requestVars.baseURL == 'undefined') {
-					//requestVars.data = "e312c92591e7067db6857b02130f7d8b3ce8016b9b28cc8de90efbcc81356dfb0619e755974be99c80a9d5f458deaa16720256f25b2f946b6b0a4befb9791c10"; // Canadian Hemi
+//					requestVars.data = "e312c92591e7067db6857b02130f7d8b3ce8016b9b28cc8de90efbcc81356dfb0619e755974be99c80a9d5f458deaa16720256f25b2f946b6b0a4befb9791c10"; // Canadian Hemi
 					//requestVars.data = '69f26ef8147d984e52a9cf6cdb3975925a46c2bc49117cefd23a41995483e2d5ccc0ef7d3e4e3730b973b6f8cf2c444b39c7f36e352041ede5ba3ee09691e43e'; // Hemi Patient
 					//requestVars.data = '8998d80e3ea4b7688fb3e724c80a9f8ff9016eca432b0943a4c5f23da88342c9060f4aa4957ecc421a3d09a797c5766a27d642cccbe47f34013ba1e2040a7a2a'; // Hemispheres
-					requestVars.data = 'd9044aeaf18f14b213f21997fef27eaef1cc504ad64738a9f1879569924344f0c371eff41029450bb67be24c9997cd79e6f7188ef5cddbc486d3b2ea6aa23aa60283f755c11a0a067a53e9a0365c2030'; // Hemispheres 2.0
+			requestVars.data = '1595c3f3bd6be4327ecc5b42cbe44289fa053dab4604f6899d4f72c89aea46b40695a06e0334ac7853de97bc050978947cb1649550e07bdee4889734a1af3676fb6a16f9a8380d6a6f3ddb957882ab35'; // Hemispheres 2.0
 					//requestVars.data = '8998d80e3ea4b7688fb3e724c80a9f8f595fdefe848dda2407dbe3c2a1f7a039e41a2f6dc36ac5ee02c3b1494a236afdcfd51e186a766ab5fa9c202deea38f40'; // imPULSE
 					//requestVars.data = '69f26ef8147d984e52a9cf6cdb397592daa7a3f56a4c26b5a915c68b9c0c64ade2488a93188d9024989fc1d535d852c2875016a31690bcdf90ff9fe57b4fbe47'; // Responder
-					//requestVars.data = 'cb13cd07dbff7a145999e2fe7167fa1aee0b4b0b2d3bf33babd925ad2850c5fa307e20684a47b5e11d813c1fce21fa54db804249f0bd44c2976de896f36251de'; // Transitions
-					requestVars.baseURL = 'http://devbox.apexinnovations.com';
+//					requestVars.data = 'cb13cd07dbff7a145999e2fe7167fa1aee0b4b0b2d3bf33babd925ad2850c5fa307e20684a47b5e11d813c1fce21fa54db804249f0bd44c2976de896f36251de'; // Transitions
+					requestVars.baseURL = 'http://www.apexwebtest.com';
 				}
 			} 
 			
-			
+//			trace(requestVars);
 			if(CONFIG::OFFLINE) {
 				requestVars.baseURL = '/';
 				comeFrom = comeFrom + ".xml";
@@ -125,6 +125,7 @@ package com.apexinnovations.transwarp.preloader {
 			XML.ignoreWhitespace = false;
 			var xml:XML = new XML(loader.data);
 			var log:LogService = new LogService();
+//			trace(xml);
 			
 			_xml = xml;
 			if(_manager)

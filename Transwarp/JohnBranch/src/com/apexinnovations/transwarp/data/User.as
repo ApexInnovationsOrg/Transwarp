@@ -38,7 +38,7 @@ package com.apexinnovations.transwarp.data
 				throw new IllegalOperationError(getQualifiedClassName(this) + " is a singleton");
 			
 			_instance = this;
-
+			
 			try {
 				_autoCloseMenu = xml.@autoCloseMenu == 'true';
 				_animatePageTransitions = xml.@animatePageTransitions == 'true';
@@ -56,7 +56,7 @@ package com.apexinnovations.transwarp.data
 				throw new ArgumentError(getQualifiedClassName(this) + ': Bad Initialization XML:  [' + e.message + ']');
 			}
 		}
-
+		
 		[Bindable] public function get autoCloseMenu():Boolean { return _autoCloseMenu; }
 		public function set autoCloseMenu(val:Boolean):void { _autoCloseMenu = val; }
 		
@@ -66,14 +66,15 @@ package com.apexinnovations.transwarp.data
 		[Bindable] public function get closedCaptioning():Boolean { return _closedCaptioning; }
 		public function set closedCaptioning(val:Boolean):void { _closedCaptioning = val; }
 		
-		//public function get beta():Boolean { return "beta" in _classes; }
-		//public function get demo():Boolean { return "demo" in _classes; }
-		//public function get lms():Boolean  { return "lms"  in _classes; }
-		public function get beta():Boolean { return false; }
-		public function get demo():Boolean { return false; }
-		public function get lms():Boolean  { return false; }
-		
 		public function get classes():ISet { return _classes; }
+		
+		
+		public function get beta():Boolean { return "beta" in _classes; }
+		public function get demo():Boolean { return "demo" in _classes; }
+		public function get lms():Boolean  { return "lms"  in _classes; }
+		
+		
+		
 		
 		public function get id():uint { return _id; }
 		
@@ -87,7 +88,7 @@ package com.apexinnovations.transwarp.data
 		
 		[Bindable] public function get printSlideOnly():Boolean { return _printSlideOnly; }
 		public function set printSlideOnly(val:Boolean):void { _printSlideOnly = val; }
-
+		
 		public function get startCourseID():int { return _startCourseID; }
 	}
 }

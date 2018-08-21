@@ -15,6 +15,23 @@
 		]]>
 	</fx:Script>
 	
+	<!--
+	<s:Graphic>
+		<s:Path data="M 0 0 
+				L 0 1
+				L 33 7
+				L 33 6 
+				Z">
+			<s:fill>
+				<s:SolidColor color="{color}" />
+			</s:fill>
+			<s:filters>
+				<s:DropShadowFilter blurX="2.8" blurY="2.8" angle="63.4" distance="2.1" alpha=".5" />
+			</s:filters>
+		</s:Path>
+	</s:Graphic>
+	-->
+	
 	<s:Rect width="100%" height="1">
 		<s:fill>
 			<s:SolidColor color="{color}" />
@@ -23,6 +40,5 @@
 			<s:DropShadowFilter blurX="2.8" blurY="2.8" angle="63.4" distance="2.1" alpha=".5" />
 		</s:filters>
 	</s:Rect>
-	
 	
 </s:Group>

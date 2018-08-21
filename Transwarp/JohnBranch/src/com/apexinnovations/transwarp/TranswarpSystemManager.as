@@ -52,7 +52,9 @@ package com.apexinnovations.transwarp {
 			}
 		}
 		
-		public function get xml():XML { return _xml;}
+		public function get xml():XML { 
+			return _xml;
+		}
 		public function set xml(value:XML):void {
 			_xml = value;
 		}

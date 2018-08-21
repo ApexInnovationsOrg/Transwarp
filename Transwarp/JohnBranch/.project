@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Transwarp</name>
+	<name>TranswarpHemi2</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -29,27 +29,27 @@
 		<link>
 			<name>[source path] TranswarpConfig-src</name>
 			<type>2</type>
-			<locationURI>DOCUMENTS/TranswarpConfig/src</locationURI>
+			<location>C:/Users/wendt/Adobe Flash Builder 4.5/TranswarpConfig/src</location>
 		</link>
 		<link>
 			<name>[source path] TranswarpSlide-src</name>
 			<type>2</type>
-			<locationURI>DOCUMENTS/TranswarpSlide/src</locationURI>
+			<location>C:/Users/wendt/Adobe Flash Builder 4.5/TranswarpSlide/src</location>
+		</link>
+		<link>
+			<name>bin-release</name>
+			<type>2</type>
+			<location>C:/Users/john/Desktop/Transwarp</location>
 		</link>
 		<link>
 			<name>bin-release1</name>
 			<type>2</type>
-			<location>C:/Users/wendt/Desktop</location>
-		</link>
-		<link>
-			<name>bin-release2</name>
-			<type>2</type>
-			<location>C:/Users/john/Desktop/tw</location>
+			<location>C:/Users/john/Desktop/Transwarp</location>
 		</link>
 	</linkedResources>
 	<filteredResources>
 		<filter>
-			<id>1431536476161</id>
+			<id>0</id>
 			<name></name>
 			<type>26</type>
 			<matcher>

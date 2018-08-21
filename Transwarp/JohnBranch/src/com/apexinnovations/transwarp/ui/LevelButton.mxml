@@ -2,14 +2,16 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
-		 width="237" height="25" buttonMode="true" useHandCursor="true" mouseChildren="false"
-		 rollOver="rollOverOut(event)" rollOut="rollOverOut(event)" mouseDown="mouseDownUp(event)" addedToStage="onAdded(event)" click="click(event)">
+		 width="245" height="20" buttonMode="true" useHandCursor="true" mouseChildren="false" 
+		 rollOver="rollOver(event);" rollOut="rollOutSlide();" mouseDown="mouseDownUp(event)" addedToStage="onAdded(event)" click="click(event)">
 
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Course;
 			import com.apexinnovations.transwarp.data.Courseware;
 			import com.apexinnovations.transwarp.utils.TranswarpVersion;
+			import flash.utils.*;
+			import flash.geom.*;
 			
 			import mx.binding.utils.BindingUtils;
 			import mx.utils.ColorUtil;
@@ -50,9 +52,12 @@
 				currentState = _selected ? "selected" : (_restricted ? "disabled" : "default");
 			}
 			
-			protected function rollOverOut(event:MouseEvent):void {
-				if(currentState != "selected")
+			protected function rollOver(event:MouseEvent):void {
+				if(currentState != "selected"){
 					currentState = event.type == MouseEvent.ROLL_OVER ? "hovered" : (_restricted ? "disabled" : "default");
+					slideWidthUp.end(); 
+					slideWidthUp.play();	
+				}
 			}
 
 			protected function mouseDownUp(event:MouseEvent):void {
@@ -63,6 +68,17 @@
 				stage.addEventListener(MouseEvent.MOUSE_UP, mouseDownUp);
 			}
 
+			
+			public function rollOutSlide():void {
+				if(currentState != "selected"){
+					setTimeout(function():void { 
+						slideWidthDown.end(); 
+						slideWidthDown.play(); 
+						}, 100);
+				}
+			}
+		
+			
 			public function get course():Course { return _course; }
 			public function set course(value:Course):void { 
 				_course = value; 
@@ -71,17 +87,54 @@
 				if(_course) {
 					levelRoman = _course.levelRoman;
 					levelName = _course.name;
-					
+					switch(levelRoman){
+						case "I":
+							levelRomanLabel.left = 23;
+							break;
+						case "II":
+							levelRomanLabel.left = 21;
+							break;
+						case "III":
+							levelRomanLabel.left = 19;
+							break;
+						case "IV":
+							levelRomanLabel.left = 17;
+							break;
+						case "V":
+							levelRomanLabel.left = 19;
+							break;
+						case "VI":
+							levelRomanLabel.left = 17;
+							break;
+						case "VII":
+							levelRomanLabel.left = 14;
+							break;
+						case "VIII":
+							levelRomanLabel.left = 12;
+							break;
+						default:
+							break;							
+					}
 				}
 			}
 			
 			protected function click(event:MouseEvent):void {
+				slideWidthUp.end(); 
+				slider.width = 0;
 				if(_course)
 					Courseware.instance.currentCourse = _course;
-			}
+			}			
 
 		]]>
 	</fx:Script>
+	<fx:Declarations>
+		<s:Animate id="slideWidthUp" target="{slider}" duration="250" >
+			<s:SimpleMotionPath property="width" valueFrom="0" valueTo="227"  />
+		</s:Animate>
+		<s:Animate id="slideWidthDown" target="{slider}" duration="250">
+			<s:SimpleMotionPath property="width" valueFrom="227" valueTo="0" />
+		</s:Animate>
+	</fx:Declarations>
 	
 	<s:states>
 		<s:State name="default" />
@@ -90,29 +143,57 @@
 		<s:State name="disabled" />
 	</s:states>
 	
-	<s:filters>
-		<s:DropShadowFilter blurX="2" blurY="2" angle="45" distance="2" alpha=".5" color="0" />
-		<s:DropShadowFilter blurX="6" blurY="6" angle="225" inner="true" alpha=".25" />
-	</s:filters>
-	
-	<s:Group width="220" height="25" x="{down ? 1 : 0}" y="{down? 1 : 0}">
-		<s:Rect width="100%" height="100%" radiusX="7">
-			<s:fill>
-				<s:SolidColor color="0xdddddd" color.selected="0xffffff" color.hovered="0xe8e8e8" color.disabled="0xaaaaaa"/>
-			</s:fill>
-		</s:Rect>
+	<s:Group id="bgGroup" width="245" height="20" x="{down ? 1 : 0}" y="{down? 1 : 0}" >
+		<s:Graphic id="levelBG" >
+			<s:Path data="M 0 0 
+					L 15 19
+					L {width-bgGroup.x + 4} 19
+					L {width-bgGroup.x - 12} 0 
+					Z">
+				<s:fill>
+					<s:SolidColor color="0x000000" color.selected="0xd20000" alpha="0.2" alpha.selected="0.3" />
+				</s:fill>
+			</s:Path>
+			<s:filters>
+				<s:DropShadowFilter blurX="2" blurY="2" angle="45" distance="2" alpha=".5" color="0" />
+				<s:DropShadowFilter blurX="6" blurY="6" angle="225" inner="true" alpha=".25" />
+				<s:BevelFilter distance="5" angle="45" blurX="4" blurY="4" strength=".85" />
+			</s:filters>
+		</s:Graphic>
 		
-		<s:Rect width="35" height="100%" topLeftRadiusX="7" bottomLeftRadiusX="7">
-			<s:fill>
-				<s:LinearGradient rotation="270">
-					<s:GradientEntry color="{ColorUtil.adjustBrightness2(Courseware.instance.color, -50)}" />
-					<s:GradientEntry color="{Courseware.instance.color}" />
-				</s:LinearGradient>
-			</s:fill>
-		</s:Rect>
+		<s:Graphic id="slider" width="0" left="20">
+			<s:Path data="M 0 0 
+					L 15 19
+					L {width-bgGroup.x + 4} 19
+					L {width-bgGroup.x - 12} 0 
+					Z">
+				<s:fill>
+					<s:SolidColor color="0xd20000" alpha="0.25" />
+				</s:fill>
+			</s:Path>
+			<s:filters>
+				<s:DropShadowFilter blurX="2" blurY="2" angle="45" distance="2" alpha=".5" color="0" />
+				<s:DropShadowFilter blurX="6" blurY="6" angle="225" inner="true" alpha=".25" />
+			</s:filters>
+		</s:Graphic>	
 		
-		<s:Label text="{levelRoman}" color="0xffffff" fontWeight="bold" fontSize="16" left="5" verticalCenter="0" />
-		<s:Label text="{levelName}" fontSize="12" color="0" color.selected="{Courseware.instance.color}" left="40" verticalCenter="0"/>	
+		<s:Graphic id="levelDia">
+			<s:Path data="M 0 0 
+					L 15 19
+					L 50 19
+					L 36 0 
+					Z">
+				<s:fill>
+					<s:LinearGradient rotation="270">
+						<s:GradientEntry color="{ColorUtil.adjustBrightness2(Courseware.instance.color, -50)}" />
+						<s:GradientEntry color="{Courseware.instance.color}" />
+					</s:LinearGradient>
+				</s:fill>
+			</s:Path>
+		</s:Graphic>
+		
+		<s:Label id="levelRomanLabel" text="{levelRoman}" color="0xffffff" fontWeight="bold" fontSize="16" verticalCenter="1" />
+		<s:Label text="{levelName}" fontSize="13" fontWeight="normal"  color="0xd7d7d7" color.selected="0xffffff" left="52" verticalCenter="1" />	
 	</s:Group>		
 	
 </s:Group>

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ext:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
-				xmlns:s="library://ns.adobe.com/flex/spark" 
-				xmlns:mx="library://ns.adobe.com/flex/mx"
-				xmlns:tree="com.apexinnovations.transwarp.ui.tree.*"
-				xmlns:graphics="com.apexinnovations.transwarp.graphics.*"
-				xmlns:logos="com.apexinnovations.transwarp.graphics.logos.*"
-				xmlns:ext="com.apexinnovations.transwarp.ui.ext.*"
-				autoDrawBackground="false"
-				dataChange="dataChangeHandler(event)" 
-				click="click()"
-				height="27" 
-				toolTipClass="{MenuButtonTooltip}"
-				right="0">
+				  xmlns:s="library://ns.adobe.com/flex/spark" 
+				  xmlns:mx="library://ns.adobe.com/flex/mx"
+				  xmlns:tree="com.apexinnovations.transwarp.ui.tree.*"
+				  xmlns:graphics="com.apexinnovations.transwarp.graphics.*"
+				  xmlns:logos="com.apexinnovations.transwarp.graphics.logos.*"
+				  xmlns:ext="com.apexinnovations.transwarp.ui.ext.*"
+				  autoDrawBackground="false"
+				  dataChange="dataChangeHandler(event)" 
+				  click="click()"
+				  height="27" 
+				  toolTipClass="{MenuButtonTooltip}"
+				  right="0">
 	<fx:Script>
 		<![CDATA[
 			import com.apexinnovations.transwarp.data.Courseware;
@@ -68,7 +68,7 @@
 					labelDisplay.text = "File Inclusion Error";
 					disclosure.visible = false;
 				}
-					
+				
 			}
 			
 			protected function click():void {
