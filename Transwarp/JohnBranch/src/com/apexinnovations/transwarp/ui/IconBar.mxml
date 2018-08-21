@@ -227,7 +227,7 @@
 		<ui:IconButton icon="{SupportingTextIcon}" click="showSupportText(event);" highlight="{currentPage is Page ? Page(currentPage).hasSupportText : false}" faded="{!(currentPage is Page ? Page(currentPage).hasSupportText : false)}" toolTip="SUPPORT_TEXT"/>
 		<ui:IconButton icon="{HistoryIcon}" click="showPageUpdates(event);" highlight="{currentPage is Page ? Page(currentPage).hasUpdates : false}" faded="{!(currentPage is Page ? Page(currentPage).hasUpdates : false)}" toolTip="HISTORY" visible="{normalUser}"/>
 		<ui:IconButton icon="{LinksIcon}" click="showRelatedLinks(event);" highlight="{currentPage is Page ? Page(currentPage).hasLinks : false}" faded="{!(currentPage is Page ? Page(currentPage).hasLinks : false)}" toolTip="REL_LINKS"/>
-		<ui:IconButton icon="{FavoritesIcon}" click="showBookmarks(event);" highlight="{currentPage.bookmarked}" toolTip="FAVORITES" visible="{normalUser}"/>
+		<ui:IconButton icon="{FavoritesIcon}" click="showBookmarks(event);" highlight="{currentPage.bookmarked}" toolTip="FAVORITES" />
 		<ui:IconButton icon="{CommunityIcon}" click="apexCommunity(event);" toolTip="COMMUNITY" visible="{normalUser}"/>
 		<ui:IconButton icon="{CommentIcon}" click="commentOnPage(event);" toolTip="COMMENTS"/>
 		<ui:IconButton icon="{PaintbrushIcon}"  click="showDrawingTools(event);" toolTip="DRAWING" visible="{normalUser}"/>

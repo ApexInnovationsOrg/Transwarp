@@ -27,14 +27,14 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>[source path] TranswarpConfig-src</name>
+			<name>[source path] TranswarpConfig-trunk-src</name>
 			<type>2</type>
-			<location>C:/Users/wendt/Adobe Flash Builder 4.5/TranswarpConfig/src</location>
+			<location>C:/Users/john/Desktop/TranswarpConfig/trunk/src</location>
 		</link>
 		<link>
-			<name>[source path] TranswarpSlide-src</name>
+			<name>[source path] TranswarpSlide-trunk-src</name>
 			<type>2</type>
-			<location>C:/Users/wendt/Adobe Flash Builder 4.5/TranswarpSlide/src</location>
+			<location>C:/Users/john/Desktop/TranswarpSlide/trunk/src</location>
 		</link>
 		<link>
 			<name>bin-release</name>

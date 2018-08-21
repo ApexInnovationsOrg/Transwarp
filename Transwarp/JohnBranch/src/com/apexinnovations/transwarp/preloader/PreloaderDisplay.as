@@ -45,7 +45,7 @@ package com.apexinnovations.transwarp.preloader {
 		}
 		
 		// Embed the background image.     
-		[Embed(source="/../assets/H2_LoadingScreenImage.jpg")] public var ApexLogo:Class;
+		[Embed(source="/../assets/CH2_LoadingScreenImage.jpg")] public var ApexLogo:Class;
 					
 		override public function set preloader(value:Sprite):void {
 			super.preloader = value;
