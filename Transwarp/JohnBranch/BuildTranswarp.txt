@@ -1,0 +1,38 @@
+How To Compile Transwarp Engine
+
+
+1. Checkout the following folders from SVN server:
+	-Transwarp 
+		-For Transwarp.5-H2/CH2 version/style(Hemi 2 and Can Hemi 2) : JohnBranch
+		-For Transwarp.4-60* version/style: trunk
+	-TranswarpConfig
+	-TranswarpSlide
+
+2. Open Adobe Flash Builder 4.5
+
+3. In package explorer screen (top left)
+	-Import
+		-Flash Builder Project
+			-Project Folder (Search for Transwarp folder that you checked out)
+				-Finish (An error may be thrown. If so, click Finish again. If it persists, close and reopen flash builder. The only changes that are created are on the "actionScriptProperties" and "flexProperties" files)
+				
+4. Right click on Transwarp project
+	-Properties
+		-Resource -> Linked Resources. (make sure the paths for TranswarpConfig and TranswarpSlide are the checked out folders from above on lines 8/9)
+		-Flex Build Path -> Source path. (make sure the paths for TranswarpConfig and TranswarpSlide are the checked out folders from above on lines 8/9)
+		-Flash Compiler. (In Flex SDK version, select the default SDK "Flex 4.5")(Also works with "Flex 4.5.1" if it is available) -> Apply
+			-Note : This section is also where compiler arguements are listed. Can set DEBUG and OFFLINE variables. For release, these should both be false
+			
+5. Right click on Transwarp project
+	-Build Project (if no errors, move to step 6)
+
+6. While project is selected:
+	-Project -> Export Release Build
+	-Name project and make sure application is "Transwarp.mxml" 
+	-Can set "Export to folder" to whatever you like. By default, "bin-release" is selected. This will place the finished Transwarp.swf in the checked out folder for Transwarp in the bin-release folder.
+	
+7. To use on site:
+	-Rename Transwarp.swf to appropriate name based off of version in Classroom/engine/start.php
+	-For newer version, you will need to change the swf name in Classroom/engine/start.php
+	
+8. Profit???
