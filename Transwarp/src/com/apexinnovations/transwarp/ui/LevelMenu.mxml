@@ -25,6 +25,7 @@
 			[Bindable] protected var showLevel:Boolean = false;			
 			[Bindable] protected var curDate:Date = new Date();
 			[Bindable] protected var curDate:Date = new Date();
+			[Bindable] protected var curDate:Date = new Date();
 			
 			override protected function createChildren():void {
 				super.createChildren();
